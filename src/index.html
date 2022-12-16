@@ -33,7 +33,7 @@
             </p>
         </section>
         <div class="grid md:grid-cols-2 sm:grid-cols-1 gap-8">
-            <button class="has-icon"><i data-feather="download"></i>Install</button>
+            <button class="has-icon" id="install"><i data-feather="download"></i>Install</button>
             <button class="has-icon" onclick="window.open('https://geode-sdk.github.io/docs/')">
                 <i data-feather="book"></i>
                 Documentation
@@ -143,6 +143,11 @@
 
     <script defer>
         feather.replace();
+
+        // no install button on mobile because android geode doesn't exist yet
+        if (navigator.userAgent.match(/android|iphone|kindle|ipad/i).length) {
+            document.getElementById("install").remove();
+        }
     </script> 
 
 </body>
