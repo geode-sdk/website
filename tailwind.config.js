@@ -13,8 +13,8 @@ module.exports = {
             'navy':         '#3b3ddb',
             'red':          '#e23485',
             'gray':         '#272727',
-            'gray-dark':    '#111',
-            'gray-darker':  '#0a0a0a',
+            'gray-dark':    '#222',
+            'gray-darker':  '#111',
             'gray-light':   '#333',
             'white':        '#eee',
             'light':        '#aaa',
@@ -25,8 +25,10 @@ module.exports = {
             'text': ['"Open Sans"', 'sans-serif'],
         },
         extend: {
-            backgroundColor: '#272727',
-        },
+            spacing: {
+                '1px': '1px',
+            }
+        }
     },
     safelist: [{
         pattern: /hljs+/,

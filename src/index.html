@@ -45,7 +45,6 @@
     <main class="flex flex-col items-center p-56 max-2xl:p-40 max-xl:p-10 m-0">
 
         <section>
-
             <div>
                 <h1>A modding toolkit for GD</h1>
                 <p>
@@ -56,11 +55,9 @@
                 </p>
             </div>
             <img src="mods.png">
-
         </section>
 
         <section>
-            
             <img src="install.png">
             <div>
                 <h1>Install mods in-game</h1>
@@ -69,11 +66,9 @@
                     list in-game on the click of a button, and updated the same way.
                 </p>
             </div>
-
         </section>
 
         <section>
-
             <div>
                 <h1>Easily manage mods</h1>
                 <p>
@@ -82,11 +77,9 @@
                 </p>
             </div>
             <img src="manage.png">
-
         </section>
 
-        <section>
-
+        <section class="section-with-separator">
             <div>
                 <h1>Things just work</h1>
                 <p>
@@ -96,23 +89,19 @@
                 </p>
             </div>
 
-        </section>
-
-        <section>
+            <div class="separator"></div>
 
             <div>
-                <h1>Replaces all other mod loaders</h1>
+                <h1>Doesn't load .DLLs</h1>
                 <p>
                     Geode is incompatible with all non-Geode mods and mod loaders, <em>by design</em>. However, no need 
                     to worry; we are working on porting all your favorite mods like <em>Mega Hack</em>, <em>BetterEdit</em>, 
                     and <em>TextureLdr</em> to Geode, with new and improved versions.
                 </p>
             </div>
-
         </section>
 
         <section>
-
             <pre><code class="language-cpp">
 #include &lt;Geode/modify/MenuLayer.hpp&gt;
 
@@ -137,12 +126,19 @@ struct $modify(MenuLayer) {
                     with no need to specify things like <em class="text-red">calling conventions</em> &#8212; Geode 
                     handles the rest for you!
                 </p>
+                <div class="mt-6">
+                    <button
+                        class="has-icon border-solid border-2 border-gray-light"
+                        onclick="window.open('https://github.com/geode-sdk/examples/')"
+                    >
+                        <i data-feather="arrow-right"></i>
+                        View examples
+                    </button>
+                </div>
             </div>
-
         </section>
 
-        <section>
-
+        <section class="section-with-separator">
             <div>
                 <h1>Documentation</h1>
                 <p>
@@ -162,6 +158,32 @@ struct $modify(MenuLayer) {
                 </div>
             </div>
 
+            <div class="separator"></div>
+
+            <div>
+                <h1>Get involved</h1>
+                <p>
+                    If you'd like to contribute to Geode by suggesting features, reporting bugs, submitting code, etc., 
+                    feel free to <em>open up an issue or pull request</em> on the Geode repository! We also have a Discord 
+                    Server, where you can chat about anything related to Geode and catgirls. 
+                </p>
+                <div class="mt-6 flex flex-row gap-4">
+                    <button
+                        class="has-icon border-solid border-2 border-gray-light"
+                        onclick="window.open('https://github.com/geode-sdk')"
+                    >
+                        <i data-feather="github"></i>
+                        GitHub
+                    </button>
+                    <button
+                        class="has-icon border-solid border-2 border-gray-light"
+                        onclick="window.open('https://discord.gg/9e43WMKzhp')"
+                    >
+                        <i data-feather="message-circle"></i>
+                        Discord
+                    </button>
+                </div>
+            </div>
         </section>
 
         <footer class="block mt-40 mb-0">Site by Geode Team. Thank you to <a href="https://github.com/nekitdev">Nekit</a> for the domain!</footer>

@@ -89,7 +89,7 @@ button {
         rounded-full
         text-white
         grid
-        p-4
+        md:p-4
         hover:text-cyan
         hover:bg-gray-light
         transition-colors;
@@ -145,4 +145,25 @@ em {
 
 .hljs-string {
     @apply text-green;
+}
+
+@media only screen and (min-device-width: 1100px) {
+    .section-with-separator {
+        grid-template-columns: 1fr .25rem 1fr;
+    }
+
+    .separator {
+        @apply block border-solid border-l-2 border-light h-full w-0.5 opacity-25 justify-self-center;
+    }
+}
+
+@media only screen and (max-device-width: 1100px) {
+    .section-with-separator {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr .25rem 1fr;
+    }
+
+    .separator {
+        @apply block border-solid border-t-2 border-light h-0.5 w-full opacity-25 justify-self-stretch;
+    }
 }
