@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build": "tailwindcss -i src/index.css -o dist/index.css --minify && html-minifier --input-dir ./src --output-dir ./dist --collapse-whitespace --file-ext html"
+    "build": "tailwindcss -i src/index.css -o dist/index.css --minify && html-minifier --input-dir ./src --output-dir ./dist --collapse-whitespace --file-ext html && node ./copy-media.js"
   },
   "devDependencies": {
     "tailwindcss": "^3.2.4",
