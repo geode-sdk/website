@@ -6,7 +6,7 @@
   },
   "watch": {
     "build": {
-      "patterns": ["src"],
+      "patterns": ["src","media"],
       "extensions": "html,css,png,svg"
     }
   },
