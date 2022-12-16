@@ -85,10 +85,9 @@ h1 {
 
 .button {
     @apply 
-        bg-gray-dark
         rounded-full
         text-white
-        grid
+        inline-grid
         p-4
         hover:text-cyan
         hover:bg-gray-light
