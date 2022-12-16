@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Varela+Round&display=swap" rel="stylesheet"> 
-    <link rel="stylesheet" href="/index.css"> 
+    <link rel="stylesheet" href="index.css"> 
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
 </head>
 <body class="bg-purple font-text text-white flex flex-col items-center p-0 m-0">
@@ -23,7 +23,7 @@
     <header class="p-20 mt-20 flex flex-col items-center">
         <section class="p-0 rounded-3xl flex flex-col items-center mb-4 max-w-fit">
             <div class="flex flex-row items-center justify-start">
-                <img src="/geode-logo-2.png" class="w-auto h-20 mr-4">
+                <img src="geode-logo-2.png" class="w-auto h-20 mr-4">
                 <h1 class="text-7xl">Geode</h1>
             </div>
             <p class="font-head text-2xl font-bold mt-12 mb-12 text-center">
@@ -61,13 +61,13 @@
                     </button>
                 </div>
             </div>
-            <img src="/mods.png">
+            <img src="mods.png">
 
         </section>
 
         <section>
             
-            <img src="/install.png">
+            <img src="install.png">
             <div>
                 <h1>Install mods in-game</h1>
                 <p>
@@ -93,7 +93,7 @@
                     all in one place.
                 </p>
             </div>
-            <img src="/manage.png">
+            <img src="manage.png">
 
         </section>
 
@@ -145,7 +145,7 @@
         feather.replace();
 
         // no install button on mobile because android geode doesn't exist yet
-        if (navigator.userAgent.match(/android|iphone|kindle|ipad/i).length) {
+        if (navigator.userAgent.match(/android|iphone|kindle|ipad/i)) {
             document.getElementById("install").remove();
         }
     </script> 

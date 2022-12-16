@@ -37,14 +37,14 @@ body {
     .svg-bg {
         top: 30rem;
         aspect-ratio: 1/2;
-        background-image: url("/layer0-mobile.svg");
+        background-image: url("layer0-mobile.svg");
     }
 }
 
 @media only screen and (min-device-width: 780px) {
     .svg-bg {
         aspect-ratio: 2/1;
-        background-image: url("/layer0.svg");
+        background-image: url("layer0.svg");
     }
 }
 

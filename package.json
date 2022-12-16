@@ -1,9 +1,18 @@
 {
   "scripts": {
-    "build": "tailwindcss -i src/index.css -o dist/index.css --minify && html-minifier --input-dir ./src --output-dir ./dist --collapse-whitespace --file-ext html && node ./copy-media.js"
+    "deploy": "tailwindcss -i src/index.css -o dist/index.css --minify && html-minifier --input-dir ./src --output-dir ./dist --collapse-whitespace --file-ext html && node ./copy-media.js",
+    "build": "tailwindcss -i src/index.css -o dist/index.css && html-minifier --input-dir ./src --output-dir ./dist --file-ext html && node ./copy-media.js",
+    "watch": "npm-watch"
+  },
+  "watch": {
+    "build": {
+      "patterns": ["src"],
+      "extensions": "html,css,png,svg"
+    }
   },
   "devDependencies": {
-    "tailwindcss": "^3.2.4",
-    "html-minifier": "^4.0.0"
+    "html-minifier": "^4.0.0",
+    "npm-watch": "^0.11.0",
+    "tailwindcss": "^3.2.4"
   }
 }
