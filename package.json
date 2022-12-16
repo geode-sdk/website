@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "publish": "tailwindcss -i src/index.css -o dist/index.css --minify && html-minifier --input-dir ./src --output-dir ./dist --collapse-whitespace --file-ext html"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.2.4",
+    "html-minifier": "^4.0.0"
+  }
+}

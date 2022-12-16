@@ -1,0 +1,104 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    perspective: 1px;
+    -webkit-perspective: 1px;
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.svg-bg::before {
+    @apply absolute bg-gray overflow-visible w-full;
+    height: 100vw;
+    top: -100vw;
+    content: "";
+    z-index: -5;
+}
+
+.svg-bg {
+    @apply absolute overflow-visible w-full bg-gray m-0 p-0 bg-no-repeat bg-center bg-cover;
+    z-index: -5;
+    transform: translate(-2rem, +10rem, -1px) scale(2.5);
+	-webkit-transform: translate3d(-2rem, +10rem, -1px) scale(2.5);
+}
+
+@media only screen and (max-device-width: 780px) {
+    .svg-bg {
+        top: 30rem;
+        aspect-ratio: 1/2;
+        background-image: url("../media/layer0-mobile.svg");
+    }
+}
+
+@media only screen and (min-device-width: 780px) {
+    .svg-bg {
+        aspect-ratio: 2/1;
+        background-image: url("../media/layer0.svg");
+    }
+}
+
+main > section {
+    @apply 
+        bg-gray-dark
+        p-12
+        rounded-3xl
+        mb-12
+        grid
+        lg:grid-cols-2
+        max-lg:grid-cols-1
+        items-center
+        gap-20;
+}
+
+main > section h1 {
+    @apply m-0 mb-4 text-yellow;
+}
+
+main > section > img {
+    @apply rounded-2xl max-h-80;
+}
+
+main > section > img:last-child {
+    @apply lg:justify-self-end max-lg:justify-self-center;
+}
+
+main > section > img:first-child {
+    @apply lg:justify-self-start max-lg:justify-self-center;
+}
+
+/* General components */
+
+h1 {
+    @apply font-bold font-head md:text-5xl max-md:text-3xl;
+}
+
+button {
+    @apply 
+        bg-gray-dark
+        rounded-full
+        text-white
+        grid
+        p-4
+        hover:text-cyan
+        hover:bg-gray-light
+        transition-colors;
+}
+
+button.has-icon {
+    grid-template-columns: 2rem min(10rem) 2rem;
+}
+
+.feather {
+    justify-self: center;
+}
