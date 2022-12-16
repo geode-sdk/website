@@ -28,5 +28,8 @@ module.exports = {
             backgroundColor: '#272727',
         },
     },
+    safelist: [{
+        pattern: /hljs+/,
+    }],
     plugins: [],
 };
