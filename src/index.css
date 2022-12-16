@@ -102,3 +102,47 @@ button.has-icon {
 .feather {
     justify-self: center;
 }
+
+em {
+    @apply text-blue not-italic font-semibold;
+}
+
+.hljs, .hljs-subst {
+    @apply block rounded-2xl p-4 bg-gray-darker text-white;
+}
+
+.hljs-meta {
+    @apply text-purple-light;
+}
+
+.hljs-keyword {
+    @apply text-purple-light;
+}
+
+.hljs-type {
+    @apply text-blue;
+}
+
+.hljs-title.function {
+    @apply text-navy;
+}
+
+.hljs-symbol {
+    @apply text-purple-light;
+}
+
+.hljs-punctuation {
+    @apply text-light;
+}
+
+.hljs-built_in {
+    @apply text-red;
+}
+
+.hljs-literal {
+    @apply text-red;
+}
+
+.hljs-string {
+    @apply text-green;
+}

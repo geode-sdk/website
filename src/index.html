@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Varela+Round&display=swap" rel="stylesheet"> 
     <link rel="stylesheet" href="index.css"> 
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
 </head>
 <body class="bg-purple font-text text-white flex flex-col items-center p-0 m-0">
 <!-- 
@@ -34,7 +35,7 @@
         </section>
         <div class="grid md:grid-cols-2 sm:grid-cols-1 gap-8">
             <button class="has-icon" id="install"><i data-feather="download"></i>Install</button>
-            <button class="has-icon" onclick="window.open('https://geode-sdk.github.io/docs/')">
+            <button class="has-icon" onclick="window.open('https://docs.geode-sdk.org')">
                 <i data-feather="book"></i>
                 Documentation
             </button>
@@ -48,18 +49,11 @@
             <div>
                 <h1>A modding toolkit for GD</h1>
                 <p>
-                    Geode is a <em class="text-blue not-italic font-semibold">modding framework</em> and 
-                    <em class="text-blue not-italic font-semibold">mod loader</em> that aims to <b>standardize</b> 
-                    GD modding. It is <em class="text-blue not-italic font-semibold">cross-platform</em>, and provides 
-                    everything needed for modding, including a hooking library, Cocos2d & GD headers, and a ton of 
-                    utilities from web requests to UI.
+                    Geode is a <em>modding framework</em> and <em>mod loader</em> that aims to 
+                    <b>standardize</b> GD modding. It is <em>cross-platform</em>, and provides 
+                    everything needed for modding, including a hooking library, Cocos2d & GD 
+                    headers, and a ton of utilities from web requests to UI.
                 </p>
-                <div class="mt-6">
-                    <button class="has-icon border-solid border-2 border-gray-light">
-                        <i data-feather="arrow-right"></i>
-                        Get started
-                    </button>
-                </div>
             </div>
             <img src="mods.png">
 
@@ -74,12 +68,6 @@
                     No more need to drag weird .DLL files around to obscure folders; mods in Geode can be installed from a 
                     list in-game on the click of a button, and updated the same way.
                 </p>
-                <div class="mt-6">
-                    <button class="has-icon border-solid border-2 border-gray-light">
-                        <i data-feather="arrow-right"></i>
-                        Get started
-                    </button>
-                </div>
             </div>
 
         </section>
@@ -115,9 +103,39 @@
             <div>
                 <h1>Replaces all other mod loaders</h1>
                 <p>
-                    Geode is incompatible with all non-Geode mods and mod loaders, <a href="">by design</a>. However, no need 
+                    Geode is incompatible with all non-Geode mods and mod loaders, <em>by design</em>. However, no need 
                     to worry; we are working on porting all your favorite mods like <em>Mega Hack</em>, <em>BetterEdit</em>, 
                     and <em>TextureLdr</em> to Geode, with new and improved versions.
+                </p>
+            </div>
+
+        </section>
+
+        <section>
+
+            <pre><code class="language-cpp">
+#include &lt;Geode/modify/MenuLayer.hpp&gt;
+
+USE_GEODE_NAMESPACE();
+
+struct $modify(MenuLayer) {
+    bool init() {
+        if (!MenuLayer::init())
+            return false;
+        
+        log::info("Hi from my mod!");
+
+        return true;
+    }
+};
+            </code></pre>
+            <div>
+                <h1>Declarative code</h1>
+                <p>
+                    Geode has incredibly sugary syntax; hooks can be made by simply creating a class and overwriting 
+                    functions on it. All information related to the hook can be contained within a single source file, 
+                    with no need to specify things like <em class="text-red">calling conventions</em> &#8212; Geode 
+                    handles the rest for you!
                 </p>
             </div>
 
@@ -133,16 +151,26 @@
                     <a href="https://geode-sdk.github.io/docs/#/docs/handbook/chap0">a handy handbook</a> that explains how to 
                     learn modding from scratch.
                 </p>
+                <div class="mt-6">
+                    <button
+                        class="has-icon border-solid border-2 border-gray-light"
+                        onclick="window.open('https://docs.geode-sdk.org')"
+                    >
+                        <i data-feather="arrow-right"></i>
+                        Get started
+                    </button>
+                </div>
             </div>
 
         </section>
 
-        <footer class="block mt-40 mb-0">Site by Geode Team.</footer>
+        <footer class="block mt-40 mb-0">Site by Geode Team. Thank you to <a href="https://github.com/nekitdev">Nekit</a> for the domain!</footer>
 
     </main>
 
     <script defer>
         feather.replace();
+        hljs.highlightAll();
 
         // no install button on mobile because android geode doesn't exist yet
         if (navigator.userAgent.match(/android|iphone|kindle|ipad/i)) {
