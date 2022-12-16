@@ -29,8 +29,8 @@ body {
 .svg-bg {
     @apply absolute overflow-visible w-full bg-gray m-0 p-0 bg-no-repeat bg-center bg-cover;
     z-index: -5;
-    transform: translate(-2rem, +10rem, -1px) scale(2.5);
-	-webkit-transform: translate3d(-2rem, +10rem, -1px) scale(2.5);
+    transform: translate(-2rem, +10rem, -2px) scale(3.5);
+	-webkit-transform: translate3d(-2rem, +10rem, -2px) scale(3.5);
 }
 
 @media only screen and (max-device-width: 780px) {
@@ -110,7 +110,7 @@ h1 {
 }
 
 em {
-    @apply text-blue not-italic font-semibold;
+    @apply text-skin not-italic font-semibold;
 }
 
 .hljs, .hljs-subst {
