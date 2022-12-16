@@ -89,7 +89,7 @@ button {
         rounded-full
         text-white
         grid
-        md:p-4
+        p-4
         hover:text-cyan
         hover:bg-gray-light
         transition-colors;
@@ -97,6 +97,12 @@ button {
 
 button.has-icon {
     grid-template-columns: 2rem min(10rem) 2rem;
+}
+
+@media only screen and (min-device-width: 768px) {
+    button.has-icon {
+        grid-template-columns: 2rem fit-content 2rem;
+    }
 }
 
 .feather {
@@ -145,6 +151,10 @@ em {
 
 .hljs-string {
     @apply text-green;
+}
+
+code {
+    overflow: auto;
 }
 
 @media only screen and (min-device-width: 1100px) {

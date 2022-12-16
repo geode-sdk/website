@@ -18,6 +18,7 @@ module.exports = {
             'gray-light':   '#333',
             'white':        '#eee',
             'light':        '#aaa',
+            'opaque':       'rgba(255, 255, 255, 100)',
             'cyan':         '#6ac2d8',
         },
         fontFamily: {

@@ -167,7 +167,7 @@ struct $modify(MenuLayer) {
                     feel free to <em>open up an issue or pull request</em> on the Geode repository! We also have a Discord 
                     Server, where you can chat about anything related to Geode and catgirls. 
                 </p>
-                <div class="mt-6 flex flex-row gap-4">
+                <div class="mt-6 flex max-sm:flex-col sm:flex-row gap-4 items-center">
                     <button
                         class="has-icon border-solid border-2 border-gray-light"
                         onclick="window.open('https://github.com/geode-sdk')"
@@ -186,7 +186,19 @@ struct $modify(MenuLayer) {
             </div>
         </section>
 
-        <footer class="block mt-40 mb-0">Site by Geode Team. Thank you to <a href="https://github.com/nekitdev">Nekit</a> for the domain!</footer>
+        <footer class="flex flex-col mt-10 mb-0 items-center gap-10">
+            <div>
+                Site by Geode Team.
+                Thank you to <a href="https://github.com/nekitdev" class="underline">Nekit</a> for the domain!
+            </div>
+            <button
+                class="has-icon border-solid border-2 border-light border-opacity-25 bg-opacity-0 hover:bg-opacity-0 hover:border-cyan"
+                onclick="window.open('https://github.com/geode-sdk/geode-sdk.github.io')"
+            >
+                <i data-feather="github"></i>
+                View Site Source
+            </button>
+        </footer>
 
     </main>
 
