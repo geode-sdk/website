@@ -34,11 +34,11 @@
             </p>
         </section>
         <div class="grid md:grid-cols-2 sm:grid-cols-1 gap-8">
-            <button class="has-icon bg-gray-darker" id="install"><i data-feather="download"></i>Install</button>
-            <button class="has-icon bg-gray-darker" onclick="window.open('https://docs.geode-sdk.org')">
+            <a class="button has-icon bg-gray-darker" href="#" id="install"><i data-feather="download"></i>Install</a>
+            <a class="button has-icon bg-gray-darker" href="https://docs.geode-sdk.org">
                 <i data-feather="book"></i>
                 Documentation
-            </button>
+            </a>
         </div>
     </header>
 
@@ -127,13 +127,13 @@ struct $modify(MenuLayer) {
                     handles the rest for you!
                 </p>
                 <div class="mt-6">
-                    <button
-                        class="has-icon border-solid border-2 border-gray-light"
-                        onclick="window.open('https://github.com/geode-sdk/examples/')"
+                    <a
+                        class="button has-icon border-solid border-2 border-gray-light"
+                        href="https://github.com/geode-sdk/examples/"
                     >
                         <i data-feather="arrow-right"></i>
                         View examples
-                    </button>
+                    </a>
                 </div>
             </div>
         </section>
@@ -148,13 +148,13 @@ struct $modify(MenuLayer) {
                     learn modding from scratch.
                 </p>
                 <div class="mt-6">
-                    <button
-                        class="has-icon border-solid border-2 border-gray-light"
-                        onclick="window.open('https://docs.geode-sdk.org')"
+                    <a
+                        class="button has-icon border-solid border-2 border-gray-light"
+                        href="https://docs.geode-sdk.org"
                     >
                         <i data-feather="arrow-right"></i>
                         Get started
-                    </button>
+                    </a>
                 </div>
             </div>
 
@@ -168,20 +168,20 @@ struct $modify(MenuLayer) {
                     Server, where you can chat about anything related to Geode and catgirls. 
                 </p>
                 <div class="mt-6 flex max-sm:flex-col sm:flex-row gap-4 items-center">
-                    <button
-                        class="has-icon border-solid border-2 border-gray-light"
-                        onclick="window.open('https://github.com/geode-sdk')"
+                    <a
+                        class="button has-icon border-solid border-2 border-gray-light"
+                        href="https://github.com/geode-sdk"
                     >
                         <i data-feather="github"></i>
                         GitHub
-                    </button>
-                    <button
-                        class="has-icon border-solid border-2 border-gray-light"
-                        onclick="window.open('https://discord.gg/9e43WMKzhp')"
+                    </a>
+                    <a
+                        class="button has-icon border-solid border-2 border-gray-light"
+                        href="https://discord.gg/9e43WMKzhp"
                     >
                         <i data-feather="message-circle"></i>
                         Discord
-                    </button>
+                    </a>
                 </div>
             </div>
         </section>
@@ -191,13 +191,13 @@ struct $modify(MenuLayer) {
                 Site by Geode Team.
                 Thank you to <a href="https://github.com/nekitdev" class="underline">Nekit</a> for the domain!
             </div>
-            <button
-                class="has-icon border-solid border-2 border-light border-opacity-25 bg-opacity-0 hover:bg-opacity-0 hover:border-cyan"
-                onclick="window.open('https://github.com/geode-sdk/geode-sdk.github.io')"
+            <a
+                class="button has-icon border-solid border-2 border-light border-opacity-25 bg-opacity-0 hover:bg-opacity-0 hover:border-cyan"
+                href="https://github.com/geode-sdk/geode-sdk.github.io"
             >
                 <i data-feather="github"></i>
                 View Site Source
-            </button>
+            </a>
         </footer>
 
     </main>

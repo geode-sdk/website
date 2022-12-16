@@ -83,7 +83,7 @@ h1 {
     @apply font-bold font-head md:text-5xl max-md:text-3xl;
 }
 
-button {
+.button {
     @apply 
         bg-gray-dark
         rounded-full
@@ -92,15 +92,16 @@ button {
         p-4
         hover:text-cyan
         hover:bg-gray-light
-        transition-colors;
+        transition-colors
+        text-center;
 }
 
-button.has-icon {
+.button.has-icon {
     grid-template-columns: 2rem min(10rem) 2rem;
 }
 
 @media only screen and (min-device-width: 768px) {
-    button.has-icon {
+    .button.has-icon {
         grid-template-columns: 2rem fit-content 2rem;
     }
 }
