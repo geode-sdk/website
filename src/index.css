@@ -60,7 +60,8 @@ main > section {
         xl:grid-cols-2
         max-xl:grid-cols-1
         items-center
-        gap-20;
+        xl:gap-20
+        max-xl:gap-6;
 }
 
 main > section h1 {
