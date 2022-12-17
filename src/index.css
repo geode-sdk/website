@@ -56,9 +56,9 @@ main > section {
         md:rounded-3xl
         max-md:rounded-xl
         mb-12
-        grid
-        lg:grid-cols-2
-        max-lg:grid-cols-1
+        inline-grid
+        xl:grid-cols-2
+        max-xl:grid-cols-1
         items-center
         gap-20;
 }
@@ -72,11 +72,11 @@ main > section > img {
 }
 
 main > section > img:last-child {
-    @apply lg:justify-self-end max-lg:justify-self-center;
+    @apply xl:justify-self-end max-xl:justify-self-center;
 }
 
 main > section > img:first-child {
-    @apply lg:justify-self-start max-lg:justify-self-center;
+    @apply xl:justify-self-start max-xl:justify-self-center;
 }
 
 /* General components */
