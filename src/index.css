@@ -92,11 +92,12 @@ h1 {
         hover:text-cyan
         hover:bg-gray-light
         transition-colors
-        text-center;
+        text-center
+        hover:cursor-pointer;
 }
 
 .button.has-icon {
-    grid-template-columns: 2rem min(10rem) 2rem;
+    grid-template-columns: 2rem minmax(10rem, 1fr) 2rem;
 }
 
 @media only screen and (min-device-width: 768px) {
@@ -176,4 +177,9 @@ code {
     .separator {
         @apply block border-solid border-t-2 border-light h-0.5 w-full opacity-25 justify-self-stretch;
     }
+}
+
+.arrow-before::before {
+    @apply absolute bg-gray-darker w-8 h-8 rotate-45 left-1/2 -top-4 -translate-x-4;
+    content: "";
 }
