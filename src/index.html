@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The main page for Geode SDK - a mod loader and modding framework for Geometry Dash.">
+    <!-- for opengraph embeds i think -->
     <meta property="description" content="A mod loader and modding framework for Geometry Dash">
     <meta property="og:image" content="https://docs.geode-sdk.org/icon.png">
     <meta property="og:image:width" content="80">
@@ -13,7 +15,8 @@
     <meta name="twitter:title" content="Homepage for Geode" />
     <meta name="twitter:description" content="A mod loader and modding framework for Geometry Dash" />
     <meta property="twitter:image:src" content="https://docs.geode-sdk.org/icon.png">
-    <title>Geode</title>
+    <title>Geode - The ultimate Geometry Dash modding framework</title>
+    <link href="/favicon.ico" rel="icon" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Varela+Round&display=swap" rel="stylesheet"> 
@@ -42,7 +45,7 @@
         </text>
         <a
             class="button has-icon border-solid border-2 border-gray-light"
-            href="https://docs.geode-sdk.org/#/docs/info/installation?id=installing-geode-sdk-for-developers"
+            href="https://docs.geode-sdk.org/installation#installing-geode-sdk-for-developers"
         >
             <i data-feather="code"></i>
             Install SDK
@@ -52,7 +55,7 @@
     <header class="sm:p-20 max-sm:p-6 mt-20 flex flex-col items-center">
         <section class="p-0 rounded-3xl flex flex-col items-center mb-4 max-w-fit">
             <div class="flex flex-row items-center justify-start">
-                <img src="geode-logo-2.png" class="w-auto sm:h-20 max-sm:h-12 mr-4">
+                <img alt="geode sdk logo" src="geode-logo-2.png" class="w-auto sm:h-20 max-sm:h-12 mr-4">
                 <h1 class="sm:text-7xl max-sm:text-5xl">Geode</h1>
             </div>
             <p class="font-head text-2xl font-bold mt-12 mb-12 text-center">
@@ -65,6 +68,7 @@
             <a
                 class="button has-icon bg-gray-darker"
                 onclick="showInstallMenu()"
+                href="#"
                 id="install"
             ><i data-feather="download"></i>Install</a>
             <a class="button has-icon bg-gray-darker" href="https://docs.geode-sdk.org">
@@ -86,11 +90,11 @@
                     headers, and a ton of utilities from web requests to UI.
                 </p>
             </div>
-            <img src="mods.png">
+            <img alt="screenshot of in-game mod list in geometry dash" src="mods.png">
         </section>
 
         <section>
-            <img src="install.png">
+            <img alt="screenshot of in-game available geode mods" src="install.png">
             <div>
                 <h1>Install mods in-game</h1>
                 <p>
@@ -108,7 +112,7 @@
                     all in one place.
                 </p>
             </div>
-            <img src="manage.png">
+            <img alt="screenshot of installing a mod in-game in geometry dash" src="manage.png">
         </section>
 
         <section class="section-with-separator">
