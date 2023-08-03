@@ -31,7 +31,7 @@
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
 </head>
-<body class="bg-purple font-text text-white flex flex-col items-center p-0 m-0">
+<body class="body-3d bg-purple font-text text-white flex flex-col items-center p-0 m-0">
 <!-- 
     <div class="bg"> 
         <img class="img" src="cover.png">
@@ -39,25 +39,6 @@
     </div> -->
     
     <div class="svg-bg"></div>
-    <div class="absolute hidden p-8 bg-gray-darker rounded-3xl flex-col gap-4 justify-center items-center top-20 arrow-before" id="install-popup">
-        <h2 class="text-yellow font-head text-xl">Select Option to Install</h2>
-        <text class="inline text-light text-sm">
-            If you want to use Geode mods:
-        </text>
-        <div class="flex flex-col gap-4" id="install-options">
-            Fetching installation options...
-        </div>
-        <text class="inline text-light text-sm">
-            If you want to develop mods with Geode:
-        </text>
-        <a
-            class="button has-icon border-solid border-2 border-gray-light"
-            href="https://docs.geode-sdk.org/installation#installing-geode-sdk-for-developers"
-        >
-            <i data-feather="code"></i>
-            Install SDK
-        </a>
-    </div>
 
     <header class="sm:p-20 max-sm:p-6 mt-20 flex flex-col items-center">
         <section class="p-0 rounded-3xl flex flex-col items-center mb-4 max-w-fit">
@@ -67,16 +48,17 @@
             </div>
             <p class="font-head text-2xl font-bold mt-12 mb-12 text-center">
                 The ultimate
-                <a href="https://store.steampowered.com/app/322170/Geometry_Dash/" class="text-yellow hover:text-cyan no-underline transition-colors">Geometry Dash</a>
+                <a
+                    href="https://store.steampowered.com/app/322170/Geometry_Dash/"
+                    class="text-yellow hover:text-cyan no-underline transition-colors"
+                >Geometry Dash</a>
                 modding framework
             </p>
         </section>
         <div class="grid md:grid-cols-2 max-md:grid-cols-1 gap-8">
             <a
                 class="button has-icon bg-gray-darker"
-                onclick="showInstallMenu()"
-                href="#"
-                id="install"
+                href="./install"
             ><i data-feather="download"></i>Install</a>
             <a class="button has-icon bg-gray-darker" href="https://docs.geode-sdk.org">
                 <i data-feather="book"></i>
@@ -138,8 +120,8 @@
                 <h1>Doesn't load .DLLs</h1>
                 <p>
                     Geode is incompatible with all non-Geode mods and mod loaders, <em>by design</em>. However, no need 
-                    to worry; we are working on porting all your favorite mods like <em>Mega Hack</em>, <em>BetterEdit</em>, 
-                    and <em>TextureLdr</em> to Geode, with new and improved versions.
+                    to worry; all your favorite mods, including <em>Mega Hack</em>, <em>BetterEdit</em>, 
+                    and <em>TextureLdr</em> are available on Geode, many with new and improved versions.
                 </p>
             </div>
         </section>
@@ -249,98 +231,6 @@ class $modify(MenuLayer) {
     <script defer>
         feather.replace();
         hljs.highlightAll();
-
-        fetch('https://api.github.com/repos/geode-sdk/installer/releases/latest')
-            .then(r => r.json())
-            .then(json => {
-                const opts = document.querySelector('#install-options');
-                opts.innerHTML = '';
-                for (const asset of json.assets) {
-                    let platformName;
-                    if (asset.name.toLowerCase().includes('mac')) {
-                        platformName = 'macOS';
-                    }
-                    else if (asset.name.toLowerCase().includes('win')) {
-                        platformName = 'Windows';
-                    }
-                    else continue;
-                    
-                    let elem = document.createElement('a');
-                    elem.classList.add(
-                        'button', 'has-icon', 'border-solid',
-                        'border-2', 'border-gray-light'
-                    );
-                    elem.href = asset.browser_download_url;
-                    elem.innerHTML = `${feather.icons.box.toSvg()}Download for ${platformName}`;
-                    opts.appendChild(elem);
-                }
-            })
-            .catch(_ => {
-                document.querySelector('#install-options').innerHTML = 
-                    'Unable to get installation options';
-            });
-
-        // no install button on mobile because android geode doesn't exist yet
-        if (navigator.userAgent.match(/android|iphone|kindle|ipad/i)) {
-            document.getElementById('install').remove();
-        }
-
-        let hideAnimation = undefined;
-        document.addEventListener('click', e => {
-            const popup = document.getElementById('install-popup');
-            if (popup.contains(e.target)) {
-                return;
-            }
-            if (document.getElementById('install').contains(e.target)) {
-                return;
-            }
-            hideAnimation = popup.animate([
-                {
-                    transform: 'translateY(0)',
-                    opacity: 1
-                },
-                {
-                    transform: 'translateY(-5rem)',
-                    opacity: 0,
-                },
-            ], {
-                easing: 'ease-in',
-                duration: 250
-            });
-            hideAnimation.addEventListener('finish', _ => {
-                popup.style.display = 'none';
-                hideAnimation = undefined;
-            });
-        });
-
-        function showInstallMenu() {
-            const rect = document.getElementById('install').getBoundingClientRect();
-            const popup = document.getElementById('install-popup');
-            popup.style.display = 'flex';
-            const popupRect = popup.getBoundingClientRect();
-            popup.style.top = `calc(${rect.bottom + document.body.scrollTop}px + 2rem)`;
-            popup.style.left = `${
-                rect.left + 
-                    (rect.right - rect.left) / 2 - 
-                    (popupRect.right - popupRect.left) / 2
-            }px`;
-            if (hideAnimation) {
-                hideAnimation.cancel();
-            }
-            popup.animate([
-                {
-                    transform: 'translateY(-5rem)',
-                    opacity: 0
-                },
-                {
-                    transform: 'translateY(0)',
-                    opacity: 1
-                },
-            ], {
-                easing: 'ease-out',
-                duration: 250
-            });
-        }
     </script> 
 
 </body>

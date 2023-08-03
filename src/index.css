@@ -9,13 +9,16 @@ html {
 }
 
 body {
+    height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.body-3d {
     perspective: 1px;
     -webkit-perspective: 1px;
     transform-style: preserve-3d;
     -webkit-transform-style: preserve-3d;
-    height: 100%;
-    overflow-y: scroll;
-    overflow-x: hidden;
 }
 
 .svg-bg::before {
@@ -31,6 +34,15 @@ body {
     z-index: -5;
     transform: translate(-2rem, +10rem, -2px) scale(3.5);
 	-webkit-transform: translate3d(-2rem, +10rem, -2px) scale(3.5);
+}
+
+.svg-bg-top {
+    @apply overflow-visible w-full bg-gray m-0 p-0 bg-no-repeat bg-center bg-cover;
+    z-index: -5;
+    margin-top: -5rem;
+    height: 20rem;
+    rotate: 180deg;
+    background-image: url("layer0.svg");
 }
 
 @media only screen and (max-device-width: 768px) {
@@ -68,8 +80,12 @@ main > section h1 {
     @apply m-0 mb-4 text-yellow;
 }
 
+main img {
+    @apply lg:rounded-2xl max-lg:rounded-lg;
+}
+
 main > section > img {
-    @apply lg:rounded-2xl max-lg:rounded-lg max-h-80;
+    @apply max-h-80;
 }
 
 main > section > img:last-child {
@@ -161,6 +177,26 @@ code {
     overflow: auto;
 }
 
+.sidey-sidey, .sidey-hidey {
+    display: grid;
+}
+
+.sidey-hidey > * {
+    @apply max-w-md;
+}
+
+@media only screen and (min-device-width: 90rem) {
+    .sidey-sidey {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media only screen and (max-device-width: 90rem) {
+    .sidey-sidey {
+        grid-template-columns: 1fr;
+    }
+}
+
 @media only screen and (min-device-width: 1100px) {
     .section-with-separator {
         grid-template-columns: 1fr .25rem 1fr;
@@ -168,6 +204,10 @@ code {
 
     .separator {
         @apply block border-solid border-l-2 border-light h-full w-0.5 opacity-25 justify-self-center;
+    }
+
+    .sidey-hidey {
+        grid-template-columns: 1fr 1fr;
     }
 }
 
@@ -180,9 +220,21 @@ code {
     .separator {
         @apply block border-solid border-t-2 border-light h-0.5 w-full opacity-25 justify-self-stretch;
     }
+
+    .sidey-hidey > *:nth-child(2) {
+        display: none;
+    }
 }
 
 .arrow-before::before {
     @apply absolute bg-gray-darker w-8 h-8 rotate-45 left-1/2 -top-4 -translate-x-4;
     content: "";
+}
+
+em.tag {
+    @apply 
+        inline-block
+        border-cyan border-2 border-opacity-50 rounded-md
+        text-cyan 
+        p-1;
 }

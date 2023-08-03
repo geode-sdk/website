@@ -1,7 +1,7 @@
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-    content: ["src/index.html"],
+    content: ["src/index.html", "src/install/index.html"],
     theme: {
         colors: {
             'purple':       '#714a9a',
@@ -29,7 +29,11 @@ module.exports = {
         extend: {
             spacing: {
                 '1px': '1px',
-            }
+            },
+            maxWidth: {
+                'txt-or-vw': 'min(36rem, 90vw)',
+                'img-or-vw': 'min(42rem, 90vw)',
+            },
         }
     },
     safelist: [{

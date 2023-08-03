@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Geode - The ultimate Geometry Dash modding framework</title>
+    <meta name="description" content="The main page for Geode SDK - a mod loader and modding framework for Geometry Dash.">
+
+    <meta property="og:url" content="https://geode-sdk.org/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Geode - The ultimate Geometry Dash modding framework">
+    <meta property="og:description" content="The main page for Geode SDK - a mod loader and modding framework for Geometry Dash.">
+    <meta property="og:image" content="https://docs.geode-sdk.org/icon.png">
+    <meta property="og:image:width" content="80">
+    <meta property="og:image:height" content="80">
+    
+    <meta name="twitter:card" content="summary">
+    <meta property="twitter:url" content="https://geode-sdk.org/">
+    <meta name="twitter:title" content="Geode - The ultimate Geometry Dash modding framework">
+    <meta name="twitter:description" content="The main page for Geode SDK - a mod loader and modding framework for Geometry Dash.">
+    <meta property="twitter:image:src" content="https://docs.geode-sdk.org/icon.png">
+
+    <link href="/favicon.ico" rel="icon" type="image/x-icon">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Varela+Round&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="../index.css"> 
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+</head>
+<body class="bg-gray font-text text-white items-center p-0 m-0">
+<!-- 
+    <div class="bg"> 
+        <img class="img" src="cover.png">
+        <div class="gradient"></div>
+    </div> -->
+
+    <div class="svg-bg-top"></div>
+    
+    <div class="fixed w-full top-4 left-4">
+        <a
+            class="
+                button
+                flex items-center justify-center
+                bg-gray-darker
+            "
+            href=".."
+        >
+            <i data-feather="home"></i>
+        </a>
+    </div>
+
+    <main class="flex flex-col items-center sm:p-20 max-sm:p-6 pt-0 m-0">
+
+        <div class="sidey-hidey">
+            <div class="flex flex-col items-start">
+                <h1 class="text-yellow font-head text-6xl mb-3">Install Geode</h1>
+                <h3 class="text-green font-head text-2xl mb-8" id="current-version">Latest version not found</h3>
+                <p id="pick-platform-info">Pick the platform you want to install Geode for:</p>
+                <div
+                    class="flex flex-col items-start mt-6 mb-6 gap-4"
+                    id="install-options"
+                ></div>
+                <p id="unsupported-platforms"></p>
+            </div>
+            <div class="flex flex-col items-center justify-center gap-4">
+                <img
+                    alt="The Geode logo"
+                    class="w-auto sm:h-40 max-sm:h-20"
+                    src="../geode-circle.png"
+                >
+                <a
+                    class="text-cyan hover:text-white no-underline pr-2"
+                    href="https://github.com/geode-sdk/geode"
+                >
+                    <i data-feather="github" class="inline"></i>
+                    Source code
+                </a>
+            </div>
+        </div>
+
+        <section class="bg-gray-darker flex flex-col gap-4 items-center mt-20 mb-20">
+            <p>Looking to develop your own mods with Geode instead?</p>
+            <a
+                class="button has-icon border-solid border-2 border-gray-light"
+                href="https://docs.geode-sdk.org/installation"
+            >
+                <i data-feather="code"></i>
+                Install the SDK
+            </a>
+        </section>
+
+        <div class="flex flex-col gap-4 items-center max-w-[90vw]">
+            <h1 class="text-yellow font-head text-5xl" id="how-to-use">How to Use & Where to Find Mods</h1>
+            <p class="max-w-txt-or-vw">
+                After installing Geode, you should see a new button for it in the bottom bar of the <b>main menu</b>.
+                This button leads to a menu where you can configure all your mods & install new ones.
+            </p>
+            <img
+                alt="Screenshot of the main menu in Geometry Dash, featuring the Geode button in the bottom row"
+                class="max-w-img-or-vw"
+                src="../main-menu.png"
+            >
+            <div class="sidey-sidey gap-6">
+                <div class="flex flex-col gap-4 items-center">
+                    <p class="max-w-txt-or-vw">
+                        The default tab here is the <b>list of installed mods</b>.
+                        Press <em>View</em> to see more info about each mod.
+                    </p>
+                    <img
+                        alt="Screenshot of the list of installed mods in Geode"
+                        class="max-w-img-or-vw"
+                        src="../mods-2.png"
+                    >
+                </div>
+                <div class="flex flex-col gap-4 items-center">
+                    <p class="max-w-txt-or-vw">
+                        You can <b>download new mods</b> from the <em>Download</em> page.
+                        Press <em>View</em> to see info about the mod and begin installation.
+                    </p>
+                    <img
+                        alt="Screenshot of the list of downloadable mods in Geode"
+                        class="max-w-img-or-vw"
+                        src="../install.png"
+                    >
+                </div>
+            </div>
+        </div>
+
+        <section class="bg-gray-darker flex flex-col gap-4 items-center mt-20 mb-20 max-w-txt-or-vw">
+            <h1 class="font-head text-2xl self-center">Need help?</h1>
+            <p>
+                If you need help using Geode, you can <em>open an issue</em> on Github or 
+                <em>report to us on Discord</em>. <b>Please note that issues using mods should 
+                be directed to the mods' developers instead!</b>
+            </p>
+            <div class="mt-6 flex max-sm:flex-col sm:flex-row gap-4 items-center">
+                <a
+                    class="button has-icon border-solid border-2 border-gray-light"
+                    href="https://github.com/geode-sdk"
+                >
+                    <i data-feather="github"></i>
+                    GitHub
+                </a>
+                <a
+                    class="button has-icon border-solid border-2 border-gray-light"
+                    href="https://discord.gg/9e43WMKzhp"
+                >
+                    <i data-feather="message-circle"></i>
+                    Discord
+                </a>
+            </div>
+        </section>
+
+        <footer class="flex flex-col mt-10 mb-0 items-center gap-10">
+            <div>
+                Site by Geode Team.
+                Icons from <a href="https://feathericons.com/" class="underline">Feather</a>.
+                Thank you to <a href="https://github.com/nekitdev" class="underline">nekit</a> for the domain!
+            </div>
+            <a
+                class="button has-icon border-solid border-2 border-light border-opacity-25 bg-opacity-0 hover:bg-opacity-0 hover:border-cyan"
+                href="https://github.com/geode-sdk/geode-sdk.github.io"
+            >
+                <i data-feather="github"></i>
+                View Site Source
+            </a>
+        </footer>
+
+    </main>
+
+    <script defer>
+        feather.replace();
+        hljs.highlightAll();
+
+        fetch('https://api.github.com/repos/geode-sdk/geode/releases/latest')
+            .then(r => r.json())
+            .then(json => {
+                document.querySelector('#current-version').innerHTML = `Latest version: <wbr><em class="tag">${
+                    json.tag_name ?? 'Unknown'
+                }</em>`;
+                const unsupported = new Set(['Windows', 'Mac', 'iOS', 'Android']);
+                const opts = document.querySelector('#install-options');
+                opts.innerHTML = '';
+                for (const asset of json.assets) {
+                    if (!asset.name.toLowerCase().includes('installer')) {
+                        continue;
+                    }
+                    let platformName;
+                    if (asset.name.toLowerCase().includes('mac')) {
+                        platformName = 'Mac';
+                        unsupported.delete('Mac');
+                    }
+                    else if (asset.name.toLowerCase().includes('win')) {
+                        platformName = 'Windows';
+                        unsupported.delete('Windows');
+                    }
+                    else continue;
+                    
+                    let elem = document.createElement('a');
+                    elem.classList.add(
+                        'button', 'has-icon', 'border-solid',
+                        'border-2', 'border-gray-light'
+                    );
+                    elem.href = asset.browser_download_url;
+                    elem.innerHTML = `${feather.icons.box.toSvg()}Download for ${platformName}`;
+                    opts.appendChild(elem);
+                }
+                if (unsupported.size === 4) {
+                    let elem = document.createElement('p');
+                    elem.innerHTML = "No platforms found";
+                    elem.style.fontStyle = 'italic';
+                    opts.appendChild(elem);
+                }
+                if (unsupported.size) {
+                    let list = Array.from(unsupported);
+                    const last = list.length > 1 ? ` and ${list.pop()}` : '';
+                    document.querySelector('#unsupported-platforms').innerHTML = 
+                        `${list.join(', ')}${last} are not yet supported.`;
+                }
+                else {
+                    document.querySelector('#unsupported-platforms').innerHTML = '';
+                }
+            })
+            .catch(_ => {
+                document.querySelector('#current-version').remove();
+                document.querySelector('#pick-platform-info').remove();
+                document.querySelector('#install-options').innerHTML = 
+                    '<p>Unable to get installation options! The site probably hit ' + 
+                    'the Github rate limit - <em>please try again later</em>.</p>';
+            });
+
+        // no install button on mobile because android geode doesn't exist yet
+        if (navigator.userAgent.match(/android|iphone|kindle|ipad/i)) {
+            document.getElementById('install').remove();
+        }
+    </script> 
+
+</body>
+</html>
