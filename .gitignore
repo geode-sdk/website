@@ -1,2 +1,4 @@
 node_modules/
 dist/
+gen/
+_mods_tmp
