@@ -1,25 +1,29 @@
 {
   "scripts": {
-    "deploy": "node build-mods-pages.js && tailwindcss -i gen/index.css -o dist/index.css --minify && html-minifier --input-dir ./gen --output-dir ./dist --collapse-whitespace --file-ext html && node ./copy-media.js",
-    "build": "node build-mods-pages.js && tailwindcss -i gen/index.css -o dist/index.css && html-minifier --input-dir ./gen --output-dir ./dist --file-ext html && node ./copy-media.js",
+    "deploy": "node build-mods-pages.js && tailwindcss -i gen/index.css -o dist/index.css --minify && tailwindcss -i gen/mods/index.css -o dist/mods/index.css --minify && html-minifier --input-dir ./gen --output-dir ./dist --collapse-whitespace --file-ext html && node ./copy-media.js",
+    "build": "node build-mods-pages.js && tailwindcss -i gen/index.css -o dist/index.css && tailwindcss -i gen/mods/index.css -o dist/mods/index.css && html-minifier --input-dir ./gen --output-dir ./dist --file-ext html && node ./copy-media.js",
     "watch": "npm-watch"
   },
   "watch": {
     "build": {
       "patterns": [
         "src",
-        "media"
+        "media",
+        "build-mods-pages.js"
       ],
       "extensions": "html,css,png,svg"
     }
   },
   "devDependencies": {
     "@types/cli-progress": "^3.11.4",
+    "@types/got": "^9.6.12",
     "cli-progress": "^3.12.0",
     "fs-extra": "^11.1.1",
+    "got": "^13.0.0",
     "html-minifier": "^4.0.0",
+    "marked": "^9.1.3",
     "npm-watch": "^0.11.0",
-    "request": "^2.88.2",
+    "semver": "^7.5.4",
     "tailwindcss": "^3.2.4",
     "unzipper": "^0.10.14"
   },

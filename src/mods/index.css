@@ -1,0 +1,123 @@
+
+.mods-list {
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 15rem));
+    max-width: min(75rem, 90vw);
+    @apply
+        grid
+        gap-6;
+}
+
+.mod-card {
+    grid-template-rows: min-content min-content 1fr 4em min-content;
+    @apply
+        grid
+        items-center justify-items-center
+        w-56 h-72 p-4
+        bg-gray-dark
+        rounded-md;
+}
+
+.mod-card > h1 {
+    @apply
+        text-sm;
+}
+
+.mod-card > h3 {
+    @apply
+        text-gray-light italic text-sm;
+}
+
+.mod-card > h3 > .author {
+    @apply
+        text-green font-bold;
+}
+
+.mod-card > h3 > .version {
+    @apply
+        text-cyan;
+}
+
+.mod-card > img {
+    @apply
+        max-h-24;
+}
+
+.mod-card > .short-desc {
+    @apply
+        text-light text-sm italic text-center;
+}
+
+.mod-card > a {
+    @apply
+        bg-gray-less-light text-white p-2 rounded-full px-12 transition-colors;
+}
+
+.mod-card > a:hover {
+    @apply
+        bg-white text-gray-darker;
+}
+
+.markdown h1 {
+    @apply
+        text-4xl;
+}
+
+.markdown h1::after {
+    content: ' ';
+    @apply
+        block border-solid border-gray mt-1 mb-4;
+    border-width: 1px;
+}
+
+.markdown h2 {
+    @apply
+        text-3xl font-bold my-3;
+}
+
+.markdown h3 {
+    @apply
+        text-2xl my-3;
+}
+
+.markdown strong {
+    @apply
+        text-skin;
+}
+
+.markdown p {
+    @apply
+        mb-2;
+}
+
+.markdown a {
+    @apply
+        text-cyan underline;
+}
+
+.markdown a:visited {
+    @apply
+        text-purple;
+}
+
+.markdown a:hover {
+    @apply
+        text-white cursor-pointer;
+}
+
+.small-icon-items > span {
+    @apply
+        block;
+}
+
+.small-icon-items > svg, .small-icon-items > span > svg {
+    @apply
+        max-h-6;
+}
+
+.hidden {
+    display: none;
+}
+
+.tab-selected {
+    @apply text-white border-b-light border-b-2 border-t-2;
+}

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>$MOD_NAME - Geode</title>
+    <meta name="description" content="View the $MOD_NAME mod for Geode">
+
+    <meta property="og:url" content="https://geode-sdk.org/mods/$MOD_ID">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="$MOD_NAME - Geode">
+    <meta property="og:description" content="View the $MOD_NAME mod for Geode">
+    <meta property="og:image" content="https://docs.geode-sdk.org/icon.png">
+    <meta property="og:image:width" content="80">
+    <meta property="og:image:height" content="80">
+    
+    <meta name="twitter:card" content="summary">
+    <meta property="twitter:url" content="https://geode-sdk.org/mods/$MOD_ID">
+    <meta name="twitter:title" content="$MOD_NAME - Geode">
+    <meta name="twitter:description" content="View the $MOD_NAME mod for Geode">
+    <meta property="twitter:image:src" content="https://docs.geode-sdk.org/icon.png">
+
+    <link href="/favicon.ico" rel="icon" type="image/x-icon">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Varela+Round&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="../../index.css"> 
+    <link rel="stylesheet" href="../index.css"> 
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+</head>
+<body class="bg-gray font-text text-white items-center p-0 m-0">
+<!-- 
+    <div class="bg"> 
+        <img class="img" src="cover.png">
+        <div class="gradient"></div>
+    </div> -->
+
+    <div class="svg-bg-top"></div>
+    
+    <div class="fixed w-full top-4 left-4">
+        <a
+            class="
+                button
+                flex items-center justify-center
+                bg-gray-darker
+            "
+            href=".."
+        >
+            <i data-feather="arrow-left"></i>
+        </a>
+    </div>
+
+    <main class="flex flex-col items-center sm:px-20 max-sm:px-6 pb-20 pt-0 m-0">
+
+        <div class="flex gap-4">
+            <div class="flex flex-col items-center justify-center gap-4">
+                <img
+                    alt="Logo for the $MOD_NAME mod"
+                    class="w-auto sm:h-40 max-sm:h-20"
+                    src="$MOD_ICON_URL"
+                >
+            </div>
+            <div class="flex flex-col justify-center">
+                <h1 class="text-yellow font-head text-6xl mb-3">$MOD_NAME</h1>
+                <h3 class="text-green font-head text-2xl">
+                    By <strong>$MOD_DEVELOPER</strong> <em class="tag ml-2">$MOD_VERSION</em>
+                </h3>
+            </div>
+        </div>
+
+        <div class="flex gap-10 my-6">
+            <div class="w-txt-or-vw">
+                <div class="flex border-light p-4">
+                    <button
+                        class="
+                            px-4 py-2
+                            text-light bg-white bg-opacity-0 hover:bg-opacity-25
+                            border-t-transparent
+                            transition-colors
+                            tab-selected
+                        "
+                        data-tab="about"
+                    >
+                        About
+                    </button>
+                    <!-- <button
+                        class="
+                            px-4 py-2
+                            text-light bg-white bg-opacity-0 hover:bg-opacity-25
+                            border-t-transparent
+                            transition-colors
+                        "
+                        data-tab="changelog"
+                    >
+                        Changelog
+                    </button> -->
+                    <button
+                        class="
+                            px-4 py-2
+                            text-light bg-white bg-opacity-0 hover:bg-opacity-25
+                            border-t-transparent
+                            transition-colors
+                        "
+                        data-tab="versions"
+                    >
+                        Versions
+                    </button>
+                </div>
+        
+                <div
+                    class="bg-gray-darker p-5 rounded-lg max-w-txt-or-vw markdown"
+                    data-page="about"
+                >
+                    $MOD_ABOUT_MD
+                </div>
+        
+                <div
+                    class="bg-gray-darker p-5 rounded-lg max-w-txt-or-vw markdown hidden"
+                    data-page="changelog"
+                >
+                    Changelog not found
+                </div>
+        
+                <div
+                    class="p-5 max-w-txt-or-vw hidden"
+                    data-page="versions"
+                >
+                    <div class="flex flex-col items-start gap-2">
+                        <!-- <h1 class="text-2xl mb-4">Versions</h1> -->
+                        $MOD_VERSION_LINKS
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col gap-4">
+                <a
+                    class="download-button has-icon"
+                    href="$MOD_DOWNLOAD_URL"
+                >
+                    <i data-feather="download"></i>
+                    Download
+                </a>
+                <div class="sidey-sidey">
+                    <div>
+                        <text>Available:</text>
+                        <div class="flex fill-white small-icon-items gap-2">
+                            $MOD_AVAILABLE_PLATFORMS
+                        </div>
+                    </div>
+                    <div>
+                        <text>Unavailable:</text>
+                        <div class="flex fill-white opacity-30 small-icon-items gap-2">
+                            $MOD_UNAVAILABLE_PLATFORMS
+                        </div>
+                    </div>
+                </div>
+                <h1 class="text-2xl mt-6">Links</h1>
+                <hr class="opacity-50">
+                <a
+                    class="button has-icon border-solid border-2 border-gray-light"
+                    href="$MOD_REPO"
+                >
+                    <i data-feather="github"></i>
+                    Repository
+                </a>
+            </div>
+        </div>
+
+        <footer class="flex flex-col mt-10 mb-0 items-center gap-10">
+            <div>
+                Site by Geode Team.
+                Icons from <a href="https://feathericons.com/" class="underline">Feather</a> and <a href="https://github.com/simple-icons/simple-icons" class="underline">Simple Icons</a>.
+                Thank you to <a href="https://github.com/nekitdev" class="underline">nekit</a> for the domain!
+            </div>
+            <a
+                class="button has-icon border-solid border-2 border-light border-opacity-25 bg-opacity-0 hover:bg-opacity-0 hover:border-cyan"
+                href="https://github.com/geode-sdk/geode-sdk.github.io"
+            >
+                <i data-feather="github"></i>
+                View Site Source
+            </a>
+        </footer>
+
+    </main>
+
+    <script defer>
+        feather.replace();
+        hljs.highlightAll();
+
+        document.querySelectorAll('[data-tab]')
+            .forEach(btn => {
+                btn.addEventListener('click', e => {
+                    document.querySelectorAll('[data-page]')
+                        .forEach(p => p.classList.toggle('hidden',
+                            p.getAttribute('data-page') != e.target.getAttribute('data-tab')
+                        ));
+                    document.querySelectorAll('[data-tab]')
+                        .forEach(t => t.classList.toggle('tab-selected', t === e.target));
+                });
+            });
+    </script> 
+
+</body>
+</html>
