@@ -78,7 +78,7 @@ const mods = readdirSync('_mods_tmp', { withFileTypes: true })
                 })
                 .sort((a, b) => rcompare(a.version, b.version)),
             about: tryReadFile(`${d}/about.md`)?.toString(),
-            logo: tryReadFile(`${d}/logo.png`, 'media/no-logo.png'),
+            // logo: tryReadFile(`${d}/logo.png`, 'media/no-logo.png'),
             logoURL: existsSync(`${d}/logo.png`) ?
                 `https://raw.githubusercontent.com/geode-sdk/mods/main/mods-v2/${dir.name}/logo.png` :
                 `https://raw.githubusercontent.com/geode-sdk/geode/main/loader/resources/logos/no-logo.png`
@@ -105,6 +105,13 @@ genBar.update(0, { status: 'Constructing pages' });
 const modPageTemplate = readFileSync('src/mods/[mod.id]/index.html').toString();
 const searchPageContent = [];
 
+function withIfEmpty(arr, elem) {
+    if (!arr.length) {
+        arr.push(elem);
+    }
+    return arr;
+}
+
 for (const mod of mods) {
     searchPageContent.push(`
         <article
@@ -113,6 +120,7 @@ for (const mod of mods) {
             data-developer="${mod.versions[0].modJSON.developer}"
             data-description="${mod.versions[0].modJSON.description}"
             data-about="${mod.about.replace(/\"/g, '')}"
+            data-tags="${mod.versions[0].entryJSON.tags?.join('') ?? ''}"
         >
             <h1>${mod.versions[0].modJSON.name}</h1>
             <h3><i class="author">${mod.versions[0].modJSON.developer}</i> • <i class="version">${mod.versions[0].version}</i></h3>
@@ -145,6 +153,9 @@ for (const mod of mods) {
             .replace(/\$MOD_DOWNLOAD_URL/g, mod.versions[0].entryJSON.mod.download)
             .replace(/\$MOD_ABOUT_MD/g, marked(mod.about))
             .replace(/\$MOD_REPO/g, mod.versions[0].modJSON.repository)
+            .replace(/\$MOD_TAGS/g, withIfEmpty(mod.versions[0].entryJSON.tags.map(tag => `
+                <span class="mod-tag">${tag}</span>
+            `), '<span class="mod-tag mod-tag-none">None</span>').join(''))
             .replace(/\$MOD_AVAILABLE_PLATFORMS/g, Object.entries({
                 'windows': 'media/windows.svg',
                 'macos':   'media/apple.svg',

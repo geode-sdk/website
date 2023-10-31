@@ -135,7 +135,7 @@
                     </div>
                 </div>
             </div>
-            <div class="flex flex-col gap-4">
+            <div class="flex flex-col">
                 <a
                     class="download-button has-icon"
                     href="$MOD_DOWNLOAD_URL"
@@ -143,7 +143,7 @@
                     <i data-feather="download"></i>
                     Download
                 </a>
-                <div class="sidey-sidey">
+                <div class="sidey-sidey mt-4">
                     <div>
                         <text>Available:</text>
                         <div class="flex fill-white small-icon-items gap-2">
@@ -157,8 +157,13 @@
                         </div>
                     </div>
                 </div>
-                <h1 class="text-2xl mt-6">Links</h1>
-                <hr class="opacity-50">
+                <h1 class="text-2xl mt-8 mb-1">Tags</h1>
+                <hr class="opacity-50 mb-4">
+                <div class="flex gap-2">
+                    $MOD_TAGS
+                </div>
+                <h1 class="text-2xl mt-8 mb-1">Links</h1>
+                <hr class="opacity-50 mb-4">
                 <a
                     class="button has-icon border-solid border-2 border-gray-light"
                     href="$MOD_REPO"
@@ -166,6 +171,7 @@
                     <i data-feather="github"></i>
                     Repository
                 </a>
+                <h4 class="text-light opacity-50 mt-6">Mod ID: <pre class="inline">$MOD_ID</pre></h4>
             </div>
         </div>
 

@@ -121,3 +121,13 @@
 .tab-selected {
     @apply text-white border-b-light border-b-2 border-t-2;
 }
+
+.mod-tag {
+    @apply
+        block border-red border-2 p-2 px-6 rounded-full;
+}
+
+.mod-tag.mod-tag-none {
+    @apply
+        border-light text-light border-opacity-50;
+}
