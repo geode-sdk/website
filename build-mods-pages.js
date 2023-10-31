@@ -2,10 +2,10 @@
 // This script builds the mods browsing site
 
 import { Presets, SingleBar } from 'cli-progress';
-import { existsSync, mkdirSync, readFileSync, readdirSync, renameSync, rmSync, writeFileSync } from 'fs';
+import { createWriteStream, existsSync, mkdirSync, readFileSync, readdirSync, renameSync, rmSync, writeFileSync } from 'fs';
 import { copy } from 'fs-extra';
 import { pipeline } from 'stream/promises';
-import { Extract } from 'unzipper';
+import { Extract } from 'unzip-stream';
 import got from 'got';
 import { setTimeout } from 'timers/promises';
 import { rcompare, valid } from 'semver';
