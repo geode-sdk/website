@@ -40,6 +40,7 @@ module.exports = {
             },
             maxWidth: {
                 'txt-or-vw': 'min(36rem, 90vw)',
+                'inp-or-vw': 'min(24rem, 90vw)',
                 'img-or-vw': 'min(42rem, 90vw)',
             },
         }

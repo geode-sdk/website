@@ -112,6 +112,15 @@ function withIfEmpty(arr, elem) {
     return arr;
 }
 
+function cutText(text) {
+    if (text.length > 70) {
+        return text.substring(0, 67) + "...";
+    }
+    else {
+        return text;
+    }
+}
+
 for (const mod of mods) {
     searchPageContent.push(`
         <article
@@ -121,12 +130,17 @@ for (const mod of mods) {
             data-description="${mod.versions[0].modJSON.description}"
             data-about="${mod.about.replace(/\"/g, '')}"
             data-tags="${mod.versions[0].entryJSON.tags?.join('') ?? ''}"
+            data-default-score=${mods.length - searchPageContent.length}
         >
-            <h1>${mod.versions[0].modJSON.name}</h1>
-            <h3><i class="author">${mod.versions[0].modJSON.developer}</i> • <i class="version">${mod.versions[0].version}</i></h3>
-            <img src="${mod.logoURL}">
-            <p class="short-desc">${mod.versions[0].modJSON.description}</p>
-            <a href="./${mod.id}">View</a>
+            <div class="info">
+                <div class="img"><img src="${mod.logoURL}"></div>
+                <h1>${mod.versions[0].modJSON.name}</h1>
+                <h3><i class="author">${mod.versions[0].modJSON.developer}</i> • <i class="version">${mod.versions[0].version}</i></h3>
+                <p class="short-desc">${cutText(mod.versions[0].modJSON.description)}</p>
+            </div>
+            <div class="buttons">
+                <a href="./${mod.id}">View</a>
+            </div>
         </article>
     `);
 

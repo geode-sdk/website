@@ -10,51 +10,123 @@
 .mod-card {
     grid-template-rows: min-content min-content 1fr 4em min-content;
     @apply
-        grid
-        items-center justify-items-center
+        flex flex-col
+        items-center content-stretch
         w-56 h-72 p-4
         bg-gray-dark
         rounded-md;
 }
 
-.mod-card > h1 {
+.mod-card > .info {
+    @apply
+        flex flex-col flex-auto
+        items-center;
+}
+
+.mod-card > .buttons {
+    @apply
+        justify-self-end mt-2;
+}
+
+.mod-card h1 {
     @apply
         text-sm;
 }
 
-.mod-card > h3 {
+.mod-card h3 {
     @apply
         text-gray-light italic text-sm;
 }
 
-.mod-card > h3 > .author {
+.mod-card h3 > .author {
     @apply
         text-green font-bold;
 }
 
-.mod-card > h3 > .version {
+.mod-card h3 > .version {
     @apply
         text-cyan;
 }
 
-.mod-card > img {
+.mod-card > .info > .img {
+    order: 1;
+    @apply
+        flex items-center justify-center 
+        h-24 w-24
+        mt-2;
+}
+
+.mod-card img {
     @apply
         max-h-24;
 }
 
-.mod-card > .short-desc {
+.mod-card .short-desc {
+    order: 1;
     @apply
+        flex items-center
+        flex-auto
         text-light text-sm italic text-center;
 }
 
-.mod-card > a {
+.mod-card a {
     @apply
-        bg-gray-less-light text-white p-2 rounded-full px-12 transition-colors;
+        block bg-gray-less-light text-white p-2 rounded-full px-12 transition-colors;
 }
 
-.mod-card > a:hover {
+.mod-card a:hover {
     @apply
         bg-white text-gray-darker;
+}
+
+@media only screen and (max-device-width: 600px) {
+    .mod-card {
+        @apply
+            flex flex-row 
+            justify-center content-stretch
+            w-full h-32 gap-x-4;
+    }
+
+    .mod-card > .info {
+        @apply
+            flex flex-col flex-wrap
+            justify-center content-start
+            h-32 pr-32 gap-x-4 py-4;
+    }
+
+    .mod-card h3, .mod-card h1, .mod-card .short-desc {
+        @apply
+            self-start;
+    }
+
+    .mod-card .short-desc {
+        @apply
+            flex-initial text-start;
+    }
+
+    .mod-card > .info > .img {
+        order: unset;
+        @apply
+            mt-0;
+    }
+
+    .mod-card a {
+        @apply
+            self-end mr-auto;
+    }
+
+    .mods-list {
+        grid-template-columns: 1fr;
+        max-width: 90vw;
+        width: 90vw;
+    }
+}
+
+@media only screen and (max-device-width: 550px) {
+    .mod-card .short-desc {
+        @apply
+            hidden;
+    }
 }
 
 .markdown h1 {

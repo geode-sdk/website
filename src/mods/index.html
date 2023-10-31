@@ -62,7 +62,7 @@
             flex
             items-center
             bg-gray-darker
-            w-96 m-8
+            max-w-inp-or-vw w-full m-8
             rounded-full
         ">
             <i data-feather="search" class="ml-4 text-gray-light"></i>
@@ -169,6 +169,7 @@
 
         document.querySelector('#search-input').addEventListener('input', e => {
             let any = false;
+            const sorted = [];
             document.querySelectorAll('article')
                 .forEach(a => {
                     let score = 0;
@@ -188,14 +189,22 @@
                         weightedMatch('data-description', 0.2);
                     }
                     else {
-                        score = 1;
+                        score = parseInt(a.getAttribute('data-default-score'));
                     }
 
                     if (!a.classList.toggle('hidden', score <= 0)) {
                         any = true;
                     }
+
+                    sorted.push([score, a]);
                 });
+            
             document.querySelector('#no-results').classList.toggle('hidden', any);
+            
+            sorted.sort((a, b) => b[0] - a[0]);
+            for (const [_, elem] of sorted) {
+                document.querySelector('.mods-list').appendChild(elem);
+            }
         });
     </script> 
 

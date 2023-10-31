@@ -193,6 +193,12 @@ code {
     display: grid;
 }
 
+.sidey-sidey-rev {
+    display: grid;
+    grid-template-columns: 1fr min-content;
+    @apply gap-10;
+}
+
 .sidey-hidey > * {
     @apply max-w-md;
 }
@@ -206,6 +212,15 @@ code {
 @media only screen and (max-device-width: 90rem) {
     .sidey-sidey {
         grid-template-columns: 1fr;
+    }
+}
+
+@media only screen and (max-device-width: 1024px) {
+    .sidey-sidey-rev {
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: center;
+        @apply gap-4;
     }
 }
 
