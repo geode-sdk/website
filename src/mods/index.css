@@ -79,7 +79,7 @@
         bg-white text-gray-darker;
 }
 
-@media only screen and (max-device-width: 600px) {
+@media only screen and (max-device-width: 600px) and (min-device-width: 450px) {
     .mod-card {
         @apply
             flex flex-row 
@@ -91,7 +91,7 @@
         @apply
             flex flex-col flex-wrap
             justify-center content-start
-            h-32 pr-32 gap-x-4 py-4;
+            h-32 pr-32 gap-x-4;
     }
 
     .mod-card h3, .mod-card h1, .mod-card .short-desc {
@@ -107,7 +107,7 @@
     .mod-card > .info > .img {
         order: unset;
         @apply
-            mt-0;
+            my-4;
     }
 
     .mod-card a {
@@ -122,10 +122,25 @@
     }
 }
 
-@media only screen and (max-device-width: 550px) {
+@media only screen and (max-device-width: 550px) and (min-device-width: 450px) {
     .mod-card .short-desc {
         @apply
             hidden;
+    }
+
+    .mod-card {
+        @apply
+            h-24;
+    }
+
+    .mod-card > .info {
+        @apply
+            h-24 pr-0;
+    }
+
+    .mod-card > .info > .img {
+        @apply
+            w-16 h-16;
     }
 }
 
