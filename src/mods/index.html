@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Browse Geode Mods</title>
+    <meta name="description" content="Browse mods for the Geode mod loader">
+
+    <meta property="og:url" content="https://geode-sdk.org/mods">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Browse Geode Mods">
+    <meta property="og:description" content="Browse mods for the Geode mod loader">
+    <meta property="og:image" content="https://docs.geode-sdk.org/icon.png">
+    <meta property="og:image:width" content="80">
+    <meta property="og:image:height" content="80">
+    
+    <meta name="twitter:card" content="summary">
+    <meta property="twitter:url" content="https://geode-sdk.org/mods">
+    <meta name="twitter:title" content="Browse Geode Mods">
+    <meta name="twitter:description" content="Browse mods for the Geode mod loader">
+    <meta property="twitter:image:src" content="https://docs.geode-sdk.org/icon.png">
+
+    <link href="/favicon.ico" rel="icon" type="image/x-icon">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Varela+Round&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="../index.css"> 
+    <link rel="stylesheet" href="./index.css"> 
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+</head>
+<body class="bg-gray font-text text-white items-center p-0 m-0">
+<!-- 
+    <div class="bg"> 
+        <img class="img" src="cover.png">
+        <div class="gradient"></div>
+    </div> -->
+
+    <div class="svg-bg-top"></div>
+    
+    <div class="fixed w-full top-4 left-4">
+        <a
+            class="
+                button
+                flex items-center justify-center
+                bg-gray-darker
+            "
+            href=".."
+        >
+            <i data-feather="home"></i>
+        </a>
+    </div>
+
+    <main class="flex flex-col items-center sm:px-20 max-sm:px-6 pb-20 pt-0 m-0">
+
+        <h1>Browse Geode Mods</h1>
+
+        <div class="
+            flex
+            items-center
+            bg-gray-darker
+            max-w-inp-or-vw w-full m-8
+            rounded-full
+        ">
+            <i data-feather="search" class="ml-4 text-gray-light"></i>
+            <input placeholder="Search..." class="
+                bg-transparent p-4 border-none outline-none
+                flex-grow
+                placeholder-gray-light
+            " id="search-input">
+        </div>
+
+        <div class="mods-list">
+            $INSERT_MODS_CONTENT_HERE
+            <p class="hidden text-light italic justify-self-center" id="no-results">No results found :(</p>
+        </div>
+
+        <footer class="flex flex-col mt-10 mb-0 items-center gap-10">
+            <div>
+                Site by Geode Team.
+                Icons from <a href="https://feathericons.com/" class="underline">Feather</a> and <a href="https://github.com/simple-icons/simple-icons" class="underline">Simple Icons</a>.
+                Thank you to <a href="https://github.com/nekitdev" class="underline">nekit</a> for the domain!
+            </div>
+            <a
+                class="button has-icon border-solid border-2 border-light border-opacity-25 bg-opacity-0 hover:bg-opacity-0 hover:border-cyan"
+                href="https://github.com/geode-sdk/geode-sdk.github.io"
+            >
+                <i data-feather="github"></i>
+                View Site Source
+            </a>
+        </footer>
+
+    </main>
+
+    <script defer>
+        feather.replace();
+        hljs.highlightAll();
+
+        // stolen from https://github.com/HJfod/flash/blob/main/templates/script.js
+        function furryMatch(str, query) {
+            // remove all whitespace from query since entities can't have that anyway
+            // todo: maybe split query to words instead and only require some of those to match instead of whole query
+            query = query.replace(/\s/g, '');
+
+            if (!query.length) {
+                return undefined;
+            }
+            
+            let score = 0;
+            let matchedString = '';
+            let toMatch = 0;
+            let matchedInARow = 0;
+            for (let i = 0; i < str.length; i++) {
+                const current = str[i];
+                // if matches query
+                if (current.toLowerCase() === query[toMatch].toLowerCase()) {
+                    // uppercase is a weighted bonus
+                    if (current.toUpperCase() === current) {
+                        score += 2;
+                    }
+                    // lowercase is a bonus for matching case
+                    else {
+                        score += 1;
+                    }
+                    // first letter match is a bonus
+                    if (i === 0) {
+                        score += 5;
+                    }
+
+                    // multiple successive matches in a row is a bonus
+                    score += matchedInARow;
+                    matchedInARow++;
+
+                    // if this was the first match in a row, open up a span in the resulting string
+                    if (matchedInARow === 1) {
+                        matchedString += '<span class="matched">';
+                    }
+                    matchedString += current;
+
+                    // match next char in query next
+                    toMatch++;
+                    // if at end, stop matching
+                    if (toMatch === query.length) {
+                        matchedString += '</span>';
+                        matchedString += str.substring(i + 1);
+                        break;
+                    }
+                }
+                else {
+                    // close span if there were a bunch of consequent matches
+                    if (matchedInARow) {
+                        matchedString += '</span>';
+                    }
+                    matchedString += current;
+                    matchedInARow = 0;
+                }
+            }
+            // all characters in query must have been matched
+            return toMatch === query.length ?
+                {
+                    // the more of the string was matched by the query, the better
+                    score: (score - (str.length - query.length) / 10),
+                    matched: matchedString
+                } : undefined;
+        }
+
+        document.querySelector('#search-input').addEventListener('input', e => {
+            let any = false;
+            const sorted = [];
+            document.querySelectorAll('article')
+                .forEach(a => {
+                    let score = 0;
+
+                    if (e.target.value) {
+                        const weightedMatch = (attr, weight) => {
+                            const match = furryMatch(a.getAttribute(attr), e.target.value);
+                            if (match) {
+                                score += match.score * weight;
+                            }
+                        };
+                        // same weights as Geode search in-game
+                        weightedMatch('data-name', 2);
+                        weightedMatch('data-developer', 0.5);
+                        weightedMatch('data-tags', 0.5);
+                        weightedMatch('data-about', 0.05);
+                        weightedMatch('data-description', 0.2);
+                    }
+                    else {
+                        score = parseInt(a.getAttribute('data-default-score'));
+                    }
+
+                    if (!a.classList.toggle('hidden', score <= 0)) {
+                        any = true;
+                    }
+
+                    sorted.push([score, a]);
+                });
+            
+            document.querySelector('#no-results').classList.toggle('hidden', any);
+            
+            sorted.sort((a, b) => b[0] - a[0]);
+            for (const [_, elem] of sorted) {
+                document.querySelector('.mods-list').appendChild(elem);
+            }
+        });
+    </script> 
+
+</body>
+</html>

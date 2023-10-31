@@ -1,0 +1,220 @@
+
+.mods-list {
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 15rem));
+    max-width: min(75rem, 90vw);
+    @apply
+        grid
+        gap-6;
+}
+
+.mod-card {
+    grid-template-rows: min-content min-content 1fr 4em min-content;
+    @apply
+        flex flex-col
+        items-center content-stretch
+        w-56 h-72 p-4
+        bg-gray-dark
+        rounded-md;
+}
+
+.mod-card > .info {
+    @apply
+        flex flex-col flex-auto
+        items-center;
+}
+
+.mod-card > .buttons {
+    @apply
+        justify-self-end mt-2;
+}
+
+.mod-card h1 {
+    @apply
+        text-sm;
+}
+
+.mod-card h3 {
+    @apply
+        text-gray-light italic text-sm;
+}
+
+.mod-card h3 > .author {
+    @apply
+        text-green font-bold;
+}
+
+.mod-card h3 > .version {
+    @apply
+        text-cyan;
+}
+
+.mod-card > .info > .img {
+    order: 1;
+    @apply
+        flex items-center justify-center 
+        h-24 w-24
+        mt-2;
+}
+
+.mod-card img {
+    @apply
+        max-h-24;
+}
+
+.mod-card .short-desc {
+    order: 1;
+    @apply
+        flex items-center
+        flex-auto
+        text-light text-sm italic text-center;
+}
+
+.mod-card a {
+    @apply
+        block bg-gray-less-light text-white p-2 rounded-full px-12 transition-colors;
+}
+
+.mod-card a:hover {
+    @apply
+        bg-white text-gray-darker;
+}
+
+@media only screen and (max-device-width: 600px) and (min-device-width: 450px) {
+    .mod-card {
+        @apply
+            flex flex-row 
+            justify-center content-stretch
+            w-full h-32 gap-x-4;
+    }
+
+    .mod-card > .info {
+        @apply
+            flex flex-col flex-wrap
+            justify-center content-start
+            h-32 pr-32 gap-x-4;
+    }
+
+    .mod-card h3, .mod-card h1, .mod-card .short-desc {
+        @apply
+            self-start;
+    }
+
+    .mod-card .short-desc {
+        @apply
+            flex-initial text-start;
+    }
+
+    .mod-card > .info > .img {
+        order: unset;
+        @apply
+            my-4;
+    }
+
+    .mod-card a {
+        @apply
+            self-end mr-auto;
+    }
+
+    .mods-list {
+        grid-template-columns: 1fr;
+        max-width: 90vw;
+        width: 90vw;
+    }
+}
+
+@media only screen and (max-device-width: 550px) and (min-device-width: 450px) {
+    .mod-card .short-desc {
+        @apply
+            hidden;
+    }
+
+    .mod-card {
+        @apply
+            h-24;
+    }
+
+    .mod-card > .info {
+        @apply
+            h-24 pr-0;
+    }
+
+    .mod-card > .info > .img {
+        @apply
+            w-16 h-16;
+    }
+}
+
+.markdown h1 {
+    @apply
+        text-4xl;
+}
+
+.markdown h1::after {
+    content: ' ';
+    @apply
+        block border-solid border-gray mt-1 mb-4;
+    border-width: 1px;
+}
+
+.markdown h2 {
+    @apply
+        text-3xl font-bold my-3;
+}
+
+.markdown h3 {
+    @apply
+        text-2xl my-3;
+}
+
+.markdown strong {
+    @apply
+        text-skin;
+}
+
+.markdown p {
+    @apply
+        mb-2;
+}
+
+.markdown a {
+    @apply
+        text-cyan underline;
+}
+
+.markdown a:visited {
+    @apply
+        text-purple;
+}
+
+.markdown a:hover {
+    @apply
+        text-white cursor-pointer;
+}
+
+.small-icon-items > span {
+    @apply
+        block;
+}
+
+.small-icon-items > svg, .small-icon-items > span > svg {
+    @apply
+        max-h-6;
+}
+
+.hidden {
+    display: none;
+}
+
+.tab-selected {
+    @apply text-white border-b-light border-b-2 border-t-2;
+}
+
+.mod-tag {
+    @apply
+        block border-red border-2 p-2 px-6 rounded-full;
+}
+
+.mod-tag.mod-tag-none {
+    @apply
+        border-light text-light border-opacity-50;
+}
