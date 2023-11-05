@@ -10,6 +10,7 @@ import got from 'got';
 import { setTimeout } from 'timers/promises';
 import { rcompare, valid } from 'semver';
 import { marked } from 'marked';
+import { htmlEscape } from 'escape-goat';
 
 if (!existsSync('src')) {
     console.error('This script must be run in the repo root!');
@@ -121,8 +122,20 @@ function cutText(text) {
     }
 }
 
+function escape(x) {
+    return htmlEscape(String(x));
+}
+
+function html(parts) {
+    let result = parts[0];
+    for (let i = 1; i < parts.length; ++i) {
+        result += escape(arguments[i]) + parts[i];
+    }
+    return result;
+}
+
 for (const mod of mods) {
-    searchPageContent.push(`
+    searchPageContent.push(html`
         <article
             class="mod-card"
             data-name="${mod.versions[0].modJSON.name}"
@@ -148,9 +161,9 @@ for (const mod of mods) {
     writeFileSync(`gen/mods/${mod.id}/index.html`,
         modPageTemplate
             .replace(/\$MOD_ID/g, mod.id)
-            .replace(/\$MOD_NAME/g, mod.versions[0].modJSON.name)
+            .replace(/\$MOD_NAME/g, escape(mod.versions[0].modJSON.name))
             .replace(/\$MOD_VERSION_LINKS/g, mod.versions
-                .map(ver => `<a
+                .map(ver => html`<a
                     href="${ver.entryJSON.mod.download}"
                     class="
                         button has-icon
@@ -161,13 +174,13 @@ for (const mod of mods) {
                 ><i data-feather="download"></i>${ver.version}</a>`)
                 .join('')
             )
-            .replace(/\$MOD_VERSION/g, mod.versions[0].version)
-            .replace(/\$MOD_DEVELOPER/g, mod.versions[0].modJSON.developer)
-            .replace(/\$MOD_ICON_URL/g, mod.logoURL)
-            .replace(/\$MOD_DOWNLOAD_URL/g, mod.versions[0].entryJSON.mod.download)
+            .replace(/\$MOD_VERSION/g, escape(mod.versions[0].version))
+            .replace(/\$MOD_DEVELOPER/g, escape(mod.versions[0].modJSON.developer))
+            .replace(/\$MOD_ICON_URL/g, escape(mod.logoURL))
+            .replace(/\$MOD_DOWNLOAD_URL/g, escape(mod.versions[0].entryJSON.mod.download))
             .replace(/\$MOD_ABOUT_MD/g, marked(mod.about))
-            .replace(/\$MOD_REPO/g, mod.versions[0].modJSON.repository)
-            .replace(/\$MOD_TAGS/g, withIfEmpty(mod.versions[0].entryJSON.tags.map(tag => `
+            .replace(/\$MOD_REPO/g, escape(mod.versions[0].modJSON.repository))
+            .replace(/\$MOD_TAGS/g, withIfEmpty(mod.versions[0].entryJSON.tags.map(tag => html`
                 <span class="mod-tag">${tag}</span>
             `), '<span class="mod-tag mod-tag-none">None</span>').join(''))
             .replace(/\$MOD_AVAILABLE_PLATFORMS/g, Object.entries({
