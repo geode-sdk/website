@@ -160,7 +160,7 @@ for (const mod of mods) {
     mkdirSync(`gen/mods/${mod.id}`);
     writeFileSync(`gen/mods/${mod.id}/index.html`,
         modPageTemplate
-            .replace(/\$MOD_ID/g, mod.id)
+            .replace(/\$MOD_ID/g, escape(mod.id))
             .replace(/\$MOD_NAME/g, escape(mod.versions[0].modJSON.name))
             .replace(/\$MOD_VERSION_LINKS/g, mod.versions
                 .map(ver => html`<a
@@ -186,7 +186,7 @@ for (const mod of mods) {
                 .map(link => html`
                     <a
                         class="button has-icon border-solid border-2 mt-4 border-gray-light"
-                        href="${escape(mod.versions[0].modJSON[link[0]])}"
+                        href="${mod.versions[0].modJSON[link[0]]}"
                     >
                         <i data-feather="${link[1]}"></i>
                         Repository
