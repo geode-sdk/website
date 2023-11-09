@@ -179,7 +179,27 @@ for (const mod of mods) {
             .replace(/\$MOD_ICON_URL/g, escape(mod.logoURL))
             .replace(/\$MOD_DOWNLOAD_URL/g, escape(mod.versions[0].entryJSON.mod.download))
             .replace(/\$MOD_ABOUT_MD/g, marked(mod.about))
-            .replace(/\$MOD_REPO/g, escape(mod.versions[0].modJSON.repository))
+            .replace(/\$MOD_LINKS/g, withIfEmpty(Object.entries({
+                'repository': 'github',
+            })
+                .filter(link => link[0] in mod.versions[0].modJSON)
+                .map(link => html`
+                    <a
+                        class="button has-icon border-solid border-2 mt-4 border-gray-light"
+                        href="${escape(mod.versions[0].modJSON[link[0]])}"
+                    >
+                        <i data-feather="${link[1]}"></i>
+                        Repository
+                    </a>
+                `), html`
+                    <a
+                        class="emptylink border-solid border-2 mt-4 border-gray-light"
+                    >
+                        No links available
+                    </a>
+                `)
+                .join('')
+            )
             .replace(/\$MOD_TAGS/g, withIfEmpty(mod.versions[0].entryJSON.tags.map(tag => html`
                 <span class="mod-tag">${tag}</span>
             `), '<span class="mod-tag mod-tag-none">None</span>').join(''))

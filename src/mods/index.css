@@ -218,3 +218,13 @@
     @apply
         border-light text-light border-opacity-50;
 }
+
+.emptylink {
+    @apply 
+        rounded-full
+        text-white
+        inline-grid
+        p-4
+        transition-colors
+        text-center;
+}
