@@ -23,17 +23,25 @@ body {
 
 .svg-bg::before {
     @apply absolute bg-gray overflow-visible w-full;
-    height: 100vw;
-    top: -100vw;
+    height: 100vh;
+    top: -99vh;
     content: "";
     z-index: -5;
 }
 
 .svg-bg {
-    @apply absolute overflow-visible w-full bg-gray m-0 p-0 bg-no-repeat bg-center bg-cover;
+    @apply absolute overflow-visible w-full m-0 p-0 bg-no-repeat bg-center bg-cover;
     z-index: -5;
     transform: translate(-2rem, +10rem, -2px) scale(3.5);
 	-webkit-transform: translate3d(-2rem, +10rem, -2px) scale(3.5);
+}
+
+.svg-bg::after { /* cover the tiny tiny itsy bitsy gap */
+    @apply absolute bg-purple overflow-visible w-full;
+    height: 1rem;
+    bottom: -0.5rem;
+    content: "";
+    z-index: -4;
 }
 
 .svg-bg-top {
@@ -106,17 +114,21 @@ h1 {
     @apply 
         rounded-full
         text-white
-        inline-grid
+        inline-flex
+        justify-center
+        gap-3
         p-4
         hover:text-cyan
         hover:bg-gray-light
         transition-colors
         text-center
-        hover:cursor-pointer;
+        hover:cursor-pointer
 }
 
-.button.has-icon {
-    grid-template-columns: 2rem minmax(10rem, 1fr) 2rem;
+.button.wide {
+    @apply
+        w-full
+        max-w-xs;
 }
 
 .download-button {
@@ -129,12 +141,6 @@ h1 {
 .download-button:hover {
     @apply
         bg-cyan text-white;
-}
-
-@media only screen and (min-device-width: 768px) {
-    .button.has-icon {
-        grid-template-columns: 2rem fit-content 2rem;
-    }
 }
 
 .feather {
@@ -195,7 +201,7 @@ code {
 
 .sidey-sidey-rev {
     display: grid;
-    grid-template-columns: 1fr min-content;
+    grid-template-columns: 1fr auto;
     @apply gap-10;
 }
 
@@ -234,7 +240,7 @@ code {
     }
 
     .sidey-hidey {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 2fr 1fr;
     }
 }
 

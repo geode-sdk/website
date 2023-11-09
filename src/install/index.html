@@ -55,37 +55,30 @@
 
     <main class="flex flex-col items-center sm:p-20 max-sm:p-6 pt-0 m-0">
 
-        <div class="sidey-hidey">
-            <div class="flex flex-col items-start">
-                <h1 class="text-yellow font-head text-6xl mb-3">Install Geode</h1>
-                <h3 class="text-green font-head text-2xl mb-8" id="current-version">Latest version not found</h3>
+        <section class="w-full max-w-3xl flex flex-col items-center gap-4">
+            <div class="flex justify-center items-center gap-6">
+                <div class="max-md:hidden">
+                    <img alt="The Geode logo" class="w-auto h-28" src="../geode-circle.png">
+                </div>
+                <div class="h-full flex flex-col justify-center items-start max-md:items-center">
+                    <h1 class="text-yellow font-head text-6xl mb-3 max-md:text-center">Install Geode</h1>
+                    <h3 class="text-green font-head text-2xl max-md:text-center" id="current-version">Latest version not found</h3>
+                </div>
+            </div>
+            <div class="flex flex-col items-center">
                 <p id="pick-platform-info">Pick the platform you want to install Geode for:</p>
                 <div
-                    class="flex flex-col items-start mt-6 mb-6 gap-4"
+                    class="flex flex-col items-center mt-6 mb-6 gap-4 w-full"
                     id="install-options"
                 ></div>
                 <p id="unsupported-platforms"></p>
             </div>
-            <div class="flex flex-col items-center justify-center gap-4">
-                <img
-                    alt="The Geode logo"
-                    class="w-auto sm:h-40 max-sm:h-20"
-                    src="../geode-circle.png"
-                >
-                <a
-                    class="text-cyan hover:text-white no-underline pr-2"
-                    href="https://github.com/geode-sdk/geode"
-                >
-                    <i data-feather="github" class="inline"></i>
-                    Source code
-                </a>
-            </div>
-        </div>
+        </section>
 
         <section class="bg-gray-darker flex flex-col gap-4 items-center mt-20 mb-20">
             <p>Looking to develop your own mods with Geode instead?</p>
             <a
-                class="button has-icon border-solid border-2 border-gray-light"
+                class="button wide border-solid border-2 border-gray-light"
                 href="https://docs.geode-sdk.org/installation"
             >
                 <i data-feather="code"></i>
@@ -137,16 +130,16 @@
                 <em>report to us on Discord</em>. <b>Please note that issues using mods should 
                 be directed to the mods' developers instead!</b>
             </p>
-            <div class="mt-6 flex max-sm:flex-col sm:flex-row gap-4 items-center">
+            <div class="mt-6 w-full flex max-sm:flex-col sm:flex-row gap-4 items-center">
                 <a
-                    class="button has-icon border-solid border-2 border-gray-light"
+                    class="button wide border-solid border-2 border-gray-light"
                     href="https://github.com/geode-sdk"
                 >
                     <i data-feather="github"></i>
                     GitHub
                 </a>
                 <a
-                    class="button has-icon border-solid border-2 border-gray-light"
+                    class="button wide border-solid border-2 border-gray-light"
                     href="https://discord.gg/9e43WMKzhp"
                 >
                     <i data-feather="message-circle"></i>
@@ -162,7 +155,7 @@
                 Thank you to <a href="https://github.com/nekitdev" class="underline">nekit</a> for the domain!
             </div>
             <a
-                class="button has-icon border-solid border-2 border-light border-opacity-25 bg-opacity-0 hover:bg-opacity-0 hover:border-cyan"
+                class="button wide border-solid border-2 border-light border-opacity-25 bg-opacity-0 hover:bg-opacity-0 hover:border-cyan"
                 href="https://github.com/geode-sdk/geode-sdk.github.io"
             >
                 <i data-feather="github"></i>
@@ -202,7 +195,7 @@
                     
                     let elem = document.createElement('a');
                     elem.classList.add(
-                        'button', 'has-icon', 'border-solid',
+                        'button', 'wide', 'border-solid',
                         'border-2', 'border-gray-light'
                     );
                     elem.style.textAlign = 'left';

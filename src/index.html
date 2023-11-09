@@ -55,20 +55,20 @@
                 modding framework
             </p>
         </section>
-        <div class="grid md:grid-cols-2 max-md:grid-cols-1 gap-8">
-            <a class="button has-icon bg-gray-darker" href="./install">
+        <div class="grid md:grid-cols-2 max-md:grid-cols-1 gap-4 w-full md:max-w-lg max-md:max-w-xs">
+            <a class="button bg-gray-darker" href="./install">
                 <i data-feather="download"></i>
                 Install
             </a>
-            <a class="button has-icon bg-gray-darker" href="./mods">
+            <a class="button bg-gray-darker" href="./mods">
                 <i data-feather="package"></i>
                 Mods
             </a>
-            <a class="button has-icon bg-gray-darker" href="https://docs.geode-sdk.org">
+            <a class="button bg-gray-darker" href="https://docs.geode-sdk.org">
                 <i data-feather="book"></i>
                 Documentation
             </a>
-            <a class="button has-icon bg-gray-darker" href="https://discord.gg/9e43WMKzhp">
+            <a class="button bg-gray-darker" href="https://discord.gg/9e43WMKzhp">
                 <i data-feather="message-circle"></i>
                 Discord
             </a>
@@ -77,7 +77,7 @@
 
     <main class="flex flex-col items-center p-56 max-2xl:p-40 max-xl:p-10 m-0">
 
-        <section>
+        <section class="w-full">
             <div>
                 <h1>A modding toolkit for GD</h1>
                 <p>
@@ -90,7 +90,7 @@
             <img alt="screenshot of in-game mod list in geometry dash" src="mods.png">
         </section>
 
-        <section>
+        <section class="w-full">
             <img alt="screenshot of in-game available geode mods" src="install.png">
             <div>
                 <h1>Install mods in-game</h1>
@@ -101,7 +101,7 @@
             </div>
         </section>
 
-        <section>
+        <section class="w-full">
             <div>
                 <h1>Easily manage mods</h1>
                 <p>
@@ -112,7 +112,7 @@
             <img alt="screenshot of installing a mod in-game in geometry dash" src="manage.png">
         </section>
 
-        <section class="section-with-separator">
+        <section class="w-full section-with-separator">
             <div>
                 <h1>Things just work</h1>
                 <p>
@@ -134,7 +134,7 @@
             </div>
         </section>
 
-        <section>
+        <section class="w-full">
             <pre><code class="language-cpp">
 #include &lt;Geode/modify/MenuLayer.hpp&gt;
 
@@ -161,7 +161,7 @@ class $modify(MenuLayer) {
                 </p>
                 <div class="mt-6">
                     <a
-                        class="button has-icon border-solid border-2 border-gray-light"
+                        class="button wide border-solid border-2 border-gray-light"
                         href="https://github.com/geode-sdk/example-mod/"
                     >
                         <i data-feather="arrow-right"></i>
@@ -171,7 +171,7 @@ class $modify(MenuLayer) {
             </div>
         </section>
 
-        <section class="section-with-separator">
+        <section class="w-full section-with-separator">
             <div>
                 <h1>Documentation</h1>
                 <p>
@@ -182,7 +182,7 @@ class $modify(MenuLayer) {
                 </p>
                 <div class="mt-6">
                     <a
-                        class="button has-icon border-solid border-2 border-gray-light"
+                        class="button wide border-solid border-2 border-gray-light"
                         href="https://docs.geode-sdk.org"
                     >
                         <i data-feather="arrow-right"></i>
@@ -202,14 +202,14 @@ class $modify(MenuLayer) {
                 </p>
                 <div class="mt-6 flex max-sm:flex-col sm:flex-row gap-4 items-center">
                     <a
-                        class="button has-icon border-solid border-2 border-gray-light"
+                        class="button wide border-solid border-2 border-gray-light"
                         href="https://github.com/geode-sdk"
                     >
                         <i data-feather="github"></i>
                         GitHub
                     </a>
                     <a
-                        class="button has-icon border-solid border-2 border-gray-light"
+                        class="button wide border-solid border-2 border-gray-light"
                         href="https://discord.gg/9e43WMKzhp"
                     >
                         <i data-feather="message-circle"></i>
@@ -226,7 +226,7 @@ class $modify(MenuLayer) {
                 Thank you to <a href="https://github.com/nekitdev" class="underline">nekit</a> for the domain!
             </div>
             <a
-                class="button has-icon border-solid border-2 border-light border-opacity-25 bg-opacity-0 hover:bg-opacity-0 hover:border-cyan"
+                class="button wide border-solid border-2 border-light border-opacity-25 bg-opacity-0 hover:bg-opacity-0 hover:border-cyan"
                 href="https://github.com/geode-sdk/geode-sdk.github.io"
             >
                 <i data-feather="github"></i>

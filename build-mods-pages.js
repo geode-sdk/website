@@ -178,7 +178,7 @@ for (const mod of mods) {
                 .map(ver => html`<a
                     href="${ver.entryJSON.mod.download}"
                     class="
-                        button has-icon
+                        button wide
                         border-solid border-2 border-light border-opacity-25 hover:border-cyan
                         bg-opacity-0 hover:bg-opacity-0
                         px-10
@@ -197,7 +197,7 @@ for (const mod of mods) {
                 .filter(link => link[0] in mod.versions[0].modJSON)
                 .map(link => html`
                     <a
-                        class="button has-icon border-solid border-2 mt-4 border-gray-light"
+                        class="button wide border-solid border-2 border-gray-light"
                         href="${mod.versions[0].modJSON[link[0]]}"
                     >
                         <i data-feather="${link[1]}"></i>
@@ -205,7 +205,7 @@ for (const mod of mods) {
                     </a>
                 `), html`
                     <a
-                        class="emptylink border-solid border-2 mt-4 border-gray-light"
+                        class="emptylink wide border-solid border-2 border-gray-light"
                     >
                         No links available
                     </a>
