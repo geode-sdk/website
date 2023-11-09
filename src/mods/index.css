@@ -222,7 +222,7 @@
 .emptylink {
     @apply 
         rounded-full
-        text-white
+        text-light
         inline-grid
         p-4
         transition-colors
