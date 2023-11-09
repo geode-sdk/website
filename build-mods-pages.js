@@ -134,6 +134,18 @@ function html(parts) {
     return result;
 }
 
+function pathEscape(x) {
+    return x.replaceAll(/\.{2,}/g, '.') // Remove multiple dots
+}
+
+function filepath(parts) {
+    let result = parts[0];
+    for (let i = 1; i < parts.length; ++i) {
+        result += pathEscape(arguments[i]) + parts[i];
+    }
+    return result;
+}
+
 for (const mod of mods) {
     searchPageContent.push(html`
         <article
@@ -152,13 +164,13 @@ for (const mod of mods) {
                 <p class="short-desc">${cutText(mod.versions[0].modJSON.description)}</p>
             </div>
             <div class="buttons">
-                <a href="./${mod.id}">View</a>
+                <a href="./${pathEscape(mod.id)}">View</a>
             </div>
         </article>
     `);
 
-    mkdirSync(`gen/mods/${mod.id}`);
-    writeFileSync(`gen/mods/${mod.id}/index.html`,
+    mkdirSync(filepath`gen/mods/${mod.id}`);
+    writeFileSync(filepath`gen/mods/${mod.id}/index.html`,
         modPageTemplate
             .replace(/\$MOD_ID/g, escape(mod.id))
             .replace(/\$MOD_NAME/g, escape(mod.versions[0].modJSON.name))
