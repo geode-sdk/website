@@ -55,17 +55,24 @@
 
     <main class="flex flex-col items-center sm:p-20 max-sm:p-6 pt-0 m-0">
 
-        <div class="sidey-hidey">
-            <div class="flex flex-col items-start">
-                <h1 class="text-yellow font-head text-6xl mb-3">Install Geode</h1>
-                <!-- <h3 class="text-green font-head text-2xl mb-8" id="current-version">Latest version not found</h3> -->
+        <section class="w-full max-w-3xl flex flex-col items-center gap-4">
+            <div class="flex justify-center items-center gap-6">
+                <div class="max-md:hidden">
+                    <img alt="The Geode logo" class="w-auto h-28" src="../geode-circle.png">
+                </div>
+                <div class="h-full flex flex-col justify-center items-start max-md:items-center">
+                    <h1 class="text-yellow font-head text-6xl mb-3 max-md:text-center">Install Geode</h1>
+                    <!-- <h3 class="text-green font-head text-2xl max-md:text-center" id="current-version">Latest version not found</h3> -->
+                </div>
+            </div>
+            <div class="flex flex-col items-center">
                 <!-- <p id="pick-platform-info">Pick the platform you want to install Geode for:</p> -->
-                <!-- <div -->
-                    <!-- class="flex flex-col items-start mt-6 mb-6 gap-4" -->
-                    <!-- id="install-options" -->
-                <!-- ></div> -->
-                <!-- <p id="unsupported-platforms"></p> -->
-                <div class="flex flex-col p-6 rounded-lg bg-red bg-opacity-25">
+                <!-- <div
+                    class="flex flex-col items-center mt-6 mb-6 gap-4 w-full"
+                    id="install-options"
+                ></div>
+                <p id="unsupported-platforms"></p> -->
+                <div class="flex flex-col p-6 rounded-lg bg-red bg-opacity-25 mt-4">
                     <h3 class="text-yellow font-bold font-head text-2xl mb-3">Geode is being updated</h3>
                     <p class="mb-2">
                         Due to the release of <em>Update 2.2</em>, Geode is currently unavailable 
@@ -185,44 +192,9 @@
         //             }
         //             else continue;
                     
-<<<<<<< HEAD
-                    let elem = document.createElement('a');
-                    elem.classList.add(
-                        'button', 'wide', 'border-solid',
-                        'border-2', 'border-gray-light'
-                    );
-                    elem.style.textAlign = 'left';
-                    elem.href = asset.browser_download_url;
-                    elem.innerHTML = `${feather.icons.box.toSvg()}Download for ${platformName}`;
-                    opts.appendChild(elem);
-                }
-                if (unsupported.size === 4) {
-                    let elem = document.createElement('p');
-                    elem.innerHTML = "No platforms found";
-                    elem.style.fontStyle = 'italic';
-                    opts.appendChild(elem);
-                }
-                if (unsupported.size) {
-                    let list = Array.from(unsupported);
-                    const last = list.length > 1 ? ` and ${list.pop()}` : '';
-                    document.querySelector('#unsupported-platforms').innerHTML = 
-                        `${list.join(', ')}${last} are not yet supported.`;
-                }
-                else {
-                    document.querySelector('#unsupported-platforms').innerHTML = '';
-                }
-            })
-            .catch(_ => {
-                document.querySelector('#current-version').remove();
-                document.querySelector('#pick-platform-info').remove();
-                document.querySelector('#install-options').innerHTML = 
-                    '<p>Unable to get installation options! The site probably hit ' + 
-                    'the Github rate limit - <em>please try again later</em>.</p>';
-            });
-=======
         //             let elem = document.createElement('a');
         //             elem.classList.add(
-        //                 'button', 'has-icon', 'border-solid',
+        //                 'button', 'wide', 'border-solid',
         //                 'border-2', 'border-gray-light'
         //             );
         //             elem.style.textAlign = 'left';
@@ -253,7 +225,6 @@
         //             '<p>Unable to get installation options! The site probably hit ' + 
         //             'the Github rate limit - <em>please try again later</em>.</p>';
         //     });
->>>>>>> 2d02e14 (remove install buttons until Geode works with 2.2)
 
         // no install button on mobile because android geode doesn't exist yet
         // if (navigator.userAgent.match(/android|iphone|kindle|ipad/i)) {
