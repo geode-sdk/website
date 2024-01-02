@@ -7,6 +7,7 @@ const commands = [
     "tailwindcss -i gen/mods/index.css -o dist/mods/index.css --minify",
     "html-minifier --input-dir ./gen --output-dir ./dist --collapse-whitespace --file-ext html",
     "node copy-media.js",
+    "node generate-scoop-cli",
 ]
 
 for (let command of commands) {
