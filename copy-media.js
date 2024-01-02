@@ -1,4 +1,3 @@
-
 import { readdirSync, copyFileSync } from 'fs';
 
 for (const file of readdirSync('media')) {

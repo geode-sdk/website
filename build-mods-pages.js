@@ -1,4 +1,3 @@
-
 // This script builds the mods browsing site
 
 import { Presets, SingleBar } from 'cli-progress';
