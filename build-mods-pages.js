@@ -77,7 +77,7 @@ const mods = readdirSync('_mods_tmp', { withFileTypes: true })
                     };
                 })
                 .sort((a, b) => rcompare(a.version, b.version)),
-            about: tryReadFile(`${d}/about.md`)?.toString(),
+            about: tryReadFile(`${d}/about.md`)?.toString() ?? "No description provided",
             // logo: tryReadFile(`${d}/logo.png`, 'media/no-logo.png'),
             logoURL: existsSync(`${d}/logo.png`) ?
                 `https://raw.githubusercontent.com/geode-sdk/mods/main/mods-v2/${dir.name}/logo.png` :
