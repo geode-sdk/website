@@ -160,15 +160,23 @@
 
         // inserted by build-install.js script
         const json = {$GITHUB_RELEASE_DATA:0};
+        const launcherJson = {$GITHUB_ANDROID_LAUNCHER_RELEASE_DATA:0};
+
+        function scrollToTutorial() {
+            document.getElementById('how-to-use').scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
 
         document.querySelector('#current-version').innerHTML = `Latest version: <wbr><em class="tag">${
             json.tag_name ?? 'Unknown'
         }</em>`;
-        const unsupported = new Set(['Windows', 'Mac', 'iOS', 'Android']);
+        const unsupported = new Set(['Windows', 'Mac', 'Android']);
         const opts = document.querySelector('#install-options');
         opts.innerHTML = '';
-        for (const asset of json.assets) {
-            if (!asset.name.toLowerCase().includes('installer')) {
+        for (const asset of [...json.assets, ...launcherJson.assets]) {
+            if (!asset.name.toLowerCase().includes('installer') && !asset.name.toLowerCase().includes('.apk')) {
                 continue;
             }
             let platformName;
@@ -180,6 +188,10 @@
                 platformName = 'Windows';
                 unsupported.delete('Windows');
             }
+            else if (asset.name.toLowerCase().includes('.apk')) {
+                platformName = 'Android';
+                unsupported.delete('Android');
+            }
             else continue;
             
             let elem = document.createElement('a');
@@ -190,9 +202,10 @@
             elem.style.textAlign = 'left';
             elem.href = asset.browser_download_url;
             elem.innerHTML = `${feather.icons.box.toSvg()}Download for ${platformName}`;
+            elem.addEventListener('click', () => { scrollToTutorial(); });
             opts.appendChild(elem);
         }
-        if (unsupported.size === 4) {
+        if (unsupported.size === 3) {
             let elem = document.createElement('p');
             elem.innerHTML = "No platforms found";
             elem.style.fontStyle = 'italic';
@@ -200,9 +213,10 @@
         }
         if (unsupported.size) {
             let list = Array.from(unsupported);
+            let are = list.length > 1 ? 'are' : 'is';
             const last = list.length > 1 ? ` and ${list.pop()}` : '';
             document.querySelector('#unsupported-platforms').innerHTML = 
-                `${list.join(', ')}${last} are not yet supported.`;
+                `${list.join(', ')}${last} ${are} not yet supported.`;
         }
         else {
             document.querySelector('#unsupported-platforms').innerHTML = '';
