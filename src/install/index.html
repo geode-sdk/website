@@ -62,26 +62,16 @@
                 </div>
                 <div class="h-full flex flex-col justify-center items-start max-md:items-center">
                     <h1 class="text-yellow font-head text-6xl mb-3 max-md:text-center">Install Geode</h1>
-                    <!-- <h3 class="text-green font-head text-2xl max-md:text-center" id="current-version">Latest version not found</h3> -->
+                    <h3 class="text-green font-head text-2xl max-md:text-center" id="current-version">Latest version not found</h3>
                 </div>
             </div>
             <div class="flex flex-col items-center">
-                <!-- <p id="pick-platform-info">Pick the platform you want to install Geode for:</p> -->
-                <!-- <div
+                <p id="pick-platform-info">Pick the platform you want to install Geode for:</p>
+                <div
                     class="flex flex-col items-center mt-6 mb-6 gap-4 w-full"
                     id="install-options"
                 ></div>
-                <p id="unsupported-platforms"></p> -->
-                <div class="flex flex-col p-6 rounded-lg bg-red bg-opacity-25 mt-4">
-                    <h3 class="text-yellow font-bold font-head text-2xl mb-3">Geode is being updated</h3>
-                    <p class="mb-2">
-                        Due to the release of <em>Update 2.2</em>, Geode is currently unavailable 
-                        while it is being updated to work with the new version.
-                    </p>
-                    <p>
-                        We're trying to get a compatible version of Geode out as soon as possible.
-                    </p>
-                </div>
+                <p id="unsupported-platforms"></p>
             </div>
         </section>
 
@@ -168,65 +158,57 @@
         feather.replace();
         hljs.highlightAll();
 
-        // fetch('https://api.github.com/repos/geode-sdk/geode/releases/latest')
-        //     .then(r => r.json())
-        //     .then(json => {
-        //         document.querySelector('#current-version').innerHTML = `Latest version: <wbr><em class="tag">${
-        //             json.tag_name ?? 'Unknown'
-        //         }</em>`;
-        //         const unsupported = new Set(['Windows', 'Mac', 'iOS', 'Android']);
-        //         const opts = document.querySelector('#install-options');
-        //         opts.innerHTML = '';
-        //         for (const asset of json.assets) {
-        //             if (!asset.name.toLowerCase().includes('installer')) {
-        //                 continue;
-        //             }
-        //             let platformName;
-        //             if (asset.name.toLowerCase().includes('mac')) {
-        //                 platformName = 'Mac';
-        //                 unsupported.delete('Mac');
-        //             }
-        //             else if (asset.name.toLowerCase().includes('win')) {
-        //                 platformName = 'Windows';
-        //                 unsupported.delete('Windows');
-        //             }
-        //             else continue;
-                    
-        //             let elem = document.createElement('a');
-        //             elem.classList.add(
-        //                 'button', 'wide', 'border-solid',
-        //                 'border-2', 'border-gray-light'
-        //             );
-        //             elem.style.textAlign = 'left';
-        //             elem.href = asset.browser_download_url;
-        //             elem.innerHTML = `${feather.icons.box.toSvg()}Download for ${platformName}`;
-        //             opts.appendChild(elem);
-        //         }
-        //         if (unsupported.size === 4) {
-        //             let elem = document.createElement('p');
-        //             elem.innerHTML = "No platforms found";
-        //             elem.style.fontStyle = 'italic';
-        //             opts.appendChild(elem);
-        //         }
-        //         if (unsupported.size) {
-        //             let list = Array.from(unsupported);
-        //             const last = list.length > 1 ? ` and ${list.pop()}` : '';
-        //             document.querySelector('#unsupported-platforms').innerHTML = 
-        //                 `${list.join(', ')}${last} are not yet supported.`;
-        //         }
-        //         else {
-        //             document.querySelector('#unsupported-platforms').innerHTML = '';
-        //         }
-        //     })
-        //     .catch(_ => {
-        //         document.querySelector('#current-version').remove();
-        //         document.querySelector('#pick-platform-info').remove();
-        //         document.querySelector('#install-options').innerHTML = 
-        //             '<p>Unable to get installation options! The site probably hit ' + 
-        //             'the Github rate limit - <em>please try again later</em>.</p>';
-        //     });
+        // inserted by build-install.js script
+        const json = {$GITHUB_RELEASE_DATA:0};
 
-        // no install button on mobile because android geode doesn't exist yet
+        document.querySelector('#current-version').innerHTML = `Latest version: <wbr><em class="tag">${
+            json.tag_name ?? 'Unknown'
+        }</em>`;
+        const unsupported = new Set(['Windows', 'Mac', 'iOS', 'Android']);
+        const opts = document.querySelector('#install-options');
+        opts.innerHTML = '';
+        for (const asset of json.assets) {
+            if (!asset.name.toLowerCase().includes('installer')) {
+                continue;
+            }
+            let platformName;
+            if (asset.name.toLowerCase().includes('mac')) {
+                platformName = 'Mac';
+                unsupported.delete('Mac');
+            }
+            else if (asset.name.toLowerCase().includes('win')) {
+                platformName = 'Windows';
+                unsupported.delete('Windows');
+            }
+            else continue;
+            
+            let elem = document.createElement('a');
+            elem.classList.add(
+                'button', 'wide', 'border-solid',
+                'border-2', 'border-gray-light'
+            );
+            elem.style.textAlign = 'left';
+            elem.href = asset.browser_download_url;
+            elem.innerHTML = `${feather.icons.box.toSvg()}Download for ${platformName}`;
+            opts.appendChild(elem);
+        }
+        if (unsupported.size === 4) {
+            let elem = document.createElement('p');
+            elem.innerHTML = "No platforms found";
+            elem.style.fontStyle = 'italic';
+            opts.appendChild(elem);
+        }
+        if (unsupported.size) {
+            let list = Array.from(unsupported);
+            const last = list.length > 1 ? ` and ${list.pop()}` : '';
+            document.querySelector('#unsupported-platforms').innerHTML = 
+                `${list.join(', ')}${last} are not yet supported.`;
+        }
+        else {
+            document.querySelector('#unsupported-platforms').innerHTML = '';
+        }
+
+        // // no install button on mobile because android geode doesn't exist yet
         // if (navigator.userAgent.match(/android|iphone|kindle|ipad/i)) {
         //     document.getElementById('install').remove();
         // }

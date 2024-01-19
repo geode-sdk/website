@@ -93,11 +93,6 @@ const genBar = new SingleBar({
 }, Presets.shades_classic);
 genBar.start(100, 0, { status: 'Copying files' });
 
-// Make gen dir, replacing old one if it exists
-if (existsSync('gen')) {
-    rmSync('gen', { recursive: true, force: true });
-}
-await copy('src', 'gen', { overwrite: true });
 rmSync('gen/mods/[mod.id]', { recursive: true, force: true });
 
 genBar.update(0, { status: 'Constructing pages' });
