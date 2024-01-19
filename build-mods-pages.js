@@ -83,6 +83,12 @@ const mods = readdirSync('_mods_tmp', { withFileTypes: true })
                 `https://raw.githubusercontent.com/geode-sdk/mods/main/mods-v2/${dir.name}/logo.png` :
                 `https://raw.githubusercontent.com/geode-sdk/geode/main/loader/resources/logos/no-logo.png`
         };
+    })
+    .filter(x => {
+        let latestVer = x.versions[0];
+        let geodeVer = latestVer.modJSON.geode;
+        // Only show mods that target geode v2
+        return (geodeVer.startsWith('2.') || geodeVer.startsWith('v2.')) && !!latestVer.modJSON.gd;
     });
 
 modsBar.update(100, { status: 'Mods parsed' });
