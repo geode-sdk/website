@@ -176,23 +176,28 @@
         const opts = document.querySelector('#install-options');
         opts.innerHTML = '';
         for (const asset of [...json.assets, ...launcherJson.assets]) {
-            if (!asset.name.toLowerCase().includes('installer') && !asset.name.toLowerCase().includes('.apk')) {
-                continue;
-            }
             let platformName;
-            if (asset.name.toLowerCase().includes('mac')) {
-                platformName = 'Mac';
-                unsupported.delete('Mac');
-            }
-            else if (asset.name.toLowerCase().includes('win')) {
-                platformName = 'Windows';
-                unsupported.delete('Windows');
-            }
-            else if (asset.name.toLowerCase().includes('.apk')) {
+
+            let assetName = asset.name.toLowerCase();
+            if (assetName.includes('installer')) {
+                if (assetName.includes('mac')) {
+                    platformName = 'Mac';
+                    unsupported.delete('Mac');
+                }
+                else if (assetName.includes('win')) {
+                    platformName = 'Windows';
+                    unsupported.delete('Windows');
+                } else {
+                    continue;
+                }
+            } else if (assetName.includes('.apk')) {
+                // intentionally skip the split apk :-)
+                if (assetName.endsWith('-android32.apk')) continue;
                 platformName = 'Android';
                 unsupported.delete('Android');
+            } else {
+                continue;
             }
-            else continue;
             
             let elem = document.createElement('a');
             elem.classList.add(
