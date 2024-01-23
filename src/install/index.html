@@ -175,6 +175,8 @@
         const unsupported = new Set(['Windows', 'Mac', 'Android']);
         const opts = document.querySelector('#install-options');
         opts.innerHTML = '';
+        // so android32 is last..
+        launcherJson.assets.reverse();
         for (const asset of [...json.assets, ...launcherJson.assets]) {
             let platformName;
 
@@ -191,10 +193,12 @@
                     continue;
                 }
             } else if (assetName.includes('.apk')) {
-                // intentionally skip the split apk :-)
-                if (assetName.endsWith('-android32.apk')) continue;
-                platformName = 'Android';
-                unsupported.delete('Android');
+                if (assetName.endsWith('-android32.apk')) {
+                    platformName = 'Android (32 bit)';
+                } else {
+                    platformName = 'Android';
+                    unsupported.delete('Android');
+                }
             } else {
                 continue;
             }
