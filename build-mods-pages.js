@@ -217,20 +217,20 @@ for (const mod of mods) {
                 <span class="mod-tag">${tag}</span>
             `), '<span class="mod-tag mod-tag-none">None</span>').join(''))
             .replace(/\$MOD_AVAILABLE_PLATFORMS/g, Object.entries({
-                'windows': 'media/windows.svg',
-                'macos':   'media/apple.svg',
-                'android': 'media/android.svg',
-                'ios':     'media/ios.svg',
+                'windows':   'media/windows.svg',
+                'macos':     'media/apple.svg',
+                'android64': 'media/android.svg',
+                'ios':       'media/ios.svg',
             })
                 .filter(plat => mod.versions[0].entryJSON.platforms.includes(plat[0]))
                 .map(plat => readFileSync(plat[1]).toString())
                 .join('')
             )
             .replace(/\$MOD_UNAVAILABLE_PLATFORMS/g, Object.entries({
-                'windows': 'media/windows.svg',
-                'macos':   'media/apple.svg',
-                'android': 'media/android.svg',
-                'ios':     'media/ios.svg',
+                'windows':   'media/windows.svg',
+                'macos':     'media/apple.svg',
+                'android64': 'media/android.svg',
+                'ios':       'media/ios.svg',
             })
                 .filter(plat => !mod.versions[0].entryJSON.platforms.includes(plat[0]))
                 .map(plat => readFileSync(plat[1]).toString())
