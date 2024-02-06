@@ -147,6 +147,20 @@ function filepath(parts) {
 }
 
 for (const mod of mods) {
+    if (mod.versions[0].modJSON.developer == undefined && mod.versions[0].modJSON.developers != undefined) {
+        if (mod.versions[0].modJSON.developers.length == 1) {
+            mod.versions[0].modJSON.developer = mod.versions[0].modJSON.developers[0]
+            mod.versions[0].modJSON.developertwo = mod.versions[0].modJSON.developers[0]
+        } else if (mod.versions[0].modJSON.developers.length == 2) {
+            mod.versions[0].modJSON.developer = mod.versions[0].modJSON.developers[0] + " & " + mod.versions[0].modJSON.developers[1]
+            mod.versions[0].modJSON.developertwo = mod.versions[0].modJSON.developers[0] + " & " + mod.versions[0].modJSON.developers[1]
+        } else if (mod.versions[0].modJSON.developers.length >= 3) {
+            mod.versions[0].modJSON.developer = mod.versions[0].modJSON.developers[0] + " & " + mod.versions[0].modJSON.developers[1]
+            mod.versions[0].modJSON.developertwo = mod.versions[0].modJSON.developers[0] + " & " + mod.versions[0].modJSON.developers[1]
+        }
+    } else {
+        mod.versions[0].modJSON.developertwo = mod.versions[0].modJSON.developer;
+    }
     searchPageContent.push(html`
         <article
             class="mod-card"
@@ -188,7 +202,7 @@ for (const mod of mods) {
                 .join('')
             )
             .replace(/\$MOD_VERSION/g, escape(mod.versions[0].version))
-            .replace(/\$MOD_DEVELOPER/g, escape(mod.versions[0].modJSON.developer))
+            .replace(/\$MOD_DEVELOPER/g, escape(mod.versions[0].modJSON.developertwo))
             .replace(/\$MOD_ICON_URL/g, escape(mod.logoURL))
             .replace(/\$MOD_DOWNLOAD_URL/g, escape(mod.versions[0].entryJSON.mod.download))
             .replace(/\$MOD_ABOUT_MD/g, marked(mod.about))
