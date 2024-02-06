@@ -155,7 +155,7 @@ for (const mod of mods) {
             mod.versions[0].modJSON.developer = mod.versions[0].modJSON.developers[0] + " & " + mod.versions[0].modJSON.developers[1]
             mod.versions[0].modJSON.developertwo = mod.versions[0].modJSON.developers[0] + " & " + mod.versions[0].modJSON.developers[1]
         } else if (mod.versions[0].modJSON.developers.length >= 3) {
-            mod.versions[0].modJSON.developer = mod.versions[0].modJSON.developers[0] + " & " + mod.versions[0].modJSON.developers[1]
+            mod.versions[0].modJSON.developer = mod.versions[0].modJSON.developers[0] + " + " + (mod.versions[0].modJSON.developers.length - 1) + " more"
             mod.versions[0].modJSON.developertwo = mod.versions[0].modJSON.developers[0] + " & " + mod.versions[0].modJSON.developers[1]
         }
     } else {
