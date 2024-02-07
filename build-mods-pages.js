@@ -148,8 +148,8 @@ function filepath(parts) {
 
 function developerPlusMoreText(developers) {
     if (developers.length == 0) return "No Developer Found";
-    if (developers.length <= 2) return developers.join(" & (test for github pages update) ");
-    return developers[0] + " + " + (developers.length - 1) + " more (test for github pages update)"
+    if (developers.length <= 2) return developers.join(" & ");
+    return developers[0] + " + " + (developers.length - 1) + " more (test for github pages eeeeeeeeeeeeeeeeeeeeeeee)"
 }
 
 for (const mod of mods) {
@@ -210,7 +210,7 @@ for (const mod of mods) {
                 .join('')
             )
             .replace(/\$MOD_VERSION/g, escape(mod.versions[0].version))
-            .replace(/\$MOD_DEVELOPER/g, escape(developersOfMod.join(" & ")))
+            .replace(/\$MOD_DEVELOPER/g, escape(developersOfMod.join(" & update test ")))
             .replace(/\$MOD_ICON_URL/g, escape(mod.logoURL))
             .replace(/\$MOD_DOWNLOAD_URL/g, escape(mod.versions[0].entryJSON.mod.download))
             .replace(/\$MOD_ABOUT_MD/g, marked(mod.about))
