@@ -146,7 +146,7 @@ function filepath(parts) {
     return result;
 }
 
-function developerPlusMoreText(developers) {
+function developersTextOnListing(developers) {
     if (developers.length == 0) return "No Developer Found";
     if (developers.length <= 2) return developers.join(" & ");
     return developers[0] + " + " + (developers.length - 1) + " more "
@@ -160,7 +160,7 @@ for (const mod of mods) {
         <article
             class="mod-card"
             data-name="${modCurrentJson.name}"
-            data-developer="${developerPlusMoreText(developersOfMod)}"
+            data-developer="${developersTextOnListing(developersOfMod)}"
             data-description="${modCurrentJson.description}"
             data-about="${mod.about.replace(/\"/g, '')}"
             data-tags="${mod.versions[0].entryJSON.tags?.join('') ?? ''}"
@@ -169,7 +169,7 @@ for (const mod of mods) {
             <div class="info">
                 <div class="img"><img src="${mod.logoURL}"></div>
                 <h1>${modCurrentJson.name}</h1>
-                <h3><i class="author">${developerPlusMoreText(developersOfMod)}</i> • <i class="version">${mod.versions[0].version}</i></h3>
+                <h3><i class="author">${developersTextOnListing(developersOfMod)}</i> • <i class="version">${mod.versions[0].version}</i></h3>
                 <p class="short-desc">${cutText(modCurrentJson.description)}</p>
             </div>
             <div class="buttons">
