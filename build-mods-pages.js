@@ -155,7 +155,7 @@ function developerPlusMoreText(developers) {
 for (const mod of mods) {
     var modCurrentJson = mod.versions[0].modJSON
     var developersOfMod = modCurrentJson.developers||[modCurrentJson.developer]
-    if modCurrentJson.developer == undefined && modCurrentJson.developers != undefined) {
+    /*if (modCurrentJson.developer == undefined && modCurrentJson.developers != undefined) {
         if (mod.versions[0].modJSON.developers.length == 1) {
             mod.versions[0].modJSON.developer = mod.versions[0].modJSON.developers[0]
             mod.versions[0].modJSON.developertwo = mod.versions[0].modJSON.developers[0]
@@ -168,7 +168,7 @@ for (const mod of mods) {
         }
     } else {
         mod.versions[0].modJSON.developertwo = mod.versions[0].modJSON.developer;
-    }
+    }*/
     searchPageContent.push(html`
         <article
             class="mod-card"
