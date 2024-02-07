@@ -169,7 +169,7 @@ for (const mod of mods) {
             <div class="info">
                 <div class="img"><img src="${mod.logoURL}"></div>
                 <h1>${modCurrentJson.name}</h1>
-                <h3><i class="author">${developerPlusMoreText(developersOfMod)}</i> • <i class="version">${modCurrentJson.version}</i></h3>
+                <h3><i class="author">${developerPlusMoreText(developersOfMod)}</i> • <i class="version">${mod.versions[0].version}</i></h3>
                 <p class="short-desc">${cutText(modCurrentJson.description)}</p>
             </div>
             <div class="buttons">
