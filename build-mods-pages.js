@@ -149,26 +149,13 @@ function filepath(parts) {
 function developerPlusMoreText(developers) {
     if (developers.length == 0) return "No Developer Found";
     if (developers.length <= 2) return developers.join(" & ");
-    return developers[0] + " + " + (developers.length - 1) + " more (test for github pages eeeeeeeeeeeeeeeeeeeeeeee)"
+    return developers[0] + " + " + (developers.length - 1) + " more "
 }
 
 for (const mod of mods) {
     var modCurrentJson = mod.versions[0].modJSON
-    var developersOfMod = modCurrentJson.developers||[modCurrentJson.developer]
-    /*if (modCurrentJson.developer == undefined && modCurrentJson.developers != undefined) {
-        if (mod.versions[0].modJSON.developers.length == 1) {
-            mod.versions[0].modJSON.developer = mod.versions[0].modJSON.developers[0]
-            mod.versions[0].modJSON.developertwo = mod.versions[0].modJSON.developers[0]
-        } else if (mod.versions[0].modJSON.developers.length == 2) {
-            mod.versions[0].modJSON.developer = mod.versions[0].modJSON.developers[0] + " & " + mod.versions[0].modJSON.developers[1]
-            mod.versions[0].modJSON.developertwo = mod.versions[0].modJSON.developers[0] + " & " + mod.versions[0].modJSON.developers[1]
-        } else if (mod.versions[0].modJSON.developers.length >= 3) {
-            mod.versions[0].modJSON.developer = mod.versions[0].modJSON.developers[0] + " + " + (mod.versions[0].modJSON.developers.length - 1) + " more"
-            mod.versions[0].modJSON.developertwo = mod.versions[0].modJSON.developers.join(" & ")
-        }
-    } else {
-        mod.versions[0].modJSON.developertwo = mod.versions[0].modJSON.developer;
-    }*/
+    var developersOfMod = modCurrentJson.developers||[modCurrentJson.developer];
+
     searchPageContent.push(html`
         <article
             class="mod-card"
@@ -210,7 +197,7 @@ for (const mod of mods) {
                 .join('')
             )
             .replace(/\$MOD_VERSION/g, escape(mod.versions[0].version))
-            .replace(/\$MOD_DEVELOPER/g, escape(developersOfMod.join(" & update test ")))
+            .replace(/\$MOD_DEVELOPER/g, escape(developersOfMod.join(" & ")))
             .replace(/\$MOD_ICON_URL/g, escape(mod.logoURL))
             .replace(/\$MOD_DOWNLOAD_URL/g, escape(mod.versions[0].entryJSON.mod.download))
             .replace(/\$MOD_ABOUT_MD/g, marked(mod.about))
