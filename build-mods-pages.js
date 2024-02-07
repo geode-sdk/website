@@ -146,8 +146,16 @@ function filepath(parts) {
     return result;
 }
 
+function developerPlusMoreText(developers) {
+    if (developers.length == 0) return "No Developer Found";
+    if (developers.length <= 2) return developers.join(" & ");
+    return developers[0] + " + " + (developers.length - 1) + " more"
+}
+
 for (const mod of mods) {
-    if (mod.versions[0].modJSON.developer == undefined && mod.versions[0].modJSON.developers != undefined) {
+    var modCurrentJson = mod.versions[0].modJSON
+    var developersOfMod = modCurrentJson.developers||[modCurrentJson.developer]
+    if modCurrentJson.developer == undefined && modCurrentJson.developers != undefined) {
         if (mod.versions[0].modJSON.developers.length == 1) {
             mod.versions[0].modJSON.developer = mod.versions[0].modJSON.developers[0]
             mod.versions[0].modJSON.developertwo = mod.versions[0].modJSON.developers[0]
@@ -165,7 +173,7 @@ for (const mod of mods) {
         <article
             class="mod-card"
             data-name="${mod.versions[0].modJSON.name}"
-            data-developer="${mod.versions[0].modJSON.developer}"
+            data-developer="${developerPlusMoreText(developersOfMod)}"
             data-description="${mod.versions[0].modJSON.description}"
             data-about="${mod.about.replace(/\"/g, '')}"
             data-tags="${mod.versions[0].entryJSON.tags?.join('') ?? ''}"
@@ -174,7 +182,7 @@ for (const mod of mods) {
             <div class="info">
                 <div class="img"><img src="${mod.logoURL}"></div>
                 <h1>${mod.versions[0].modJSON.name}</h1>
-                <h3><i class="author">${mod.versions[0].modJSON.developer}</i> • <i class="version">${mod.versions[0].version}</i></h3>
+                <h3><i class="author">${developerPlusMoreText(developersOfMod)}</i> • <i class="version">${mod.versions[0].version}</i></h3>
                 <p class="short-desc">${cutText(mod.versions[0].modJSON.description)}</p>
             </div>
             <div class="buttons">
@@ -202,7 +210,7 @@ for (const mod of mods) {
                 .join('')
             )
             .replace(/\$MOD_VERSION/g, escape(mod.versions[0].version))
-            .replace(/\$MOD_DEVELOPER/g, escape(mod.versions[0].modJSON.developertwo))
+            .replace(/\$MOD_DEVELOPER/g, escape(developersOfMod.join(" & ")))
             .replace(/\$MOD_ICON_URL/g, escape(mod.logoURL))
             .replace(/\$MOD_DOWNLOAD_URL/g, escape(mod.versions[0].entryJSON.mod.download))
             .replace(/\$MOD_ABOUT_MD/g, marked(mod.about))
