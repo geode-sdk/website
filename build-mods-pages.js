@@ -159,18 +159,18 @@ for (const mod of mods) {
     searchPageContent.push(html`
         <article
             class="mod-card"
-            data-name="${mod.versions[0].modJSON.name}"
+            data-name="${modCurrentJson.name}"
             data-developer="${developerPlusMoreText(developersOfMod)}"
-            data-description="${mod.versions[0].modJSON.description}"
+            data-description="${modCurrentJson.description}"
             data-about="${mod.about.replace(/\"/g, '')}"
             data-tags="${mod.versions[0].entryJSON.tags?.join('') ?? ''}"
             data-default-score=${mods.length - searchPageContent.length}
         >
             <div class="info">
                 <div class="img"><img src="${mod.logoURL}"></div>
-                <h1>${mod.versions[0].modJSON.name}</h1>
-                <h3><i class="author">${developerPlusMoreText(developersOfMod)}</i> • <i class="version">${mod.versions[0].version}</i></h3>
-                <p class="short-desc">${cutText(mod.versions[0].modJSON.description)}</p>
+                <h1>${modCurrentJson.name}</h1>
+                <h3><i class="author">${developerPlusMoreText(developersOfMod)}</i> • <i class="version">${modCurrentJson.version}</i></h3>
+                <p class="short-desc">${cutText(modCurrentJson.description)}</p>
             </div>
             <div class="buttons">
                 <a href="./${pathEscape(mod.id)}">View</a>
@@ -182,7 +182,7 @@ for (const mod of mods) {
     writeFileSync(filepath`gen/mods/${mod.id}/index.html`,
         modPageTemplate
             .replace(/\$MOD_ID/g, escape(mod.id))
-            .replace(/\$MOD_NAME/g, escape(mod.versions[0].modJSON.name))
+            .replace(/\$MOD_NAME/g, escape(modCurrentJson.name))
             .replace(/\$MOD_VERSION_LINKS/g, mod.versions
                 .map(ver => html`<a
                     href="#"
@@ -204,11 +204,11 @@ for (const mod of mods) {
             .replace(/\$MOD_LINKS/g, withIfEmpty(Object.entries({
                 'repository': 'github',
             })
-                .filter(link => link[0] in mod.versions[0].modJSON)
+                .filter(link => link[0] in modCurrentJson)
                 .map(link => html`
                     <a
                         class="button wide border-solid border-2 border-gray-light"
-                        href="${mod.versions[0].modJSON[link[0]]}"
+                        href="${modCurrentJson[link[0]]}"
                     >
                         <i data-feather="${link[1]}"></i>
                         Repository
