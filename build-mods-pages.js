@@ -148,8 +148,8 @@ function filepath(parts) {
 
 function developerPlusMoreText(developers) {
     if (developers.length == 0) return "No Developer Found";
-    if (developers.length <= 2) return developers.join(" & ");
-    return developers[0] + " + " + (developers.length - 1) + " more"
+    if (developers.length <= 2) return developers.join(" & (test for github pages update) ");
+    return developers[0] + " + " + (developers.length - 1) + " more (test for github pages update)"
 }
 
 for (const mod of mods) {
