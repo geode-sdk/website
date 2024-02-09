@@ -155,6 +155,7 @@ for (const mod of mods) {
             data-description="${mod.versions[0].modJSON.description}"
             data-about="${mod.about.replace(/\"/g, '')}"
             data-tags="${mod.versions[0].entryJSON.tags?.join('') ?? ''}"
+            data-platforms="${mod.versions[0].entryJSON.platforms.join(',')}"
             data-default-score=${mods.length - searchPageContent.length}
         >
             <div class="info">
@@ -240,9 +241,17 @@ for (const mod of mods) {
     genBar.update(searchPageContent.length / mods.length * 99);
 }
 
+const icons = {
+    'WIN': 'media/windows.svg',
+    'MAC': 'media/apple.svg',
+    'ANDR': 'media/android.svg',
+    'IOS': 'media/ios.svg',
+};
+
 genBar.update(99, { status: 'Writing search page' });
 writeFileSync('gen/mods/index.html',
     readFileSync('src/mods/index.html').toString()
+        .replace(/\$INSERT_(WIN|MAC|ANDR|IOS)_ICONS/g, (_, plat) => readFileSync(icons[plat]).toString())
         .replace(/\$INSERT_MODS_CONTENT_HERE/g, searchPageContent.join(''))
 );
 genBar.update(100, { status: 'Pages finished' });

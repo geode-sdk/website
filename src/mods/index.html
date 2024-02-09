@@ -53,19 +53,50 @@
 
         <h1>Browse Geode Mods</h1>
 
-        <div class="
-            flex
-            items-center
-            bg-gray-darker
-            max-w-inp-or-vw w-full m-8
-            rounded-full
-        ">
-            <i data-feather="search" class="ml-4 text-gray-light"></i>
-            <input placeholder="Search..." class="
-                bg-transparent p-4 border-none outline-none
-                flex-grow
-                placeholder-gray-light
-            " id="search-input">
+        <div class="flex items-center">
+            <div class="
+                flex
+                items-center
+                bg-gray-darker
+                max-w-inp-or-vw w-full m-8
+                rounded-full
+            ">
+                <i data-feather="search" class="ml-4 text-gray-light"></i>
+                <input placeholder="Search..." class="
+                    bg-transparent p-4 border-none outline-none
+                    flex-grow
+                    placeholder-gray-light
+                " id="search-input">
+            </div>
+            <div class="flex grid grid-cols-2">
+                <div class="flex filter-item">
+                    <input type="checkbox" id="windows" checked />
+                    <label for="windows" class="tag px-3 py-1 filter-item">
+                        <div class="small-icon-items fill-white">$INSERT_WIN_ICONS</div>
+                    </label>
+                </div>
+
+                <div class="flex filter-item">
+                    <input type="checkbox" id="android64" checked />
+                    <label for="android" class="tag px-3 py-1 filter-item">
+                        <div class="small-icon-items fill-white">$INSERT_ANDR_ICONS</div>
+                    </label>
+                </div>
+
+                <div class="flex filter-item">
+                    <input type="checkbox" id="macos" checked />
+                    <label for="macos" class="tag px-3 py-1 filter-item">
+                        <div class="small-icon-items fill-white">$INSERT_MAC_ICONS</div>
+                    </label>
+                </div>
+
+                <div class="flex filter-item">
+                    <input type="checkbox" id="ios" checked />
+                    <label for="ios" class="tag px-3 py-1 filter-item">
+                        <div class="small-icon-items fill-white">$INSERT_IOS_ICONS</div>
+                    </label>
+                </div>
+            </div>
         </div>
 
         <div class="mods-list">
@@ -162,16 +193,29 @@
                 } : undefined;
         }
 
-        document.querySelector('#search-input').addEventListener('input', e => {
+        const search = document.getElementById('search-input');
+        const sortFilter = (e) => {
             let any = false;
             const sorted = [];
+
+            const filters = ['windows', 'macos', 'android64', 'ios'].filter(f => document.getElementById(f).checked);
+
             document.querySelectorAll('article')
                 .forEach(a => {
+                    let platforms = a.getAttribute('data-platforms').split(',');
+                    let check = false;
+                    for (let plat of platforms) {
+                        if (filters.includes(plat)) {
+                            check = true;
+                            break;
+                        }
+                    }
+
                     let score = 0;
 
-                    if (e.target.value) {
+                    if (search.value) {
                         const weightedMatch = (attr, weight) => {
-                            const match = furryMatch(a.getAttribute(attr), e.target.value);
+                            const match = furryMatch(a.getAttribute(attr), search.value);
                             if (match) {
                                 score += match.score * weight;
                             }
@@ -187,6 +231,8 @@
                         score = parseInt(a.getAttribute('data-default-score'));
                     }
 
+                    score *= check || !filters.length;
+
                     if (!a.classList.toggle('hidden', score <= 0)) {
                         any = true;
                     }
@@ -200,7 +246,10 @@
             for (const [_, elem] of sorted) {
                 document.querySelector('.mods-list').appendChild(elem);
             }
-        });
+        };
+
+        search.addEventListener('input', sortFilter);
+        document.querySelectorAll('div.filter-item > input').forEach(f => f.addEventListener('change', sortFilter));
     </script> 
 
 </body>
