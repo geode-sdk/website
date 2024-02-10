@@ -154,13 +154,13 @@ function developersTextOnListing(developers) {
 
 for (const mod of mods) {
     var modCurrentJson = mod.versions[0].modJSON
-    var developersOfMod = modCurrentJson.developers||[modCurrentJson.developer];
+    var modDevelopers = modCurrentJson.developers ?? [modCurrentJson.developer];
 
     searchPageContent.push(html`
         <article
             class="mod-card"
             data-name="${modCurrentJson.name}"
-            data-developer="${developersTextOnListing(developersOfMod)}"
+            data-developer="${developersTextOnListing(modDevelopers)}"
             data-description="${modCurrentJson.description}"
             data-about="${mod.about.replace(/\"/g, '')}"
             data-tags="${mod.versions[0].entryJSON.tags?.join('') ?? ''}"
@@ -169,7 +169,7 @@ for (const mod of mods) {
             <div class="info">
                 <div class="img"><img src="${mod.logoURL}"></div>
                 <h1>${modCurrentJson.name}</h1>
-                <h3><i class="author">${developersTextOnListing(developersOfMod)}</i> • <i class="version">${mod.versions[0].version}</i></h3>
+                <h3><i class="author">${developersTextOnListing(modDevelopers)}</i> • <i class="version">${mod.versions[0].version}</i></h3>
                 <p class="short-desc">${cutText(modCurrentJson.description)}</p>
             </div>
             <div class="buttons">
@@ -197,7 +197,7 @@ for (const mod of mods) {
                 .join('')
             )
             .replace(/\$MOD_VERSION/g, escape(mod.versions[0].version))
-            .replace(/\$MOD_DEVELOPER/g, escape(developersOfMod.join(" & ")))
+            .replace(/\$MOD_DEVELOPER/g, escape(modDevelopers.join(" & ")))
             .replace(/\$MOD_ICON_URL/g, escape(mod.logoURL))
             .replace(/\$MOD_DOWNLOAD_URL/g, escape(mod.versions[0].entryJSON.mod.download))
             .replace(/\$MOD_ABOUT_MD/g, marked(mod.about))
