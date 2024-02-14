@@ -229,7 +229,7 @@ for (const mod of mods) {
                 'windows':   'media/windows.svg',
                 'macos':     'media/apple.svg',
                 'android64': 'media/android.svg',
-                'ios':       'media/ios.svg',
+                // 'ios':       'media/ios.svg',
             })
                 .filter(plat => mod.versions[0].entryJSON.platforms.includes(plat[0]))
                 .map(plat => readFileSync(plat[1]).toString())
@@ -239,7 +239,7 @@ for (const mod of mods) {
                 'windows':   'media/windows.svg',
                 'macos':     'media/apple.svg',
                 'android64': 'media/android.svg',
-                'ios':       'media/ios.svg',
+                // 'ios':       'media/ios.svg',
             })
                 .filter(plat => !mod.versions[0].entryJSON.platforms.includes(plat[0]))
                 .map(plat => readFileSync(plat[1]).toString())
