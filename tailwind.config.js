@@ -44,8 +44,5 @@ module.exports = {
             },
         }
     },
-    safelist: [{
-        pattern: /hljs+/,
-    }],
     plugins: [],
 };

@@ -19,5 +19,7 @@ const commands = [
 ]
 
 for (let command of commands) {
-    execSync(command);
+    execSync(command, {
+        stdio: 'inherit'
+    });
 }
