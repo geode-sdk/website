@@ -228,3 +228,7 @@
         transition-colors
         text-center;
 }
+
+.filter-item {
+    min-width: 5rem;
+}
