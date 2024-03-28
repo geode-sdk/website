@@ -22,3 +22,5 @@ to start a server that watches for changes in the script.
 > Note: If you are just opening a PR for a change to the site, you don't need to worry about building the site.
 
 First, make sure to install the dependencies (steps above). Then run `npm run build` to build the site.
+
+giod
