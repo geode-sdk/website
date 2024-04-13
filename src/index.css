@@ -271,3 +271,7 @@ em.tag {
         text-cyan 
         p-1;
 }
+
+.one-line-code-block {
+    font-size: 10.75pt !important;
+}
