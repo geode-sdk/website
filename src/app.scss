@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&display=swap');
+
+:root {
+    /* sizes */
+    
+    --gap-0:       0.0rem;
+    --gap-small:   0.5rem;
+    --gap-normal:  1.0rem;
+    --gap-large:   3.0rem;
+    --gap-immense: 10.0rem;
+
+    --page-margin: 4rem;
+
+    --font-size-small:    0.8rem;
+    --font-size-normal:   1rem;
+    --font-size-heading:  2rem;
+    --font-size-title:    6rem;
+
+    --transition-duration: 150ms;
+
+    /* fonts */
+
+    --font-heading: 'Quicksand';
+    --font-body: 'Poppins';
+
+    /* colors */
+    /* https://www.realtimecolors.com/?colors=ededed-262626-ed8a7d-ac5391-f4d490&fonts=Varela%20Round-Poppins */
+
+    --text-50:  #f2f2f2;
+    --text-100: #e6e6e6;
+    --text-200: #cccccc;
+    --text-300: #b3b3b3;
+    --text-400: #999999;
+    --text-500: #808080;
+    --text-600: #666666;
+    --text-700: #4d4d4d;
+    --text-800: #333333;
+    --text-900: #1a1a1a;
+    --text-950: #0d0d0d;
+
+    --background-50:  #f2eef7;
+    --background-100: #e5dcef;
+    --background-200: #cbbade;
+    --background-300: #b197ce;
+    --background-400: #9774be;
+    --background-500: #7c52ad;
+    --background-600: #64418b;
+    --background-700: #4b3168;
+    --background-800: #322145;
+    --background-900: #191023;
+    --background-950: #0c0811;
+    
+    --primary-50:  #fcebe9;
+    --primary-100: #f9d7d2;
+    --primary-200: #f3aea5;
+    --primary-300: #ed8678;
+    --primary-400: #e75e4b;
+    --primary-500: #e0351f;
+    --primary-600: #b42b18;
+    --primary-700: #872012;
+    --primary-800: #5a150c;
+    --primary-900: #2d0b06;
+    --primary-950: #160503;
+
+    --secondary-50:  #f7eef4;
+    --secondary-100: #eedde9;
+    --secondary-200: #debad3;
+    --secondary-300: #cd98bd;
+    --secondary-400: #bd75a7;
+    --secondary-500: #ac5391;
+    --secondary-600: #8a4274;
+    --secondary-700: #673257;
+    --secondary-800: #45213a;
+    --secondary-900: #22111d;
+    --secondary-950: #11080f;
+
+    --accent-50:  #fdf6e8;
+    --accent-100: #faedd1;
+    --accent-200: #f6dba2;
+    --accent-300: #f1ca74;
+    --accent-400: #edb845;
+    --accent-500: #e8a617;
+    --accent-600: #ba8512;
+    --accent-700: #8b640e;
+    --accent-800: #5d4209;
+    --accent-900: #2e2105;
+    --accent-950: #171102;
+
+    --accent-alt-50:  #ebf9ed;
+    --accent-alt-100: #d7f4db;
+    --accent-alt-200: #b0e8b6;
+    --accent-alt-300: #88dd92;
+    --accent-alt-400: #61d16e;
+    --accent-alt-500: #39c64a;
+    --accent-alt-600: #2e9e3b;
+    --accent-alt-700: #22772c;
+    --accent-alt-800: #174f1d;
+    --accent-alt-900: #0b280f;
+    --accent-alt-950: #061407;
+}
+
+body {
+    padding: 0;
+    margin: var(--page-margin);
+
+    background: linear-gradient(to bottom, var(--background-700), var(--background-900));
+    font-family: var(--font-body);
+    color: var(--text-color);
+
+    --text-color: var(--text-50);
+    --em-color: var(--primary-300);
+}
+
+p {
+    font-family: var(--font-body), sans-serif;
+    font-size: var(--font-size);
+    font-weight: var(--font-weight);
+    margin: 0;
+    max-width: min(50ch, 90vw);
+    color: var(--text-color);
+}
+em {
+    color: var(--em-color);
+    font-style: normal;
+    font-weight: 600;
+}
