@@ -1,6 +1,4 @@
 <script>
-    export const prerender = true;
-
     import Button from "$lib/components/Button.svelte";
     import Column from "$lib/components/Column.svelte";
     import Gap from "$lib/components/Gap.svelte";
