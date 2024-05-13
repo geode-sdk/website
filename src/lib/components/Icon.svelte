@@ -17,7 +17,7 @@
 
 <style lang="scss">
     :global(:root) {
-        --icon-size: 1em;
+        --icon-size: 1.563em;
     }
     span {
         display: inline-grid;
