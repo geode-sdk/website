@@ -1,6 +1,5 @@
 <script lang="ts">
     import type { KnownIcon } from "$lib";
-    import "../../app.scss";
     import Icon from "./Icon.svelte";
 
     type Style = 
@@ -9,7 +8,7 @@
         'secondary-filled' |
         'hollow';
     export let style: Style = 'hollow';
-    export let href: string;
+    export let href: string | undefined = undefined;
     export let icon: KnownIcon | undefined = undefined;
 </script>
 
@@ -37,6 +36,9 @@
 
         transition: color, background-color, border-color, transform;
         transition-duration: var(--transition-duration);
+
+        cursor: pointer;
+        user-select: none;
 
         // &:hover {
         //     transform: scale(105%) translateY(-.2em);

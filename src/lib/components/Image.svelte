@@ -11,7 +11,6 @@
 		eager: true,
 		query: { enhanced: true }
 	});
-    console.log(allImages);
 	let src = Object.entries(allImages).filter(([k, _]) => k.includes(name)).map(([_, v]) => v as string)[0];
         
 </script>
