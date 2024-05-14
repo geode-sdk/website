@@ -74,7 +74,9 @@
 <h2>How to install mods?</h2>
 
 <FlyIntoView>
-    <Image name="main-menu" alt="The main menu, showing the Geode button" style="shadow"></Image>
+    <div style="flex-shrink: 0">
+        <Image name="main-menu" alt="The main menu, showing the Geode button" style="shadow"></Image>
+    </div>
     <Column align="left">
         <p>
             Once you have <em>installed Geode</em>, you should see a new button in the bottom row of the main menu.
@@ -91,7 +93,9 @@
 </FlyIntoView>
 
 <FlyIntoView>
-    <Image name="main-page" alt="The Geode menu" style="shadow"></Image>
+    <div style="flex-shrink: 0">
+        <Image name="main-page" alt="The Geode menu" style="shadow"></Image>
+    </div>
     <Column align="left">
         <p>
             The first page you see is the <em>list of mods you currently have installed</em>.
@@ -113,7 +117,9 @@
 </FlyIntoView>
 
 <FlyIntoView>
-    <Image name="download-page" alt="The download tab of the Geode menu" style="shadow"></Image>
+    <div style="flex-shrink: 0">
+        <Image name="download-page" alt="The download tab of the Geode menu" style="shadow"></Image>
+    </div>
     <Column align="left">
         <p>
             The other pages - <em>Recommended</em>, <em>Download</em>, and <em>Trending</em> are dedicated to finding new mods.
@@ -140,7 +146,7 @@
     }
     .show-platforms {
         cursor: pointer;
-        color: var(--text-300);
+        color: var(--secondary-300);
         &:hover {
             text-decoration: underline;
         }
