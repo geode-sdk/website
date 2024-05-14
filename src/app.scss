@@ -1,32 +1,32 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&display=swap");
 
 :root {
     /* sizes */
-    
-    --gap-0:       0.0rem;
-    --gap-small:   0.5rem;
-    --gap-normal:  1.0rem;
-    --gap-large:   3.0rem;
-    --gap-immense: 10.0rem;
+
+    --gap-0: 0rem;
+    --gap-small: 0.5rem;
+    --gap-normal: 1rem;
+    --gap-large: 3rem;
+    --gap-immense: 10rem;
 
     --page-margin: 4rem;
 
-    --font-size-small:    0.8rem;
-    --font-size-normal:   1rem;
-    --font-size-heading:  2rem;
-    --font-size-title:    6rem;
+    --font-size-small: 0.8rem;
+    --font-size-normal: 1rem;
+    --font-size-heading: 2rem;
+    --font-size-title: 6rem;
 
     --transition-duration: 150ms;
 
     /* fonts */
 
-    --font-heading: 'Quicksand';
-    --font-body: 'Poppins';
+    --font-heading: "Quicksand";
+    --font-body: "Poppins";
 
     /* colors */
     /* https://www.realtimecolors.com/?colors=ededed-262626-ed8a7d-ac5391-f4d490&fonts=Varela%20Round-Poppins */
 
-    --text-50:  #f2f2f2;
+    --text-50: #f2f2f2;
     --text-100: #e6e6e6;
     --text-200: #cccccc;
     --text-300: #b3b3b3;
@@ -38,7 +38,7 @@
     --text-900: #1a1a1a;
     --text-950: #0d0d0d;
 
-    --background-50:  #f2eef7;
+    --background-50: #f2eef7;
     --background-100: #e5dcef;
     --background-200: #cbbade;
     --background-300: #b197ce;
@@ -49,8 +49,8 @@
     --background-800: #322145;
     --background-900: #191023;
     --background-950: #0c0811;
-    
-    --primary-50:  #fcebe9;
+
+    --primary-50: #fcebe9;
     --primary-100: #f9d7d2;
     --primary-200: #f3aea5;
     --primary-300: #ed8678;
@@ -62,7 +62,7 @@
     --primary-900: #2d0b06;
     --primary-950: #160503;
 
-    --secondary-50:  #f7eef4;
+    --secondary-50: #f7eef4;
     --secondary-100: #eedde9;
     --secondary-200: #debad3;
     --secondary-300: #cd98bd;
@@ -74,7 +74,7 @@
     --secondary-900: #22111d;
     --secondary-950: #11080f;
 
-    --accent-50:  #fdf6e8;
+    --accent-50: #fdf6e8;
     --accent-100: #faedd1;
     --accent-200: #f6dba2;
     --accent-300: #f1ca74;
@@ -86,7 +86,7 @@
     --accent-900: #2e2105;
     --accent-950: #171102;
 
-    --accent-alt-50:  #ebf9ed;
+    --accent-alt-50: #ebf9ed;
     --accent-alt-100: #d7f4db;
     --accent-alt-200: #b0e8b6;
     --accent-alt-300: #88dd92;
@@ -103,7 +103,11 @@ body {
     padding: 0;
     margin: var(--page-margin);
 
-    background: linear-gradient(to bottom, var(--background-700), var(--background-900));
+    background: linear-gradient(
+        to bottom,
+        var(--background-700),
+        var(--background-900)
+    );
     font-family: var(--font-body);
     color: var(--text-color);
 
@@ -148,9 +152,9 @@ p.subtitle {
 
     font-size: var(--font-size-subtitle);
     font-weight: 600;
-    
+
     color: var(--text-50);
-    text-shadow: 0px 0px .75rem var(--primary-800);
+    text-shadow: 0px 0px 0.75rem var(--primary-800);
 
     & :global(em) {
         font-weight: 700;

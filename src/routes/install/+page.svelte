@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import Button from "$lib/components/Button.svelte";
     import Column from "$lib/components/Column.svelte";
     import FlyIntoView from "$lib/components/FlyIntoView.svelte";
