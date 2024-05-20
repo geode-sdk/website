@@ -34,7 +34,7 @@ async function main() {
             }
         } else if (assetName.includes('.apk')) {
             if (assetName.endsWith('-android32.apk')) {
-                platformName = 'Android (32 bit)';
+                continue;
             } else {
                 platformName = 'Android';
             }
