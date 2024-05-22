@@ -198,7 +198,8 @@
 
 .small-icon-items > svg, .small-icon-items > span > svg {
     @apply
-        max-h-6 min-h-4;
+        max-h-6;
+    min-height: 1.0rem;
 }
 
 .hidden {
