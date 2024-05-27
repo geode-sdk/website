@@ -1,7 +1,6 @@
-<script>
+<script lang="ts">
     import "../app.scss";
     import Button from "$lib/components/Button.svelte";
-    import Gap from "$lib/components/Gap.svelte";
     import Column from "$lib/components/Column.svelte"
     import Row from "$lib/components/Row.svelte"
     import Link from "$lib/components/Link.svelte";
@@ -11,31 +10,32 @@
 </script>
 
 <main>
-<slot/>
-<nav>
-	<Button href=".." style="primary-filled-dark" icon="home">Home</Button>
-</nav>
-<Waves type="bottom" --text-color=var(--text-950)>
-	<Column>
-		<Row>
-			<Link href="https://discord.gg/9e43WMKzhp" icon="discord">Discord</Link>
-			<Dot/>
-			<Link href="https://twitter.com/geode_sdk" icon="twitter">Twitter</Link>
-			<Dot/>
-			<Link href="https://docs.geode-sdk.org/" icon="docs">Documentation</Link>
-			<Dot/>
-			<Link href="https://github.com/geode-sdk" icon="github">Source Code</Link>
-		</Row>
-		<p>
-			Site made by <Link href="https://github.com/hjfod">HJfod</Link>.
-			Thank you to <Link href="https://github.com/nekitdev">Nekit</Link> for the domain!
-		</p>
-		<Row gap=small>
-			<Icon icon="copyright"/> 
-			<p>Geode Team 2024</p>
-		</Row>
-	</Column>
-</Waves>
+	<slot/>
+	<nav>
+		<Button href=".." style="primary-filled-dark" icon="home">Home</Button>
+		<slot name="nav"/>
+	</nav>
+	<Waves type="bottom" --text-color=var(--text-950)>
+		<Column>
+			<Row>
+				<Link href="https://discord.gg/9e43WMKzhp" icon="discord">Discord</Link>
+				<Dot/>
+				<Link href="https://twitter.com/geode_sdk" icon="twitter">Twitter</Link>
+				<Dot/>
+				<Link href="https://docs.geode-sdk.org/" icon="docs">Documentation</Link>
+				<Dot/>
+				<Link href="https://github.com/geode-sdk" icon="github">Source Code</Link>
+			</Row>
+			<p>
+				Site made by <Link href="https://github.com/hjfod">HJfod</Link>.
+				Thank you to <Link href="https://github.com/nekitdev">Nekit</Link> for the domain!
+			</p>
+			<Row gap=small>
+				<Icon icon="copyright"/> 
+				<p>Geode Team 2024</p>
+			</Row>
+		</Column>
+	</Waves>
 </main>
 
 <style lang="scss">

@@ -1,0 +1,53 @@
+[
+    {
+        "category": "About Geode",
+        "questions": [
+            {
+                "question": "Is Geode an Official part of GD?",
+                "answer": "Geode is a *fan-made* product, and is not affiliated with nor endorsed by RobTop Games."
+            },
+            {
+                "question": "Who created Geode?",
+                "answer": "Geode is developed by a team of people, including [HJfod](https://github.com/HJfod/), [Alk](https://github.com/altalk23/), [Mat](https://github.com/matcool/), [Camila314](https://github.com/camila314/), [Cvolton](https://github.com/Cvolton), and others."
+            },
+            {
+                "question": "Is Geode Free?",
+                "answer": "Geode is *100% free* and always will be! However, individual mods may be paid."
+            }
+        ]
+    },
+    {
+        "category": "Common Issues",
+        "questions": [
+            {
+                "question": "I can't see the Geode button!",
+                "answer": "Bla bla troubleshoot stuff"
+            }
+        ]
+    },
+    {
+        "category": "Using Geode",
+        "questions": [
+            {
+                "question": "How do I install mods?",
+                "answer": "In the main menu of Geometry Dash, you will find a new button in the bottom row which takes you to the *mods list*.\n\nIn the mods list, you can find a *Download* tab for searching for mods, and a *Recent* tab for newly released mods. Click on the *View* button on each mod to open their download page, from where you can find the Download button."
+            },
+            {
+                "question": "Why can't I find certain mods?",
+                "answer": "Despite being a cross-platform mod loader, *mods are not always available on all platforms*. This means some mods may not be available on your platform."
+            },
+            {
+                "question": "How do I update mods?",
+                "answer": "Geode *automatically checks for updates* for all mods on startup. If updates are found, there will be a blue banner at the top of the *mods list* with a button for updating all mods at once.\n\nTo update individual mods, click on the *View* button to open their popup and click *Update*."
+            },
+            {
+                "question": "How do I uninstall mods?",
+                "answer": "In the *mods list*, you can click on the *View* button to open the popup for the mod you want to uninstall. There you will find a button to uninstall the mod."
+            },
+            {
+                "question": "How do I change mod settings?",
+                "answer": "In the *mods list*, you can click on the *View* button to open the popup for the mod you want to change settings for. There in the *bottom-left corner* you will find a button to open the *settings dialog*, listing all of the mod's settings.\n\n\nIf the mod is disabled, some settings might not be available."
+            }
+        ]
+    }
+]

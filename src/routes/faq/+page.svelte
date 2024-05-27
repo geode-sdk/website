@@ -1,47 +1,42 @@
 <script lang="ts">
-    import Button from "$lib/components/Button.svelte";
     import Column from "$lib/components/Column.svelte";
-    import FlyIntoView from "$lib/components/FlyIntoView.svelte";
     import Gap from "$lib/components/Gap.svelte";
-    import Icon from "$lib/components/Icon.svelte";
-    import Image from "$lib/components/Image.svelte";
     import Link from "$lib/components/Link.svelte";
     import Row from "$lib/components/Row.svelte";
     import Waves from "$lib/components/Waves.svelte";
+    import { onMount } from "svelte";
+    import SvelteMarkdown from "svelte-markdown";
 
-    function convertTitle(title: string): string {
+    // TODO: FAQs in other languages
+    import faqs from "$lib/data/faqs-en.json";
+
+    function anchorIDForTitle(title: string): string {
         return title
             .replace(/[^\w\s]/g, "")
             .replace(/\s+/g, "-")
             .toLowerCase();
     }
 
-    const faqs = [
-        {
-            title: "I can't see the geode button",
-            description: "Bla bla troubleshoot stuff",
-        },
-        {
-            title: "How do I change mod settings?",
-            description:
-                "By going to the mods list, you can click on the view button to open the popup for the mod you want to change settings for. There you will find a button to open the settings dialog, listing all of the mod's settings. If the mod is disabled, some settings might not be available.",
-        },
-        {
-            title: "How do I update mods?",
-            description:
-                "By going to the mods list, you will see an updates tab. There you can see any pending updates.",
-        },
-        {
-            title: "How do I uninstall mods?",
-            description:
-                "By going to the mod list, you can click on the view button to open the popup for the mod you want to uninstall. There you will find a button to uninstall the mod.",
-        },
-        {
-            title: "Why can't I find certain mods?",
-            description:
-                "Despite being a cross-platform mod loader, mods are not always available on all platforms. This means some mods may not be available on your platform.",
-        },
-    ];
+    onMount(() => {
+        const faqs = Array.from(document.querySelectorAll('.faq'));
+        document.addEventListener('scroll', e => {
+            let targetFaq;
+            for (const faq of faqs) {
+                targetFaq = faq.getAttribute('id');
+                const rect = faq.getBoundingClientRect();
+                if (document.body.getBoundingClientRect().top > 60) {
+                    break;
+                }
+                if (rect.y + rect.height * 1.5 > window.screen.height / 2) {
+                    break;
+                }
+            }
+            if (targetFaq) {
+                document.querySelectorAll('.scrolled').forEach(s => s.classList.remove('scrolled'));
+                document.querySelector(`a[href="#${targetFaq}"]`)?.classList.add('scrolled');
+            }
+        });
+    });
 </script>
 
 <Waves type="top" />
@@ -49,22 +44,32 @@
 
 <h1>Frequently Asked Questions</h1>
 
-<Column align="stretch">
-    <Column>
-        <ul>
-            {#each faqs as { title }}
-                <li><Link href={"#" + convertTitle(title)}>{title}</Link></li>
+<div class="main-flow">
+    <nav>
+        <span>
+            {#each faqs as { category, questions }}
+                <h2>{category}</h2>
+                {#each questions as { question }}
+                    <Link href={"#" + anchorIDForTitle(question)}>{question}</Link>
+                {/each}
             {/each}
-        </ul>
+        </span>
+    </nav>
+    <Column align="stretch">
+        {#each faqs as { category, questions }, i}
+            {#if i > 0}
+                <Gap size="normal" />
+            {/if}
+            <h2>{category}</h2>
+            {#each questions as { question, answer }}
+                <article id={anchorIDForTitle(question)} class="faq scrolled">
+                    <h3>{question}</h3>
+                    <div class="markdown"><SvelteMarkdown source={answer}/></div>
+                </article>
+            {/each}
+        {/each}
     </Column>
-
-    {#each faqs as { title, description }}
-        <div>
-            <h2 id={convertTitle(title)}>{title}</h2>
-            <p>{description}</p>
-        </div>
-    {/each}
-</Column>
+</div>
 
 <Gap size="normal" />
 
@@ -74,6 +79,81 @@
         font-family: var(--font-heading);
         font-weight: 600;
         color: var(--text-50);
-        font-size: var(--font-size-title);
+        font-size: var(--font-size-long-title);
+    }
+    h2 {
+        margin: 0;
+        font-family: var(--font-heading);
+    }
+    .main-flow {
+        display: grid;
+        grid-template-columns: 1fr max-content 1fr;
+        gap: var(--gap-normal);
+    }
+    nav {
+        display: flex;
+        flex-direction: column;
+        gap: var(--gap-small);
+        position: relative;
+
+        background-color: color-mix(in srgb, var(--background-950) 50%, transparent);
+        border-radius: .5rem;
+        padding: .75rem;
+
+        & > span {
+            display: flex;
+            flex-direction: column;
+            gap: var(--gap-small);
+            position: sticky;
+            top: 5rem;
+            
+            & > h2 {
+                padding: 0;
+                margin: 0;
+                opacity: 75%;
+                font-size: 1em;
+                color: var(--background-200);
+            }
+            & > :global(a) {
+                background-color: transparent;
+                padding: .5rem;
+                border-radius: .25rem;
+                transition: background-color, color;
+                transition-duration: var(--transition-duration);
+            }
+            // For some reason doing a nested &:global(.scrolled) on the above doesn't work?
+            & > :global(a.scrolled) {
+                background-color: color-mix(in srgb, var(--text-500) 25%, transparent);
+            }
+            & > :global(a:hover) {
+                background-color: color-mix(in srgb, var(--secondary-500) 25%, transparent);
+                color: var(--primary-200);
+                text-decoration: none;
+            }
+        }
+    }
+    article {
+        background-color: color-mix(in srgb, var(--background-950) 50%, transparent);
+        border-radius: .5rem;
+        padding: .75rem;
+        h3 {
+            padding: 0;
+            margin: 0;
+            margin-bottom: .5rem;
+            color: var(--accent-300);
+        }
+        div {
+            padding-left: .5rem;
+            border-left: .25rem solid color-mix(in srgb, var(--background-500) 75%, transparent);
+        }
+        &:global(.highlight-scrolled) {
+            background-color: color-mix(in srgb, var(--secondary-500) 25%, transparent);
+            h3 {
+                color: var(--accent-300);
+            }
+            div {
+                border-left-color: var(--primary-300);
+            }
+        }
     }
 </style>

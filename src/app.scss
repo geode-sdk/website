@@ -14,6 +14,7 @@
     --font-size-small: 0.8rem;
     --font-size-normal: 1rem;
     --font-size-heading: 2rem;
+    --font-size-long-title: 3rem;
     --font-size-title: 6rem;
 
     --transition-duration: 150ms;
@@ -159,5 +160,34 @@ p.subtitle {
     & :global(em) {
         font-weight: 700;
         color: var(--accent-alt-300);
+    }
+}
+
+.markdown {
+    --link-color: var(--secondary-300);
+
+    & p:not(:first-child) {
+        margin-top: .75em;
+    }
+
+    & a {
+        text-decoration: none;
+
+        display: inline-flex;
+        flex-direction: row;
+        align-items: center;
+        gap: var(--gap-small);
+        font-weight: var(--link-weight);
+        font-size: var(--font-size);
+
+        transition: color, text-decoration;
+        transition-duration: var(--transition-duration);
+
+        color: var(--link-color);
+
+        &:hover {
+            text-decoration: underline;
+            color: var(--link-hover);
+        }
     }
 }
