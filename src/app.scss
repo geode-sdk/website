@@ -125,7 +125,7 @@ p {
     font-family: var(--font-body), sans-serif;
     font-size: var(--font-size);
     font-weight: var(--font-weight);
-    color: var(--text-50);
+    color: var(--text-color);
     margin: 0;
     max-width: min(50ch, 90vw);
     & :global(em) {

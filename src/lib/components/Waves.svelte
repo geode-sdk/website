@@ -50,7 +50,7 @@
             height: 65rem;
             top: 0px;
             & > :global(svg) {
-                rotate: 180deg;
+                transform: rotate(180deg);
             }
         }
         &.top {
@@ -58,7 +58,7 @@
             top: -14rem;
             height: 38rem;
             & > :global(svg) {
-                rotate: 180deg;
+                transform: rotate(180deg);
             }
         }
     }

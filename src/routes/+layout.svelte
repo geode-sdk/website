@@ -15,7 +15,7 @@
 <nav>
 	<Button href=".." style="primary-filled-dark" icon="home">Home</Button>
 </nav>
-<Waves type="bottom">
+<Waves type="bottom" --text-color=var(--text-950)>
 	<Column>
 		<Row>
 			<Link href="https://discord.gg/9e43WMKzhp" icon="discord">Discord</Link>
@@ -26,7 +26,7 @@
 			<Dot/>
 			<Link href="https://github.com/geode-sdk" icon="github">Source Code</Link>
 		</Row>
-		<p class="text-text-950">
+		<p>
 			Site made by <Link href="https://github.com/hjfod">HJfod</Link>.
 			Thank you to <Link href="https://github.com/nekitdev">Nekit</Link> for the domain!
 		</p>
