@@ -19,6 +19,6 @@
 
 <img src={logoUrl} alt={`mod logo for ${data.version.name}`} />
 
-<a href={getModDownload(data.mod.id, data.version.version).toString()}>Download</a>
+<a href={data.version.download_link}>Download</a>
 
 {data.mod.about}

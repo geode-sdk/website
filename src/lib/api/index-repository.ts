@@ -129,3 +129,10 @@ export function getModLogo(id: string): URL {
 export function getModDownload(id: string, version: string): URL {
     return new URL(`${BASE_URL}/v1/mods/${id}/versions/${version}/download`);
 }
+
+export async function getTags(): Promise<string[]> {
+    const r = await fetch(`${BASE_URL}/v1/tags`);
+    const data = await r.json();
+
+    return validate<string[]>(data);
+}
