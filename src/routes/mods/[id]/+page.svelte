@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getModDownload, getModLogo } from "$lib/api/index-repository.js";
+	import { getModLogo } from "$lib/api/index-repository.js";
 	import type { PageData } from "./$types.js";
 
 	export let data: PageData;

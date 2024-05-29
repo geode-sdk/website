@@ -20,6 +20,15 @@ interface ServerGDVersion {
     android64: string | null;
 }
 
+export type ModStatus = "accepted" | "pending" | "rejected" | "unlisted";
+
+export interface ServerSimpleModVersion {
+    name: string;
+    version: string;
+    download_count: number;
+    validated: boolean;
+}
+
 export interface ServerModVersion {
     name: string;
     download_count: number;
@@ -34,5 +43,5 @@ export interface ServerModVersion {
     mod_id: string;
     dependencies?: ServerDependency[];
     incompatibilities?: ServerIncompatibility[];
-    status: string;
+    status: ModStatus;
 }

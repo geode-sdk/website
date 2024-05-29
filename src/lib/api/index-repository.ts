@@ -1,5 +1,6 @@
-import type { ServerMod } from "./models/mod";
-import type { ServerModVersion } from "./models/mod-version";
+import type { ServerDeveloper } from "./models/base";
+import type { ServerMod, ServerSimpleMod } from "./models/mod.js";
+import type { ModStatus, ServerModVersion } from "./models/mod-version.js";
 
 const BASE_URL = "https://api.geode-sdk.org";
 
@@ -24,19 +25,6 @@ export enum ModSort {
     NameReverse = "name_reverse",
 }
 
-export interface ModSearchParams {
-    page?: number;
-    developer?: string;
-    pending_validation?: boolean;
-    featured?: boolean;
-    per_page?: number;
-    tags?: string[];
-    platforms?: string[];
-    query?: string;
-    gd?: string;
-    sort?: ModSort;
-}
-
 interface BaseRequest<T> {
     error: string;
     payload: T;
@@ -50,6 +38,19 @@ function validate<T>(data: BaseRequest<T>) {
     }
 
     return data.payload;
+}
+
+export interface ModSearchParams {
+    page?: number;
+    developer?: string;
+    pending_validation?: boolean;
+    featured?: boolean;
+    per_page?: number;
+    tags?: string[];
+    platforms?: string[];
+    query?: string;
+    gd?: string;
+    sort?: ModSort;
 }
 
 export async function getMods(
@@ -126,13 +127,41 @@ export function getModLogo(id: string): URL {
     return new URL(`${BASE_URL}/v1/mods/${id}/logo`);
 }
 
-export function getModDownload(id: string, version: string): URL {
-    return new URL(`${BASE_URL}/v1/mods/${id}/versions/${version}/download`);
-}
-
 export async function getTags(): Promise<string[]> {
     const r = await fetch(`${BASE_URL}/v1/tags`);
     const data = await r.json();
 
     return validate<string[]>(data);
+}
+
+export async function getSelf(token: string): Promise<ServerDeveloper> {
+    const r = await fetch(`${BASE_URL}/v1/me`, {
+        headers: new Headers({
+            Authorization: `Bearer ${token}`,
+        }),
+    });
+    const data = await r.json();
+
+    return validate<ServerDeveloper>(data);
+}
+
+export interface GetSelfModsParams {
+    status?: ModStatus;
+}
+
+export async function getSelfMods(token: string, params?: GetSelfModsParams) {
+    const url = new URL(`${BASE_URL}/v1/me/mods`);
+    if (params?.status != null) {
+        url.searchParams.set("status", params.status);
+    }
+
+    const r = await fetch(url, {
+        headers: new Headers({
+            Authorization: `Bearer ${token}`,
+        }),
+    });
+
+    const data = await r.json();
+
+    return validate<ServerSimpleMod[]>(data);
 }
