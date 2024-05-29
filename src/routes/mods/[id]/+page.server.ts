@@ -1,8 +1,4 @@
-import {
-    getMod,
-    getModVersion,
-    type ModSearchParams,
-} from "$lib/api/index-repository.js";
+import { getMod, getModVersion } from "$lib/api/index-repository.js";
 import type { PageServerLoad } from "./$types.js";
 import { error } from "@sveltejs/kit";
 

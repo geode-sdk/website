@@ -3,6 +3,8 @@
 	import { page } from "$app/stores";
 	import type { PageData } from "./$types.js";
 
+	import ModCard from "$lib/components/ModCard.svelte";
+
 	export let data: PageData;
 
 	$: url_params = $page.url.searchParams;
@@ -136,14 +138,12 @@
 </fieldset>
 
 {#if data.mods && max_count > 0}
-	{#each data.mods.data as mod}
-		{@const mod_version = mod.versions[0]}
-		<div>
-			<a href={`/mods/${mod.id}`}>
-				{mod_version.name}
-			</a>
-		</div>
-	{/each}
+	<div class="mod-listing">
+		{#each data.mods.data as mod}
+			{@const mod_version = mod.versions[0]}
+			<ModCard mod={mod} version={mod_version} />
+		{/each}
+	</div>
 {:else}
 	No mods found :(
 {/if}
@@ -153,3 +153,14 @@
 	<span>Page {current_page} of {max_page}</span>
 	<button on:click={onNextPage}>Next</button>
 </div>
+
+<style>
+	.mod-listing {
+		display: flex;
+		flex: 1;
+		flex-direction: row;
+		flex-wrap: wrap;
+		gap: 1.5rem;
+		align-items: center;
+	}
+</style>
