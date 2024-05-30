@@ -113,6 +113,57 @@ export async function getMod(id: string): Promise<ServerMod> {
     return validate(data);
 }
 
+export function getModLogo(id: string): URL {
+    return new URL(`${BASE_URL}/v1/mods/${id}/logo`);
+}
+
+export interface UpdateModBody {
+    featured: boolean;
+}
+
+export async function updateMod(
+    token: string,
+    id: string,
+    body: UpdateModBody,
+): Promise<void> {
+    const r = await fetch(`${BASE_URL}/v1/mods/${id}`, {
+        headers: new Headers({
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+        }),
+        method: "PUT",
+        body: JSON.stringify(body),
+    });
+
+    if (r.status != 204) {
+        const data: BaseRequest<void> = await r.json();
+        throw new IndexError(data.error);
+    }
+}
+
+export interface CreateModBody {
+    download_link: string;
+}
+
+export async function createMod(
+    token: string,
+    body: CreateModBody,
+): Promise<void> {
+    const r = await fetch(`${BASE_URL}/v1/mods`, {
+        headers: new Headers({
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+        }),
+        method: "POST",
+        body: JSON.stringify(body),
+    });
+
+    if (r.status != 204) {
+        const data: BaseRequest<void> = await r.json();
+        throw new IndexError(data.error);
+    }
+}
+
 export async function getModVersion(
     id: string,
     version: string,
@@ -123,8 +174,54 @@ export async function getModVersion(
     return validate<ServerModVersion>(data);
 }
 
-export function getModLogo(id: string): URL {
-    return new URL(`${BASE_URL}/v1/mods/${id}/logo`);
+export interface UpdateModVersionBody {
+    status: ModStatus;
+    info?: string;
+}
+
+export async function updateModVersion(
+    token: string,
+    id: string,
+    version: string,
+    body: UpdateModVersionBody,
+): Promise<void> {
+    const r = await fetch(`${BASE_URL}/v1/mods/${id}/versions/${version}`, {
+        headers: new Headers({
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+        }),
+        method: "PUT",
+        body: JSON.stringify(body),
+    });
+
+    if (r.status != 204) {
+        const data: BaseRequest<void> = await r.json();
+        throw new IndexError(data.error);
+    }
+}
+
+export interface CreateModVersionBody {
+    download_link: string;
+}
+
+export async function createModVersion(
+    token: string,
+    id: string,
+    body: CreateModVersionBody,
+): Promise<void> {
+    const r = await fetch(`${BASE_URL}/v1/mods/${id}/versions`, {
+        headers: new Headers({
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+        }),
+        method: "POST",
+        body: JSON.stringify(body),
+    });
+
+    if (r.status != 204) {
+        const data: BaseRequest<void> = await r.json();
+        throw new IndexError(data.error);
+    }
 }
 
 export async function getTags(): Promise<string[]> {
