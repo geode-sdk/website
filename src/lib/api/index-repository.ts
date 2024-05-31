@@ -262,3 +262,51 @@ export async function getSelfMods(token: string, params?: GetSelfModsParams) {
 
     return validate<ServerSimpleMod[]>(data);
 }
+
+export interface UpdateProfileBody {
+    display_name: string;
+}
+
+export async function updateProfile(token: string, body: UpdateProfileBody) {
+    const r = await fetch(`${BASE_URL}/v1/me`, {
+        headers: new Headers({
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+        }),
+        method: "PUT",
+        body: JSON.stringify(body),
+    });
+
+    if (r.status != 204) {
+        const data: BaseRequest<void> = await r.json();
+        throw new IndexError(data.error);
+    }
+}
+
+export async function deleteToken(token: string): Promise<void> {
+    const r = await fetch(`${BASE_URL}/v1/me/token`, {
+        headers: new Headers({
+            Authorization: `Bearer ${token}`,
+        }),
+        method: "DELETE",
+    });
+
+    if (r.status != 204) {
+        const data: BaseRequest<void> = await r.json();
+        throw new IndexError(data.error);
+    }
+}
+
+export async function deleteAllTokens(token: string): Promise<void> {
+    const r = await fetch(`${BASE_URL}/v1/me/tokens`, {
+        headers: new Headers({
+            Authorization: `Bearer ${token}`,
+        }),
+        method: "DELETE",
+    });
+
+    if (r.status != 204) {
+        const data: BaseRequest<void> = await r.json();
+        throw new IndexError(data.error);
+    }
+}

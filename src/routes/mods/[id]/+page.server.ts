@@ -11,7 +11,7 @@ import type { Actions, PageServerLoad } from "./$types.js";
 import { error } from "@sveltejs/kit";
 
 export const actions: Actions = {
-    update_mod_version: async ({ cookies, request, params, url }) => {
+    update_mod_version: async ({ cookies, request, params }) => {
         const id = params.id;
 
         const token = cookies.get("token");

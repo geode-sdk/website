@@ -24,6 +24,18 @@
 		admin: {data.self.admin} <br />
 		verified: {data.self.verified} <br />
 	</p>
+
+	<form method="post" action="?/update_self">
+		<label for="update_display_name">Display name:</label>
+		<input type="text" value={data.self.display_name} name="display_name" id="update_display_name" />
+
+		<input type="submit" value="Update" />
+	</form>
+
+	<form method="POST">
+		<button formaction="?/logout">Log out</button>
+		<button formaction="?/logout_all">Revoke all tokens</button>
+	</form>
 </fieldset>
 
 <div>
