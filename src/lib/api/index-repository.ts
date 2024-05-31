@@ -43,7 +43,7 @@ function validate<T>(data: BaseRequest<T>) {
 export interface ModSearchParams {
     page?: number;
     developer?: string;
-    pending_validation?: boolean;
+    status?: ModStatus;
     featured?: boolean;
     per_page?: number;
     tags?: string[];
@@ -64,7 +64,7 @@ export async function getMods(
     }
 
     if (searchParams?.per_page != null) {
-        const limit = searchParams?.per_page ?? 10;
+        const limit = searchParams.per_page;
         url.searchParams.set("per_page", limit.toString());
     }
 
@@ -72,8 +72,8 @@ export async function getMods(
         url.searchParams.set("developer", searchParams.developer);
     }
 
-    if (searchParams?.pending_validation) {
-        url.searchParams.set("pending_validation", "true");
+    if (searchParams?.status) {
+        url.searchParams.set("status", searchParams.status);
     }
 
     if (searchParams?.featured != null) {
@@ -162,6 +162,48 @@ export async function createMod(
         const data: BaseRequest<void> = await r.json();
         throw new IndexError(data.error);
     }
+}
+
+export interface GetModVersionsParams {
+    page?: number;
+    per_page?: number;
+    gd?: string;
+    platforms?: string[];
+    status?: ModStatus;
+}
+
+export async function getModVersions(
+    id: string,
+    params?: GetModVersionsParams,
+): Promise<ServerModVersion> {
+    const url = new URL(`${BASE_URL}/v1/mods/versions`);
+
+    if (params?.page != null) {
+        const page = params.page;
+        url.searchParams.set("page", page.toString());
+    }
+
+    if (params?.per_page != null) {
+        const limit = params.per_page;
+        url.searchParams.set("per_page", limit.toString());
+    }
+
+    if (params?.gd) {
+        url.searchParams.set("gd", params.gd);
+    }
+
+    if (params?.platforms) {
+        url.searchParams.set("platforms", params.platforms.join(","));
+    }
+
+    if (params?.status) {
+        url.searchParams.set("status", params.status);
+    }
+
+    const r = await fetch(url);
+    const data = await r.json();
+
+    return validate<ServerModVersion>(data);
 }
 
 export async function getModVersion(

@@ -16,7 +16,7 @@
 	let sort = data.params.sort ?? "downloads";
 	let tags = data.params.tags ?? [];
 	let featured = data.params.featured ?? false;
-	let pending = data.params.pending_validation ?? false;
+	let pending = data.params.status != "accepted";
 
 	$: max_count = data.mods?.count ?? 0;
 
@@ -46,7 +46,7 @@
 		}
 
 		if (pending) {
-			params.set("pending_validation", "true");
+			params.set("status", "pending");
 		}
 
 		params.set("sort", sort);

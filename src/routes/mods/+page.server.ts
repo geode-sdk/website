@@ -5,6 +5,7 @@ import {
     getTags,
     type ModSearchParams,
 } from "$lib/api/index-repository.js";
+import type { ModStatus } from "$lib/api/models/mod-version.js";
 import type { PageServerLoad } from "./$types.js";
 
 function toIntSafe(value: string | null) {
@@ -45,9 +46,7 @@ export const load: PageServerLoad = async ({ url }) => {
         // it's your problem if you edit the search params
         sort: (url.searchParams.get("sort") as ModSort) ?? "downloads",
         featured: onlyIfTrue(url.searchParams.get("featured")),
-        pending_validation: onlyIfTrue(
-            url.searchParams.get("pending_validation"),
-        ),
+        status: (url.searchParams.get("status") as ModStatus) ?? "accepted",
         per_page: 10,
     };
 
