@@ -175,8 +175,8 @@ export interface GetModVersionsParams {
 export async function getModVersions(
     id: string,
     params?: GetModVersionsParams,
-): Promise<ServerModVersion> {
-    const url = new URL(`${BASE_URL}/v1/mods/versions`);
+): Promise<Paginated<ServerModVersion>> {
+    const url = new URL(`${BASE_URL}/v1/mods/${id}/versions`);
 
     if (params?.page != null) {
         const page = params.page;
@@ -201,9 +201,9 @@ export async function getModVersions(
     }
 
     const r = await fetch(url);
-    const data = await r.json();
+    const data: BasePaginatedRequest<ServerModVersion> = await r.json();
 
-    return validate<ServerModVersion>(data);
+    return validate(data);
 }
 
 export async function getModVersion(

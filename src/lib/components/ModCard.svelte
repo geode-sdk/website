@@ -5,6 +5,11 @@
 
 	export let mod: ServerMod;
 	export let version: ServerModVersion;
+
+	// add the version for non-accepted mods, as otherwise the endpoint will pick the latest accepted
+	const mod_url = version.status != "accepted"
+		? `/mods/${mod.id}?version=${version.version}`
+		: `/mods/${mod.id}`;
 </script>
 
 <div class="mod-background">
@@ -28,7 +33,7 @@
 	</div>
 
 	<div>
-		<a class="view-btn" href={`/mods/${mod.id}`}>
+		<a class="view-btn" href={mod_url}>
 			View
 		</a>
 	</div>

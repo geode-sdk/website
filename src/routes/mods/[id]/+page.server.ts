@@ -111,13 +111,20 @@ export const load: PageServerLoad = async ({ url, params, cookies }) => {
         });
     }
 
+    let version = undefined;
     try {
-        const version = await getModVersion(id, version_string);
-
-        return { mod, version, user };
+        version = await getModVersion(id, version_string);
     } catch (e) {
         error(404, {
             message: "Version not found.",
         });
     }
+
+    if (!version && version_string == "latest") {
+        // version info is probably just stuck in pending
+        // this doesn't run all the time, as it may produce undesirable results
+        version = await getModVersion(id, mod.versions[0].version);
+    }
+
+    return { mod, version, user };
 };
