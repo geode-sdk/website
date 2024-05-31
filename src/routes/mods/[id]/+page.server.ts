@@ -1,4 +1,5 @@
 import {
+    IndexError,
     createModVersion,
     getMod,
     getModVersion,
@@ -8,7 +9,7 @@ import {
 import type { ServerDeveloper } from "$lib/api/models/base.js";
 import type { ModStatus } from "$lib/api/models/mod-version.js";
 import type { Actions, PageServerLoad } from "./$types.js";
-import { error } from "@sveltejs/kit";
+import { error, fail } from "@sveltejs/kit";
 
 export const actions: Actions = {
     update_mod_version: async ({ cookies, request, params }) => {
@@ -16,30 +17,38 @@ export const actions: Actions = {
 
         const token = cookies.get("token");
         if (!token) {
-            error(401, "no token provided");
+            return fail(401, { message: "no token provided" });
         }
 
         const data = await request.formData();
         const status = data.get("status") as ModStatus;
         if (!status || typeof status != "string") {
-            error(400, "invalid status");
+            return fail(400, { message: "invalid status" });
         }
 
         const version = data.get("mod_version");
         if (!version || typeof version != "string") {
-            error(400, "missing version");
+            return fail(400, { message: "missing version" });
         }
 
         const info = (data.get("info") as string | null) ?? undefined;
 
-        await updateModVersion(token, id, version, { status, info });
+        try {
+            await updateModVersion(token, id, version, { status, info });
+        } catch (e) {
+            if (e instanceof IndexError) {
+                return fail(400, { message: e.message });
+            }
+        }
+
+        return { success: true };
     },
     update_mod: async ({ cookies, request, params }) => {
         const id = params.id;
 
         const token = cookies.get("token");
         if (!token) {
-            error(401, "no token provided");
+            return fail(401, { message: "no token provided" });
         }
 
         const data = await request.formData();
@@ -47,24 +56,40 @@ export const actions: Actions = {
         // checkbox are "on" if true, otherwise not present
         const featured = data.has("featured");
 
-        await updateMod(token, id, { featured });
+        try {
+            await updateMod(token, id, { featured });
+        } catch (e) {
+            if (e instanceof IndexError) {
+                return fail(400, { message: e.message });
+            }
+        }
+
+        return { success: true };
     },
     create_version: async ({ cookies, request, params }) => {
         const id = params.id;
 
         const token = cookies.get("token");
         if (!token) {
-            error(401, "no token provided");
+            return fail(401, { message: "no token provided" });
         }
 
         const data = await request.formData();
 
         const download_link = data.get("download_link");
         if (!download_link || typeof download_link != "string") {
-            error(400, "invalid download_link");
+            return fail(400, { message: "invalid download_link" });
         }
 
-        await createModVersion(token, id, { download_link });
+        try {
+            await createModVersion(token, id, { download_link });
+        } catch (e) {
+            if (e instanceof IndexError) {
+                return fail(400, { message: e.message });
+            }
+        }
+
+        return { success: true };
     },
 };
 
@@ -77,11 +102,12 @@ export const load: PageServerLoad = async ({ url, params, cookies }) => {
         ? (JSON.parse(user_str) as ServerDeveloper)
         : undefined;
 
-    // interesting index api behavior
-    const mod = await getMod(id);
-    if (!mod) {
+    let mod = undefined;
+    try {
+        mod = await getMod(id);
+    } catch (e) {
         error(404, {
-            message: "Mod not found",
+            message: "Mod not found.",
         });
     }
 
@@ -91,7 +117,7 @@ export const load: PageServerLoad = async ({ url, params, cookies }) => {
         return { mod, version, user };
     } catch (e) {
         error(404, {
-            message: "Version not found",
+            message: "Version not found.",
         });
     }
 };

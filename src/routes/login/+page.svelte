@@ -1,10 +1,17 @@
+<script lang="ts">
+	import { enhance } from '$app/forms';
+	import type { ActionData } from './$types';
+
+	export let form: ActionData;
+</script>
+
 <h1>Login</h1>
 
 <p>
 	Login is currently very manual. sorry :(
 </p>
 
-<form method="POST">
+<form method="POST" use:enhance>
 	<div>
 		<label for="token">
 			Index Token
@@ -12,6 +19,10 @@
 		<input type="text" name="token" id="token" />
 	</div>
 	<button>Log in</button>
+
+	{#if form?.invalid}
+		<small>Invalid token!</small>
+	{/if}
 </form>
 
 To manually get your login token:

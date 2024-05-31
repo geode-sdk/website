@@ -1,6 +1,7 @@
 <script lang="ts">
-	import type { PageData } from "./$types.js";
 	import SvelteMarkdown from "svelte-markdown";
+	import { enhance } from '$app/forms';
+	import type { PageData, ActionData } from "./$types.js";
 	import { getModLogo } from "$lib/api/index-repository.js";
 
 	export let data: PageData;
@@ -10,6 +11,8 @@
 	const developer_ids = data.mod.developers.map(d => d.id);
 	const can_update_mod = data.user && developer_ids.includes(data.user.id) || false;
 	const can_modify_mod = data.user?.admin || false;
+
+	export let form: ActionData;
 </script>
 
 <svelte:head>
@@ -24,9 +27,16 @@
 
 <img src={logoUrl} alt={`mod logo for ${data.version.name}`} style="max-height: 8rem;" />
 
+{#if form?.message}
+<div>Failed to perform action: {form.message}</div>
+{/if}
+
+{#if form?.success}
+<div>Action performed!</div>
+{/if}
 
 {#if can_modify_mod}
-<form method="POST" action="?/update_mod">
+<form method="POST" action="?/update_mod" use:enhance>
 	<fieldset>
 		<legend>Update mod info</legend>
 
@@ -38,7 +48,7 @@
 		<input type="submit" value="Update" />
 	</fieldset>
 </form>
-<form method="POST" action="?/update_mod_version">
+<form method="POST" action="?/update_mod_version" use:enhance>
 	<fieldset>
 		<legend>Update version status</legend>
 
@@ -65,7 +75,7 @@
 {/if}
 
 {#if can_update_mod}
-<form method="POST" action="?/create_version">
+<form method="POST" action="?/create_version" use:enhance>
 	<fieldset>
 		<legend>Create new version</legend>
 

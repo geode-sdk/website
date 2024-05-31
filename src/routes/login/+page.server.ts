@@ -1,5 +1,5 @@
 import { getSelf } from "$lib/api/index-repository.js";
-import { error, redirect } from "@sveltejs/kit";
+import { error, fail, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types.js";
 
 export const actions: Actions = {
@@ -8,7 +8,7 @@ export const actions: Actions = {
         const token = data.get("token")?.toString();
 
         if (!token) {
-            error(400, "missing token");
+            return fail(403, { invalid: true });
         }
 
         try {
@@ -17,7 +17,7 @@ export const actions: Actions = {
             cookies.set("token", token, { path: "/" });
             cookies.set("cached_profile", JSON.stringify(self), { path: "/" });
         } catch (e) {
-            error(403, "invalid token");
+            return fail(403, { invalid: true });
         }
 
         redirect(302, "/me");
