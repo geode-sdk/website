@@ -102,7 +102,6 @@
 				<option value="ios">iOS</option>
 			</select>
 
-
 			<select name="sort" bind:value={sort}>
 				<option value="downloads">Downloads</option>
 				<option value="recently_updated">Recently Updated</option>

@@ -10,15 +10,16 @@
 	const mod_url = version.status != "accepted"
 		? `/mods/${mod.id}?version=${version.version}`
 		: `/mods/${mod.id}`;
-</script>
 
+	const owner = mod.developers.filter(d => d.is_owner)[0];
+</script>
 <div class="mod-background">
 	<div>
 		{version.name}
 	</div>
 
 	<div>
-		{mod.developers[0].display_name} {version.version}
+		<a href={`/mods?developer=${owner.username}`}>{owner.display_name}</a> {version.version}
 	</div>
 
 	<div>
