@@ -5,11 +5,8 @@ import {
     deleteAllTokens,
     deleteToken,
     getSelf,
-    getSelfMods,
     updateProfile,
 } from "$lib/api/index-repository.js";
-import type { ModStatus } from "$lib/api/models/mod-version.js";
-import type { ServerSimpleMod } from "$lib/api/models/mod.js";
 
 export const actions: Actions = {
     update_self: async ({ cookies, request }) => {
@@ -80,13 +77,11 @@ export const actions: Actions = {
     },
 };
 
-export const load: PageServerLoad = async ({ cookies, url }) => {
+export const load: PageServerLoad = async ({ cookies }) => {
     const token = cookies.get("token");
     if (!token) {
         redirect(302, "/login");
     }
-
-    const sort = (url.searchParams.get("status") as ModStatus) ?? "accepted";
 
     // i'm having a js moment, honestly
     let self = undefined;
@@ -100,12 +95,5 @@ export const load: PageServerLoad = async ({ cookies, url }) => {
         redirect(302, "/login");
     }
 
-    let self_mods: ServerSimpleMod[] = [];
-    try {
-        self_mods = await getSelfMods(token, { status: sort });
-    } catch (_) {
-        // ...
-    }
-
-    return { self, mods: self_mods, status: sort };
+    return { self };
 };

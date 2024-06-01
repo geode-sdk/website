@@ -7,11 +7,11 @@
 	export let version: ServerModVersion;
 
 	// add the version for non-accepted mods, as otherwise the endpoint will pick the latest accepted
-	const mod_url = version.status != "accepted"
+	$: mod_url = version.status != "accepted"
 		? `/mods/${mod.id}?version=${version.version}`
 		: `/mods/${mod.id}`;
 
-	const owner = mod.developers.filter(d => d.is_owner)[0];
+	$: owner = mod.developers.filter(d => d.is_owner)[0];
 </script>
 <div class="mod-background">
 	<div>
@@ -19,7 +19,7 @@
 	</div>
 
 	<div>
-		<a href={`/mods?developer=${owner.username}`}>{owner.display_name}</a> {version.version}
+		<a href={`/developers/${owner.id}`}>{owner.display_name}</a> {version.version}
 	</div>
 
 	<div>
