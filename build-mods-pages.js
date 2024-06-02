@@ -185,7 +185,7 @@ for (const mod of mods) {
             .replace(/\$MOD_NAME/g, escape(modCurrentJson.name))
             .replace(/\$MOD_VERSION_LINKS/g, mod.versions
                 .map(ver => html`<a
-                    href="#"
+                    href="${ver.entryJSON.mod.download}"
                     fake-download="${ver.entryJSON.mod.download}"
                     class="
                         button wide
