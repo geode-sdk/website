@@ -7,6 +7,14 @@
     import Gap from "$lib/components/Gap.svelte";
     import Column from "$lib/components/Column.svelte";
     import SelectButton from "$lib/components/SelectButton.svelte";
+    import Icon from "$lib/components/Icon.svelte";
+	import { iconForTag } from "$lib/index.js";
+    import Row from "$lib/components/Row.svelte";
+    import Select from "$lib/components/Select.svelte";
+    import Search from "$lib/components/Search.svelte";
+    import SelectOption from "$lib/components/SelectOption.svelte";
+    import Rollover from "$lib/components/Rollover.svelte";
+    import Waves from "$lib/components/Waves.svelte";
 
 	export let data: PageData;
 
@@ -94,97 +102,144 @@
 	}
 </script>
 
-<fieldset>
-	<legend>Search Filters</legend>
+<Waves type="top" />
+<Gap size="large" />
 
-	<form on:submit|preventDefault={onSearch}>
-		<div>
-			<input type="search" name="search" bind:value={query} />
-		</div>
+<h1>Browse Mods</h1>
 
-		<select name="platform" multiple bind:value={platforms}>
-			<option value="windows">Windows</option>
-			<option value="mac">macOS</option>
-			<option value="android64">Android (64-bit)</option>
-			<option value="android32">Android (32-bit)</option>
-			<option value="ios">iOS</option>
-		</select>
+<div class="content-separator">
+	<aside>
+		<header><Icon icon="filter" --icon-size=1.2em/>Search Filters</header>
+		<nav>
+			<Rollover title="Platform">
+				<SelectButton icon="windows">Windows</SelectButton>
+				<SelectButton icon="mac">Mac (Apple Silicon)</SelectButton>
+				<SelectButton icon="mac">Mac (Intel)</SelectButton>
+				<SelectButton icon="android">Android (64-bit)</SelectButton>
+				<SelectButton icon="android">Android (32-bit)</SelectButton>
+				<SelectButton icon="mac">iOS</SelectButton>
+			</Rollover>
 
-		<select name="sort" bind:value={sort}>
-			<option value="downloads">Downloads</option>
-			<option value="recently_updated">Recently Updated</option>
-			<option value="recently_published">Recently Published</option>
-			<option value="name">Name</option>
-			<option value="name_reverse">Name (Reversed)</option>
-		</select>
+			<Rollover title="Tags">
+				{#each data.tags as tag}
+					<SelectButton icon={iconForTag(tag)}>
+						{tag.charAt(0).toUpperCase() + tag.slice(1)}
+					</SelectButton>
+				{/each}
+			</Rollover>
 
-		<select name="tags" multiple bind:value={tags}>
-			{#each data.tags as tag}
-				<option value={tag} style="text-transform: capitalize;">{tag}</option>
-			{/each}
-		</select>
+			<Rollover title="Other">
+				<SelectButton icon="featured">Featured only</SelectButton>
+				<SelectButton icon="unverified">Show Unverified</SelectButton>
+			</Rollover>
+		</nav>
+	</aside>
 
-		<div>
-			<input type="checkbox" name="featured" id="featured" bind:checked={featured}/>
-			<label for="featured">Show featured mods only</label>
-		</div>
+	<Column align="stretch" gap="small">
+		<nav class="search">
+			<Search placeholder="Search mods..."></Search>
+			<Select title="Sort by" titleIcon="sort">
+				<SelectOption icon="download" title="Most Downloaded" value="downloads" isDefault/>
+				<SelectOption icon="time" title="Most Recent" value="recently_published"/>
+				<SelectOption icon="time" title="Recently Updated" value="recently_updated"/>
+				<SelectOption icon="sort-abc" title="Name (A-Z)" value="name"/>
+				<SelectOption icon="sort-cba" title="Name (Z-A)" value="name_reverse"/>
+			</Select>
+		</nav>
 
-		<div>
-			<input type="checkbox" name="pending" id="pending" bind:checked={pending} />
-			<label for="pending">Show pending mods</label>
-		</div>
+		<nav class="page">
+			<span>Mods per page: </span>
+			<select name="show-count" bind:value={per_page} on:change={onSearch}>
+				<option value={10}>10</option>
+				<option value={25}>25</option>
+				<option value={50}>50</option>
+			</select>
+			<Gap size="normal"/>
+			<button on:click={onPrevPage}>Previous</button>
+			<span>Page {current_page} of {max_page}</span>
+			<button on:click={onNextPage}>Next</button>
+		</nav>
 
-		<button type="submit">Search</button>
-
-		{#if data.error}
-		<small>
-			Error: {data.error}
-		</small>
-		{/if}
-	</form>
-</fieldset>
-
-<aside>
-	<nav>
-		<Column>
-			{#each data.tags as tag}
-				<SelectButton>{tag}</SelectButton>
-			{/each}
-		</Column>
-	</nav>
-</aside>
-
-{#if data.mods && max_count > 0}
-	<div class="mod-listing">
-		{#each data.mods.data as mod}
-			{@const mod_version = mod.versions[0]}
-			<ModCard mod={mod} version={mod_version} />
-		{/each}
-	</div>
-{:else}
-	No mods found :(
-{/if}
-
-<div>
-	<span>Mods per page: </span>
-	<select name="show-count" bind:value={per_page} on:change={onSearch}>
-		<option value={10}>10</option>
-		<option value={25}>25</option>
-		<option value={50}>50</option>
-	</select>
-	<Gap size="normal"/>
-	<button on:click={onPrevPage}>Previous</button>
-	<span>Page {current_page} of {max_page}</span>
-	<button on:click={onNextPage}>Next</button>
+		<main>
+			{#if data.mods && max_count > 0}
+				<div class="mod-listing">
+					{#each data.mods.data as mod}
+						{@const mod_version = mod.versions[0]}
+						<ModCard mod={mod} version={mod_version} />
+					{/each}
+				</div>
+			{:else}
+				No mods found :(
+			{/if}
+		</main>
+	</Column>
 </div>
 
 <style>
+    h1 {
+        margin: 0;
+        font-family: var(--font-heading);
+        font-weight: 600;
+        color: var(--text-50);
+        font-size: var(--font-size-long-title);
+    }
+	.content-separator {
+        display: grid;
+        grid-template-columns: 15rem 1fr;
+        align-items: start;
+        min-height: 1500px;
+        gap: var(--gap-small);
+		max-width: 74rem;
+
+		& > aside {
+			background-color: var(--background-950);
+			padding: .5rem;
+			gap: .5rem;
+			border-radius: .5rem;
+
+			display: flex;
+			flex-direction: column;
+			align-items: stretch;
+
+			& > header {
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+				color: var(--text-300);
+				font-size: .9em;
+				gap: var(--gap-small);
+			}
+			& > nav {
+				display: flex;
+				flex-direction: column;
+				gap: var(--gap-small);
+			}
+		}
+		& main {
+			background-color: var(--background-950);
+			padding: .5rem;
+			gap: .5rem;
+			border-radius: .5rem;
+		}
+	}
 	.mod-listing {
 		display: flex;
 		flex: 1;
 		flex-direction: row;
 		flex-wrap: wrap;
-		gap: 1.5rem;
+		gap: .5rem;
+	}
+	.page {
+		background-color: var(--background-950);
+		border-radius: .5rem;
+		padding: .75rem;
+	}
+	.search {
+		background-color: var(--background-950);
+		border-radius: .5rem;
+        display: grid;
+        grid-template-columns: 1fr auto;
 		align-items: center;
+        gap: var(--gap-small);
 	}
 </style>

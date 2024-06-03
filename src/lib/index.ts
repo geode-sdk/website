@@ -29,11 +29,15 @@ export const icons = {
     sort: "mdi:sort",
     "sort-downloads": "mdi:sort-numeric-descending",
     "sort-recent": "mdi:sort-clock-descending",
+    "sort-abc": "mdi:sort-alphabetical-ascending",
+    "sort-cba": "mdi:sort-alphabetical-descending",
     tags: "mdi:tag",
     "tags-clear": "mdi:tag-off",
     filter: "mdi:filter",
     "filter-clear": "mdi:filter-off",
     featured: "mdi:star",
+    unverified: "mdi:shield-off",
+    view: "mdi:external-link",
 
     "tag-universal": "mdi:globe",
     "tag-gameplay": "mdi:gamepad-variant",
@@ -51,3 +55,11 @@ export const icons = {
     "tag-developer": "mdi:code-braces",
 };
 export type KnownIcon = keyof typeof icons;
+
+export function iconForTag(tag: string): KnownIcon {
+    const key = `tag-${tag}`;
+    if (key in icons) {
+        return key as KnownIcon;
+    }
+    return 'tags';
+}

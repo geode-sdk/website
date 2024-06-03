@@ -1,12 +1,15 @@
 <script lang="ts">
-    let button: HTMLButtonElement;
+    import type { KnownIcon } from "$lib";
+    import Icon from "./Icon.svelte";
 
-    function onToggleClass() {
-        button.classList.toggle('selected');
-    }
+    export let selected: boolean = false;
+    export let icon: KnownIcon;
 </script>
 
-<button class="select-button" bind:this={button} on:click={onToggleClass}><slot></slot></button>
+<button
+    class="select-button" class:selected 
+    on:click={() => selected = !selected}
+><Icon icon={icon} --icon-size=1.3em/><slot></slot></button>
 
 <style lang="scss">
     button {
@@ -30,7 +33,7 @@
         &:hover {
             background-color: color-mix(in srgb, var(--secondary-300) 25%, transparent);
         }
-        &:global(.selected) {
+        &.selected {
             border-color: color-mix(in srgb, var(--primary-300) 50%, transparent);
             background-color: color-mix(in srgb, var(--primary-300) 50%, transparent);
             &:hover {

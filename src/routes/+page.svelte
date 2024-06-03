@@ -155,7 +155,7 @@
     }
     .shadow {
         text-shadow: 0px 0px .75rem var(--primary-800);
-        & :global(svg) {
+        & :global(.icon) {
             filter: drop-shadow(0px 0px .25rem var(--primary-800));
         }
     }

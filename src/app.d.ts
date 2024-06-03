@@ -9,7 +9,7 @@ declare global {
         // interface Platform {}
     }
 
-    type Gap = "0" | "small" | "normal" | "large" | "immense";
+    type Gap = "0" | "tiny" | "small" | "normal" | "large" | "immense";
 }
 
 export {};

@@ -5,7 +5,7 @@
     export let icon: KnownIcon;
 </script>
 
-<span>
+<span class="icon">
     {#if icons[icon].startsWith('@:')}
         {#await import(`$lib/assets/${icons[icon].substring('@:'.length)}.json?raw`) then svg}
             <Icon icon={JSON.parse(svg.default)} />
