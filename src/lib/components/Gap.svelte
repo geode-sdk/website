@@ -2,10 +2,11 @@
     export let size: Gap;
 </script>
 
-<div style="--size: var(--gap-{size})"></div>
+<span style="--size: var(--gap-{size})"></span>
 
 <style lang="scss">
-    div {
+    span {
+        display: inline-block;
         width: var(--size);
         height: var(--size);
     }

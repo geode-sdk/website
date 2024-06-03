@@ -4,6 +4,9 @@
 	import type { PageData } from "./$types.js";
 
 	import ModCard from "$lib/components/ModCard.svelte";
+    import Gap from "$lib/components/Gap.svelte";
+    import Column from "$lib/components/Column.svelte";
+    import SelectButton from "$lib/components/SelectButton.svelte";
 
 	export let data: PageData;
 
@@ -17,6 +20,7 @@
 	let tags = data.params.tags ?? [];
 	let featured = data.params.featured ?? false;
 	let pending = data.params.status != "accepted";
+	let per_page = data.params.per_page;
 
 	$: max_count = data.mods?.count ?? 0;
 
@@ -47,6 +51,10 @@
 
 		if (pending) {
 			params.set("status", "pending");
+		}
+
+		if (per_page) {
+			params.set("per_page", per_page.toString());
 		}
 
 		params.set("sort", sort);
@@ -90,51 +98,61 @@
 	<legend>Search Filters</legend>
 
 	<form on:submit|preventDefault={onSearch}>
-			<div>
-				<input type="search" name="search" bind:value={query} />
-			</div>
+		<div>
+			<input type="search" name="search" bind:value={query} />
+		</div>
 
-			<select name="platform" multiple bind:value={platforms}>
-				<option value="windows">Windows</option>
-				<option value="mac">macOS</option>
-				<option value="android64">Android (64-bit)</option>
-				<option value="android32">Android (32-bit)</option>
-				<option value="ios">iOS</option>
-			</select>
+		<select name="platform" multiple bind:value={platforms}>
+			<option value="windows">Windows</option>
+			<option value="mac">macOS</option>
+			<option value="android64">Android (64-bit)</option>
+			<option value="android32">Android (32-bit)</option>
+			<option value="ios">iOS</option>
+		</select>
 
-			<select name="sort" bind:value={sort}>
-				<option value="downloads">Downloads</option>
-				<option value="recently_updated">Recently Updated</option>
-				<option value="recently_published">Recently Published</option>
-				<option value="name">Name</option>
-				<option value="name_reverse">Name (Reversed)</option>
-			</select>
+		<select name="sort" bind:value={sort}>
+			<option value="downloads">Downloads</option>
+			<option value="recently_updated">Recently Updated</option>
+			<option value="recently_published">Recently Published</option>
+			<option value="name">Name</option>
+			<option value="name_reverse">Name (Reversed)</option>
+		</select>
 
-			<select name="tags" multiple bind:value={tags}>
-				{#each data.tags as tag}
-					<option value={tag} style="text-transform: capitalize;">{tag}</option>
-				{/each}
-			</select>
+		<select name="tags" multiple bind:value={tags}>
+			{#each data.tags as tag}
+				<option value={tag} style="text-transform: capitalize;">{tag}</option>
+			{/each}
+		</select>
 
-			<div>
-				<input type="checkbox" name="featured" id="featured" bind:checked={featured}/>
-				<label for="featured">Show featured mods only</label>
-			</div>
+		<div>
+			<input type="checkbox" name="featured" id="featured" bind:checked={featured}/>
+			<label for="featured">Show featured mods only</label>
+		</div>
 
-			<div>
-				<input type="checkbox" name="pending" id="pending" bind:checked={pending} />
-				<label for="pending">Show pending mods</label>
-			</div>
+		<div>
+			<input type="checkbox" name="pending" id="pending" bind:checked={pending} />
+			<label for="pending">Show pending mods</label>
+		</div>
 
-			<button type="submit">Search</button>
+		<button type="submit">Search</button>
 
-			{#if data.error}
-			<small>
-				Error: {data.error}
-			</small>
-			{/if}
+		{#if data.error}
+		<small>
+			Error: {data.error}
+		</small>
+		{/if}
 	</form>
 </fieldset>
+
+<aside>
+	<nav>
+		<Column>
+			{#each data.tags as tag}
+				<SelectButton>{tag}</SelectButton>
+			{/each}
+		</Column>
+	</nav>
+</aside>
 
 {#if data.mods && max_count > 0}
 	<div class="mod-listing">
@@ -148,6 +166,13 @@
 {/if}
 
 <div>
+	<span>Mods per page: </span>
+	<select name="show-count" bind:value={per_page} on:change={onSearch}>
+		<option value={10}>10</option>
+		<option value={25}>25</option>
+		<option value={50}>50</option>
+	</select>
+	<Gap size="normal"/>
 	<button on:click={onPrevPage}>Previous</button>
 	<span>Page {current_page} of {max_page}</span>
 	<button on:click={onNextPage}>Next</button>
