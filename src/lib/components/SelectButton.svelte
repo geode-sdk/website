@@ -38,6 +38,7 @@
 
         &:hover {
             background-color: color-mix(in srgb, var(--secondary-300) 25%, transparent);
+            cursor: pointer;
         }
         &.selected {
             border-color: color-mix(in srgb, var(--primary-300) 50%, transparent);

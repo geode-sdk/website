@@ -72,6 +72,7 @@
             color: var(--text-50);
             font-family: var(--font-body);
             border-radius: .5rem;
+            cursor: pointer;
         }
         &:not(.open) > button:hover {
             background-color: color-mix(in srgb, var(--text-50) 10%, transparent);
