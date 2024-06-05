@@ -1,14 +1,20 @@
 <script lang="ts">
     import type { KnownIcon } from "$lib";
+    import { createEventDispatcher } from "svelte";
     import Icon from "./Icon.svelte";
 
     export let selected: boolean = false;
     export let icon: KnownIcon;
+
+    const dispatch = createEventDispatcher<{ 'select': { selected: boolean } }>();
 </script>
 
 <button
     class="select-button" class:selected 
-    on:click={() => selected = !selected}
+    on:click={() => {
+        selected = !selected;
+        dispatch('select', { selected });
+    }}
 ><Icon icon={icon} --icon-size=1.3em/><slot></slot></button>
 
 <style lang="scss">

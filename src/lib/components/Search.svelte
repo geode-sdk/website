@@ -1,12 +1,18 @@
 <script lang="ts">
+    import { createEventDispatcher } from "svelte";
     import Icon from "./Icon.svelte";
 
     export let placeholder: string;
+    export let query: string;
+    export let autofocus = false;
+
+    const dispatch = createEventDispatcher<{ 'search': { query: string } }>();
 </script>
 
 <div class="search">
     <Icon icon="search"/>
-    <input placeholder={placeholder}>
+    <!-- svelte-ignore a11y-autofocus -->
+    <input {autofocus} placeholder={placeholder} bind:value={query} on:input={() => dispatch('search', { query })}>
 </div>
 
 <style lang="scss">

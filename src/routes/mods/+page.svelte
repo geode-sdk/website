@@ -15,66 +15,69 @@
     import SelectOption from "$lib/components/SelectOption.svelte";
     import Rollover from "$lib/components/Rollover.svelte";
     import Waves from "$lib/components/Waves.svelte";
+    import Button from "$lib/components/Button.svelte";
+    import LoadingCircle from "$lib/components/LoadingCircle.svelte";
+    import Image from "$lib/components/Image.svelte";
 
 	export let data: PageData;
 
 	$: url_params = $page.url.searchParams;
 	$: current_page = data.params.page ?? 1;
-	$: items_per_page = data.params.per_page ?? 10;
 
 	let query = data.params.query ?? "";
-	let platforms = data.params.platforms ?? [];
+	$: platforms = new Set(data.params.platforms ?? []);
 	let sort = data.params.sort ?? "downloads";
-	let tags = data.params.tags ?? [];
+	let tags = new Set(data.params.tags ?? []);
 	let featured = data.params.featured ?? false;
 	let pending = data.params.status != "accepted";
-	let per_page = data.params.per_page;
+	let per_page = data.params.per_page ?? 12;
+	let searching = false;
 
 	$: max_count = data.mods?.count ?? 0;
+	$: max_page = Math.floor(max_count / per_page) + 1;
 
-	$: max_page = Math.floor(max_count / items_per_page) + 1;
+	const perPageOptions = [10, 15, 25];
 
-	const onSearch = async () => {
+	function toggleSet<T>(set: Set<T>, value: T) {
+		set.has(value) ? set.delete(value) : set.add(value);
+	}
+
+	const updateSearch = async () => {
+		searching = true;
 		const params = new URLSearchParams();
-
 		if (query) {
 			params.set("query", query);
 		}
-
-		if (platforms.length > 0) {
+		if (platforms.size > 0) {
 			for (const platform of platforms) {
 				params.append("platform", platform);
 			}
 		}
-
-		if (tags.length > 0) {
+		if (tags.size > 0) {
 			for (const tag of tags) {
 				params.append("tag", tag);
 			}
 		}
-
 		if (featured) {
 			params.set("featured", "true");
 		}
-
 		if (pending) {
 			params.set("status", "pending");
 		}
-
 		if (per_page) {
 			params.set("per_page", per_page.toString());
 		}
-
 		params.set("sort", sort);
 
-		await goto(`/mods?${params}`);
+		await goto(`/mods?${params}`, { noScroll: true });
+		searching = false;
 	}
 
 	const gotoPage = async (page: number) => {
+		searching = true;
 		if (current_page < 1) {
 			page = 0;
 		}
-
 		if (current_page > max_page) {
 			page = max_page;
 		}
@@ -82,22 +85,19 @@
 		const params = new URLSearchParams(url_params);
 		params.set("page", page.toString());
 
-		await goto(`/mods?${params}`);
+		await goto(`/mods?${params}`, { noScroll: true });
+		searching = false;
 	}
-
 	const onNextPage = async () => {
 		if (current_page == max_page) {
 			return;
 		}
-
 		await gotoPage(current_page + 1);
 	}
-
 	const onPrevPage = async () => {
 		if (current_page == 1) {
 			return;
 		}
-
 		await gotoPage(current_page - 1);
 	}
 </script>
@@ -112,33 +112,82 @@
 		<header><Icon icon="filter" --icon-size=1.2em/>Search Filters</header>
 		<nav>
 			<Rollover title="Platform">
-				<SelectButton icon="windows">Windows</SelectButton>
-				<SelectButton icon="mac">Mac (Apple Silicon)</SelectButton>
-				<SelectButton icon="mac">Mac (Intel)</SelectButton>
-				<SelectButton icon="android">Android (64-bit)</SelectButton>
-				<SelectButton icon="android">Android (32-bit)</SelectButton>
-				<SelectButton icon="mac">iOS</SelectButton>
+				<SelectButton
+					icon="windows"
+					selected={platforms.has('windows')}
+					on:select={() => {
+						toggleSet(platforms, 'windows');
+						updateSearch();
+					}}
+				>Windows</SelectButton>
+				<SelectButton
+					icon="mac"
+					selected={platforms.has('mac')}
+					on:select={() => {
+						toggleSet(platforms, 'mac');
+						updateSearch();
+					}}
+				>Mac</SelectButton>
+				<SelectButton
+					icon="android"
+					selected={platforms.has('android64')}
+					on:select={() => {
+						toggleSet(platforms, 'android64');
+						updateSearch();
+					}}
+				>Android (64-bit)</SelectButton>
+				<SelectButton
+					icon="android"
+					selected={platforms.has('android32')}
+					on:select={() => {
+						toggleSet(platforms, 'android32');
+						updateSearch();
+					}}
+				>Android (32-bit)</SelectButton>
+				<SelectButton
+					icon="mac"
+					selected={platforms.has('ios')}
+					on:select={() => {
+						toggleSet(platforms, 'ios');
+						updateSearch();
+					}}
+				>iOS</SelectButton>
 			</Rollover>
 
 			<Rollover title="Tags">
 				{#each data.tags as tag}
-					<SelectButton icon={iconForTag(tag)}>
+					<SelectButton
+						icon={iconForTag(tag)}
+						selected={tags.has(tag)}
+						on:select={() => {
+							toggleSet(tags, tag);
+							updateSearch();
+						}}>
 						{tag.charAt(0).toUpperCase() + tag.slice(1)}
 					</SelectButton>
 				{/each}
 			</Rollover>
 
 			<Rollover title="Other">
-				<SelectButton icon="featured">Featured only</SelectButton>
-				<SelectButton icon="unverified">Show Unverified</SelectButton>
+				<SelectButton
+					icon="featured"
+					bind:selected={featured} on:select={updateSearch}
+				>Featured only</SelectButton>
+				<SelectButton
+					icon="unverified"
+					bind:selected={pending} on:select={updateSearch}
+				>Unverified only</SelectButton>
 			</Rollover>
 		</nav>
 	</aside>
 
 	<Column align="stretch" gap="small">
 		<nav class="search">
-			<Search placeholder="Search mods..."></Search>
-			<Select title="Sort by" titleIcon="sort">
+			<Search placeholder="Search mods..." bind:query on:search={updateSearch} autofocus></Search>
+			<Select title="Sort by" titleIcon="sort" on:select={ev => {
+				sort = ev.detail.value;
+				updateSearch();
+			}}>
 				<SelectOption icon="download" title="Most Downloaded" value="downloads" isDefault/>
 				<SelectOption icon="time" title="Most Recent" value="recently_published"/>
 				<SelectOption icon="time" title="Recently Updated" value="recently_updated"/>
@@ -147,35 +196,87 @@
 			</Select>
 		</nav>
 
-		<nav class="page">
-			<span>Mods per page: </span>
-			<select name="show-count" bind:value={per_page} on:change={onSearch}>
-				<option value={10}>10</option>
-				<option value={25}>25</option>
-				<option value={50}>50</option>
-			</select>
-			<Gap size="normal"/>
-			<button on:click={onPrevPage}>Previous</button>
-			<span>Page {current_page} of {max_page}</span>
-			<button on:click={onNextPage}>Next</button>
-		</nav>
-
 		<main>
-			{#if data.mods && max_count > 0}
-				<div class="mod-listing">
-					{#each data.mods.data as mod}
-						{@const mod_version = mod.versions[0]}
-						<ModCard mod={mod} version={mod_version} />
-					{/each}
+			<nav>
+				{#if data.mods?.data.length === data.mods?.count}
+					<p>Showing {data.mods?.data.length} mods</p>
+				{:else}
+					<p>Showing {data.mods?.data.length} of {data.mods?.count} mods</p>
+				{/if}
+				<Row>
+					<Button on:click={onPrevPage} icon="left" style="dark-small" disabled={!data.mods || max_count == 0 || current_page == 1}/>
+					<span>Page {current_page} of {max_page}</span>
+					<Button on:click={onNextPage} icon="right" iconOnRight={true} style="dark-small" disabled={!data.mods || max_count == 0 || current_page == max_page}/>
+				</Row>
+			</nav>
+	
+			<span class="overlay-container">
+				<div class="overlay" class:hidden={!searching}>
+					<LoadingCircle/>
 				</div>
-			{:else}
-				No mods found :(
+				<!-- this goofy thing just makes sure the size of the mods list stays 
+					the same even if there are fewer items than needed to fill it -->
+				<div class="mod-listing-size-enforcer">
+					<span/>
+					<span/>
+					<span/>
+					<span/>
+					<span/>
+					<span/>
+					<span/>
+					<span/>
+				</div>
+				{#if data.mods && max_count > 0}
+					<div class="mod-listing">
+						{#each data.mods.data as mod}
+							{@const mod_version = mod.versions[0]}
+							<ModCard mod={mod} version={mod_version} />
+						{/each}
+					</div>
+				{:else}
+					<div class="no-mod-listing">
+						<div class="humorous-meme"><Image name="no-mods" alt=""/></div>
+						<p><em>No matching mods found :(</em></p>
+						<p>
+							It could be that the mod 
+							you're looking for 
+							{#if platforms.size}
+								is not available on {
+									Array.from(platforms)
+									.map(a => a.charAt(0).toUpperCase() + a.slice(1))
+									.join(' / ')
+								}!
+							{:else}
+								is not available on Geode, or was made for an older version!
+							{/if}
+						</p>
+					</div>
+				{/if}
+			</span>
+
+			{#if
+				data.mods && data.mods.data.length < data.mods.count &&
+				per_page !== perPageOptions[perPageOptions.length - 1]
+			}
+				<div class="show-more-container">
+					<Button style="primary-filled" on:click={() => {
+						per_page = perPageOptions[perPageOptions.indexOf(per_page) + 1];
+						updateSearch();
+					}}>Show more ({perPageOptions[perPageOptions.indexOf(per_page) + 1]})</Button>
+				</div>
+			{:else if data.mods && data.mods.data.length > 0}
+				<div class="show-more-container">
+					<Button style="secondary-filled" on:click={() => {
+						per_page = perPageOptions[0];
+						updateSearch();
+					}}>Show less (10)</Button>
+				</div>
 			{/if}
 		</main>
 	</Column>
 </div>
 
-<style>
+<style lang="scss">
     h1 {
         margin: 0;
         font-family: var(--font-heading);
@@ -185,11 +286,10 @@
     }
 	.content-separator {
         display: grid;
-        grid-template-columns: 15rem 1fr;
+        grid-template-columns: 15rem max-content;
         align-items: start;
         min-height: 1500px;
         gap: var(--gap-small);
-		max-width: 74rem;
 
 		& > aside {
 			background-color: var(--background-950);
@@ -216,23 +316,56 @@
 			}
 		}
 		& main {
-			background-color: var(--background-950);
+			display: grid;
+			grid-template-columns: 1fr;
+
 			padding: .5rem;
-			gap: .5rem;
 			border-radius: .5rem;
+
+			background-color: var(--background-950);
+
+			& > nav {
+				display: grid;
+				grid-template-columns: 1fr max-content 1fr;
+				align-items: center;
+			}
 		}
 	}
-	.mod-listing {
+	.show-more-container {
 		display: flex;
-		flex: 1;
-		flex-direction: row;
-		flex-wrap: wrap;
+		align-self: center;
+		justify-self: center;
+		margin-top: .5rem;
+	}
+	.mod-listing {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(14rem, auto));
+		align-content: center;
+		justify-content: center;
+		max-width: 60vw;
 		gap: .5rem;
 	}
-	.page {
-		background-color: var(--background-950);
-		border-radius: .5rem;
-		padding: .75rem;
+	.no-mod-listing {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+
+		padding: 5rem;
+		gap: .5rem;
+
+		& > .humorous-meme {
+			max-width: min(20rem, 50vw);
+		}
+		& > p {
+			margin: 0;
+		}
+	}
+	.mod-listing-size-enforcer {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(14rem, auto));
+		gap: .5rem;
+		max-width: 60vw;
 	}
 	.search {
 		background-color: var(--background-950);
@@ -241,5 +374,24 @@
         grid-template-columns: 1fr auto;
 		align-items: center;
         gap: var(--gap-small);
+	}
+	.overlay-container {
+		position: relative;
+	}
+	.overlay {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		background-color: color-mix(in srgb, var(--background-950) 80%, transparent);
+
+		&.hidden {
+			display: none;
+			pointer-events: none;
+		}
 	}
 </style>

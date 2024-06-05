@@ -6,7 +6,7 @@
 
 <script lang="ts">
     import type { KnownIcon } from "$lib";
-    import { setContext } from "svelte";
+    import { createEventDispatcher, setContext } from "svelte";
     import Icon from "./Icon.svelte";
     import Row from "./Row.svelte";
     import { clickoutside } from '@svelte-put/clickoutside';
@@ -14,10 +14,13 @@
     export let title: string;
     export let titleIcon: KnownIcon;
 
+    const dispatch = createEventDispatcher<{ 'select': { value: string } }>();
+    
     setContext<SelectContext>('select', {
         setValue: (title: string, value: string) => {
             open = false;
             selectedItem.innerHTML = title;
+            dispatch('select', { value });
         }
     });
     
@@ -114,6 +117,7 @@
             padding: .5rem;
             padding-top: 0rem;
             width: calc(var(--popup-width) + .05rem);
+            z-index: 1;
 
             background-color: var(--background-950);
 

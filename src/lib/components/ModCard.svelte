@@ -3,7 +3,6 @@
 	import type { ServerModVersion } from "$lib/api/models/mod-version.js";
     import { getModLogo } from "$lib/api/index-repository";
     import Link from "./Link.svelte";
-    import Button from "./Button.svelte";
     import Gap from "./Gap.svelte";
 
 	export let mod: ServerMod;
