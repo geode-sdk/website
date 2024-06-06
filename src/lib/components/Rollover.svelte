@@ -11,7 +11,7 @@
     <article><Column align="left" gap="tiny"><slot/></Column></article>
 </details>
 
-<style>
+<style lang="scss">
     details {
         padding: .5rem;
         border-radius: .5rem;
@@ -41,7 +41,7 @@
                 color: var(--secondary-50);
                 text-decoration: underline;
             }
-            & > .icon {
+            & > :global(.icon) {
                 transition: all 150ms;
             }
         }
@@ -59,7 +59,7 @@
         & > summary {
             color: var(--secondary-300);
             border-bottom: .1rem color-mix(in srgb, var(--secondary-300) 25%, transparent) solid;
-            & > .icon {
+            & > :global(.icon) {
                 rotate: -180deg;
             }
         }
