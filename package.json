@@ -30,6 +30,7 @@
     },
     "type": "module",
     "dependencies": {
+        "dayjs": "^1.11.11",
         "svelte-markdown": "^0.4.1"
     }
 }

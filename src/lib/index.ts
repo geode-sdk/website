@@ -1,3 +1,9 @@
+
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.extend(relativeTime);
+
 export const icons = {
     error: "error",
     twitter: "mdi:twitter",
@@ -41,6 +47,7 @@ export const icons = {
     featured: "mdi:star",
     unverified: "mdi:shield-off",
     view: "mdi:external-link",
+    version: "mdi:source-branch",
 
     "tag-universal": "mdi:globe",
     "tag-gameplay": "mdi:gamepad-variant",
@@ -65,4 +72,11 @@ export function iconForTag(tag: string): KnownIcon {
         return key as KnownIcon;
     }
     return 'tags';
+}
+export function serverTimestampToAgoString(timestamp: string): string | undefined {
+    const stamp = Date.parse(timestamp);
+    if (isNaN(stamp)) {
+        return undefined;
+    }
+    return dayjs(new Date(stamp)).fromNow();
 }
