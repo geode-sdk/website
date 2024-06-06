@@ -273,6 +273,13 @@ export async function getTags(): Promise<string[]> {
     return validate<string[]>(data);
 }
 
+export async function getDeveloperById(id: number): Promise<ServerDeveloper> {
+    const r = await fetch(`${BASE_URL}/v1/developers/${id}`);
+    const data = await r.json();
+
+    return validate<ServerDeveloper>(data);
+}
+
 export async function getSelf(token: string): Promise<ServerDeveloper> {
     const r = await fetch(`${BASE_URL}/v1/me`, {
         headers: new Headers({

@@ -1,6 +1,7 @@
 import {
     IndexError,
     createMod,
+    getDeveloperById,
     getMods,
     getSelfMods,
 } from "$lib/api/index-repository.js";
@@ -49,7 +50,10 @@ export const actions: Actions = {
 };
 
 export const load: PageServerLoad = async ({ url, params, cookies }) => {
-    const id = params.id;
+    const id = toIntSafe(params.id);
+    if (!id) {
+        error(404, "Developer not found");
+    }
 
     const user_str = cookies.get("cached_profile");
     const user = user_str
@@ -62,18 +66,15 @@ export const load: PageServerLoad = async ({ url, params, cookies }) => {
         status: (url.searchParams.get("status") as ModStatus) ?? "accepted",
     };
 
-    // get /developers/id doesn't exist yet
+    let developer = undefined;
+    try {
+        developer = await getDeveloperById(id);
+    } catch (e) {
+        if (e instanceof IndexError) {
+            error(404, "Developer not found");
+        }
 
-    const developer: ServerDeveloper = {
-        admin: false,
-        verified: false,
-        display_name: "example",
-        username: "geode-sdk",
-        id: +params.id,
-    };
-
-    if (!developer) {
-        error(404, "Developer not found");
+        throw e;
     }
 
     // get developer mods if not self, otherwise get self mods
