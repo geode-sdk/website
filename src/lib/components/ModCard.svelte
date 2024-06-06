@@ -108,10 +108,10 @@
 				transform: scale(115%);
 			}
 			& h1 {
-				color: var(--primary-100);
+				color: var(--accent-300);
 			}
 			& :global(.icon) {
-				color: var(--primary-100);
+				color: var(--primary-300);
 			}
 		}
 	}
