@@ -123,7 +123,7 @@
             }
             // For some reason doing a nested &:global(.scrolled) on the above doesn't work?
             & > :global(a.scrolled) {
-                background-color: color-mix(in srgb, var(--text-500) 25%, transparent);
+                background-color: color-mix(in srgb, var(--background-500) 25%, transparent);
             }
             & > :global(a:hover) {
                 background-color: color-mix(in srgb, var(--secondary-500) 25%, transparent);
