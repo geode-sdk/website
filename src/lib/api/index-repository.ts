@@ -1,6 +1,7 @@
 import type { ServerDeveloper } from "./models/base";
 import type { ServerMod, ServerSimpleMod } from "./models/mod.js";
 import type { ModStatus, ServerModVersion } from "./models/mod-version.js";
+import type { ServerStats } from "./models/stats";
 
 const BASE_URL = "https://api.geode-sdk.org";
 
@@ -36,7 +37,6 @@ function validate<T>(data: BaseRequest<T>) {
     if (data.error) {
         throw new IndexError(data.error);
     }
-
     return data.payload;
 }
 
@@ -358,4 +358,10 @@ export async function deleteAllTokens(token: string): Promise<void> {
         const data: BaseRequest<void> = await r.json();
         throw new IndexError(data.error);
     }
+}
+
+export async function getServerStats(): Promise<ServerStats> {
+    const r = await fetch(`${BASE_URL}/v1/stats`);
+    const data = await r.json();
+    return validate<ServerStats>(data);
 }

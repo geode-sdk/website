@@ -14,6 +14,8 @@
     import ShowcaseCollage from "$lib/components/ShowcaseCollage.svelte";
     import ModCollage from "$lib/components/ModCollage.svelte";
     import MoneyBox from "$lib/components/MoneyBox.svelte";
+    import { getServerStats } from "$lib/api/index-repository";
+    import LoadingCircle from "$lib/components/LoadingCircle.svelte";
 </script>
 
 <svelte:head>
@@ -85,8 +87,12 @@
                 both users and modders, nearly every mod you can imagine has been made or suggested!
             </p>
             <Row>
-                <MoneyBox num={1854082} icon="download" text="downloads" />
-                <MoneyBox num={103} icon="graph" text="mods published" />
+                {#await getServerStats()}
+                    <LoadingCircle size="small"/><p>Loading stats...</p>
+                {:then stats} 
+                    <MoneyBox num={stats.total_geode_downloads} icon="download" text="downloads" />
+                    <MoneyBox num={stats.total_mod_count} icon="graph" text="mods published" />
+                {/await}
             </Row>
         </Column>
     </FlyIntoView>

@@ -48,6 +48,9 @@ export const icons = {
     unverified: "mdi:shield-off",
     view: "mdi:external-link",
     version: "mdi:source-branch",
+    "view-grid": "mdi:view-comfy",
+    "view-dual-list": "mdi:view-compact",
+    "view-list": "mdi:view-list",
 
     "tag-universal": "mdi:globe",
     "tag-gameplay": "mdi:gamepad-variant",
