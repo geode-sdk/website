@@ -4,15 +4,19 @@
     import Icon from "./Icon.svelte";
 
     export let selected: boolean = false;
+    export let outsideState = false;
     export let icon: KnownIcon;
+    export let style: 'primary' | 'secondary' = 'primary';
 
     const dispatch = createEventDispatcher<{ 'select': { selected: boolean } }>();
 </script>
 
 <button
-    class="select-button" class:selected 
+    class="select-button {style}" class:selected
     on:click={() => {
-        selected = !selected;
+        if (!outsideState) {
+            selected = !selected;
+        }
         dispatch('select', { selected });
     }}
 ><Icon icon={icon} --icon-size=1.3em/><slot></slot></button>
@@ -41,8 +45,14 @@
             cursor: pointer;
         }
         &.selected {
-            border-color: color-mix(in srgb, var(--primary-300) 50%, transparent);
-            background-color: color-mix(in srgb, var(--primary-300) 50%, transparent);
+            &.primary {
+                border-color: color-mix(in srgb, var(--primary-300) 50%, transparent);
+                background-color: color-mix(in srgb, var(--primary-300) 50%, transparent);
+            }
+            &.secondary {
+                border-color: color-mix(in srgb, var(--secondary-300) 50%, transparent);
+                background-color: color-mix(in srgb, var(--secondary-300) 50%, transparent);
+            }
             &:hover {
                 background-color: color-mix(in srgb, var(--primary-100) 50%, transparent);
                 border-color: color-mix(in srgb, var(--primary-100) 50%, transparent);

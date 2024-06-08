@@ -32,6 +32,7 @@
 	let pending = data.params.status != "accepted";
 	let per_page = data.params.per_page ?? 12;
 	let searching = false;
+	let view: 'list' | 'dual-list' | 'grid' = 'dual-list';
 
 	$: max_count = data.mods?.count ?? 0;
 	$: max_page = Math.floor(max_count / per_page) + 1;
@@ -87,18 +88,6 @@
 
 		await goto(`/mods?${params}`, { noScroll: true });
 		searching = false;
-	}
-	const onNextPage = async () => {
-		if (current_page == max_page) {
-			return;
-		}
-		await gotoPage(current_page + 1);
-	}
-	const onPrevPage = async () => {
-		if (current_page == 1) {
-			return;
-		}
-		await gotoPage(current_page - 1);
 	}
 </script>
 
@@ -199,20 +188,45 @@
 		<main>
 			<nav>
 				{#if data.mods?.data.length === data.mods?.count}
-					<p>Showing {data.mods?.data.length} mods</p>
+					<p>Showing {data.mods?.data.length ?? 0} mods</p>
 				{:else}
-					<p>Showing {data.mods?.data.length} of {data.mods?.count} mods</p>
+					<p>Showing {data.mods?.data.length ?? 0} of {data.mods?.count ?? 0} mods</p>
 				{/if}
 				<Row>
-					<Button on:click={onPrevPage} icon="left" style="dark-small" disabled={!data.mods || max_count == 0 || current_page == 1}/>
+					<Button
+						on:click={async () => await gotoPage(Math.max(current_page - 1, 1))}
+						icon="left" style="dark-small"
+						disabled={!data.mods || max_count == 0 || current_page == 1}
+					/>
 					<span>Page {current_page} of {max_page}</span>
-					<Button on:click={onNextPage} icon="right" iconOnRight={true} style="dark-small" disabled={!data.mods || max_count == 0 || current_page == max_page}/>
+					<Button
+						on:click={async () => await gotoPage(Math.min(current_page + 1, max_page))}
+						icon="right" style="dark-small"
+						disabled={!data.mods || max_count == 0 || current_page == max_page}
+					/>
+				</Row>
+				<Row gap="small">
+					<SelectButton
+						on:select={() => view = 'list'} selected={view === 'list'} outsideState={true}
+						style="secondary"
+						icon="view-list"
+					/>
+					<SelectButton
+						on:select={() => view = 'dual-list'} selected={view === 'dual-list'} outsideState={true}
+						style="secondary"
+						icon="view-dual-list"
+					/>
+					<SelectButton
+						on:select={() => view = 'grid'} selected={view === 'grid'} outsideState={true}
+						style="secondary"
+						icon="view-grid"
+					/>
 				</Row>
 			</nav>
 	
 			<span class="overlay-container">
 				<div class="overlay" class:hidden={!searching}>
-					<LoadingCircle/>
+					<span><LoadingCircle/></span>
 				</div>
 				<!-- this goofy thing just makes sure the size of the mods list stays 
 					the same even if there are fewer items than needed to fill it -->
@@ -227,10 +241,13 @@
 					<span/>
 				</div>
 				{#if data.mods && max_count > 0}
-					<div class="mod-listing">
+					<div class="mod-listing {view}">
 						{#each data.mods.data as mod}
 							{@const mod_version = mod.versions[0]}
-							<ModCard mod={mod} version={mod_version} />
+							<ModCard
+								mod={mod} version={mod_version}
+								style={view === 'dual-list' ? 'list' : view}
+							/>
 						{/each}
 					</div>
 				{:else}
@@ -288,7 +305,6 @@
         display: grid;
         grid-template-columns: 15rem max-content;
         align-items: start;
-        min-height: 1500px;
         gap: var(--gap-small);
 
 		& > aside {
@@ -328,6 +344,10 @@
 				display: grid;
 				grid-template-columns: 1fr max-content 1fr;
 				align-items: center;
+
+				& :global(*:last-child) {
+					justify-self: end;
+				}
 			}
 		}
 	}
@@ -338,12 +358,26 @@
 		margin-top: .5rem;
 	}
 	.mod-listing {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(14rem, auto));
-		align-content: center;
-		justify-content: center;
 		max-width: 60vw;
 		gap: .5rem;
+
+		&.grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(14rem, auto));
+			align-content: center;
+			justify-content: center;
+		}
+		&.dual-list {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(25rem, auto));
+			align-content: center;
+			justify-content: center;
+		}
+		&.list {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
 	}
 	.no-mod-listing {
 		display: flex;

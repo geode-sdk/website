@@ -11,6 +11,7 @@
 
 	export let mod: ServerMod;
 	export let version: ServerModVersion;
+	export let style: 'list' | 'grid' = 'grid';
 
 	// add the version for non-accepted mods, as otherwise the endpoint will pick the latest accepted
 	$: mod_url = version.status != "accepted"
@@ -19,41 +20,84 @@
 
 	$: owner = mod.developers.filter(d => d.is_owner)[0];
 </script>
-<div class="mod-background">
-	<span class="click-to-go-to-page">
-		<Column gap="small">
-			<Link href={mod_url}>
-				<span class="title-container">
-					<h1 class:small={version.name.length > 16}>{version.name}</h1>
-				</span>
-			</Link>
-			<Link href={mod_url}>
+<div class="mod-background {style}">
+	{#if style === 'list'}
+		<span class="click-to-go-to-page">
+			<Link href={mod_url} centered={true}>
 				<img
 					src={getModLogo(mod.id).toString()}
 					alt={`Logo for the mod ${version.name}`}
 					style="max-height: 6rem;"
 				/>
 			</Link>
+		</span>
+		<Gap size="normal"/>
+		<Column align="left" gap="tiny">
+			<span class="click-to-go-to-page">
+				<Link href={mod_url}>
+					<span class="title-container">
+						<h1 class:small={version.name.length > 16}>{version.name}</h1>
+					</span>
+				</Link>
+			</span>
+			<Link href={`/developers/${owner.id}`} --link-color="var(--accent-300)">{owner.display_name}</Link>
+			<p class="description">
+				{#if version.description}
+					{#if version.description?.length < 110}
+						{version.description}
+					{:else}
+						{version.description.substring(0, 110)}&#8230;
+					{/if}
+				{:else}
+					<i>{"Description not provided"}</i>
+				{/if}
+			</p>
 		</Column>
-	</span>
-	<Link href={`/developers/${owner.id}`} --link-color="var(--accent-300)">{owner.display_name}</Link>
-	<Gap size="small"/>
-	<Row>
-		<span class="card-info"><Icon icon="version"/>{version.version}</span>
-		<span class="card-info"><Icon icon="download"/>{mod.download_count}</span>
-	</Row>
-	<Gap size="tiny"/>
-	<p class="description">
-		{#if version.description}
-			{#if version.description?.length < 80}
-				{version.description}
+		<Gap size="flex"/>
+		<Gap size="small"/>
+		<span class="do-not-shrink">
+			<Column align="right" gap="tiny">
+				<span class="card-info"><Icon icon="version"/>{version.version}</span>
+				<span class="card-info"><Icon icon="download"/>{mod.download_count}</span>
+				<span class="card-info"><Icon icon="time"/>{serverTimestampToAgoString(mod.updated_at)}</span>
+			</Column>
+		</span>
+	{:else}
+		<span class="click-to-go-to-page">
+			<Column gap="small">
+				<Link href={mod_url}>
+					<span class="title-container">
+						<h1 class:small={version.name.length > 16}>{version.name}</h1>
+					</span>
+				</Link>
+				<Link href={mod_url} centered={true}>
+					<img
+						src={getModLogo(mod.id).toString()}
+						alt={`Logo for the mod ${version.name}`}
+						style="max-height: 6rem;"
+					/>
+				</Link>
+			</Column>
+		</span>
+		<Link href={`/developers/${owner.id}`} --link-color="var(--accent-300)">{owner.display_name}</Link>
+		<Gap size="small"/>
+		<Row>
+			<span class="card-info"><Icon icon="version"/>{version.version}</span>
+			<span class="card-info"><Icon icon="download"/>{mod.download_count}</span>
+		</Row>
+		<Gap size="tiny"/>
+		<p class="description">
+			{#if version.description}
+				{#if version.description?.length < 80}
+					{version.description}
+				{:else}
+					{version.description.substring(0, 80)}&#8230;
+				{/if}
 			{:else}
-				{version.description.substring(0, 80)}&#8230;
+				<i>{"Description not provided"}</i>
 			{/if}
-		{:else}
-			<i>{"Description not provided"}</i>
-		{/if}
-	</p>
+		</p>
+	{/if}
 </div>
 
 <style lang="scss">
@@ -81,13 +125,22 @@
 	}
 	.mod-background {
 		background-color: color-mix(in srgb, var(--background-500) 15%, transparent);
-		height: 18rem;
-		width: 12rem;
 
 		display: flex;
-		flex-direction: column;
 		align-items: center;
-		justify-content: center;
+
+		&.grid {
+			height: 18rem;
+			width: 12rem;
+			flex-direction: column;
+			justify-content: center;
+		}
+		&.list {
+			width: calc(100% - 2rem);
+			height: 6rem;
+			flex-direction: row;
+			justify-content: start;
+		}
 
 		transition-duration: var(--transition-duration);
 		
@@ -126,5 +179,8 @@
 			color: var(--secondary-300);
 			transition-duration: var(--transition-duration);
 		}
+	}
+	.do-not-shrink {
+		flex-shrink: 0;
 	}
 </style>
