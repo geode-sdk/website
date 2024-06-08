@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap');
 
 :root {
     /* sizes */
@@ -22,8 +22,9 @@
 
     /* fonts */
 
-    --font-heading: "Quicksand";
-    --font-body: "Poppins";
+    --font-heading: "Quicksand", sans-serif;
+    --font-body: "Poppins", sans-serif;
+    --font-monospace: "Source Code Pro", monospace;
 
     /* colors */
     /* https://www.realtimecolors.com/?colors=ededed-262626-ed8a7d-ac5391-f4d490&fonts=Varela%20Round-Poppins */
@@ -115,6 +116,7 @@ body {
 
     --text-color: var(--text-50);
     --em-color: var(--primary-300);
+    --icon-color: inherit;
 }
 
 em {
@@ -166,11 +168,15 @@ p.subtitle {
 
 .markdown {
     --link-color: var(--secondary-300);
+    max-width: min(70ch, 90vw);
 
+    & h1:first-child {
+        margin-top: 0;
+    }
     & p:not(:first-child) {
         margin-top: .75em;
+        max-width: initial;
     }
-
     & a {
         text-decoration: none;
 
@@ -191,6 +197,18 @@ p.subtitle {
             color: var(--link-hover);
         }
     }
+}
+
+code:not(pre > code) {
+    display: inline-block;
+    background-color: var(--background-950);
+    color: var(--text-300);
+    border-radius: .25rem;
+    padding: .25rem;
+    padding-top: 0rem;
+    padding-bottom: 0rem;
+    font-size: .95em;
+    font-family: var(--font-monospace);
 }
 
 .hidden {
