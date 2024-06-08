@@ -24,6 +24,7 @@
         place-content: center;
         width: var(--icon-size);
         height: var(--icon-size);
+        color: var(--icon-color);
 
         & > :global(svg) {
             width: var(--icon-size);
