@@ -49,5 +49,14 @@
                 "answer": "In the *mods list*, you can click on the *View* button to open the popup for the mod you want to change settings for. There in the *bottom-left corner* you will find a button to open the *settings dialog*, listing all of the mod's settings.\n\n\nIf the mod is disabled, some settings might not be available."
             }
         ]
+    },
+    {
+        "category": "Advanced Usage",
+        "questions": [
+            {
+                "question": "How do I manually install mods?",
+                "answer": "Locate your Geometry Dash folder, inside of which is a `geode` folder. There you can find a `mods` folder that contains all your Geode mods. To manually install a mod, add the mods' `.geode` files here."
+            }
+        ]
     }
 ]
