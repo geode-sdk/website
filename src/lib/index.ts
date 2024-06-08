@@ -12,7 +12,8 @@ export const icons = {
     github: "mdi:github",
     download: "mdi:download",
     browse: "mdi:database-search",
-    gd: "@:gd-logo",
+    gd: "@:gd-icon",
+    geode: "@:geode-icon",
     examples: "mdi:text-search",
     graph: "mdi:graph-line",
     windows: "mdi:microsoft-windows",
@@ -51,6 +52,11 @@ export const icons = {
     "view-grid": "mdi:view-comfy",
     "view-dual-list": "mdi:view-compact",
     "view-list": "mdi:view-list",
+    description: "mdi:about",
+    changelog: "mdi:history",
+    modify: "mdi:pencil",
+    update: "mdi:clock-edit",
+    info: "mdi:about",
 
     "tag-universal": "mdi:globe",
     "tag-gameplay": "mdi:gamepad-variant",
@@ -82,4 +88,10 @@ export function serverTimestampToAgoString(timestamp: string): string | undefine
         return undefined;
     }
     return dayjs(new Date(stamp)).fromNow();
+}
+export function abbreviateNumber(num: number): string {
+    return Intl.NumberFormat('en-US', {
+        notation: "compact",
+        maximumFractionDigits: 1
+    }).format(num);
 }
