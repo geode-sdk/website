@@ -18,6 +18,7 @@
     import Button from "$lib/components/Button.svelte";
     import LoadingCircle from "$lib/components/LoadingCircle.svelte";
     import Image from "$lib/components/Image.svelte";
+    import InfoBox from "$lib/components/InfoBox.svelte";
 
 	export let data: PageData;
 
@@ -148,17 +149,21 @@
 			</Rollover>
 
 			<Rollover title="Tags">
-				{#each data.tags as tag}
-					<SelectButton
-						icon={iconForTag(tag)}
-						selected={tags.has(tag)}
-						on:select={() => {
-							toggleSet(tags, tag);
-							updateSearch();
-						}}>
-						{tag.charAt(0).toUpperCase() + tag.slice(1)}
-					</SelectButton>
-				{/each}
+				{#if data.tags}
+					{#each data.tags as tag}
+						<SelectButton
+							icon={iconForTag(tag)}
+							selected={tags.has(tag)}
+							on:select={() => {
+								toggleSet(tags, tag);
+								updateSearch();
+							}}>
+							{tag.charAt(0).toUpperCase() + tag.slice(1)}
+						</SelectButton>
+					{/each}
+				{:else}
+					<InfoBox type="error">Unable to connect to servers!</InfoBox>
+				{/if}
 			</Rollover>
 
 			<Rollover title="Other">
@@ -244,34 +249,40 @@
 					<span/>
 					<span/>
 				</div>
-				{#if data.mods && max_count > 0}
-					<div class="mod-listing {view}">
-						{#each data.mods.data as mod}
-							{@const mod_version = mod.versions[0]}
-							<ModCard
-								mod={mod} version={mod_version}
-								style={view === 'dual-list' ? 'list' : view}
-							/>
-						{/each}
-					</div>
+				{#if data.error}
+					<Gap size="normal"/>
+					<InfoBox type="error">{data.error}</InfoBox>
+					<Gap size="normal"/>
 				{:else}
-					<div class="no-mod-listing">
-						<div class="humorous-meme"><Image name="no-mods" alt=""/></div>
-						<p><em>No matching mods found :(</em></p>
-						<p>
-							It could be that the mod 
-							you're looking for 
-							{#if platforms.size}
-								is not available on {
-									Array.from(platforms)
-									.map(a => a.charAt(0).toUpperCase() + a.slice(1))
-									.join(' / ')
-								}!
-							{:else}
-								is not available on Geode, or was made for an older version!
-							{/if}
-						</p>
-					</div>
+					{#if data.mods && max_count > 0}
+						<div class="mod-listing {view}">
+							{#each data.mods.data as mod}
+								{@const mod_version = mod.versions[0]}
+								<ModCard
+									mod={mod} version={mod_version}
+									style={view === 'dual-list' ? 'list' : view}
+								/>
+							{/each}
+						</div>
+					{:else}
+						<div class="no-mod-listing">
+							<div class="humorous-meme"><Image name="no-mods" alt=""/></div>
+							<p><em>No matching mods found :(</em></p>
+							<p>
+								It could be that the mod 
+								you're looking for 
+								{#if platforms.size}
+									is not available on {
+										Array.from(platforms)
+										.map(a => a.charAt(0).toUpperCase() + a.slice(1))
+										.join(' / ')
+									}!
+								{:else}
+									is not available on Geode, or was made for an older version!
+								{/if}
+							</p>
+						</div>
+					{/if}
 				{/if}
 			</span>
 

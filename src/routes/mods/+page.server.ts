@@ -23,17 +23,25 @@ export const load: PageServerLoad = async ({ url }) => {
         per_page: toIntSafe(url.searchParams.get("per_page")) ?? 10,
     };
 
-    // ideally we would cache this information somewhere
-    const tags = await getTags();
-
     try {
-        const mods = await getMods(params);
-        return { mods, params, tags };
-    } catch (e) {
-        if (e instanceof IndexError) {
-            return { error: e.message, params, tags };
-        }
-    }
+        // ideally we would cache this information somewhere
+        const tags = await getTags();
 
-    return { params, tags };
+        try {
+            const mods = await getMods(params);
+            return { mods, params, tags };
+        } catch (e) {
+            if (e instanceof IndexError) {
+                return { error: e.message, params, tags };
+            }
+        }
+
+        return { params, tags };
+    }
+    catch(e) {
+        if (e instanceof IndexError) {
+            return { error: e.message, params };
+        }
+        return { error: "There was an Unknown Error when loading the Geode Index! Please try again later - it could also be that the servers are down. :(", params }
+    }
 };
