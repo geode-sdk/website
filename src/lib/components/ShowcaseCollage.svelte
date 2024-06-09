@@ -9,6 +9,7 @@
     div {
         padding: .65rem;
         width: 20rem;
+        height: 20rem;
         display: flex;
         flex-direction: row;
         align-items: center;

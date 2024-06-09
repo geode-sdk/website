@@ -63,7 +63,7 @@
 </Row>
 
 <Column>
-    <FlyIntoView>
+    <FlyIntoView reverseOnSmallScreen={true}>
         <Column>
             <p>
                 Geode is a <em>fan-made extension</em> for Geometry Dash that adds <em>mod support</em> to the game. 
@@ -100,7 +100,7 @@
         </Column>
     </FlyIntoView>
 
-    <FlyIntoView>
+    <FlyIntoView reverseOnSmallScreen={true}>
         <Column>
             <p>
                 Geode is <em>open-source</em> and is designed to make the modding experience infinitely smoother for 

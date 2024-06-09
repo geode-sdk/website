@@ -74,8 +74,11 @@
 <h2>How to install mods?</h2>
 
 <FlyIntoView>
-    <div style="flex-shrink: 0">
-        <Image name="main-menu" alt="The main menu, showing the Geode button" style="shadow"></Image>
+    <div class="img-with-width">
+        <Image
+            name="main-menu" alt="The main menu, showing the Geode button"
+            style="shadow"
+        />
     </div>
     <Column align="left">
         <p>
@@ -93,8 +96,11 @@
 </FlyIntoView>
 
 <FlyIntoView>
-    <div style="flex-shrink: 0">
-        <Image name="main-page" alt="The Geode menu" style="shadow"></Image>
+    <div class="img-with-width">
+        <Image
+            name="main-page" alt="The Geode menu" 
+            style="shadow"
+        />
     </div>
     <Column align="left">
         <p>
@@ -117,8 +123,11 @@
 </FlyIntoView>
 
 <FlyIntoView>
-    <div style="flex-shrink: 0">
-        <Image name="download-page" alt="The download tab of the Geode menu" style="shadow"></Image>
+    <div class="img-with-width">
+        <Image
+            name="download-page" alt="The download tab of the Geode menu"
+            style="shadow"
+        />
     </div>
     <Column align="left">
         <p>
@@ -138,6 +147,16 @@
 <Gap size="normal" />
 
 <style lang="scss">
+	@use '$lib/styles/media-queries.scss' as *;
+
+    .img-with-width {
+        max-width: 35vw;
+        flex-shrink: 0;
+
+		@include lt-lg {
+            max-width: 65vw;
+        }
+    }
     .install-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;

@@ -1,6 +1,8 @@
 <script lang="ts">
     import { onMount } from "svelte";
 
+	export let reverseOnSmallScreen = false;
+
     let section: HTMLElement;
 
     onMount(() => {
@@ -19,11 +21,13 @@
     });
 </script>
 
-<section bind:this={section}>
+<section bind:this={section} class:reverseOnSmallScreen>
     <slot/>
 </section>
 
-<style>
+<style lang="scss">
+	@use '$lib/styles/media-queries.scss' as *;
+
 	section {
 		display: flex;
 		flex-direction: row;
@@ -33,6 +37,15 @@
 		gap: 4rem;
 		font-size: 1.1em;
         max-width: 70vw;
+
+		@include lt-lg {
+			flex-direction: column;
+			gap: 1rem;
+			
+			&.reverseOnSmallScreen {
+				flex-direction: column-reverse;	
+			}
+		}
 	}
 	section {
 		opacity: 0%;
