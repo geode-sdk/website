@@ -384,7 +384,7 @@
 		}
 		&.dual-list {
 			display: grid;
-			grid-template-columns: repeat(auto-fill, minmax(25rem, auto));
+			grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
 			align-content: center;
 			justify-content: center;
 		}

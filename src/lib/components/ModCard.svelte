@@ -121,6 +121,12 @@
 		font-size: .9em;
 		color: var(--text-300);
 		flex-grow: 1;
+
+		display: -webkit-box;
+		max-width: 200px;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
 	}
 	.mod-background {
 		background-color: color-mix(in srgb, var(--background-500) 15%, transparent);
@@ -133,12 +139,20 @@
 			width: 12rem;
 			flex-direction: column;
 			justify-content: center;
+
+			.description {
+				-webkit-line-clamp: 4;
+			}
 		}
 		&.list {
 			width: calc(100% - 2rem);
 			height: 6rem;
 			flex-direction: row;
 			justify-content: start;
+
+			.title-container h1 {
+				text-align: left;
+			}
 		}
 
 		transition-duration: var(--transition-duration);
@@ -148,6 +162,10 @@
 
 		& .click-to-go-to-page {
 			display: contents;
+
+			& > :global(*) {
+				flex-shrink: 0;
+			}
 
 			& object {
 				transition-duration: var(--transition-duration);
