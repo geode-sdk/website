@@ -1,27 +1,15 @@
 import {
     IndexError,
     createMod,
-    getDeveloperById,
+    getDeveloper,
     getMods,
     getSelfMods,
 } from "$lib/api/index-repository.js";
+import { toIntSafe } from "$lib/api/helpers.js";
 import type { ServerDeveloper } from "$lib/api/models/base.js";
 import type { ModStatus } from "$lib/api/models/mod-version.js";
 import type { Actions, PageServerLoad } from "./$types.js";
 import { error, fail } from "@sveltejs/kit";
-
-function toIntSafe(value: string | null) {
-    if (!value) {
-        return undefined;
-    }
-
-    const as_int = parseInt(value);
-    if (!as_int) {
-        return undefined;
-    }
-
-    return as_int;
-}
 
 export const actions: Actions = {
     upload_mod: async ({ cookies, request }) => {
@@ -68,7 +56,7 @@ export const load: PageServerLoad = async ({ url, params, cookies }) => {
 
     let developer = undefined;
     try {
-        developer = await getDeveloperById(id);
+        developer = await getDeveloper(id);
     } catch (e) {
         if (e instanceof IndexError) {
             error(404, "Developer not found");

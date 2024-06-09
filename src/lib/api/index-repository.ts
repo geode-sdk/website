@@ -273,7 +273,38 @@ export async function getTags(): Promise<string[]> {
     return validate<string[]>(data);
 }
 
-export async function getDeveloperById(id: number): Promise<ServerDeveloper> {
+export interface DeveloperSearchParams {
+    query?: string;
+    page?: number;
+    per_page?: number;
+}
+
+export async function getDevelopers(
+    params?: DeveloperSearchParams,
+): Promise<Paginated<ServerDeveloper>> {
+    const url = new URL(`${BASE_URL}/v1/developers`);
+
+    if (params?.page != null) {
+        const page = params.page;
+        url.searchParams.set("page", page.toString());
+    }
+
+    if (params?.per_page != null) {
+        const limit = params.per_page;
+        url.searchParams.set("per_page", limit.toString());
+    }
+
+    if (params?.query != null) {
+        url.searchParams.set("query", params.query);
+    }
+
+    const r = await fetch(url);
+    const data: BasePaginatedRequest<ServerDeveloper> = await r.json();
+
+    return validate(data);
+}
+
+export async function getDeveloper(id: number): Promise<ServerDeveloper> {
     const r = await fetch(`${BASE_URL}/v1/developers/${id}`);
     const data = await r.json();
 

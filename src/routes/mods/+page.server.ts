@@ -5,37 +5,9 @@ import {
     getTags,
     type ModSearchParams,
 } from "$lib/api/index-repository.js";
+import { toIntSafe, undefIfEmpty, onlyIfTrue } from "$lib/api/helpers.js";
 import type { ModStatus } from "$lib/api/models/mod-version.js";
 import type { PageServerLoad } from "./$types.js";
-
-function toIntSafe(value: string | null) {
-    if (!value) {
-        return undefined;
-    }
-
-    const as_int = parseInt(value);
-    if (!as_int) {
-        return undefined;
-    }
-
-    return as_int;
-}
-
-function undefIfEmpty<T>(value: T[]) {
-    if (value.length > 0) {
-        return value;
-    }
-
-    return undefined;
-}
-
-function onlyIfTrue(value: string | null) {
-    if (value == "true") {
-        return true;
-    }
-
-    return undefined;
-}
 
 export const load: PageServerLoad = async ({ url }) => {
     const params: ModSearchParams = {
