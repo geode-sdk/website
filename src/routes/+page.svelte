@@ -16,6 +16,7 @@
     import MoneyBox from "$lib/components/MoneyBox.svelte";
     import { getServerStats } from "$lib/api/index-repository";
     import LoadingCircle from "$lib/components/LoadingCircle.svelte";
+    import InfoBox from "$lib/components/InfoBox.svelte";
 </script>
 
 <svelte:head>
@@ -92,6 +93,8 @@
                 {:then stats} 
                     <MoneyBox num={stats.total_geode_downloads} icon="download" text="downloads" />
                     <MoneyBox num={stats.total_mod_count} icon="graph" text="mods published" />
+                {:catch error}
+                    <InfoBox type="error">Unable to load stats!</InfoBox>
                 {/await}
             </Row>
         </Column>
