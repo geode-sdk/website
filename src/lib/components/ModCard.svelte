@@ -72,11 +72,9 @@
 					</span>
 				</Link>
 				<Link href={mod_url} centered={true}>
-					<img
-						src={getModLogo(mod.id).toString()}
-						alt={`Logo for the mod ${version.name}`}
-						style="max-height: 6rem;"
-					/>
+					<object type="image/png" data={logo_url} title={`Logo for the mod ${version.name}`} style="max-height: 6rem;">
+						<img src={iconPlaceholder} alt={`Placeholder logo for the mod ${version.name}`} style="max-height: 6rem;" />
+					</object>
 				</Link>
 			</Column>
 		</span>
@@ -151,15 +149,16 @@
 		& .click-to-go-to-page {
 			display: contents;
 
-			& img {
+			& object {
 				transition-duration: var(--transition-duration);
+				pointer-events: none;
 			}
 		}
 		&:has(.click-to-go-to-page a:hover) {
 			background-color: color-mix(in srgb, var(--background-500) 40%, transparent);
 
-			& .click-to-go-to-page img {
-				transform: scale(115%);
+			& .click-to-go-to-page object {
+				transform: scale(110%);
 			}
 			& h1 {
 				color: var(--accent-300);
