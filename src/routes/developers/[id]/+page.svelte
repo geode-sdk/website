@@ -10,46 +10,8 @@
 
 	$: url_params = $page.url.searchParams;
 
-	$: current_page = data.params.page;
-	$: items_per_page = data.params.per_page;
-
-	$: max_count = data.mods?.count ?? 0;
-	$: max_page = Math.floor(max_count / items_per_page) + 1;
-
-	const gotoPage = async (page: number) => {
-		if (current_page < 1) {
-			page = 0;
-		}
-
-		if (current_page > max_page) {
-			page = max_page;
-		}
-
-		const params = new URLSearchParams(url_params);
-		params.set("page", page.toString());
-
-		await goto(`/developers/${data.developer.id}/?${params}`);
-	}
-
-	const onNextPage = async () => {
-		if (current_page == max_page) {
-			return;
-		}
-
-		await gotoPage(current_page + 1);
-	}
-
-	const onPrevPage = async () => {
-		if (current_page == 1) {
-			return;
-		}
-
-		await gotoPage(current_page - 1);
-	}
-
 	const can_update_user = data.user && data.user.id == data.developer.id || false;
 	const can_modify_user = data.user?.admin || false;
-
 </script>
 
 
@@ -62,7 +24,18 @@
 {/if}
 
 <div>
+	{#if data.error}
+	<small>Error loading page: {data.error}</small>
+	{/if}
+
+	{#if form?.message}
+		<small>Error submitting form: {form.message}</small>
+	{/if}
+
+	{#if data.self_mods}
 	<div>
+		<h2>Your mods</h2>
+
 		<form>
 			<label for="status">Mod Status:</label>
 			<select name="status" id="status" bind:value={data.params.status}>
@@ -75,19 +48,6 @@
 			<input type="submit" value="Set filter" />
 
 		</form>
-	</div>
-
-	{#if data.error}
-	<small>Error loading page: {data.error}</small>
-	{/if}
-
-	{#if form?.message}
-		<small>Error submitting form: {form.message}</small>
-	{/if}
-
-	{#if data.self_mods}
-	<div>
-		<h2>Your mods</h2>
 
 		<form method="POST" action="?/upload_mod" use:enhance>
 			<fieldset>
@@ -108,16 +68,28 @@
 	</div>
 	{:else if data.mods}
 	<div>
-		<h2>Mods by this user</h2>
+		<div>
+			<h2>Top mods</h2>
+		</div>
 
-		{#each data.mods.data as mod}
+		<div class="mod-row">
+			{#each data.mods.data as mod}
 			{@const version = mod.versions[0]}
 			<ModCard mod={mod} version={version} />
-		{/each}
+			{/each}
+		</div>
 
-		<button on:click={onPrevPage}>Previous</button>
-		<span>Page {current_page} of {max_page}</span>
-		<button on:click={onNextPage}>Next</button>
+		<a href={`/mods?developer=${data.developer.username}`} class="more">More</a>
 	</div>
 	{/if}
 </div>
+
+<style>
+.mod-row {
+	display: flex;
+	flex: 1;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 1em;
+}
+</style>

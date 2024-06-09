@@ -1,5 +1,6 @@
 import {
     IndexError,
+    ModSort,
     createMod,
     getDeveloper,
     getMods,
@@ -48,12 +49,6 @@ export const load: PageServerLoad = async ({ url, params, cookies }) => {
         ? (JSON.parse(user_str) as ServerDeveloper)
         : undefined;
 
-    const search_params = {
-        page: toIntSafe(url.searchParams.get("page")) ?? 1,
-        per_page: toIntSafe(url.searchParams.get("per_page")) ?? 10,
-        status: (url.searchParams.get("status") as ModStatus) ?? "accepted",
-    };
-
     let developer = undefined;
     try {
         developer = await getDeveloper(id);
@@ -66,13 +61,17 @@ export const load: PageServerLoad = async ({ url, params, cookies }) => {
     }
 
     // get developer mods if not self, otherwise get self mods
-    let self_mods = undefined;
-    let mods = undefined;
     let load_error = undefined;
 
     if (developer.id == user?.id) {
         const token = cookies.get("token");
         if (token) {
+            let self_mods = undefined;
+
+            const search_params = {
+                status: (url.searchParams.get("status") as ModStatus) ?? "accepted",
+            };
+
             try {
                 self_mods = await getSelfMods(token, {
                     status: search_params.status,
@@ -84,19 +83,30 @@ export const load: PageServerLoad = async ({ url, params, cookies }) => {
                     throw e;
                 }
             }
+
+            return {
+                developer,
+                user,
+                self_mods,
+                error: load_error,
+                params: search_params,
+            };
         }
-    } else {
-        try {
-            mods = await getMods({
-                developer: developer.username,
-                ...search_params,
-            });
-        } catch (e) {
-            if (e instanceof IndexError) {
-                load_error = e.message;
-            } else {
-                throw e;
-            }
+    }
+
+    let mods = undefined;
+
+    try {
+        mods = await getMods({
+            developer: developer.username,
+            sort: ModSort.Downloads,
+            per_page: 5
+        });
+    } catch (e) {
+        if (e instanceof IndexError) {
+            load_error = e.message;
+        } else {
+            throw e;
         }
     }
 
@@ -104,8 +114,6 @@ export const load: PageServerLoad = async ({ url, params, cookies }) => {
         developer,
         user,
         mods,
-        self_mods,
         error: load_error,
-        params: search_params,
     };
 };

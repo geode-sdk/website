@@ -29,6 +29,7 @@
 	let sort = data.params.sort ?? "downloads";
 	let tags = new Set(data.params.tags ?? []);
 	let featured = data.params.featured ?? false;
+	let developer = data.params.developer ?? "";
 	let pending = data.params.status != "accepted";
 	let per_page = data.params.per_page ?? 12;
 	let searching = false;
@@ -67,6 +68,9 @@
 		}
 		if (per_page) {
 			params.set("per_page", per_page.toString());
+		}
+		if (developer) {
+			params.set("developer", developer);
 		}
 		params.set("sort", sort);
 
