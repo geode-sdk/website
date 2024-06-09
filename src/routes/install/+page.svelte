@@ -5,10 +5,11 @@
     import Gap from "$lib/components/Gap.svelte";
     import Icon from "$lib/components/Icon.svelte";
     import Image from "$lib/components/Image.svelte";
+    import Rollover from "$lib/components/Rollover.svelte";
     import Row from "$lib/components/Row.svelte";
     import Waves from "$lib/components/Waves.svelte";
 
-    let latestVersion = "1.0.0";
+    let latestVersion = "TODO BEFORE RELEASE";
     let showAllPlatforms = false;
     let curPlatform = "windows";
 </script>
@@ -22,31 +23,42 @@
     <div>
         <Column>
             <span>Latest version: <em>{latestVersion}</em></span>
-            <Column align="stretch">
-                {#if showAllPlatforms || curPlatform == "windows"}
-                    <Button style="primary-filled">
-                        <Icon icon="windows"/>Download for Windows
-                    </Button>
-                {/if}
-                {#if showAllPlatforms || curPlatform == "mac"}
-                    <Button style="primary-filled">
-                        <Icon icon="mac"/>Download for macOS
-                    </Button>
-                {/if}
-                {#if showAllPlatforms || curPlatform == "android"}
-                    <Button style="primary-filled">
-                        <Icon icon="android"/>Download for Android
-                    </Button>
-                {/if}
-                {#if showAllPlatforms || curPlatform == "android"}
-                    <Button style="primary-filled">
-                        <Icon icon="android"/>Download for Android (32 bit)
-                    </Button>
-                {/if}
-            </Column>
-            <p class="show-platforms" on:click={() => showAllPlatforms = !showAllPlatforms}>
-                {showAllPlatforms ? "Hide platforms" : "Show all platforms"}
-            </p>
+            {#if !showAllPlatforms}
+            {#if curPlatform == "windows"}
+                <Button style="primary-filled">
+                    <Icon icon="windows"/>Download for Windows
+                </Button>
+            {/if}
+            {#if curPlatform == "mac"}
+                <Button style="primary-filled">
+                    <Icon icon="mac"/>Download for macOS
+                </Button>
+            {/if}
+            {#if curPlatform == "android"}
+                <Button style="primary-filled">
+                    <Icon icon="android"/>Download for Android
+                </Button>
+            {/if}
+            {#if curPlatform == "android"}
+                <Button style="primary-filled">
+                    <Icon icon="android"/>Download for Android (32 bit)
+                </Button>
+            {/if}
+            {/if}
+            <Rollover title="Show All Platforms" bind:open={showAllPlatforms}>
+                <Button style="primary-filled">
+                    <Icon icon="windows"/>Download for Windows
+                </Button>
+                <Button style="primary-filled">
+                    <Icon icon="mac"/>Download for macOS
+                </Button>
+                <Button style="primary-filled">
+                    <Icon icon="android"/>Download for Android
+                </Button>
+                <Button style="primary-filled">
+                    <Icon icon="android"/>Download for Android (32 bit)
+                </Button>
+            </Rollover>
         </Column>
     </div>
     <Column align="left">
@@ -162,13 +174,6 @@
         grid-template-columns: 1fr 1fr;
         align-items: center;
         max-width: min(80ch, 90vw);
-    }
-    .show-platforms {
-        cursor: pointer;
-        color: var(--secondary-300);
-        &:hover {
-            text-decoration: underline;
-        }
     }
     h1 {
         margin: 0;
