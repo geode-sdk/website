@@ -2,7 +2,7 @@
 <script lang="ts">
     import Icon from "./Icon.svelte";
 
-    export let type: 'info' | 'warning';
+    export let type: 'info' | 'warning' | 'error';
 </script>
 
 <section class={type}>
@@ -40,6 +40,13 @@
             border: .2rem solid color-mix(in srgb, var(--primary-300) 25%, transparent);
             .icon-container {
                 color: var(--accent-300);
+            }
+        }
+        &.error {
+            background-color: color-mix(in srgb, var(--primary-500) 25%, transparent);
+            border: .2rem solid color-mix(in srgb, var(--primary-500) 25%, transparent);
+            .icon-container {
+                color: var(--primary-300);
             }
         }
     }

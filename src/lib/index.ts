@@ -5,7 +5,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 dayjs.extend(relativeTime);
 
 export const icons = {
-    error: "error",
+    error: "mdi:error",
     twitter: "mdi:twitter",
     discord: "simple-icons:discord",
     docs: "mdi:file-document",
