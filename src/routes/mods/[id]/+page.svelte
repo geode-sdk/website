@@ -15,6 +15,7 @@
     import Waves from "$lib/components/Waves.svelte";
     import Label from "$lib/components/Label.svelte";
     import InfoBox from "$lib/components/InfoBox.svelte";
+	import iconPlaceholder from "$lib/assets/icon-placeholder.png";
 
 	export let data: PageData;
 
@@ -41,7 +42,10 @@
 <Gap size="large" />
 
 <header>
-	<img src={logoUrl} alt={`mod logo for ${data.version.name}`} style="max-height: 8rem;" />
+	<object type="image/png" data={logoUrl} title={`mod logo for ${data.version.name}`} style="max-height: 8rem;">
+		<img src={iconPlaceholder} alt={`placeholder logo for ${data.version.name}`} style="max-height: 8rem;" />
+	</object>
+
 	<Column align="left" gap="tiny">
 		<h1>{data.version.name}</h1>
 		<p>

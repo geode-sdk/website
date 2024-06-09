@@ -8,6 +8,7 @@
     import Icon from "./Icon.svelte";
     import Column from "./Column.svelte";
     import { serverTimestampToAgoString } from "$lib";
+	import iconPlaceholder from "$lib/assets/icon-placeholder.png"
 
 	export let mod: ServerMod;
 	export let version: ServerModVersion;
@@ -18,17 +19,17 @@
 		? `/mods/${mod.id}?version=${version.version}`
 		: `/mods/${mod.id}`;
 
+	$: logo_url = getModLogo(mod.id).toString();
+
 	$: owner = mod.developers.filter(d => d.is_owner)[0];
 </script>
 <div class="mod-background {style}">
 	{#if style === 'list'}
 		<span class="click-to-go-to-page">
 			<Link href={mod_url} centered={true}>
-				<img
-					src={getModLogo(mod.id).toString()}
-					alt={`Logo for the mod ${version.name}`}
-					style="max-height: 6rem;"
-				/>
+				<object type="image/png" data={logo_url} title={`Logo for the mod ${version.name}`} style="max-height: 6rem;">
+					<img src={iconPlaceholder} alt={`Placeholder logo for the mod ${version.name}`} style="max-height: 6rem;" />
+				</object>
 			</Link>
 		</span>
 		<Gap size="normal"/>
