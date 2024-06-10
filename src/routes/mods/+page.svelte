@@ -19,6 +19,7 @@
     import LoadingCircle from "$lib/components/LoadingCircle.svelte";
     import Image from "$lib/components/Image.svelte";
     import InfoBox from "$lib/components/InfoBox.svelte";
+    import Sidebar from "$lib/components/Sidebar.svelte";
 
 	export let data: PageData;
 
@@ -97,6 +98,8 @@
 </script>
 
 <Waves type="top" />
+<Sidebar side="left"/>
+<Sidebar side="right"/>
 <Gap size="large" />
 
 <h1>Browse Mods</h1>
