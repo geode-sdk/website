@@ -118,7 +118,7 @@
         </Column>
         <CodeExample code={`
             // Include Geode headers
-            #include <Geode/modify/MenuLayer.hpp>;
+            #include <Geode/modify/MenuLayer.hpp>
             
             using namespace geode::prelude;
             
