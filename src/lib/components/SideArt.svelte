@@ -24,17 +24,19 @@
     div {
         position: absolute;
         z-index: -10;
-        width: 10rem;
+        width: 12rem;
         height: var(--height);
 
-        background-image: url("$lib/assets/sidebar.png");
+        background-image: url("$lib/assets/sideart.png");
         background-size: contain;
         background-repeat: repeat-y;
 
-        filter: sepia(75%) drop-shadow(0px 0px 3rem color-mix(in srgb, var(--primary-700) 50%, transparent));
+        filter: drop-shadow(0px 0px 3rem color-mix(in srgb, var(--primary-700) 50%, transparent));
+        opacity: 50%;
 
         &.left {
             left: 0px;
+            transform: scaleX(-1);
         }
         &.right {
             right: 0px;
