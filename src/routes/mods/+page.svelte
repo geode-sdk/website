@@ -256,7 +256,7 @@
 				{:else}
 					{#if data.mods && max_count > 0}
 						<div class="mod-listing {view}">
-							{#each data.mods.data as mod}
+							{#each data.mods.data as mod (mod.id)}
 								{@const mod_version = mod.versions[0]}
 								<ModCard
 									mod={mod} version={mod_version}
