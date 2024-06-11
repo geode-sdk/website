@@ -311,6 +311,27 @@ export async function getDeveloper(id: number): Promise<ServerDeveloper> {
     return validate<ServerDeveloper>(data);
 }
 
+export interface UpdateDeveloperBody {
+    admin?: boolean;
+    verified?: boolean;
+}
+
+export async function updateDeveloper(token: string, id: number, body: UpdateDeveloperBody) {
+    const r = await fetch(`${BASE_URL}/v1/developers/${id}`, {
+        headers: new Headers({
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+        }),
+        method: "PUT",
+        body: JSON.stringify(body),
+    });
+
+    if (r.status != 204) {
+        const data: BaseRequest<void> = await r.json();
+        throw new IndexError(data.error);
+    }
+}
+
 export async function getSelf(token: string): Promise<ServerDeveloper> {
     const r = await fetch(`${BASE_URL}/v1/me`, {
         headers: new Headers({

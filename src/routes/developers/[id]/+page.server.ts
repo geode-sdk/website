@@ -5,6 +5,7 @@ import {
     getDeveloper,
     getMods,
     getSelfMods,
+    updateDeveloper,
 } from "$lib/api/index-repository.js";
 import { toIntSafe } from "$lib/api/helpers.js";
 import type { ServerDeveloper } from "$lib/api/models/base.js";
@@ -36,6 +37,33 @@ export const actions: Actions = {
 
         return { success: true };
     },
+    modify_user: async ({ cookies, params, request }) => {
+        const id = toIntSafe(params.id);
+        if (!id) {
+            return fail(404, { message: "Developer not found" });
+        }
+
+        const token = cookies.get("token");
+        if (!token) {
+            return fail(401, { message: "no token provided" });
+        }
+
+        const data = await request.formData();
+
+        // only be present if true, just in case it messes up auth or something
+        const verified = data.has("verified") ? true : undefined;
+        const admin = data.has("admin") ? true : undefined;
+
+        try {
+            await updateDeveloper(token, id, { verified, admin });
+        } catch (e) {
+            if (e instanceof IndexError) {
+                return fail(400, { message: e.message });
+            }
+        }
+
+        return { success: true };
+    }
 };
 
 export const load: PageServerLoad = async ({ url, params, cookies }) => {

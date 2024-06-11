@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { goto } from "$app/navigation";
-	import { page } from "$app/stores";
 	import { enhance } from '$app/forms';
 	import type { PageData, ActionData } from "./$types.js";
 	import ModCard from '$lib/components/ModCard.svelte';
@@ -8,12 +6,9 @@
 	export let data: PageData;
 	export let form: ActionData;
 
-	$: url_params = $page.url.searchParams;
-
 	const can_update_user = data.user && data.user.id == data.developer.id || false;
 	const can_modify_user = data.user?.admin || false;
 </script>
-
 
 {data.developer.display_name} ({data.developer.id})
 
@@ -21,6 +16,26 @@
 
 {#if can_update_user}
 <a href="/me">User Settings</a>
+{/if}
+
+{#if can_modify_user}
+<form method="POST" action="?/modify_user" use:enhance>
+	<fieldset>
+		<legend>Modify user</legend>
+
+		<div>
+			<input type="checkbox" checked={data.developer.verified} name="verified" id="modify-verified" />
+			<label for="modify-verified">Verified</label>
+		</div>
+
+		<div>
+			<input type="checkbox" checked={data.developer.admin} name="admin" id="modify-admin" />
+			<label for="modify-admin">Admin</label>
+		</div>
+
+		<input type="submit" value="Update" />
+	</fieldset>
+</form>
 {/if}
 
 <div>
