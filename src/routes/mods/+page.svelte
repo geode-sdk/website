@@ -97,6 +97,11 @@
 	}
 </script>
 
+<svelte:head>
+    <title>Browse Geode Mods</title>
+    <meta name="description" content="Browse mods for the Geode mod loader">
+</svelte:head>
+
 <Waves type="top" />
 <SideArt side="left"/>
 <SideArt side="right"/>
