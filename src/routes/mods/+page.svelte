@@ -33,6 +33,7 @@
 	let featured = data.params.featured ?? false;
 	let developer = data.params.developer ?? "";
 	let pending = data.params.status != "accepted";
+	let gd = data.params.gd ?? "";
 	let per_page = data.params.per_page ?? 12;
 	let searching = false;
 	let view: 'list' | 'dual-list' | 'grid' = 'dual-list';
@@ -73,6 +74,9 @@
 		}
 		if (developer) {
 			params.set("developer", developer);
+		}
+		if (gd) {
+			params.set("gd", gd);
 		}
 		params.set("sort", sort);
 
