@@ -7,7 +7,7 @@
     import Row from "./Row.svelte";
     import Icon from "./Icon.svelte";
     import Column from "./Column.svelte";
-    import { serverTimestampToAgoString } from "$lib";
+    import { serverTimestampToAgoString, abbreviateNumber } from "$lib";
 	import iconPlaceholder from "$lib/assets/icon-placeholder.png"
 
 	export let mod: ServerMod;
@@ -59,7 +59,7 @@
 		<span class="do-not-shrink">
 			<Column align="right" gap="tiny">
 				<span class="card-info"><Icon icon="version"/>{version.version}</span>
-				<span class="card-info"><Icon icon="download"/>{mod.download_count}</span>
+				<span class="card-info"><Icon icon="download"/>{abbreviateNumber(mod.download_count)}</span>
 				<span class="card-info"><Icon icon="time"/>{serverTimestampToAgoString(mod.updated_at)}</span>
 			</Column>
 		</span>
@@ -82,7 +82,7 @@
 		<Gap size="small"/>
 		<Row>
 			<span class="card-info"><Icon icon="version"/>{version.version}</span>
-			<span class="card-info"><Icon icon="download"/>{mod.download_count}</span>
+			<span class="card-info"><Icon icon="download"/>{abbreviateNumber(mod.download_count)}</span>
 		</Row>
 		<Gap size="tiny"/>
 		<p class="description">
