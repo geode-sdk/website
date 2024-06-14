@@ -47,6 +47,8 @@
     }
 
     const updateSearch = async () => {
+        console.log(new Error().stack);
+
         searching = true;
         const params = new URLSearchParams();
         if (query) {
@@ -200,8 +202,10 @@
         <nav class="search">
             <Search placeholder="Search mods..." bind:query on:search={updateSearch} autofocus></Search>
             <Select title="Sort by" titleIcon="sort" on:select={ev => {
-                sort = ev.detail.value;
-                updateSearch();
+                if (sort != ev.detail.value) {
+                    sort = ev.detail.value;
+                    updateSearch();
+                }
             }}>
                 <SelectOption icon="download" title="Most Downloaded" value="downloads" isDefault/>
                 <SelectOption icon="time" title="Most Recent" value="recently_published"/>
