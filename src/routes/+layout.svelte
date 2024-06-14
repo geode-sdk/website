@@ -7,15 +7,12 @@
     import Dot from "$lib/components/Dot.svelte";
     import Waves from "$lib/components/Waves.svelte";
 	import Icon from "$lib/components/Icon.svelte";
-    import SideArt from "$lib/components/SideArt.svelte";
 </script>
 
 <main>
 	<div class="bg"/>
-	<div class="side-art">
-		<SideArt side="left" />
-		<SideArt side="right" />
-	</div>
+	<div class="side-art left"/>
+	<div class="side-art right"/>
 	<slot/>
 	<nav>
 		<Button href=".." style="primary-filled-dark" icon="home">Home</Button>
@@ -47,6 +44,8 @@
 </main>
 
 <style lang="scss">
+	@use '$lib/styles/media-queries.scss' as *;
+
 	.bg {
 		background-image: url("$lib/assets/bgart.png");
         background-size: contain;
@@ -66,9 +65,7 @@
 		align-items: center;
 		justify-content: space-between;
 		gap: var(--gap-large);
-		// min-height: calc(100vh - var(--page-margin) * 2);
-		padding: var(--page-margin);
-		// min-height: calc(100vh - var(--page-margin) * 2);
+		padding-top: 4rem;
 	}
 	nav {
 		position: fixed;
@@ -79,14 +76,32 @@
 	.waves-bottom {
 		min-width: 100%;
 	}
-	
-	.side-art {
-		display: none;
-	}
 
-	@media screen and (min-width: 500px) {
-		.side-art {
-			display: block;
+    .side-art {
+        position: absolute;
+        z-index: -10;
+        width: 11rem;
+		top: 0;
+		bottom: 0;
+
+        background-image: url("$lib/assets/sideart.png");
+        background-size: contain;
+        background-repeat: repeat-y;
+
+        filter: drop-shadow(0px 0px 3rem color-mix(in srgb, var(--primary-700) 15%, transparent));
+        opacity: 100%;
+
+        &.left {
+            left: 0px;
+            transform: scaleX(-1);
+        }
+        &.right {
+            right: 0px;
+        }
+
+        display: none;
+		@include gt-md {
+            display: block;
 		}
-	}
+    }
 </style>

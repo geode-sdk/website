@@ -47,26 +47,28 @@
 
 <h1>Install Geode</h1>
 
-<Row wrap="wrap">
-    <Column>
-        <p><strong>Installation instructions</strong></p>
-        <span style="color: var(--background-300)">
-            <Column align="left">
-                <Row>
-                    <Icon icon="one"/>
-                    <p>Download the <em>installer</em> for the platform you want.</p>
-                </Row>
-                <Row>
-                    <Icon icon="two"/>
-                    <p>Run the installer.</p>
-                </Row>
-            </Column>
-        </span>
-        <p>
-            Geode is available for <em>Windows</em>, <em>MacOS</em> and <em>Android</em>.
-        </p>
-    </Column>
-    <div>
+<Column>
+    <section>
+        <Column>
+            <p><strong>Installation instructions</strong></p>
+            <span style="color: var(--background-300)">
+                <Column align="left">
+                    <Row>
+                        <Icon icon="one"/>
+                        <p>Download the <em>installer</em> for the platform you want.</p>
+                    </Row>
+                    <Row>
+                        <Icon icon="two"/>
+                        <p>Run the installer.</p>
+                    </Row>
+                </Column>
+            </span>
+            <p>
+                Geode is available for <em>Windows</em>, <em>MacOS</em> and <em>Android</em>.
+            </p>
+        </Column>
+    </section>
+    <section>
         <Column>
             <div>Latest version: <em>{latestVersion}</em>.</div>
             {#if curPlatform === "android"}
@@ -109,8 +111,8 @@
                 </Button> -->
             </Rollover>
         </Column>
-    </div>
-</Row>
+    </section>
+</Column>
 
 <Gap size="large" />
 
@@ -200,9 +202,13 @@
             max-width: 65vw;
         }
     }
+    section {
+        background-color: var(--background-950);
+        padding: 1rem;
+        border-radius: .5rem;
+    }
     h1 {
         margin: 0;
-        margin-top: 10rem;
         font-family: var(--font-heading);
         font-weight: 600;
         color: var(--text-50);

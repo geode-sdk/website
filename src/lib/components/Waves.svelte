@@ -43,7 +43,6 @@
             width: 100%;
             height: 35rem;
             margin-top: -15rem;
-            // margin-bottom: calc(0px - var(--page-margin));
             & > div {
                 margin-top: 20rem;
             }
