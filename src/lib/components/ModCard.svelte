@@ -27,8 +27,8 @@
 	{#if style === 'list'}
 		<span class="click-to-go-to-page">
 			<Link href={mod_url} centered={true}>
-				<object type="image/png" data={logo_url} title={`Logo for the mod ${version.name}`} style="max-height: 6rem;">
-					<img src={iconPlaceholder} alt={`Placeholder logo for the mod ${version.name}`} style="max-height: 6rem;" />
+				<object type="image/png" data={logo_url} title={`Logo for the mod ${version.name}`} class="mod-image">
+					<img src={iconPlaceholder} alt={`Placeholder logo for the mod ${version.name}`} class="mod-image" />
 				</object>
 			</Link>
 		</span>
@@ -104,7 +104,6 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		height: 1.55em;
 
 		h1 {
 			margin: 0;
@@ -128,6 +127,9 @@
 		-webkit-box-orient: vertical;
 		overflow: hidden;
 	}
+	.mod-image {
+		max-height: 5rem;
+	}
 	.mod-background {
 		background-color: color-mix(in srgb, var(--background-500) 15%, transparent);
 
@@ -145,10 +147,8 @@
 			}
 		}
 		&.list {
-			width: calc(100% - 2rem);
-			height: 6rem;
 			flex-direction: row;
-			justify-content: start;
+			justify-content: space-between;
 
 			.title-container h1 {
 				text-align: left;

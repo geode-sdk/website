@@ -18,9 +18,11 @@
 
 <style lang="scss">
     span {
-        display: block;
+        display: flex;
         width: 100%;
         pointer-events: none;
+        justify-content: center;
+        align-items: flex-end;
 
         & > div {
             color: var(--text-950);
@@ -28,6 +30,7 @@
             --link-hover: var(--primary-500);
             --link-weight: 700;
             pointer-events: auto;
+            padding-bottom: 5rem;
         }
         & > :global(svg) {
             position: absolute;
@@ -37,10 +40,10 @@
         }
         &.bottom {
             position: relative;
-            width: calc(100% + var(--page-margin) * 2);
+            width: 100%;
             height: 35rem;
             margin-top: -15rem;
-            margin-bottom: calc(0px - var(--page-margin));
+            // margin-bottom: calc(0px - var(--page-margin));
             & > div {
                 margin-top: 20rem;
             }

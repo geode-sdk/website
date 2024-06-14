@@ -10,7 +10,7 @@
     --gap-large: 3rem;
     --gap-immense: 10rem;
 
-    --page-margin: 4rem;
+    --page-margin: 0;
 
     --font-size-small: 0.8rem;
     --font-size-normal: 1rem;
@@ -105,6 +105,7 @@
 body {
     padding: 0;
     margin: var(--page-margin);
+    overflow-x: hidden;
 
     background: linear-gradient(
         to bottom,

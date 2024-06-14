@@ -107,8 +107,10 @@
 </svelte:head>
 
 <Waves type="top" />
-<SideArt side="left"/>
-<SideArt side="right"/>
+<div class="side-art">
+	<SideArt side="left" />
+	<SideArt side="right" />
+</div>
 <Gap size="large" />
 
 <h1>Browse Mods</h1>
@@ -330,7 +332,7 @@
     }
 	.content-separator {
         display: grid;
-        grid-template-columns: 15rem max-content;
+        grid-template-columns: auto;
         align-items: start;
         gap: var(--gap-small);
 
@@ -368,9 +370,13 @@
 			background-color: var(--background-950);
 
 			& > nav {
-				display: grid;
-				grid-template-columns: 1fr max-content 1fr;
+				// display: grid;
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: center;
+				// grid-template-columns: 1fr max-content 1fr;
 				align-items: center;
+				gap: 1rem;
 
 				& :global(*:last-child) {
 					justify-self: end;
@@ -378,6 +384,23 @@
 			}
 		}
 	}
+
+	@media screen and (min-width: 830px) {
+		.content-separator {
+        	grid-template-columns: 15rem max-content;
+		}
+	}
+
+	.side-art {
+		display: none;
+	}
+
+	@media screen and (min-width: 500px) {
+		.side-art {
+			display: block;
+		}
+	}
+
 	.show-more-container {
 		display: flex;
 		align-self: center;
@@ -385,7 +408,6 @@
 		margin-top: .5rem;
 	}
 	.mod-listing {
-		max-width: 60vw;
 		gap: .5rem;
 
 		&.grid {
@@ -396,14 +418,13 @@
 		}
 		&.dual-list {
 			display: grid;
-			grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
+			grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
 			align-content: center;
 			justify-content: center;
 		}
 		&.list {
 			display: flex;
 			flex-direction: column;
-			align-items: center;
 		}
 	}
 	.no-mod-listing {
@@ -431,8 +452,9 @@
 	.search {
 		background-color: var(--background-950);
 		border-radius: .5rem;
-        display: grid;
-        grid-template-columns: 1fr auto;
+		display: flex;
+		justify-content: center;
+		flex-wrap: wrap;
 		align-items: center;
         gap: var(--gap-small);
 	}
