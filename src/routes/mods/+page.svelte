@@ -125,12 +125,20 @@
 				>Windows</SelectButton>
 				<SelectButton
 					icon="mac"
-					selected={platforms.has('mac')}
+					selected={platforms.has('mac-arm')}
 					on:select={() => {
-						toggleSet(platforms, 'mac');
+						toggleSet(platforms, 'mac-arm');
 						updateSearch();
 					}}
-				>Mac</SelectButton>
+				>macOS (ARM)</SelectButton>
+				<SelectButton
+					icon="mac"
+					selected={platforms.has('mac-intel')}
+					on:select={() => {
+						toggleSet(platforms, 'mac-intel');
+						updateSearch();
+					}}
+				>macOS (x64)</SelectButton>
 				<SelectButton
 					icon="android"
 					selected={platforms.has('android64')}
@@ -148,7 +156,7 @@
 					}}
 				>Android (32-bit)</SelectButton>
 				<SelectButton
-					icon="mac"
+					icon="ios"
 					selected={platforms.has('ios')}
 					on:select={() => {
 						toggleSet(platforms, 'ios');

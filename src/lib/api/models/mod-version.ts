@@ -14,7 +14,8 @@ export type ModVersionString = string;
 
 interface ServerGDVersion {
     win: string | null;
-    mac: string | null;
+    "mac-intel": string | null;
+    "mac-arm": string | null;
     ios: string | null;
     android32: string | null;
     android64: string | null;
