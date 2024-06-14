@@ -102,6 +102,10 @@
     --accent-alt-950: #061407;
 }
 
+html {
+    overflow-x: hidden;
+}
+
 body {
     padding: 0;
     margin: var(--page-margin);

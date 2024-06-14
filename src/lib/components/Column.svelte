@@ -16,6 +16,7 @@
 <style lang="scss">
     div {
         display: flex;
+        width: 100%;
         flex-direction: column;
         flex-wrap: var(--wrap);
         gap: var(--gap);
