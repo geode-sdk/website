@@ -166,21 +166,27 @@
             </Rollover>
 
             <Rollover title="Tags">
-                {#if data.tags}
-                    {#each data.tags as tag}
-                        <SelectButton
-                            icon={iconForTag(tag)}
-                            selected={tags.has(tag)}
-                            on:select={() => {
-                                toggleSet(tags, tag);
-                                updateSearch();
-                            }}>
-                            {tag.charAt(0).toUpperCase() + tag.slice(1)}
-                        </SelectButton>
-                    {/each}
-                {:else}
+                {#await data.tags}
+                    <LoadingCircle size="small" />
+                {:then server_tags}
+                    {#if server_tags}
+                        {#each server_tags as tag}
+                            <SelectButton
+                                icon={iconForTag(tag)}
+                                selected={tags.has(tag)}
+                                on:select={() => {
+                                    toggleSet(tags, tag);
+                                    updateSearch();
+                                }}>
+                                {tag.charAt(0).toUpperCase() + tag.slice(1)}
+                            </SelectButton>
+                        {/each}
+                    {:else}
+                        <InfoBox type="error">Failed to list tags!</InfoBox>
+                    {/if}
+                {:catch error}
                     <InfoBox type="error">Unable to connect to servers!</InfoBox>
-                {/if}
+                {/await}
             </Rollover>
 
             <Rollover title="Other">

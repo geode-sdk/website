@@ -26,7 +26,7 @@ export const load: PageServerLoad = async ({ url }) => {
 
     try {
         // ideally we would cache this information somewhere
-        const tags = await getTags();
+        const tags = getTags();
 
         try {
             const mods = await getMods(params);
