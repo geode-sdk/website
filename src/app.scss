@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap");
 
 :root {
     /* sizes */
@@ -177,7 +177,7 @@ p.subtitle {
         margin-top: 0;
     }
     & p:not(:first-child) {
-        margin-top: .75em;
+        margin-top: 0.75em;
         max-width: initial;
     }
     & a {
@@ -206,11 +206,11 @@ code:not(pre > code) {
     display: inline-block;
     background-color: var(--background-950);
     color: var(--text-300);
-    border-radius: .25rem;
-    padding: .25rem;
+    border-radius: 0.25rem;
+    padding: 0.25rem;
     padding-top: 0rem;
     padding-bottom: 0rem;
-    font-size: .95em;
+    font-size: 0.95em;
     font-family: var(--font-monospace);
 }
 

@@ -38,11 +38,13 @@ export const load: PageServerLoad = async ({ url }) => {
         }
 
         return { params, tags };
-    }
-    catch(e) {
+    } catch (e) {
         if (e instanceof IndexError) {
             return { error: e.message, params };
         }
-        return { error: "There was an Unknown Error when loading the Geode Index! Please try again later - it could also be that the servers are down. :(", params }
+        return {
+            error: "There was an Unknown Error when loading the Geode Index! Please try again later - it could also be that the servers are down. :(",
+            params,
+        };
     }
 };

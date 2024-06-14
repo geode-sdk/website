@@ -63,7 +63,7 @@ export const actions: Actions = {
         }
 
         return { success: true };
-    }
+    },
 };
 
 export const load: PageServerLoad = async ({ url, params, cookies }) => {
@@ -97,7 +97,8 @@ export const load: PageServerLoad = async ({ url, params, cookies }) => {
             let self_mods = undefined;
 
             const search_params = {
-                status: (url.searchParams.get("status") as ModStatus) ?? "accepted",
+                status:
+                    (url.searchParams.get("status") as ModStatus) ?? "accepted",
             };
 
             try {
@@ -128,7 +129,7 @@ export const load: PageServerLoad = async ({ url, params, cookies }) => {
         mods = await getMods({
             developer: developer.username,
             sort: ModSort.Downloads,
-            per_page: 5
+            per_page: 5,
         });
     } catch (e) {
         if (e instanceof IndexError) {

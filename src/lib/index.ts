@@ -1,6 +1,5 @@
-
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 
 dayjs.extend(relativeTime);
 
@@ -24,10 +23,10 @@ export const icons = {
     copyright: "mdi:copyright",
     help: "mdi:help-circle",
     warning: "mdi:warning-circle",
-    up:   "mdi:chevron-up",
+    up: "mdi:chevron-up",
     down: "mdi:chevron-down",
     left: "mdi:chevron-left",
-    right:"mdi:chevron-right",
+    right: "mdi:chevron-right",
     one: "mdi:number-one-circle",
     two: "mdi:number-two-circle",
     three: "mdi:number-three-circle",
@@ -80,9 +79,11 @@ export function iconForTag(tag: string): KnownIcon {
     if (key in icons) {
         return key as KnownIcon;
     }
-    return 'tags';
+    return "tags";
 }
-export function serverTimestampToAgoString(timestamp: string): string | undefined {
+export function serverTimestampToAgoString(
+    timestamp: string,
+): string | undefined {
     const stamp = Date.parse(timestamp);
     if (isNaN(stamp)) {
         return undefined;
@@ -90,8 +91,8 @@ export function serverTimestampToAgoString(timestamp: string): string | undefine
     return dayjs(new Date(stamp)).fromNow();
 }
 export function abbreviateNumber(num: number): string {
-    return Intl.NumberFormat('en-US', {
+    return Intl.NumberFormat("en-US", {
         notation: "compact",
-        maximumFractionDigits: 1
+        maximumFractionDigits: 1,
     }).format(num);
 }

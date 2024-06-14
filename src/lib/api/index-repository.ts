@@ -316,7 +316,11 @@ export interface UpdateDeveloperBody {
     verified?: boolean;
 }
 
-export async function updateDeveloper(token: string, id: number, body: UpdateDeveloperBody) {
+export async function updateDeveloper(
+    token: string,
+    id: number,
+    body: UpdateDeveloperBody,
+) {
     const r = await fetch(`${BASE_URL}/v1/developers/${id}`, {
         headers: new Headers({
             Authorization: `Bearer ${token}`,
