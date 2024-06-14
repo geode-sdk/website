@@ -2,7 +2,7 @@
 	import SvelteMarkdown from "svelte-markdown";
 	import { enhance } from '$app/forms';
 	import type { PageData, ActionData } from "./$types.js";
-	import { getModLogo, getModVersions } from "$lib/api/index-repository.js";
+	import { getModLogo } from "$lib/api/index-repository.js";
     import Row from "$lib/components/Row.svelte";
     import Column from "$lib/components/Column.svelte";
     import Button from "$lib/components/Button.svelte";
@@ -16,6 +16,7 @@
     import Label from "$lib/components/Label.svelte";
     import InfoBox from "$lib/components/InfoBox.svelte";
 	import iconPlaceholder from "$lib/assets/icon-placeholder.png";
+    import VersionCards from "$lib/components/VersionCards.svelte";
 
 	export let data: PageData;
 
@@ -99,11 +100,8 @@
 										<span class="card-info"><Icon icon="geode"/>
 											Minimum Geode version: <Label icon="geode" style="gray">{version.geode}</Label>
 										</span>
-										<span class="card-info"><Icon icon="gd"/>
-											Available on: 
-											{#if version.gd.win}<Label icon="windows" style="gray">{version.gd.win}</Label>{/if}
-											{#if version.gd["mac-intel"]}<Label icon="mac" style="gray">{version.gd["mac-intel"]}</Label>{/if}
-											{#if version.gd.android64}<Label icon="android" style="gray">{version.gd.android64}</Label>{/if}
+										<span class="card-info">
+											<VersionCards gd={version.gd} longForm={true} />
 										</span>
 									</Column>
 									<Column gap="small" align="stretch">
@@ -181,11 +179,7 @@
 				<span class="card-info"><Icon icon="time"/>{serverTimestampToAgoString(data.mod.created_at)}</span>
 				<span class="card-info"><Icon icon="update"/>{serverTimestampToAgoString(data.mod.updated_at)}</span>
 				<span class="card-info"><Icon icon="geode"/>{data.version.geode}</span>
-				<span class="card-info"><Icon icon="gd"/>
-					{#if data.version.gd.win}<Label icon="windows" style="gray">{data.version.gd.win}</Label>{/if}
-					{#if data.version.gd["mac-intel"]}<Label icon="mac" style="gray">{data.version.gd["mac-intel"]}</Label>{/if}
-					{#if data.version.gd.android64}<Label icon="android" style="gray">{data.version.gd.android64}</Label>{/if}
-				</span>
+				<span class="card-info"><VersionCards gd={data.version.gd} /></span>
 			</Column>
 		</section>
 		<section>
