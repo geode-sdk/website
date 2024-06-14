@@ -16,27 +16,6 @@
             .replace(/\s+/g, "-")
             .toLowerCase();
     }
-
-    onMount(() => {
-        const faqs = Array.from(document.querySelectorAll('.faq'));
-        document.addEventListener('scroll', e => {
-            let targetFaq;
-            for (const faq of faqs) {
-                targetFaq = faq.getAttribute('id');
-                const rect = faq.getBoundingClientRect();
-                if (document.body.getBoundingClientRect().top > 60) {
-                    break;
-                }
-                if (rect.y + rect.height * 1.5 > window.screen.height / 2) {
-                    break;
-                }
-            }
-            if (targetFaq) {
-                document.querySelectorAll('.scrolled').forEach(s => s.classList.remove('scrolled'));
-                document.querySelector(`a[href="#${targetFaq}"]`)?.classList.add('scrolled');
-            }
-        });
-    });
 </script>
 
 <svelte:head>
@@ -45,7 +24,6 @@
 </svelte:head>
 
 <Waves type="top" />
-<Gap size="large" />
 
 <h1>Frequently Asked Questions</h1>
 
@@ -81,6 +59,7 @@
 <style lang="scss">
     h1 {
         margin: 0;
+        margin-top: 10rem;
         font-family: var(--font-heading);
         font-weight: 600;
         color: var(--text-50);
@@ -91,12 +70,12 @@
         font-family: var(--font-heading);
     }
     .main-flow {
-        display: grid;
-        grid-template-columns: 1fr max-content 1fr;
+        display: flex;
+        justify-content: center;
         gap: var(--gap-normal);
     }
     nav {
-        display: flex;
+        display: none;
         flex-direction: column;
         gap: var(--gap-small);
         position: relative;
@@ -126,15 +105,16 @@
                 transition: background-color, color;
                 transition-duration: var(--transition-duration);
             }
-            // For some reason doing a nested &:global(.scrolled) on the above doesn't work?
-            & > :global(a.scrolled) {
-                background-color: color-mix(in srgb, var(--background-500) 25%, transparent);
-            }
             & > :global(a:hover) {
                 background-color: color-mix(in srgb, var(--secondary-500) 25%, transparent);
                 color: var(--primary-200);
                 text-decoration: none;
             }
+        }
+    }
+    @media screen and (min-width: 650px) {
+        nav {
+            display: flex;
         }
     }
     article {
