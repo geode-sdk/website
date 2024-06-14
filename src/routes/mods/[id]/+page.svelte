@@ -94,7 +94,7 @@
                             <article class="version">
                                 <Row wrap="wrap">
                                     <Column gap="small" align="left">
-                                        <h2>{version.version}</h2>
+                                        <Link href={`/mods/${data.mod.id}?version=${version.version}`}><h2>{version.version}</h2></Link>
                                         <!-- <span class="card-info"><Icon icon="time"/>{"Released " + serverTimestampToAgoString("19")}</span> -->
                                         <span class="card-info"><Icon icon="download"/>{abbreviateNumber(version.download_count)} downloads</span>
                                         <span class="card-info"><Icon icon="geode"/>
