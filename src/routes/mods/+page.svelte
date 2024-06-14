@@ -47,8 +47,6 @@
     }
 
     const updateSearch = async () => {
-        console.log(new Error().stack);
-
         searching = true;
         const params = new URLSearchParams();
         if (query) {
