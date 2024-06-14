@@ -8,7 +8,6 @@
 <style lang="scss">
     div {
         padding: .65rem;
-        width: 20rem;
         height: 20rem;
         display: flex;
         flex-direction: row;
@@ -16,7 +15,7 @@
         justify-content: center;
 
         & > :global(*) {
-            width: 10rem;
+            width: clamp(8rem, 30vw, 13rem);
         }
         & > :global(*:first-child) {
             animation: 7s ease-in-out 0s infinite alternate both running top-img;

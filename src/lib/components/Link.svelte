@@ -73,4 +73,8 @@
             justify-content: center;
         }
     }
+
+    a.active {
+        background-color: red;
+    }
 </style>

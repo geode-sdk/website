@@ -9,59 +9,46 @@
     import Row from "$lib/components/Row.svelte";
     import Waves from "$lib/components/Waves.svelte";
 
-    let latestVersion = "TODO BEFORE RELEASE";
+    // Until server returns this, we're doing it manually
+    let latestVersion = "v2.0.0-beta.27";
+    let latestLauncher = "v1.3.4";
     let showAllPlatforms = false;
     let curPlatform = "windows";
+
+    const createVersionString = (platform: 'windows' | 'mac' | 'android'): string => {
+        let filename = "";
+        switch (platform) {
+            case "windows":
+                filename = `geode-installer-${latestVersion}-win.exe`;
+                break;
+            case "mac":
+                filename = `geode-installer-${latestVersion}-mac.pkg`;
+                break;
+            case "android":
+                filename = `geode-launcher-${latestLauncher}.apk`;
+                break;
+        }
+        if (platform === "android") {
+            const nonV = latestLauncher.substring(1);
+            return `https://github.com/geode-sdk/android-launcher/releases/download/${nonV}/${filename}`;
+        } else {
+            return `https://github.com/geode-sdk/geode/releases/download/${latestVersion}/${filename}`;
+        }
+    }
 </script>
 
 <Waves type="top" />
 <Gap size="large" />
 
+<svelte:head>
+    <title>Install Geode</title>
+    <meta name="description" content="Install Geode on Windows, Android and MacOS">
+</svelte:head>
+
 <h1>Install Geode</h1>
 
-<span class="install-grid">
-    <div>
-        <Column>
-            <span>Latest version: <em>{latestVersion}</em></span>
-            {#if !showAllPlatforms}
-            {#if curPlatform == "windows"}
-                <Button style="primary-filled">
-                    <Icon icon="windows"/>Download for Windows
-                </Button>
-            {/if}
-            {#if curPlatform == "mac"}
-                <Button style="primary-filled">
-                    <Icon icon="mac"/>Download for macOS
-                </Button>
-            {/if}
-            {#if curPlatform == "android"}
-                <Button style="primary-filled">
-                    <Icon icon="android"/>Download for Android
-                </Button>
-            {/if}
-            {#if curPlatform == "android"}
-                <Button style="primary-filled">
-                    <Icon icon="android"/>Download for Android (32 bit)
-                </Button>
-            {/if}
-            {/if}
-            <Rollover title="Show All Platforms" bind:open={showAllPlatforms}>
-                <Button style="primary-filled">
-                    <Icon icon="windows"/>Download for Windows
-                </Button>
-                <Button style="primary-filled">
-                    <Icon icon="mac"/>Download for macOS
-                </Button>
-                <Button style="primary-filled">
-                    <Icon icon="android"/>Download for Android
-                </Button>
-                <Button style="primary-filled">
-                    <Icon icon="android"/>Download for Android (32 bit)
-                </Button>
-            </Rollover>
-        </Column>
-    </div>
-    <Column align="left">
+<Row wrap="wrap">
+    <Column>
         <p><strong>Installation instructions</strong></p>
         <span style="color: var(--background-300)">
             <Column align="left">
@@ -79,7 +66,51 @@
             Geode is available for <em>Windows</em>, <em>MacOS</em> and <em>Android</em>.
         </p>
     </Column>
-</span>
+    <div>
+        <Column>
+            <div>Latest version: <em>{latestVersion}</em>.</div>
+            {#if curPlatform === "android"}
+                <div>Latest Android Launcher version: <em>{latestLauncher}</em></div>
+            {/if}
+            {#if !showAllPlatforms}
+            {#if curPlatform == "windows"}
+                <Button style="primary-filled" href={createVersionString("windows")}>
+                    <Icon icon="windows"/>Download for Windows
+                </Button>
+            {/if}
+            {#if curPlatform == "mac"}
+                <Button style="primary-filled" href={createVersionString("mac")}>
+                    <Icon icon="mac"/>Download for macOS
+                </Button>
+            {/if}
+            {#if curPlatform == "android"}
+                <Button style="primary-filled" href={createVersionString("android")}>
+                    <Icon icon="android"/>Download for Android
+                </Button>
+            {/if}
+            <!-- {#if curPlatform == "android"}
+                <Button style="primary-filled">
+                    <Icon icon="android"/>Download for Android (32 bit)
+                </Button>
+            {/if} -->
+            {/if}
+            <Rollover title="Show All Platforms" bind:open={showAllPlatforms}>
+                <Button style="primary-filled" href={createVersionString("windows")}>
+                    <Icon icon="windows"/>Download for Windows
+                </Button>
+                <Button style="primary-filled" href={createVersionString("mac")}>
+                    <Icon icon="mac"/>Download for macOS
+                </Button>
+                <Button style="primary-filled" href={createVersionString("android")}>
+                    <Icon icon="android"/>Download for Android
+                </Button>
+                <!-- <Button style="primary-filled">
+                    <Icon icon="android"/>Download for Android (32 bit)
+                </Button> -->
+            </Rollover>
+        </Column>
+    </div>
+</Row>
 
 <Gap size="large" />
 
@@ -99,8 +130,8 @@
             <br>
             Clicking this button brings you to the Geode Menu.
         </p>
-        <Row wrap={true}>
-            <Button style="hollow">
+        <Row wrap="wrap">
+            <Button style="hollow" href="/faq#i-cant-see-the-geode-button">
                 <Icon icon="help"/> I can't see the Geode button!
             </Button>
         </Row>
@@ -120,14 +151,14 @@
             Use the toggles to quickly <em>enable/disable</em> any mods,
             or click <em>View</em> for further options like editing mod settings and uninstalling.
         </p>
-        <Row wrap={true}>
-            <Button style="hollow">
+        <Row wrap="wrap">
+            <Button style="hollow" href="/faq#how-do-i-change-mod-settings">
                 <Icon icon="help"/> How do I change mod settings?
             </Button>
-            <Button style="hollow">
+            <Button style="hollow" href="/faq#how-do-i-update-mods">
                 <Icon icon="help"/> How do I update mods?
             </Button>
-            <Button style="hollow">
+            <Button style="hollow" href="/faq#how-do-i-uninstall-mods">
                 <Icon icon="help"/> How do I uninstall mods?
             </Button>
         </Row>
@@ -148,7 +179,7 @@
             <br>
             You can use the <em>search button</em> on the left to search for specific mods by name or by <em>tags</em>.
         </p>
-        <Row wrap={true}>
+        <Row wrap="wrap">
             <Button style="hollow">
                 <Icon icon="help"/> Why can't I find a certain Mod?
             </Button>
@@ -169,18 +200,13 @@
             max-width: 65vw;
         }
     }
-    .install-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        align-items: center;
-        max-width: min(80ch, 90vw);
-    }
     h1 {
         margin: 0;
+        margin-top: 10rem;
         font-family: var(--font-heading);
         font-weight: 600;
         color: var(--text-50);
-        font-size: var(--font-size-title);
+        font-size: min(var(--font-size-title), 15vw);
     }
     h2 {
         margin: 0;

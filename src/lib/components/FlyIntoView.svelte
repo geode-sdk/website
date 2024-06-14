@@ -49,13 +49,13 @@
 	}
 	section {
 		opacity: 0%;
-		transform: translateX(-10rem);
+		transform: translateX(-8rem);
 		transition-property: transform, opacity;
 		transition-duration: .6s;
 		transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 	}
 	section:nth-child(even) {
-		transform: translateX(10rem);
+		transform: translateX(8rem);
 	}
 	section:global(.show) {
 		transform: translateX(0rem);

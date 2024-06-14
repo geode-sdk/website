@@ -12,34 +12,38 @@
 
 <main>
 	<div class="bg"/>
-	<SideArt side="left"/>
-	<SideArt side="right"/>
+	<div class="side-art">
+		<SideArt side="left" />
+		<SideArt side="right" />
+	</div>
 	<slot/>
 	<nav>
 		<Button href=".." style="primary-filled-dark" icon="home">Home</Button>
 		<slot name="nav"/>
 	</nav>
-	<Waves type="bottom" --text-color=var(--text-950)>
-		<Column>
-			<Row>
-				<Link href="https://discord.gg/9e43WMKzhp" icon="discord">Discord</Link>
-				<Dot/>
-				<Link href="https://twitter.com/geode_sdk" icon="twitter">Twitter</Link>
-				<Dot/>
-				<Link href="https://docs.geode-sdk.org/" icon="docs">Documentation</Link>
-				<Dot/>
-				<Link href="https://github.com/geode-sdk" icon="github">Source Code</Link>
-			</Row>
-			<p>
-				Site made by <Link href="https://github.com/hjfod">HJfod</Link>.
-				Thank you to <Link href="https://github.com/nekitdev">Nekit</Link> for the domain!
-			</p>
-			<Row gap=small>
-				<Icon icon="copyright"/> 
-				<p>Geode Team 2024</p>
-			</Row>
-		</Column>
-	</Waves>
+	<div class="waves-bottom">
+		<Waves type="bottom" --text-color=var(--text-950)>
+			<Column>
+				<Row wrap="wrap" align="center">
+					<Link href="https://discord.gg/9e43WMKzhp" icon="discord">Discord</Link>
+					<Dot/>
+					<Link href="https://twitter.com/geode_sdk" icon="twitter">Twitter</Link>
+					<Dot/>
+					<Link href="https://docs.geode-sdk.org/" icon="docs">Documentation</Link>
+					<Dot/>
+					<Link href="https://github.com/geode-sdk" icon="github">Source Code</Link>
+				</Row>
+				<p>
+					Site made by <Link href="https://github.com/hjfod">HJfod</Link>.
+					Thank you to <Link href="https://github.com/nekitdev">Nekit</Link> for the domain!
+				</p>
+				<Row gap=small>
+					<Icon icon="copyright"/> 
+					<p>Geode Team 2024</p>
+				</Row>
+			</Column>
+		</Waves>
+	</div>
 </main>
 
 <style lang="scss">
@@ -62,12 +66,27 @@
 		align-items: center;
 		justify-content: space-between;
 		gap: var(--gap-large);
-		min-height: calc(100vh - var(--page-margin) * 2);
+		// min-height: calc(100vh - var(--page-margin) * 2);
 		padding: var(--page-margin);
+		// min-height: calc(100vh - var(--page-margin) * 2);
 	}
 	nav {
 		position: fixed;
 		top: 1rem;
 		left: 1rem;
+	}
+
+	.waves-bottom {
+		min-width: 100%;
+	}
+	
+	.side-art {
+		display: none;
+	}
+
+	@media screen and (min-width: 500px) {
+		.side-art {
+			display: block;
+		}
 	}
 </style>
