@@ -23,8 +23,10 @@
         transition-duration: var(--transition-duration);
     }
     article:not(.selected) {
-        visibility: hidden;
-        height: 0px;
-        opacity: 0%;
+        display: none;
+        // visibility: hidden;
+        // height: 0;
+        // overflow: hidden;
+        // opacity: 0%;
     }
 </style>

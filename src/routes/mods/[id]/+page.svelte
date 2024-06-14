@@ -65,7 +65,7 @@
 <div>Action performed!</div>
 {/if}
 
-<Row align="top" gap="small">
+<Row align="top" wrap="wrap-reverse" gap="small">
 	<section>
 		<Tabs>
 			<TabPage name="Description" id="description" icon="description">
@@ -91,7 +91,7 @@
 					<Column gap="small" align="stretch" reverse>
 						{#each data.mod.versions as version}
 							<article class="version">
-								<Row>
+								<Row wrap="wrap">
 									<Column gap="small" align="left">
 										<h2>{version.version}</h2>
 										<!-- <span class="card-info"><Icon icon="time"/>{"Released " + serverTimestampToAgoString("19")}</span> -->
@@ -106,7 +106,6 @@
 											{#if version.gd.android64}<Label icon="android" style="gray">{version.gd.android64}</Label>{/if}
 										</span>
 									</Column>
-									<Gap size="flex"/>
 									<Column gap="small" align="stretch">
 										<Button href={version.download_link} icon="download" style="primary-filled">Download .geode file</Button>
 										<Button href="/faq#how-do-i-manually-install-mods" icon="help">How to install</Button>
@@ -178,9 +177,9 @@
 		<section>
 			<Column align="left" gap="small">
 				<span class="card-info"><Icon icon="version"/>{data.version.version}</span>
-				<span class="card-info"><Icon icon="download"/>{abbreviateNumber(data.mod.download_count)} downloads</span>
-				<span class="card-info"><Icon icon="time"/>Released {serverTimestampToAgoString(data.mod.created_at)}</span>
-				<span class="card-info"><Icon icon="update"/>Updated {serverTimestampToAgoString(data.mod.updated_at)}</span>
+				<span class="card-info"><Icon icon="download"/>{data.mod.download_count}</span>
+				<span class="card-info"><Icon icon="time"/>{serverTimestampToAgoString(data.mod.created_at)}</span>
+				<span class="card-info"><Icon icon="update"/>{serverTimestampToAgoString(data.mod.updated_at)}</span>
 				<span class="card-info"><Icon icon="geode"/>{data.version.geode}</span>
 				<span class="card-info"><Icon icon="gd"/>
 					{#if data.version.gd.win}<Label icon="windows" style="gray">{data.version.gd.win}</Label>{/if}
@@ -223,7 +222,7 @@
 	section {
 		background-color: var(--background-950);
 		padding: .75rem;
-		gap: .5rem;
+		// gap: .5rem;
 		border-radius: .5rem;
 	}
 	aside {

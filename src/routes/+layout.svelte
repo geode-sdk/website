@@ -18,7 +18,7 @@
 	<div class="waves-bottom">
 		<Waves type="bottom" --text-color=var(--text-950)>
 			<Column>
-				<Row wrap=true alignment="center">
+				<Row wrap="wrap" align="center">
 					<Link href="https://discord.gg/9e43WMKzhp" icon="discord">Discord</Link>
 					<Dot/>
 					<Link href="https://twitter.com/geode_sdk" icon="twitter">Twitter</Link>

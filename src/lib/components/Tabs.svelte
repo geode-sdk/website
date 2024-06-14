@@ -38,11 +38,11 @@
         flex-direction: column;
         align-items: start;
         gap: .75rem;
-        max-width: 50vw;
     }
     .tabs {
         display: flex;
         flex-direction: row;
+        flex-wrap: wrap;
         gap: .25rem;
         // padding: .35rem;
         // border-radius: .85rem;
