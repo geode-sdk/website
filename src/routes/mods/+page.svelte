@@ -422,6 +422,13 @@
 			align-content: center;
 			justify-content: center;
 		}
+
+		@media screen and (min-width: 400px) {	
+			&.dual-list {
+				grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
+			}
+		}
+
 		&.list {
 			display: flex;
 			flex-direction: column;

@@ -25,38 +25,38 @@
 </script>
 <div class="mod-background {style}">
 	{#if style === 'list'}
-		<span class="click-to-go-to-page">
-			<Link href={mod_url} centered={true}>
-				<object type="image/png" data={logo_url} title={`Logo for the mod ${version.name}`} class="mod-image">
-					<img src={iconPlaceholder} alt={`Placeholder logo for the mod ${version.name}`} class="mod-image" />
-				</object>
-			</Link>
-		</span>
-		<Gap size="normal"/>
-		<Column align="left" gap="tiny">
+		<div class="left">
 			<span class="click-to-go-to-page">
-				<Link href={mod_url}>
-					<span class="title-container">
-						<h1 class:small={version.name.length > 16}>{version.name}</h1>
-					</span>
+				<Link href={mod_url} centered={true}>
+					<object type="image/png" data={logo_url} title={`Logo for the mod ${version.name}`} class="mod-image">
+						<img src={iconPlaceholder} alt={`Placeholder logo for the mod ${version.name}`} class="mod-image" />
+					</object>
 				</Link>
 			</span>
-			<Link href={`/developers/${owner.id}`} --link-color="var(--accent-300)">{owner.display_name}</Link>
-			<p class="description">
-				{#if version.description}
-					{#if version.description?.length < 110}
-						{version.description}
+			<Gap size="normal"/>
+			<Column align="left" gap="tiny">
+				<span class="click-to-go-to-page">
+					<Link href={mod_url}>
+						<span class="title-container">
+							<h1 class:small={version.name.length > 16}>{version.name}</h1>
+						</span>
+					</Link>
+				</span>
+				<Link href={`/developers/${owner.id}`} --link-color="var(--accent-300)">{owner.display_name}</Link>
+				<p class="description">
+					{#if version.description}
+						{#if version.description?.length < 110}
+							{version.description}
+						{:else}
+							{version.description.substring(0, 110)}&#8230;
+						{/if}
 					{:else}
-						{version.description.substring(0, 110)}&#8230;
+						<i>{"Description not provided"}</i>
 					{/if}
-				{:else}
-					<i>{"Description not provided"}</i>
-				{/if}
-			</p>
-		</Column>
-		<Gap size="flex"/>
-		<Gap size="small"/>
-		<span class="do-not-shrink">
+				</p>
+			</Column>
+		</div>
+		<span class="do-not-shrink right">
 			<Column align="right" gap="tiny">
 				<span class="card-info"><Icon icon="version"/>{version.version}</span>
 				<span class="card-info"><Icon icon="download"/>{abbreviateNumber(mod.download_count)}</span>
@@ -149,6 +149,21 @@
 		&.list {
 			flex-direction: row;
 			justify-content: space-between;
+
+			.left {
+				display: flex;
+			}
+
+			.right {
+				display: none;
+			}
+
+			@media screen and (min-width: 450px) {
+				.right {
+					display: flex;
+				}	
+			}
+
 
 			.title-container h1 {
 				text-align: left;
