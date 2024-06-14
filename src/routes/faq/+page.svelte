@@ -39,6 +39,11 @@
     });
 </script>
 
+<svelte:head>
+    <title>Frequently Asked Questions</title>
+    <meta name="description" content="Frequently Asked Questions (FAQ) about Geode and modding Geometry Dash">
+</svelte:head>
+
 <Waves type="top" />
 <Gap size="large" />
 

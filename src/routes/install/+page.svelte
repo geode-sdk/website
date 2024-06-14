@@ -17,6 +17,11 @@
 <Waves type="top" />
 <Gap size="large" />
 
+<svelte:head>
+    <title>Install Geode</title>
+    <meta name="description" content="Install Geode on Windows, Android and MacOS">
+</svelte:head>
+
 <h1>Install Geode</h1>
 
 <span class="install-grid">
@@ -99,8 +104,8 @@
             <br>
             Clicking this button brings you to the Geode Menu.
         </p>
-        <Row wrap={true}>
-            <Button style="hollow">
+        <Row wrap="wrap">
+            <Button style="hollow" href="/faq#i-cant-see-the-geode-button">
                 <Icon icon="help"/> I can't see the Geode button!
             </Button>
         </Row>
@@ -120,14 +125,14 @@
             Use the toggles to quickly <em>enable/disable</em> any mods,
             or click <em>View</em> for further options like editing mod settings and uninstalling.
         </p>
-        <Row wrap={true}>
-            <Button style="hollow">
+        <Row wrap="wrap">
+            <Button style="hollow" href="/faq#how-do-i-change-mod-settings">
                 <Icon icon="help"/> How do I change mod settings?
             </Button>
-            <Button style="hollow">
+            <Button style="hollow" href="/faq#how-do-i-update-mods">
                 <Icon icon="help"/> How do I update mods?
             </Button>
-            <Button style="hollow">
+            <Button style="hollow" href="/faq#how-do-i-uninstall-mods">
                 <Icon icon="help"/> How do I uninstall mods?
             </Button>
         </Row>
@@ -148,7 +153,7 @@
             <br>
             You can use the <em>search button</em> on the left to search for specific mods by name or by <em>tags</em>.
         </p>
-        <Row wrap={true}>
+        <Row wrap="wrap">
             <Button style="hollow">
                 <Icon icon="help"/> Why can't I find a certain Mod?
             </Button>
