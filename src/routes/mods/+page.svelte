@@ -19,7 +19,6 @@
     import LoadingCircle from "$lib/components/LoadingCircle.svelte";
     import Image from "$lib/components/Image.svelte";
     import InfoBox from "$lib/components/InfoBox.svelte";
-    import SideArt from "$lib/components/SideArt.svelte";
 
 	export let data: PageData;
 
@@ -107,8 +106,6 @@
 </svelte:head>
 
 <Waves type="top" />
-<SideArt side="left"/>
-<SideArt side="right"/>
 <Gap size="large" />
 
 <h1>Browse Mods</h1>

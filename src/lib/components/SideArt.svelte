@@ -10,7 +10,6 @@
     onMount(() => {
         observer = new ResizeObserver(ev => {
             bodyHeight = ev[0].contentBoxSize[0].blockSize;
-            console.log("new body height: ",bodyHeight);
         });
         observer.observe(document.body);
     });
@@ -24,15 +23,15 @@
     div {
         position: absolute;
         z-index: -10;
-        width: 12rem;
-        height: var(--height);
+        width: 11rem;
+        height: calc(var(--height) - var(--page-margin) * 2);
 
         background-image: url("$lib/assets/sideart.png");
         background-size: contain;
         background-repeat: repeat-y;
 
-        filter: drop-shadow(0px 0px 3rem color-mix(in srgb, var(--primary-700) 50%, transparent));
-        opacity: 50%;
+        filter: drop-shadow(0px 0px 3rem color-mix(in srgb, var(--primary-700) 15%, transparent));
+        opacity: 100%;
 
         &.left {
             left: 0px;

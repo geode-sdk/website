@@ -15,7 +15,7 @@
         
 </script>
 
-<div style="--img-size={size}">
+<div style="--img-size: {size}">
     {#if src}
         <enhanced:img {src} {alt} class="{style}" sizes={size} />
     {:else}

@@ -7,9 +7,13 @@
     import Dot from "$lib/components/Dot.svelte";
     import Waves from "$lib/components/Waves.svelte";
 	import Icon from "$lib/components/Icon.svelte";
+    import SideArt from "$lib/components/SideArt.svelte";
 </script>
 
 <main>
+	<div class="bg"/>
+	<SideArt side="left"/>
+	<SideArt side="right"/>
 	<slot/>
 	<nav>
 		<Button href=".." style="primary-filled-dark" icon="home">Home</Button>
@@ -39,13 +43,27 @@
 </main>
 
 <style lang="scss">
+	.bg {
+		background-image: url("$lib/assets/bgart.png");
+        background-size: contain;
+        background-repeat: repeat-y;
+		
+		position: absolute;
+		z-index: -11;
+		width: 100%;
+		opacity: 15%;
+		top: 0;
+		bottom: 0;
+	}
 	main {
+		position: relative;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: space-between;
 		gap: var(--gap-large);
 		min-height: calc(100vh - var(--page-margin) * 2);
+		padding: var(--page-margin);
 	}
 	nav {
 		position: fixed;
