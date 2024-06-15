@@ -39,10 +39,10 @@
                 <span class="click-to-go-to-page">
                     <Link href={mod_url}>
                         <span class="title-container">
+                            <h1 class:small={version.name.length > 16}>{version.name}</h1>
                             {#if mod.featured}
                                 <FeatureBadge />
                             {/if}
-                            <h1 class:small={version.name.length > 16}>{version.name}</h1>
                         </span>
                     </Link>
                 </span>
@@ -72,10 +72,10 @@
             <Column gap="small">
                 <Link href={mod_url}>
                     <span class="title-container">
+                        <h1 class:small={version.name.length > 16}>{version.name}</h1>
                         {#if mod.featured}
                             <FeatureBadge />
                         {/if}
-                        <h1 class:small={version.name.length > 16}>{version.name}</h1>
                     </span>
                 </Link>
                 <Link href={mod_url} centered={true}>
