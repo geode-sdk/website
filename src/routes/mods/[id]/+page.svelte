@@ -48,7 +48,12 @@
     </object>
 
     <Column align="left" gap="tiny">
-        <h1>{data.version.name}</h1>
+        <div class="title-container">
+            <Label style="accent-transparent" icon="featured" />
+            <h1>
+                {data.version.name}
+            </h1>
+        </div>
         <p>
             {#each data.mod.developers as dev, index}
                 {index > 0 ? ', ' : ''}<Link href={`/developers/${dev.id}`} --link-color="var(--accent-300)">{dev.display_name}</Link>
@@ -206,6 +211,13 @@
         justify-content: center;
         gap: 1rem;
         font-size: 1.3rem;
+
+        .title-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
 
         h1 {
             font-family: var(--font-heading);

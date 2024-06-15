@@ -9,7 +9,7 @@
     import Column from "./Column.svelte";
     import { serverTimestampToAgoString, abbreviateNumber } from "$lib";
     import iconPlaceholder from "$lib/assets/icon-placeholder.png"
-    import FeatureBadge from "./FeatureBadge.svelte";
+    import Label from "./Label.svelte";
 
     export let mod: ServerMod;
     export let version: ServerModVersion;
@@ -39,9 +39,10 @@
                 <span class="click-to-go-to-page">
                     <Link href={mod_url}>
                         <span class="title-container">
+
                             <h1 class:small={version.name.length > 16}>{version.name}</h1>
                             {#if mod.featured}
-                                <FeatureBadge />
+                                <Label icon="featured" style="accent-transparent" />
                             {/if}
                         </span>
                     </Link>
@@ -72,10 +73,10 @@
             <Column gap="small">
                 <Link href={mod_url}>
                     <span class="title-container">
-                        <h1 class:small={version.name.length > 16}>{version.name}</h1>
                         {#if mod.featured}
-                            <FeatureBadge />
+                            <Label icon="featured" style="accent-transparent" />
                         {/if}
+                        <h1 class:small={version.name.length > 16}>{version.name}</h1>
                     </span>
                 </Link>
                 <Link href={mod_url} centered={true}>
@@ -111,6 +112,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        gap: 0.5rem;
 
         h1 {
             margin: 0;
