@@ -20,7 +20,7 @@
         --icon-size: 1.563em;
     }
     span {
-        display: inline-grid;
+        display: var(--icon-display, inline-grid);
         place-content: center;
         width: var(--icon-size);
         height: var(--icon-size);
