@@ -51,12 +51,41 @@
         background-size: contain;
         background-repeat: repeat-y;
         
+        filter: blur(4px);
+
         position: absolute;
         z-index: -11;
         width: 100%;
         opacity: 15%;
         top: 0;
         bottom: 0;
+    }
+    .side-art {
+        position: absolute;
+        z-index: -10;
+        width: 11rem;
+        top: 0;
+        bottom: 0;
+
+        background-image: url("$lib/assets/sideart.png");
+        background-size: contain;
+        background-repeat: repeat-y;
+
+        filter: drop-shadow(0px 0px 3rem color-mix(in srgb, var(--primary-700) 15%, transparent));
+        opacity: 50%;
+
+        &.left {
+            left: 0px;
+            transform: scaleX(-1);
+        }
+        &.right {
+            right: 0px;
+        }
+
+        display: none;
+        @include gt-md {
+            display: block;
+        }
     }
     main {
         position: relative;
@@ -75,33 +104,5 @@
 
     .waves-bottom {
         min-width: 100%;
-    }
-
-    .side-art {
-        position: absolute;
-        z-index: -10;
-        width: 11rem;
-        top: 0;
-        bottom: 0;
-
-        background-image: url("$lib/assets/sideart.png");
-        background-size: contain;
-        background-repeat: repeat-y;
-
-        filter: drop-shadow(0px 0px 3rem color-mix(in srgb, var(--primary-700) 15%, transparent));
-        opacity: 100%;
-
-        &.left {
-            left: 0px;
-            transform: scaleX(-1);
-        }
-        &.right {
-            right: 0px;
-        }
-
-        display: none;
-        @include gt-md {
-            display: block;
-        }
     }
 </style>
