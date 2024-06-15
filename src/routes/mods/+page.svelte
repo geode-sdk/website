@@ -334,6 +334,8 @@
 </div>
 
 <style lang="scss">
+    @use '$lib/styles/media-queries.scss' as *;
+
     h1 {
         margin: 0;
         font-family: var(--font-heading);
@@ -381,13 +383,16 @@
             background-color: var(--background-950);
 
             & > nav {
-                // display: grid;
                 display: flex;
                 flex-wrap: wrap;
                 justify-content: center;
-                // grid-template-columns: 1fr max-content 1fr;
                 align-items: center;
                 gap: 1rem;
+
+                @include gt-md {
+                    display: grid;
+                    grid-template-columns: 1fr max-content 1fr;
+                }
 
                 & :global(*:last-child) {
                     justify-self: end;
