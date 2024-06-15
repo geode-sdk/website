@@ -9,6 +9,7 @@
     import Column from "./Column.svelte";
     import { serverTimestampToAgoString, abbreviateNumber } from "$lib";
     import iconPlaceholder from "$lib/assets/icon-placeholder.png"
+    import Label from "./Label.svelte";
 
     export let mod: ServerMod;
     export let version: ServerModVersion;
@@ -23,7 +24,7 @@
 
     $: owner = mod.developers.filter(d => d.is_owner)[0];
 </script>
-<div class="mod-background {style}">
+<div class="mod-background {style}" class:featured={mod.featured}>
     {#if style === 'list'}
         <div class="left">
             <span class="click-to-go-to-page">
@@ -38,7 +39,11 @@
                 <span class="click-to-go-to-page">
                     <Link href={mod_url}>
                         <span class="title-container">
+
                             <h1 class:small={version.name.length > 16}>{version.name}</h1>
+                            {#if mod.featured}
+                                <Label icon="featured" style="accent-transparent" />
+                            {/if}
                         </span>
                     </Link>
                 </span>
@@ -68,6 +73,9 @@
             <Column gap="small">
                 <Link href={mod_url}>
                     <span class="title-container">
+                        {#if mod.featured}
+                            <Label icon="featured" style="accent-transparent" />
+                        {/if}
                         <h1 class:small={version.name.length > 16}>{version.name}</h1>
                     </span>
                 </Link>
@@ -104,6 +112,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        gap: 0.5rem;
 
         h1 {
             margin: 0;
@@ -130,8 +139,14 @@
     .mod-image {
         max-height: 5rem;
     }
+
+    .mod-background.featured {
+        --card-base-color: var(--accent-500);
+    }
+
     .mod-background {
-        background-color: color-mix(in srgb, var(--background-500) 15%, transparent);
+        --card-base-color: var(--background-500);
+        background-color: color-mix(in srgb, var(--card-base-color) 15%, transparent);
 
         display: flex;
         align-items: center;
@@ -161,7 +176,7 @@
             @media screen and (min-width: 450px) {
                 .right {
                     display: flex;
-                }	
+                }
             }
 
 
@@ -171,7 +186,7 @@
         }
 
         transition-duration: var(--transition-duration);
-        
+
         padding: 1rem;
         border-radius: .5rem;
 
@@ -188,7 +203,7 @@
             }
         }
         &:has(.click-to-go-to-page a:hover) {
-            background-color: color-mix(in srgb, var(--background-500) 40%, transparent);
+            background-color: color-mix(in srgb, var(--card-base-color) 40%, transparent);
 
             & .click-to-go-to-page object {
                 transform: scale(110%);
@@ -206,7 +221,7 @@
         flex-direction: row;
         align-items: center;
         gap: .25em;
-        
+
         & :global(.icon) {
             --icon-size: 1.1em;
             color: var(--secondary-300);

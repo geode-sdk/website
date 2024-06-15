@@ -4,7 +4,7 @@
     import Icon from "./Icon.svelte";
 
     export let icon: KnownIcon | undefined = undefined;
-    export let style: 'primary' | 'secondary' | 'gray' | 'accent' | 'accent-alt' = 'primary';
+    export let style: 'primary' | 'secondary' | 'gray' | 'accent' | 'accent-alt' | 'accent-transparent' = 'primary';
 </script>
 
 <span class={style}>{#if icon}<Icon {icon}/>{/if}<slot/></span>
@@ -35,6 +35,12 @@
         &.accent-alt {
             background-color: var(--accent-alt-300);
         }
+
+        &.accent-transparent {
+            background-color: color-mix(in srgb, var(--accent-200) 15%, transparent);
+            color: var(--accent-100);
+        }
+
         &.gray {
             color: var(--text-50);
             background-color: color-mix(in srgb, var(--background-500) 50%, transparent);
