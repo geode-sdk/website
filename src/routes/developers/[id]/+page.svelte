@@ -60,7 +60,7 @@
 			</fieldset>
 		</form>
 
-		{#each data.self_mods as mod}
+		{#each data.self_mods as mod (mod.id)}
 			<p>
 				{mod.versions[0].name}
 			</p>
@@ -73,7 +73,7 @@
 		</div>
 
 		<div class="mod-row">
-			{#each data.mods.data as mod}
+			{#each data.mods.data as mod (mod.id)}
 			{@const version = mod.versions[0]}
 			<ModCard mod={mod} version={version} />
 			{/each}

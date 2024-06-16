@@ -19,6 +19,7 @@
     import LoadingCircle from "$lib/components/LoadingCircle.svelte";
     import Image from "$lib/components/Image.svelte";
     import InfoBox from "$lib/components/InfoBox.svelte";
+    import SideArt from "$lib/components/SideArt.svelte";
 
 	export let data: PageData;
 
@@ -96,7 +97,14 @@
 	}
 </script>
 
+<svelte:head>
+    <title>Browse Geode Mods</title>
+    <meta name="description" content="Browse mods for the Geode mod loader">
+</svelte:head>
+
 <Waves type="top" />
+<SideArt side="left"/>
+<SideArt side="right"/>
 <Gap size="large" />
 
 <h1>Browse Mods</h1>
@@ -264,7 +272,7 @@
 				{:else}
 					{#if data.mods && max_count > 0}
 						<div class="mod-listing {view}">
-							{#each data.mods.data as mod}
+							{#each data.mods.data as mod (mod.id)}
 								{@const mod_version = mod.versions[0]}
 								<ModCard
 									mod={mod} version={mod_version}
