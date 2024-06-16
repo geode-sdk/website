@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
 
-	export let reverseOnSmallScreen = false;
+    export let reverseOnSmallScreen = false;
 
     let section: HTMLElement;
 
@@ -26,39 +26,39 @@
 </section>
 
 <style lang="scss">
-	@use '$lib/styles/media-queries.scss' as *;
+    @use '$lib/styles/media-queries.scss' as *;
 
-	section {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		padding-top: 5rem;
-		padding-bottom: 5rem;
-		gap: 4rem;
-		font-size: 1.1em;
+    section {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding-top: 5rem;
+        padding-bottom: 5rem;
+        gap: 4rem;
+        font-size: 1.1em;
         max-width: 70vw;
 
-		@include lt-lg {
-			flex-direction: column;
-			gap: 1rem;
-			
-			&.reverseOnSmallScreen {
-				flex-direction: column-reverse;	
-			}
-		}
-	}
-	section {
-		opacity: 0%;
-		transform: translateX(-10rem);
-		transition-property: transform, opacity;
-		transition-duration: .6s;
-		transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-	}
-	section:nth-child(even) {
-		transform: translateX(10rem);
-	}
-	section:global(.show) {
-		transform: translateX(0rem);
-		opacity: 100%;
-	}
+        @include lt-lg {
+            flex-direction: column;
+            gap: 1rem;
+            
+            &.reverseOnSmallScreen {
+                flex-direction: column-reverse;	
+            }
+        }
+    }
+    section {
+        opacity: 0%;
+        transform: translateX(-8rem);
+        transition-property: transform, opacity;
+        transition-duration: .6s;
+        transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    section:nth-child(even) {
+        transform: translateX(8rem);
+    }
+    section:global(.show) {
+        transform: translateX(0rem);
+        opacity: 100%;
+    }
 </style>

@@ -33,7 +33,7 @@
             gap: .5rem;
             padding: .5rem;
             padding-top: .2rem;
-            width: calc(100% - 1rem);
+            width: 100%;
 
             cursor: pointer;
 

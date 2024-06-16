@@ -19,13 +19,14 @@ export const load: PageServerLoad = async ({ url }) => {
         sort: (url.searchParams.get("sort") as ModSort) ?? "downloads",
         featured: onlyIfTrue(url.searchParams.get("featured")),
         status: (url.searchParams.get("status") as ModStatus) ?? "accepted",
+        gd: url.searchParams.get("gd") ?? undefined,
         developer: url.searchParams.get("developer") ?? undefined,
         per_page: toIntSafe(url.searchParams.get("per_page")) ?? 10,
     };
 
     try {
         // ideally we would cache this information somewhere
-        const tags = await getTags();
+        const tags = getTags();
 
         try {
             const mods = await getMods(params);
@@ -37,11 +38,13 @@ export const load: PageServerLoad = async ({ url }) => {
         }
 
         return { params, tags };
-    }
-    catch(e) {
+    } catch (e) {
         if (e instanceof IndexError) {
             return { error: e.message, params };
         }
-        return { error: "There was an Unknown Error when loading the Geode Index! Please try again later - it could also be that the servers are down. :(", params }
+        return {
+            error: "There was an Unknown Error when loading the Geode Index! Please try again later - it could also be that the servers are down. :(",
+            params,
+        };
     }
 };

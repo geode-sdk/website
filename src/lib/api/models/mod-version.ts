@@ -12,7 +12,7 @@ export interface ServerIncompatibility {
 
 export type ModVersionString = string;
 
-interface ServerGDVersion {
+export interface ServerGDVersion {
     win: string | null;
     "mac-intel": string | null;
     "mac-arm": string | null;

@@ -12,6 +12,7 @@
     div {
         padding: .65rem;
         width: 20rem;
+        // width: clamp(10rem, 50vw, 20rem);
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -19,7 +20,7 @@
     }
     div > :global(svg) {
         position: absolute;
-        max-width: 20rem;
+        width: 20rem;
         opacity: 15%;
         overflow: visible;
 
