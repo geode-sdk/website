@@ -102,7 +102,7 @@
 										<span class="card-info"><Icon icon="gd"/>
 											Available on: 
 											{#if version.gd.win}<Label icon="windows" style="gray">{version.gd.win}</Label>{/if}
-											{#if version.gd["mac-intel"]}<Label icon="mac" style="gray">{version.gd["mac-intel"]}</Label>{/if}
+											{#if version.gd.mac}<Label icon="mac" style="gray">{version.gd.mac}</Label>{/if}
 											{#if version.gd.android64}<Label icon="android" style="gray">{version.gd.android64}</Label>{/if}
 										</span>
 									</Column>
