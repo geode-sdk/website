@@ -49,7 +49,9 @@
 
     <Column align="left" gap="tiny">
         <div class="title-container">
-            <Label style="accent-transparent" icon="featured" />
+            {#if data.mod.featured}
+                <Label style="accent-transparent" icon="featured" />
+            {/if}
             <h1>
                 {data.version.name}
             </h1>
