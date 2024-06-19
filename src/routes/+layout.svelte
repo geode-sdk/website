@@ -95,6 +95,7 @@
         justify-content: space-between;
         gap: var(--gap-large);
         padding-top: 4rem;
+        min-height: 100vh;
     }
     nav {
         position: fixed;
