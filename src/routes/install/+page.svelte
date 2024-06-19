@@ -10,7 +10,7 @@
     import Waves from "$lib/components/Waves.svelte";
 
     // Until server returns this, we're doing it manually
-    let latestVersion = "v2.0.0-beta.27";
+    let latestVersion = "v3.0.0";
     let latestLauncher = "v1.3.4";
     let showAllPlatforms = false;
     let curPlatform = "windows";
