@@ -21,7 +21,7 @@
         "questions": [
             {
                 "question": "I can't see the Geode button!",
-                "answer": "Bla bla troubleshoot stuff"
+                "answer": "First of all, make sure you have the latest version of *Geometry Dash* and *Geode*. Then, check if Geode has installed properly. \n\nOn Windows, go to your *Geometry Dash folder*, and check if the following files exist: *Geode.dll*, *GeodeUninstaller.exe*, *the geode folder*, *xinput1_4.dll*. You can also check if your *antivirus* has quarantined Geode itself. Don't worry, this is a *false positive*, and you can add an exception for the detected file. \n\nFor Android, make sure you also have the latest version of *the launcher*. \n\nIf you are trying to install Geode on *Linux*, [go here](#i-am-installing-geode-on-linux-what-do-i-have-to-do). \n\nIf all else fails, you can join the [discord server](https://discord.gg/9e43WMKzhp) and open a new help thread."
             },
             {
                 "question": "I am installing Geode on Linux. What do I have to do?",
