@@ -88,7 +88,7 @@
     </section>
     <section>
         <Column>
-            <div>Latest version: <em>{latestVersion}</em>.</div>
+            <div>Latest version: <em>{latestVersion}</em></div>
             {#if curPlatform === "unknown"}
                 <p>Couldn't auto detect your platform. You can download Geode for your chosen platform below.</p> 
             {/if}
