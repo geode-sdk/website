@@ -24,7 +24,7 @@
                 <Row wrap="wrap" align="center">
                     <Link href="https://discord.gg/9e43WMKzhp" icon="discord">Discord</Link>
                     <Dot/>
-                    <Link href="https://twitter.com/geode_sdk" icon="twitter">Twitter</Link>
+                    <Link href="https://twitter.com/GeodeSDK" icon="twitter">Twitter</Link>
                     <Dot/>
                     <Link href="https://docs.geode-sdk.org/" icon="docs">Documentation</Link>
                     <Dot/>
