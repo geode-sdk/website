@@ -5,19 +5,22 @@
     import Gap from "$lib/components/Gap.svelte";
     import Icon from "$lib/components/Icon.svelte";
     import Image from "$lib/components/Image.svelte";
+    import Link from "$lib/components/Link.svelte";
     import Rollover from "$lib/components/Rollover.svelte";
     import Row from "$lib/components/Row.svelte";
     import Waves from "$lib/components/Waves.svelte";
+    import { onMount } from "svelte";
 
     // Until server returns this, we're doing it manually
     let latestVersion = "v3.0.0";
     let latestLauncher = "v1.3.4";
     let showAllPlatforms = false;
-    let curPlatform = "windows";
+    let curPlatform: 'windows' | 'mac' | 'android' | 'linux' | 'unknown' | undefined = undefined;
 
-    const createVersionString = (platform: 'windows' | 'mac' | 'android'): string => {
+    const createVersionString = (platform: 'windows' | 'mac' | 'android' | "linux"): string => {
         let filename = "";
         switch (platform) {
+            case "linux":
             case "windows":
                 filename = `geode-installer-${latestVersion}-win.exe`;
                 break;
@@ -35,6 +38,21 @@
             return `https://github.com/geode-sdk/geode/releases/download/${latestVersion}/${filename}`;
         }
     }
+
+    onMount(() => {
+        if (window.navigator.userAgent.includes("Windows")) {
+            curPlatform = "windows";
+        } else if (window.navigator.userAgent.includes("Macintosh")) {
+            curPlatform = "mac";
+        } else if (window.navigator.userAgent.includes("Android")) {
+            curPlatform = "android";
+        } else if (window.navigator.userAgent.includes("Linux")) {
+            curPlatform = "linux";
+        } else {
+            curPlatform = "unknown";
+            showAllPlatforms = true;
+        }
+    });
 </script>
 
 <Waves type="top" />
@@ -64,13 +82,22 @@
                 </Column>
             </span>
             <p>
-                Geode is available for <em>Windows</em>, <em>MacOS</em> and <em>Android</em>.
+                Geode is available for <em>Windows</em>, <em>MacOS</em>, <em>Linux</em> (through <em>Wine / Proton</em>) and <em>Android</em>.
             </p>
         </Column>
     </section>
     <section>
         <Column>
             <div>Latest version: <em>{latestVersion}</em>.</div>
+            {#if curPlatform === "unknown"}
+                <p>Couldn't auto detect your platform. You can download Geode for your chosen platform below.</p> 
+            {/if}
+            {#if curPlatform === "linux"}
+                <p>Geometry Dash is not available on <em>Linux</em>, but you can run the <em>Windows</em> version through <em>Wine / Proton</em>. <Link href="faq#i-am-installing-geode-on-linux-what-do-i-have-to-do">Click here for more info.</Link> </p>
+                <Button style="primary-filled" href={createVersionString("windows")}>
+                    <Icon icon="windows"/>Download for Windows
+                </Button>
+            {/if}
             {#if curPlatform === "android"}
                 <div>Latest Android Launcher version: <em>{latestLauncher}</em></div>
             {/if}
@@ -97,18 +124,20 @@
             {/if} -->
             {/if}
             <Rollover title="Show All Platforms" bind:open={showAllPlatforms}>
-                <Button style="primary-filled" href={createVersionString("windows")}>
-                    <Icon icon="windows"/>Download for Windows
-                </Button>
-                <Button style="primary-filled" href={createVersionString("mac")}>
-                    <Icon icon="mac"/>Download for macOS
-                </Button>
-                <Button style="primary-filled" href={createVersionString("android")}>
-                    <Icon icon="android"/>Download for Android
-                </Button>
-                <!-- <Button style="primary-filled">
-                    <Icon icon="android"/>Download for Android (32 bit)
-                </Button> -->
+                <Column align="stretch">
+                    <Button style="primary-filled" href={createVersionString("windows")}>
+                        <Icon icon="windows"/>Download for Windows
+                    </Button>
+                    <Button style="primary-filled" href={createVersionString("mac")}>
+                        <Icon icon="mac"/>Download for macOS
+                    </Button>
+                    <Button style="primary-filled" href={createVersionString("android")}>
+                        <Icon icon="android"/>Download for Android
+                    </Button>
+                    <!-- <Button style="primary-filled">
+                        <Icon icon="android"/>Download for Android (32 bit)
+                    </Button> -->
+                </Column>
             </Rollover>
         </Column>
     </section>

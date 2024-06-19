@@ -22,6 +22,10 @@
             {
                 "question": "I can't see the Geode button!",
                 "answer": "Bla bla troubleshoot stuff"
+            },
+            {
+                "question": "I am installing Geode on Linux. What do I have to do?",
+                "answer": "Geode on Linux requires one extra step to function correctly. You need to set *DLL overrides* for Wine to allow Geode to load properly.\n\n On Steam, right click on *Geometry Dash*, click on *Properties*, and inside *Launch Options* enter the following: `WINEDLLOVERRIDES=\"xinput1_4=n,b\" %command%`. \n\n If you are launching Geometry Dash in another way than Steam, then you have to find a way to set *DLL overrides* for your method."
             }
         ]
     },
