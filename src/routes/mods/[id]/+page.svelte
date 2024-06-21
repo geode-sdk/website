@@ -58,7 +58,7 @@
         </div>
         <p>
             {#each data.mod.developers as dev, index}
-                {index > 0 ? ', ' : ''}<Link href={`/developers/${dev.id}`} --link-color="var(--accent-300)">{dev.display_name}</Link>
+                {index > 0 ? ', ' : ''}<Link href={`/mods?developer=${dev.username}`} --link-color="var(--accent-300)">{dev.display_name}</Link>
             {/each}
         </p>
     </Column>

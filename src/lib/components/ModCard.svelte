@@ -47,7 +47,7 @@
                         </span>
                     </Link>
                 </span>
-                <Link href={`/developers/${owner.id}`} --link-color="var(--accent-300)">{owner.display_name}</Link>
+                <Link href={`/mods?developer=${owner.username}`} --link-color="var(--accent-300)">{owner.display_name}</Link>
                 <p class="description">
                     {#if version.description}
                         {#if version.description?.length < 110}
@@ -86,7 +86,7 @@
                 </Link>
             </Column>
         </span>
-        <Link href={`/developers/${owner.id}`} --link-color="var(--accent-300)">{owner.display_name}</Link>
+        <Link href={`/mods?developer=${owner.username}`} --link-color="var(--accent-300)">{owner.display_name}</Link>
         <Gap size="small"/>
         <Row>
             <span class="card-info"><Icon icon="version"/>{version.version}</span>
