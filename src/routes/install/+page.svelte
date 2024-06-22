@@ -14,7 +14,7 @@
 
     // Until server returns this, we're doing it manually
     let latestVersion = "v3.0.0";
-    let latestLauncher = "v1.4.0";
+    let latestLauncher = "v1.3.4";
     let showAllPlatforms = false;
     let curPlatform: 'windows' | 'mac' | 'android' | 'linux' | 'unknown' | undefined = undefined;
 
@@ -68,14 +68,14 @@
 
 <Column>
     <!-- TODO: MAKE THIS SECTION HIDDEN AND THE OTHER SECTIONS VISIBLE ON RELEASE -->
-    <section>
+    <section class="hidden">
         <InfoBox type="warning">
             Geode is not yet out for Geometry Dash 2.206! Geode will be released for 2.206 on June 22nd at 9 PM Swedish time.
             <br><br>
             You can join <Link --link-color="var(--accent-300)" href="https://youtu.be/RKwBBcHk6OA">the Premiere of our announcement video</Link> when the update releases!
         </InfoBox>
     </section>
-    <section class="hidden">
+    <section>
         <Column>
             <p><strong>Installation instructions</strong></p>
             <span style="color: var(--background-300)">
@@ -95,7 +95,7 @@
             </p>
         </Column>
     </section>
-    <section class="hidden">
+    <section>
         <Column>
             <div>Latest version: <em>{latestVersion}</em></div>
             {#if curPlatform === "unknown"}
