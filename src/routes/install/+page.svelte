@@ -14,7 +14,7 @@
 
     // Until server returns this, we're doing it manually
     let latestVersion = "v3.0.0";
-    let latestLauncher = "v1.4.0";
+    let latestLauncher = "v1.4.1";
     let showAllPlatforms = false;
     let curPlatform: 'windows' | 'mac' | 'android' | 'linux' | 'unknown' | undefined = undefined;
 
