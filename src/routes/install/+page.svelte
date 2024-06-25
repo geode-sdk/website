@@ -220,7 +220,7 @@
             You can use the <em>search button</em> on the left to search for specific mods by name or by <em>tags</em>.
         </p>
         <Row wrap="wrap">
-            <Button style="hollow">
+            <Button style="hollow" href="/faq#why-cant-i-find-certain-mods">
                 <Icon icon="help"/> Why can't I find a certain Mod?
             </Button>
         </Row>
