@@ -16,7 +16,7 @@
     let latestVersion = "v3.1.1";
     let latestLauncher = "v1.4.1";
     let showAllPlatforms = false;
-    let curPlatform: 'windows' | 'mac' | 'android' | 'linux' | 'unknown' | undefined = undefined;
+    let curPlatform: 'windows' | 'mac' | 'android' | 'linux' | 'ios' | 'unknown' | undefined = undefined;
 
     const createVersionString = (platform: 'windows' | 'mac' | 'android' | "linux"): string => {
         let filename = "";
@@ -49,6 +49,9 @@
             curPlatform = "android";
         } else if (window.navigator.userAgent.includes("Linux")) {
             curPlatform = "linux";
+        } else if ([ 'iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod' ].includes(window.navigator.platform)) {
+            curPlatform = "ios";
+            showAllPlatforms = true;
         } else {
             curPlatform = "unknown";
             showAllPlatforms = true;
@@ -91,7 +94,7 @@
                 </Column>
             </span>
             <p>
-                Geode is available for <em>Windows</em>, <em>MacOS</em>, <em>Linux</em> (through <em>Wine / Proton</em>) and <em>Android</em>.
+                Geode is available for <em>Windows</em>, <em>macOS</em>, <em>Linux</em> (through <em>Wine / Proton</em>) and <em>Android</em>.
             </p>
         </Column>
     </section>
@@ -100,6 +103,12 @@
             <div>Latest version: <em>{latestVersion}</em></div>
             {#if curPlatform === "unknown"}
                 <p>Couldn't auto detect your platform. You can download Geode for your chosen platform below.</p> 
+            {/if}
+            {#if curPlatform === "ios"}
+                <p>Geode is not available on <em>iOS</em> right now. If you got it from another source or a YouTube video, it's a scam. <Link href="faq#why-is-geode-not-available-on-ios">Click here for more info.</Link></p>
+                <Button style="primary-filled" href="https://github.com/geode-sdk/geode/releases/" disabled="true">
+                    <Icon icon="ios"/>Unavailable
+                </Button>
             {/if}
             {#if curPlatform === "linux"}
                 <p>Geometry Dash is not available on <em>Linux</em>, but you can run the <em>Windows</em> version through <em>Wine / Proton</em>. <Link href="faq#i-am-installing-geode-on-linux-what-do-i-have-to-do">Click here for more info.</Link> </p>
