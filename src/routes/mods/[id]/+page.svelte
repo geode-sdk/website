@@ -174,6 +174,38 @@
                             </fieldset>
                         </form>
                     {/if}
+
+                    {#if can_modify_mod}
+                        <h2>Dependencies</h2>
+                        {#if data.version.dependencies?.length}
+                            <ul>
+                                {#each data.version.dependencies as dependency}
+                                    <li>
+                                        {dependency.importance} -
+                                        <Link href={`/mods/${dependency.mod_id}`}>{dependency.mod_id}</Link>
+                                        ({dependency.version})
+                                    </li>
+                                {/each}
+                            </ul>
+                        {:else}
+                            <div>Mod has no dependencies.</div>
+                        {/if}
+
+                        <h2>Incompatibilities</h2>
+                        {#if data.version.incompatibilities?.length}
+                            <ul>
+                                {#each data.version.incompatibilities as incompatibility}
+                                    <li>
+                                        {incompatibility.importance} -
+                                        <Link href={`/mods/${incompatibility.mod_id}`}>{incompatibility.mod_id}</Link>
+                                        ({incompatibility.version})
+                                    </li>
+                                {/each}
+                            </ul>
+                        {:else}
+                            <div>Mod has no incompatibilities.</div>
+                        {/if}
+                    {/if}
                 </TabPage>
             {/if}
         </Tabs>
