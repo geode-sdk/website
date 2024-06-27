@@ -1,12 +1,50 @@
 <script lang="ts">
     import "../app.scss";
+    import { onMount } from "svelte";
+    import { events, startEvents } from "$lib/events";
+    import { page } from '$app/stores';
+    import { getSelf } from "$lib/api/index-repository";
+    import type { LayoutData } from './$types';
     import Button from "$lib/components/Button.svelte";
     import Column from "$lib/components/Column.svelte"
     import Row from "$lib/components/Row.svelte"
     import Link from "$lib/components/Link.svelte";
     import Dot from "$lib/components/Dot.svelte";
+    import Gap from "$lib/components/Gap.svelte";
     import Waves from "$lib/components/Waves.svelte";
     import Icon from "$lib/components/Icon.svelte";
+
+    export let data: LayoutData;
+
+    let devProfileDropdown: HTMLDivElement
+
+    function devProfileDropdownClick() {
+        devProfileDropdown.classList.toggle("show")
+    }
+
+    function onLogOutClick() {
+        data.loggedIn = false;
+        data.self = undefined;
+        let toFire = new CustomEvent("loggedout")
+        events.dispatchEvent(toFire);
+    }
+
+    onMount(() => {
+        startEvents(document);
+        events.addEventListener("loggedin", async (e: Event) => {
+            data.loggedIn = typeof (<CustomEvent>e).detail == "string";
+            data.self = undefined;
+
+            try {
+                if (data.loggedIn) {
+                    data.self = await getSelf(<string>(<CustomEvent>e).detail);
+                }
+            } catch (error) {
+                console.log(`Unknown Error in +layout.svelte.js: ${error}`)
+                data.loggedIn = false
+            }
+        });
+    });
 </script>
 
 <main>
@@ -15,7 +53,34 @@
     <div class="side-art right"/>
     <slot/>
     <nav>
-        <Button href=".." style="primary-filled-dark" icon="home">Home</Button>
+        <div class="left-side">
+            <Button href="/" style="primary-filled-dark" icon="home">Home</Button>
+            {#if $page.url.pathname.includes("/me/")}
+            <Gap size="small" />
+            <Button href="/me" style="secondary-filled-dark" icon="left">Profile</Button>
+            {/if}
+            {#if $page.url.pathname.includes("/mods/")}
+            <Gap size="small" />
+            <Button href="/mods" style="secondary-filled-dark" icon="left">Mod Browser</Button>
+            {/if}
+        </div>
+        <div class="right-side">
+            {#if data.loggedIn && data.self}
+            <div class="dropdown dev-profile" bind:this={devProfileDropdown}>
+                <Button additional-classes="dropdown-display" style="primary-filled-dark" on:click={devProfileDropdownClick}>
+                    <img src="https://github.com/{data.self.username}.png" alt="User Profile" class="nav-dev-profile-picture" />
+                    {data.self.display_name}
+                    <Icon  icon="down" />
+                </Button>
+                <Gap size="flex" />
+                <div class="dropdown-content">
+                    <Button href="/me" style="primary-filled-dark">Profile</Button>
+                    <Button style="primary-filled-dark">idk</Button>
+                    <Button href="/logout" style="primary-filled-dark" on:click={onLogOutClick} additional-classes="red">Log Out</Button>
+                </div>
+            </div>
+            {/if}
+        </div>
         <slot name="nav"/>
     </nav>
     <div class="waves-bottom">
@@ -101,6 +166,65 @@
         position: fixed;
         top: 1rem;
         left: 1rem;
+
+        & > div.left-side {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            display: flex;
+            flex-direction: column;
+        }
+        & > div.right-side {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            display: flex;
+            flex-direction: column;
+
+            & > div.dropdown {
+                & a .nav-dev-profile-picture {
+                    width: var(--icon-size);
+                    height: var(--icon-size);
+                    pointer-events: none;
+                    border-radius: 100%;
+                }
+
+                & > :global(a) :global(.icon) > :global(svg) {
+                    transition: transform 500ms;
+                }
+
+                &:global(.show) > :global(a) :global(.icon) > :global(svg) {
+                    transform: rotate(180deg);
+                }
+
+                & > :global(div.dropdown-content) {
+                    display: flex;
+                    flex-direction: column;
+                    border-radius: .15rem;
+                    border-style: solid;
+                    border-width: .15rem;
+                    background-color: var(--primary-950);
+                    border-color: var(--primary-950);
+                    box-shadow: 0px .1rem .5rem color-mix(in srgb, var(--primary-950) 50%, transparent);
+                    transition: opacity .7s, transform .5s;
+                    transform: translateY(1.2em);
+                    opacity: 0;
+                    pointer-events: none;
+                }
+
+                &:global(.show) > :global(div.dropdown-content) {
+                    display: flex;
+                    flex-direction: column;
+                    transform: translateY(-1.2em);
+                    opacity: 100%;
+                    pointer-events: all;
+                }
+            }
+        }
+    }
+
+    :global(.red) {
+        color: rgb(190, 42, 42) !important;
     }
 
     .waves-bottom {

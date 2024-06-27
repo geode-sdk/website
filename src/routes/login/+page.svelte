@@ -2,6 +2,7 @@
 	import { onMount } from "svelte";
 	import { sineInOut, quadOut } from 'svelte/easing';
 	import { enhance } from '$app/forms';
+	import { events, startEvents } from "$lib/events";
 	import type { ActionData } from './$types';
 	import Button from "$lib/components/Button.svelte";
     import Column from "$lib/components/Column.svelte";
@@ -33,6 +34,10 @@
 		if (token != null && token != "[object Object]") {
 			document.cookie = "token=" + token;
 			status_current_step = 3;
+			const loggedInEventToNav = new CustomEvent("loggedin", {
+				detail: token,
+			});
+			events.dispatchEvent(loggedInEventToNav);
 			clearInterval(pollInterval);
 		}
 	}
@@ -76,6 +81,7 @@
 		status_loading = true;
 		setTimeout(async () => {
 			var res = ghLoginData = await githubAuth();
+			console.log(res)
 			status_loading_message = "Opening up GitHub";
 			setTimeout(async () => {
 				status_loading_message = "Loading next step...";
@@ -95,6 +101,10 @@
 		// there is a reason there are alot of set timeouts, it's so animations don't skip and shit.
 	}
 
+	onMount(() => {
+		startEvents(document);
+		return () => clearInterval(pollInterval);
+	})
 </script>
 
 <svelte:head>

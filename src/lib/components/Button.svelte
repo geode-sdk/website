@@ -6,6 +6,7 @@
         'primary-filled-dark' |
         'primary-filled' |
         'primary-hollow' |
+        'secondary-filled-dark' |
         'secondary-filled' |
         'secondary-hollow' |
         'hollow' |
@@ -17,9 +18,14 @@
     export let icon: KnownIcon | undefined = undefined;
     export let iconOnRight = false;
     export let disabled = false;
+    let enableTheDisabledStyle = false;
+    $: enableTheDisabledStyle = $$props['enable-disabled-style']
+    let additionalClasses: string | undefined = undefined;
+    $: additionalClasses = $$props['additional-classes']
+
 </script>
 
-<a href={href} target={target} class={style} class:disabled on:click>
+<a href={href} target={target} class={style + " " + additionalClasses} class:disable-style={enableTheDisabledStyle} class:disabled on:click>
     {#if iconOnRight}
         <slot/>
     {/if}
@@ -89,6 +95,17 @@
                 border-color: var(--primary-50);
             }
         }
+        &.secondary-filled-dark, &.secondary-filled-dark.disabled {
+            color: var(--secondary-300);
+            background-color: var(--secondary-950);
+            border-color: var(--secondary-950);
+            box-shadow: 0px .1rem .5rem color-mix(in srgb, var(--secondary-950) 50%, transparent);
+            &:hover {
+                color: var(--secondary-950);
+                background-color: var(--secondary-50);
+                border-color: var(--secondary-50);
+            }
+        }
         &.secondary-filled, &.secondary-filled.disabled {
             color: var(--secondary-950);
             background-color: var(--secondary-300);
@@ -150,6 +167,9 @@
         }
         &.disabled {
             pointer-events: none;
+            opacity: 55%;
+        }
+        &.disabled.disable-style {
             color: var(--background-50);
             background-color: var(--background-800);
             border-color: var(--background-800);

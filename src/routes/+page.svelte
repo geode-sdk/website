@@ -1,4 +1,7 @@
 <script lang="ts">
+    import type { PageData } from "./$types.js";
+    import { onMount } from "svelte";
+    import { events, startEvents } from "$lib/events.js";
     import Button from "$lib/components/Button.svelte";
     import Column from "$lib/components/Column.svelte";
     import Gap from "$lib/components/Gap.svelte";
@@ -17,6 +20,16 @@
     import { getServerStats } from "$lib/api/index-repository";
     import LoadingCircle from "$lib/components/LoadingCircle.svelte";
     import InfoBox from "$lib/components/InfoBox.svelte";
+
+    export let data: PageData;
+
+    onMount(() => {
+        startEvents(document);
+        events.addEventListener("loggedout", async (e: Event) => {
+            data.loggedIn = false;
+            console.log(data.self);
+        });
+    });
 </script>
 
 <svelte:head>
@@ -50,10 +63,10 @@
             <Button href="/install" style="primary-filled-dark" icon="download">Download</Button>
             <Button href="/mods" style="primary-filled-dark" icon="browse">Browse Mods</Button>
         </Row>
-        <Button href="/login" style="primary-filled-dark" icon="tag-developer">Developer Login</Button>
+        <Button href="/{data.loggedIn ? "me" : "login"}" style="primary-filled-dark" icon="tag-developer">Developer {data.loggedIn ? "Dashboard" : "Login"}</Button>
     </Column>
 </div>
-<Gap size="0" />
+<Gap size="tiny" />
 <Image name="main-page" alt="The main page" style="shadow"></Image>
 <Row wrap="wrap" --link-color=var(--secondary-300)>
     <Link href="https://discord.gg/9e43WMKzhp" icon="discord">Discord</Link>
@@ -155,7 +168,7 @@
             <Row wrap="wrap">
                 <Button href="/install" style="primary-filled" icon="download">Install</Button>
                 <Button href="/mods" style="primary-filled" icon="browse">Browse Mods</Button>
-                <Button href="/login" style="primary-filled" icon="tag-developer">Developer Login</Button>
+                <Button href="/{data.loggedIn ? "me" : "login"}" style="primary-filled" icon="tag-developer">Developer {data.loggedIn ? "Dashboard" : "Login"}</Button>
             </Row>
         </Column>
     </FlyIntoView>
