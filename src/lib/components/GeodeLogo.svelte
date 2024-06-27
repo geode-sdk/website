@@ -1,12 +1,18 @@
 <script lang="ts">
-    type Type = 'circle' | 'plain' | 'plain-mono';
+    type Type = "circle" | "plain" | "plain-mono";
     export let type: Type;
 
     let svgFileName;
     switch (type) {
-        case 'circle':     svgFileName = 'geode-logo'; break;
-        case 'plain':      svgFileName = 'geode-logo-plain'; break;
-        case 'plain-mono': svgFileName = 'geode-logo-plain-mono'; break;
+        case "circle":
+            svgFileName = "geode-logo";
+            break;
+        case "plain":
+            svgFileName = "geode-logo-plain";
+            break;
+        case "plain-mono":
+            svgFileName = "geode-logo-plain-mono";
+            break;
     }
 </script>
 

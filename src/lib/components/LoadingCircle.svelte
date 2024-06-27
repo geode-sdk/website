@@ -1,5 +1,5 @@
 <script lang="ts">
-    export let size: 'small' | 'normal' = 'normal';
+    export let size: "small" | "normal" = "normal";
 </script>
 
 <span class={size}></span>
@@ -15,12 +15,12 @@
         &.small {
             width: 1.5rem;
             height: 1.5rem;
-            border-width: .2rem;
+            border-width: 0.2rem;
         }
         &.normal {
             width: 3rem;
             height: 3rem;
-            border-width: .4rem;
+            border-width: 0.4rem;
         }
     }
     @keyframes rotation {

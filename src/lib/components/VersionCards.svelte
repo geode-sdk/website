@@ -7,7 +7,7 @@
     export let longForm = false;
 </script>
 
-<Icon icon="gd"/>
+<Icon icon="gd" />
 
 {#if longForm}
     Available on:

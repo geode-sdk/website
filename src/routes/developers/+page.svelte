@@ -26,7 +26,7 @@
         }
 
         await goto(`/developers?${params}`, { noScroll: true });
-    }
+    };
 
     const gotoPage = async (page: number) => {
         if (current_page < 1) {
@@ -40,21 +40,25 @@
         params.set("page", page.toString());
 
         await goto(`/developers?${params}`, { noScroll: true });
-    }
+    };
 
     const onNext = async () => {
         await gotoPage(current_page + 1);
-    }
+    };
 
     const onPrevious = async () => {
         await gotoPage(current_page - 1);
-    }
+    };
 </script>
 
 <h1>Browse Developers</h1>
 
 <div>
-    <input type="search" bind:value={query} placeholder="Search display name..." />
+    <input
+        type="search"
+        bind:value={query}
+        placeholder="Search display name..."
+    />
     <button on:click={onSearch}>Search</button>
 </div>
 
@@ -70,11 +74,11 @@
 
 <div>
     {#if current_page > 1}
-    <button on:click={onPrevious}>Previous</button>
+        <button on:click={onPrevious}>Previous</button>
     {/if}
     <span>Page {current_page} of {max_page}</span>
 
     {#if current_page < max_page}
-    <button on:click={onNext}>Next</button>
+        <button on:click={onNext}>Next</button>
     {/if}
 </div>

@@ -19,16 +19,18 @@
     :global(pre) {
         background-color: var(--background-950);
         padding: 1px;
-        border-radius: calc(.5rem + 1px);
-        box-shadow: 0px 0px 7rem color-mix(in srgb, var(--primary-500) 10%, transparent);
+        border-radius: calc(0.5rem + 1px);
+        box-shadow: 0px 0px 7rem
+            color-mix(in srgb, var(--primary-500) 10%, transparent);
 
         & > :global(code) {
             color: var(--text-50);
             display: block;
             background-color: var(--background-950);
-            border: 1px color-mix(in srgb, var(--background-300) 50%, transparent) solid;
+            border: 1px
+                color-mix(in srgb, var(--background-300) 50%, transparent) solid;
             padding: 1rem;
-            border-radius: .5rem;
+            border-radius: 0.5rem;
             tab-size: 4;
         }
     }
