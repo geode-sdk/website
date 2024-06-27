@@ -7,8 +7,8 @@
     div {
         background-color: var(--dot-color);
         opacity: 50%;
-        width: .3rem;
-        height: .3rem;
+        width: 0.3rem;
+        height: 0.3rem;
         border-radius: 9999px;
     }
 </style>

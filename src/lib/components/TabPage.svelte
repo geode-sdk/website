@@ -1,4 +1,3 @@
-
 <script lang="ts">
     import { getContext, onDestroy } from "svelte";
     import type { TabsContext } from "./Tabs.svelte";
@@ -8,15 +7,15 @@
     export let id: string;
     export let icon: KnownIcon;
 
-    const { selectedTab, tabs } = getContext<TabsContext>('tabs');
+    const { selectedTab, tabs } = getContext<TabsContext>("tabs");
     $tabs = [...$tabs, { id, name, icon }];
 
     onDestroy(() => {
-        tabs.update(tabs => tabs.filter(t => t.id !== id));
+        tabs.update((tabs) => tabs.filter((t) => t.id !== id));
     });
 </script>
 
-<article id={id} class:selected={$selectedTab === id}><slot/></article>
+<article {id} class:selected={$selectedTab === id}><slot /></article>
 
 <style lang="scss">
     article {

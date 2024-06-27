@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { KnownIcon } from "$lib";
-    import { pushState } from '$app/navigation';
+    import { pushState } from "$app/navigation";
     import Icon from "./Icon.svelte";
 
     export let icon: KnownIcon | undefined = undefined;
@@ -10,13 +10,18 @@
 
     function scrollToElement(id: string) {
         // Remove any existing scroll highlights
-        document.querySelectorAll('.highlight-scrolled')
-            .forEach(e => e.classList.remove('highlight-scrolled'));
-        
+        document
+            .querySelectorAll(".highlight-scrolled")
+            .forEach((e) => e.classList.remove("highlight-scrolled"));
+
         const target = document.querySelector(id);
         if (target) {
-            target.classList.add('highlight-scrolled');
-            target.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+            target.classList.add("highlight-scrolled");
+            target.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+                inline: "center",
+            });
             const url = new URL(window.location.href);
             url.hash = id;
             pushState(url, {});
@@ -25,21 +30,22 @@
 
     function smoothScrollToAnchor(e: MouseEvent) {
         e.preventDefault();
-        const anchor = (e.currentTarget! as HTMLAnchorElement);
-        scrollToElement(anchor.getAttribute('href') ?? '');
+        const anchor = e.currentTarget! as HTMLAnchorElement;
+        scrollToElement(anchor.getAttribute("href") ?? "");
     }
 </script>
 
-<svelte:window on:hashchange={() => scrollToElement(window.location.hash)}/>
+<svelte:window on:hashchange={() => scrollToElement(window.location.hash)} />
 
 <a
-    href={href} style="{bold ? '--link-weight: 600' : undefined}"
-    on:click={href.startsWith('#') ? smoothScrollToAnchor : undefined}
+    {href}
+    style={bold ? "--link-weight: 600" : undefined}
+    on:click={href.startsWith("#") ? smoothScrollToAnchor : undefined}
 >
     {#if icon}
-        <Icon {icon} --icon-size=1.15em/>
+        <Icon {icon} --icon-size="1.15em" />
     {/if}
-    <span class:centered><slot/></span>
+    <span class:centered><slot /></span>
 </a>
 
 <style lang="scss">

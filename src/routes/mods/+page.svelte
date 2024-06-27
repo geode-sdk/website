@@ -35,7 +35,7 @@
     let gd = data.params.gd ?? "";
     let per_page = data.params.per_page ?? 12;
     let searching = false;
-    let view: 'list' | 'dual-list' | 'grid' = 'dual-list';
+    let view: "list" | "dual-list" | "grid" = "dual-list";
 
     $: max_count = data.mods?.count ?? 0;
     $: max_page = Math.floor(max_count / per_page) + 1;
@@ -81,7 +81,7 @@
 
         await goto(`/mods?${params}`, { noScroll: true });
         searching = false;
-    }
+    };
 
     const gotoPage = async (page: number) => {
         searching = true;
@@ -97,12 +97,12 @@
 
         await goto(`/mods?${params}`, { noScroll: true });
         searching = false;
-    }
+    };
 </script>
 
 <svelte:head>
     <title>Browse Geode Mods</title>
-    <meta name="description" content="Browse mods for the Geode mod loader">
+    <meta name="description" content="Browse mods for the Geode mod loader" />
 </svelte:head>
 
 <Waves type="top" />
@@ -112,49 +112,51 @@
 
 <div class="content-separator">
     <aside>
-        <header><Icon icon="filter" --icon-size=1.2em/>Search Filters</header>
+        <header>
+            <Icon icon="filter" --icon-size="1.2em" />Search Filters
+        </header>
         <nav>
             <Rollover title="Platform">
                 <SelectButton
                     icon="windows"
-                    selected={platforms.has('windows')}
+                    selected={platforms.has("windows")}
                     on:select={() => {
-                        toggleSet(platforms, 'windows');
+                        toggleSet(platforms, "windows");
                         updateSearch();
-                    }}
-                >Windows</SelectButton>
+                    }}>Windows</SelectButton
+                >
                 <SelectButton
                     icon="mac"
-                    selected={platforms.has('mac-arm')}
+                    selected={platforms.has("mac-arm")}
                     on:select={() => {
-                        toggleSet(platforms, 'mac-arm');
+                        toggleSet(platforms, "mac-arm");
                         updateSearch();
-                    }}
-                >macOS (ARM)</SelectButton>
+                    }}>macOS (ARM)</SelectButton
+                >
                 <SelectButton
                     icon="mac"
-                    selected={platforms.has('mac-intel')}
+                    selected={platforms.has("mac-intel")}
                     on:select={() => {
-                        toggleSet(platforms, 'mac-intel');
+                        toggleSet(platforms, "mac-intel");
                         updateSearch();
-                    }}
-                >macOS (x64)</SelectButton>
+                    }}>macOS (x64)</SelectButton
+                >
                 <SelectButton
                     icon="android"
-                    selected={platforms.has('android64')}
+                    selected={platforms.has("android64")}
                     on:select={() => {
-                        toggleSet(platforms, 'android64');
+                        toggleSet(platforms, "android64");
                         updateSearch();
-                    }}
-                >Android (64-bit)</SelectButton>
+                    }}>Android (64-bit)</SelectButton
+                >
                 <SelectButton
                     icon="android"
-                    selected={platforms.has('android32')}
+                    selected={platforms.has("android32")}
                     on:select={() => {
-                        toggleSet(platforms, 'android32');
+                        toggleSet(platforms, "android32");
                         updateSearch();
-                    }}
-                >Android (32-bit)</SelectButton>
+                    }}>Android (32-bit)</SelectButton
+                >
             </Rollover>
 
             <Rollover title="Tags">
@@ -169,7 +171,8 @@
                                 on:select={() => {
                                     toggleSet(tags, tag);
                                     updateSearch();
-                                }}>
+                                }}
+                            >
                                 {tag.charAt(0).toUpperCase() + tag.slice(1)}
                             </SelectButton>
                         {/each}
@@ -177,37 +180,66 @@
                         <InfoBox type="error">Failed to list tags!</InfoBox>
                     {/if}
                 {:catch error}
-                    <InfoBox type="error">Unable to connect to servers!</InfoBox>
+                    <InfoBox type="error">Unable to connect to servers!</InfoBox
+                    >
                 {/await}
             </Rollover>
 
             <Rollover title="Other">
                 <SelectButton
                     icon="featured"
-                    bind:selected={featured} on:select={updateSearch}
-                >Featured only</SelectButton>
+                    bind:selected={featured}
+                    on:select={updateSearch}>Featured only</SelectButton
+                >
                 <SelectButton
                     icon="unverified"
-                    bind:selected={pending} on:select={updateSearch}
-                >Unverified only</SelectButton>
+                    bind:selected={pending}
+                    on:select={updateSearch}>Unverified only</SelectButton
+                >
             </Rollover>
         </nav>
     </aside>
 
     <Column align="stretch" gap="small">
         <nav class="search">
-            <Search placeholder="Search mods..." bind:query on:search={updateSearch} autofocus></Search>
-            <Select title="Sort by" titleIcon="sort" on:select={ev => {
-                if (sort != ev.detail.value) {
-                    sort = ev.detail.value;
-                    updateSearch();
-                }
-            }}>
-                <SelectOption icon="download" title="Most Downloaded" value="downloads" isDefault/>
-                <SelectOption icon="time" title="Most Recent" value="recently_published"/>
-                <SelectOption icon="time" title="Recently Updated" value="recently_updated"/>
-                <SelectOption icon="sort-abc" title="Name (A-Z)" value="name"/>
-                <SelectOption icon="sort-cba" title="Name (Z-A)" value="name_reverse"/>
+            <Search
+                placeholder="Search mods..."
+                bind:query
+                on:search={updateSearch}
+                autofocus
+            ></Search>
+            <Select
+                title="Sort by"
+                titleIcon="sort"
+                on:select={(ev) => {
+                    if (sort != ev.detail.value) {
+                        sort = ev.detail.value;
+                        updateSearch();
+                    }
+                }}
+            >
+                <SelectOption
+                    icon="download"
+                    title="Most Downloaded"
+                    value="downloads"
+                    isDefault
+                />
+                <SelectOption
+                    icon="time"
+                    title="Most Recent"
+                    value="recently_published"
+                />
+                <SelectOption
+                    icon="time"
+                    title="Recently Updated"
+                    value="recently_updated"
+                />
+                <SelectOption icon="sort-abc" title="Name (A-Z)" value="name" />
+                <SelectOption
+                    icon="sort-cba"
+                    title="Name (Z-A)"
+                    value="name_reverse"
+                />
             </Select>
         </nav>
 
@@ -216,109 +248,140 @@
                 {#if data.mods?.data.length === data.mods?.count}
                     <p>Showing {data.mods?.data.length ?? 0} mods</p>
                 {:else}
-                    <p>Showing {data.mods?.data.length ?? 0} of {data.mods?.count ?? 0} mods</p>
+                    <p>
+                        Showing {data.mods?.data.length ?? 0} of {data.mods
+                            ?.count ?? 0} mods
+                    </p>
                 {/if}
                 <Row>
                     <Button
-                        on:click={async () => await gotoPage(Math.max(current_page - 1, 1))}
-                        icon="left" style="dark-small"
-                        disabled={!data.mods || max_count == 0 || current_page == 1}
+                        on:click={async () =>
+                            await gotoPage(Math.max(current_page - 1, 1))}
+                        icon="left"
+                        style="dark-small"
+                        disabled={!data.mods ||
+                            max_count == 0 ||
+                            current_page == 1}
                     />
                     <span>Page {current_page} of {max_page}</span>
                     <Button
-                        on:click={async () => await gotoPage(Math.min(current_page + 1, max_page))}
-                        icon="right" style="dark-small"
-                        disabled={!data.mods || max_count == 0 || current_page == max_page}
+                        on:click={async () =>
+                            await gotoPage(
+                                Math.min(current_page + 1, max_page),
+                            )}
+                        icon="right"
+                        style="dark-small"
+                        disabled={!data.mods ||
+                            max_count == 0 ||
+                            current_page == max_page}
                     />
                 </Row>
                 <Row gap="small">
                     <SelectButton
-                        on:select={() => view = 'list'} selected={view === 'list'} outsideState={true}
+                        on:select={() => (view = "list")}
+                        selected={view === "list"}
+                        outsideState={true}
                         style="secondary"
                         icon="view-list"
                     />
                     <SelectButton
-                        on:select={() => view = 'dual-list'} selected={view === 'dual-list'} outsideState={true}
+                        on:select={() => (view = "dual-list")}
+                        selected={view === "dual-list"}
+                        outsideState={true}
                         style="secondary"
                         icon="view-dual-list"
                     />
                     <SelectButton
-                        on:select={() => view = 'grid'} selected={view === 'grid'} outsideState={true}
+                        on:select={() => (view = "grid")}
+                        selected={view === "grid"}
+                        outsideState={true}
                         style="secondary"
                         icon="view-grid"
                     />
                 </Row>
             </nav>
-    
+
             <span class="overlay-container">
                 <div class="overlay" class:hidden={!searching}>
-                    <span><LoadingCircle/></span>
+                    <span><LoadingCircle /></span>
                 </div>
                 <!-- this goofy thing just makes sure the size of the mods list stays 
                     the same even if there are fewer items than needed to fill it -->
                 <div class="mod-listing-size-enforcer">
-                    <span/>
-                    <span/>
-                    <span/>
-                    <span/>
-                    <span/>
-                    <span/>
-                    <span/>
-                    <span/>
+                    <span />
+                    <span />
+                    <span />
+                    <span />
+                    <span />
+                    <span />
+                    <span />
+                    <span />
                 </div>
                 {#if data.error}
-                    <Gap size="normal"/>
+                    <Gap size="normal" />
                     <InfoBox type="error">{data.error}</InfoBox>
-                    <Gap size="normal"/>
+                    <Gap size="normal" />
+                {:else if data.mods && max_count > 0}
+                    <div class="mod-listing {view}">
+                        {#each data.mods.data as mod (mod.id)}
+                            {@const mod_version = mod.versions[0]}
+                            <ModCard
+                                {mod}
+                                version={mod_version}
+                                style={view === "dual-list" ? "list" : view}
+                            />
+                        {/each}
+                    </div>
                 {:else}
-                    {#if data.mods && max_count > 0}
-                        <div class="mod-listing {view}">
-                            {#each data.mods.data as mod (mod.id)}
-                                {@const mod_version = mod.versions[0]}
-                                <ModCard
-                                    mod={mod} version={mod_version}
-                                    style={view === 'dual-list' ? 'list' : view}
-                                />
-                            {/each}
+                    <div class="no-mod-listing">
+                        <div class="humorous-meme">
+                            <Image name="no-mods" alt="" />
                         </div>
-                    {:else}
-                        <div class="no-mod-listing">
-                            <div class="humorous-meme"><Image name="no-mods" alt=""/></div>
-                            <p><em>No matching mods found :(</em></p>
-                            <p>
-                                It could be that the mod 
-                                you're looking for 
-                                {#if platforms.size}
-                                    is not available on {
-                                        Array.from(platforms)
-                                        .map(a => a.charAt(0).toUpperCase() + a.slice(1))
-                                        .join(' / ')
-                                    }!
-                                {:else}
-                                    is not available on Geode, or was made for an older version!
-                                {/if}
-                            </p>
-                        </div>
-                    {/if}
+                        <p><em>No matching mods found :(</em></p>
+                        <p>
+                            It could be that the mod you're looking for
+                            {#if platforms.size}
+                                is not available on {Array.from(platforms)
+                                    .map(
+                                        (a) =>
+                                            a.charAt(0).toUpperCase() +
+                                            a.slice(1),
+                                    )
+                                    .join(" / ")}!
+                            {:else}
+                                is not available on Geode, or was made for an
+                                older version!
+                            {/if}
+                        </p>
+                    </div>
                 {/if}
             </span>
 
-            {#if
-                data.mods && data.mods.data.length < data.mods.count &&
-                per_page !== perPageOptions[perPageOptions.length - 1]
-            }
+            {#if data.mods && data.mods.data.length < data.mods.count && per_page !== perPageOptions[perPageOptions.length - 1]}
                 <div class="show-more-container">
-                    <Button style="primary-filled" on:click={() => {
-                        per_page = perPageOptions[perPageOptions.indexOf(per_page) + 1];
-                        updateSearch();
-                    }}>Show more ({perPageOptions[perPageOptions.indexOf(per_page) + 1]})</Button>
+                    <Button
+                        style="primary-filled"
+                        on:click={() => {
+                            per_page =
+                                perPageOptions[
+                                    perPageOptions.indexOf(per_page) + 1
+                                ];
+                            updateSearch();
+                        }}
+                        >Show more ({perPageOptions[
+                            perPageOptions.indexOf(per_page) + 1
+                        ]})</Button
+                    >
                 </div>
             {:else if data.mods && data.mods.data.length > 0}
                 <div class="show-more-container">
-                    <Button style="secondary-filled" on:click={() => {
-                        per_page = perPageOptions[0];
-                        updateSearch();
-                    }}>Show less (10)</Button>
+                    <Button
+                        style="secondary-filled"
+                        on:click={() => {
+                            per_page = perPageOptions[0];
+                            updateSearch();
+                        }}>Show less (10)</Button
+                    >
                 </div>
             {/if}
         </main>
@@ -326,7 +389,7 @@
 </div>
 
 <style lang="scss">
-    @use '$lib/styles/media-queries.scss' as *;
+    @use "$lib/styles/media-queries.scss" as *;
 
     h1 {
         margin: 0;
@@ -343,9 +406,9 @@
 
         & > aside {
             background-color: var(--background-950);
-            padding: .5rem;
-            gap: .5rem;
-            border-radius: .5rem;
+            padding: 0.5rem;
+            gap: 0.5rem;
+            border-radius: 0.5rem;
 
             display: flex;
             flex-direction: column;
@@ -356,7 +419,7 @@
                 flex-direction: row;
                 align-items: center;
                 color: var(--text-300);
-                font-size: .9em;
+                font-size: 0.9em;
                 gap: var(--gap-small);
             }
             & > nav {
@@ -369,8 +432,8 @@
             display: grid;
             grid-template-columns: 1fr;
 
-            padding: .5rem;
-            border-radius: .5rem;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
 
             background-color: var(--background-950);
 
@@ -403,10 +466,10 @@
         display: flex;
         align-self: center;
         justify-self: center;
-        margin-top: .5rem;
+        margin-top: 0.5rem;
     }
     .mod-listing {
-        gap: .5rem;
+        gap: 0.5rem;
 
         &.grid {
             display: grid;
@@ -421,7 +484,7 @@
             justify-content: center;
         }
 
-        @media screen and (min-width: 400px) {	
+        @media screen and (min-width: 400px) {
             &.dual-list {
                 grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
             }
@@ -439,7 +502,7 @@
         justify-content: center;
 
         padding: 5rem;
-        gap: .5rem;
+        gap: 0.5rem;
 
         & > .humorous-meme {
             max-width: min(20rem, 50vw);
@@ -451,12 +514,12 @@
     .mod-listing-size-enforcer {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(14rem, auto));
-        gap: .5rem;
+        gap: 0.5rem;
         max-width: 60vw;
     }
     .search {
         background-color: var(--background-950);
-        border-radius: .5rem;
+        border-radius: 0.5rem;
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
@@ -475,7 +538,11 @@
         align-items: center;
         justify-content: center;
 
-        background-color: color-mix(in srgb, var(--background-950) 80%, transparent);
+        background-color: color-mix(
+            in srgb,
+            var(--background-950) 80%,
+            transparent
+        );
 
         &.hidden {
             display: none;

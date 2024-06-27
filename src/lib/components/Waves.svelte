@@ -1,19 +1,26 @@
 <script lang="ts">
-    type Type = 'top-full' | 'top' | 'bottom';
+    type Type = "top-full" | "top" | "bottom";
     export let type: Type;
 
     let svgFileName;
     switch (type) {
-        case 'top-full': svgFileName = 'waves-full'; break;
-        case 'top':      svgFileName = 'waves-full'; break;
-        case 'bottom':   svgFileName = 'waves-few';  break;
+        case "top-full":
+            svgFileName = "waves-full";
+            break;
+        case "top":
+            svgFileName = "waves-full";
+            break;
+        case "bottom":
+            svgFileName = "waves-few";
+            break;
     }
 </script>
-<span class="{type}">
+
+<span class={type}>
     {#await import(`../assets/${svgFileName}.svg?raw`) then svg}
         {@html svg.default}
     {/await}
-    <div><slot/></div>
+    <div><slot /></div>
 </span>
 
 <style lang="scss">

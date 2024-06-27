@@ -6,33 +6,33 @@
     export let open: boolean = true;
 </script>
 
-<details bind:open={open} class:open>
-    <summary><Icon icon="down"/> {title}</summary>
-    <article><Column align="left" gap="tiny"><slot/></Column></article>
+<details bind:open class:open>
+    <summary><Icon icon="down" /> {title}</summary>
+    <article><Column align="left" gap="tiny"><slot /></Column></article>
 </details>
 
 <style lang="scss">
     details {
-        padding: .5rem;
-        border-radius: .5rem;
+        padding: 0.5rem;
+        border-radius: 0.5rem;
         transition: all 300ms;
-        
+
         & > summary {
             color: var(--text-50);
             text-decoration: none;
-            font-size: .9em;
+            font-size: 0.9em;
 
             user-select: none;
-            
+
             transition-property: color, text-decoration;
             transition-duration: 300ms;
-            
+
             display: inline-flex;
             flex-direction: row;
             align-items: center;
-            gap: .5rem;
-            padding: .5rem;
-            padding-top: .2rem;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            padding-top: 0.2rem;
             width: 100%;
 
             cursor: pointer;
@@ -51,14 +51,19 @@
             transform: scale(0%);
             transition-property: opacity, transform;
             transition-duration: 300ms;
-            padding: .5rem;
+            padding: 0.5rem;
         }
     }
     details.open {
-        background-color: color-mix(in srgb, var(--background-300) 10%, transparent);
+        background-color: color-mix(
+            in srgb,
+            var(--background-300) 10%,
+            transparent
+        );
         & > summary {
             color: var(--secondary-300);
-            border-bottom: .1rem color-mix(in srgb, var(--secondary-300) 25%, transparent) solid;
+            border-bottom: 0.1rem
+                color-mix(in srgb, var(--secondary-300) 25%, transparent) solid;
             & > :global(.icon) {
                 rotate: -180deg;
             }

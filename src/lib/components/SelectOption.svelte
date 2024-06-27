@@ -5,8 +5,8 @@
     import { getContext, onMount } from "svelte";
     import type { SelectContext } from "./Select.svelte";
 
-    const { setValue } = getContext<SelectContext>('select');
-    
+    const { setValue } = getContext<SelectContext>("select");
+
     export let icon: KnownIcon;
     export let title: string;
     export let value: string;
@@ -20,7 +20,7 @@
 </script>
 
 <button on:click={() => setValue(title, value)}>
-    <Row gap="small"><Icon icon={icon} --icon-size=1.3em/>{title}</Row>
+    <Row gap="small"><Icon {icon} --icon-size="1.3em" />{title}</Row>
 </button>
 
 <style lang="scss">
@@ -34,11 +34,15 @@
 
         border: none;
         outline: none;
-        padding: .225rem;
-        border-radius: .5rem;
+        padding: 0.225rem;
+        border-radius: 0.5rem;
 
         &:hover {
-            background-color: color-mix(in srgb, var(--text-50) 10%, transparent);
+            background-color: color-mix(
+                in srgb,
+                var(--text-50) 10%,
+                transparent
+            );
             cursor: pointer;
         }
     }
