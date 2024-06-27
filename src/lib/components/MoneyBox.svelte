@@ -4,7 +4,7 @@
     import { onMount } from "svelte";
 
     import { tweened } from 'svelte/motion';
-    import { quintOut } from 'svelte/easing';
+    import { quintOut, cubicOut } from 'svelte/easing';
     import { derived } from 'svelte/store';
     
     export let icon: KnownIcon;
@@ -12,14 +12,17 @@
     export let num: number;
 
     let countup = tweened(0, { duration: 1500, easing: quintOut });
-    let formatted = derived(countup, ($countup) => $countup.toLocaleString(undefined, { maximumFractionDigits: 0 }));
+    let formatted = derived(countup, ($countup) => $countup.toLocaleString(undefined, { maximumFractionDigits: 0 })); // derived(countup, ($countup) => $countup.toLocaleString(undefined, { maximumFractionDigits: 0 }));
 
     let number: HTMLSpanElement;
+
+    $: countup.set(num);
 
     onMount(() => {
         const observer = new IntersectionObserver(entries => {
             entries.reverse().forEach(entry => {
                 if (entry.isIntersecting) {
+                    //countup.set(num);
                     countup.set(num);
                 }
             });

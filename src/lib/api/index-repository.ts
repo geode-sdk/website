@@ -1,6 +1,6 @@
-import type { ServerDeveloper } from "./models/base";
-import type { ServerMod, ServerSimpleMod } from "./models/mod.js";
-import type { ModStatus, ServerModVersion } from "./models/mod-version.js";
+import type { ServerDeveloper, ServerModDeveloper, GithubLogin } from "./models/developer";
+import type { ServerMod, ServerSimpleMod } from "./models/mod";
+import type { ModStatus, ServerModVersion } from "./models/mod-version";
 import type { ServerStats } from "./models/stats";
 
 const BASE_URL = "https://api.geode-sdk.org";
@@ -36,6 +36,13 @@ type BasePaginatedRequest<T> = BaseRequest<Paginated<T>>;
 function validate<T>(data: BaseRequest<T>) {
     if (data.error) {
         throw new IndexError(data.error);
+    }
+    return data.payload;
+}
+function validateNoThrow<T>(data: BaseRequest<T>) {
+    if (data.error) {
+        console.log("ERROR: " + data.error)
+        return null;
     }
     return data.payload;
 }
@@ -414,6 +421,31 @@ export async function deleteAllTokens(token: string): Promise<void> {
         const data: BaseRequest<void> = await r.json();
         throw new IndexError(data.error);
     }
+}
+
+export async function githubAuth(): Promise<GithubLogin> {
+    const r = await fetch(`${BASE_URL}/v1/login/github`, {
+        headers: new Headers({
+            "Content-Type": "application/json",
+        }),
+        method: "POST",
+    });
+    const data = await r.json();
+
+    return validate<GithubLogin>(data);
+}
+
+export async function githubAuthPoll(uuid: string): Promise<string | null> {
+    const r = await fetch(`${BASE_URL}/v1/login/github/poll`, {
+        headers: new Headers({
+            "Content-Type": "application/json",
+        }),
+        method: "POST",
+        body: JSON.stringify({ uuid })
+    });
+    const data = await r.json();
+
+    return validateNoThrow<string>(data);
 }
 
 export async function getServerStats(): Promise<ServerStats> {
