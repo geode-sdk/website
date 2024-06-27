@@ -97,6 +97,11 @@
 
 </script>
 
+<svelte:head>
+    <title>Developer Login</title>
+    <meta name="description" content="Login to edit your mods, or your developer profile!">
+</svelte:head>
+
 
 <Waves type="top" />
 <Gap size="large" />
