@@ -103,7 +103,9 @@
                                     <Column gap="small" align="left">
                                         <Link href={`/mods/${data.mod.id}?version=${version.version}`}><h2>{version.version}</h2></Link>
                                         <!-- <span class="card-info"><Icon icon="time"/>{"Released " + serverTimestampToAgoString("19")}</span> -->
-                                        <span class="card-info"><Icon icon="download"/>{abbreviateNumber(version.download_count)} downloads</span>
+                                        <span class="card-info" title="{Intl.NumberFormat().format(version.download_count)} downloads"><Icon icon="download"/>
+                                            {abbreviateNumber(version.download_count)} downloads
+                                        </span>
                                         <span class="card-info"><Icon icon="geode"/>
                                             Minimum Geode version: <Label icon="geode" style="gray">{version.geode}</Label>
                                         </span>
