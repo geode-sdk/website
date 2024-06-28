@@ -7,7 +7,7 @@
     import Row from "./Row.svelte";
     import Icon from "./Icon.svelte";
     import Column from "./Column.svelte";
-    import { serverTimestampToAgoString, abbreviateNumber } from "$lib";
+    import { serverTimestampToAgoString, abbreviateNumber, serverTimestampToDateString } from "$lib";
     import iconPlaceholder from "$lib/assets/icon-placeholder.png"
     import Label from "./Label.svelte";
 
@@ -64,8 +64,8 @@
         <span class="do-not-shrink right">
             <Column align="right" gap="tiny">
                 <span class="card-info"><Icon icon="version"/>{version.version}</span>
-                <span class="card-info"><Icon icon="download"/>{abbreviateNumber(mod.download_count)}</span>
-                <span class="card-info"><Icon icon="time"/>{serverTimestampToAgoString(mod.updated_at)}</span>
+                <span class="card-info" title={mod.download_count.toLocaleString("en-US")}><Icon icon="download"/>{abbreviateNumber(mod.download_count)}</span>
+                <span class="card-info" title={serverTimestampToDateString(mod.updated_at)}><Icon icon="time"/>{serverTimestampToAgoString(mod.updated_at)}</span>
             </Column>
         </span>
     {:else}
