@@ -214,7 +214,7 @@
         <section>
             <Column align="left" gap="small">
                 <span class="card-info"><Icon icon="version"/>{data.version.version}</span>
-                <span class="card-info"><Icon icon="download"/>{data.mod.download_count}</span>
+                <span class="card-info"><Icon icon="download"/>{Intl.NumberFormat().format(data.mod.download_count)}</span>
                 <span class="card-info" title={serverTimestampToDateString(data.mod.created_at)}><Icon icon="time"/>{serverTimestampToAgoString(data.mod.created_at)}</span>
                 <span class="card-info" title={serverTimestampToDateString(data.mod.updated_at)}><Icon icon="update"/>{serverTimestampToAgoString(data.mod.updated_at)}</span>
                 <span class="card-info"><Icon icon="geode"/>{data.version.geode}</span>

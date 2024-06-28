@@ -106,7 +106,7 @@ export function serverTimestampToDateString(
     if (isNaN(stamp)) {
         return undefined;
     }
-    return Intl.DateTimeFormat(navigator.language, {
+    return Intl.DateTimeFormat(undefined, {
         dateStyle: "full",
         timeStyle: "long"
     }).format(stamp);

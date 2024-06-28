@@ -64,7 +64,7 @@
         <span class="do-not-shrink right">
             <Column align="right" gap="tiny">
                 <span class="card-info"><Icon icon="version"/>{version.version}</span>
-                <span class="card-info" title={mod.download_count.toLocaleString("en-US")}><Icon icon="download"/>{abbreviateNumber(mod.download_count)}</span>
+                <span class="card-info" title={Intl.NumberFormat().format(mod.download_count)}><Icon icon="download"/>{abbreviateNumber(mod.download_count)}</span>
                 <span class="card-info" title={serverTimestampToDateString(mod.updated_at)}><Icon icon="time"/>{serverTimestampToAgoString(mod.updated_at)}</span>
             </Column>
         </span>
