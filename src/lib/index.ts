@@ -71,6 +71,9 @@ export const icons = {
     "tag-customization": "mdi:paint-outline",
     "tag-content": "mdi:auto-stories",
     "tag-developer": "mdi:code-braces",
+    "tag-cheats": "mdi:domino-mask",
+    "tag-paid": "mdi:attach-money",
+    "tag-joke": "mdi:comedy",
 };
 export type KnownIcon = keyof typeof icons;
 
