@@ -99,3 +99,15 @@ export function abbreviateNumber(num: number): string {
         maximumFractionDigits: 1,
     }).format(num);
 }
+export function serverTimestampToDateString(
+    timestamp: string,
+): string | undefined {
+    const stamp = Date.parse(timestamp);
+    if (isNaN(stamp)) {
+        return undefined;
+    }
+    return Intl.DateTimeFormat(undefined, {
+        dateStyle: "full",
+        timeStyle: "long"
+    }).format(stamp);
+}

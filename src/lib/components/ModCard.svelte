@@ -7,7 +7,7 @@
     import Row from "./Row.svelte";
     import Icon from "./Icon.svelte";
     import Column from "./Column.svelte";
-    import { serverTimestampToAgoString, abbreviateNumber } from "$lib";
+    import { serverTimestampToAgoString, abbreviateNumber, serverTimestampToDateString } from "$lib";
     import iconPlaceholder from "$lib/assets/icon-placeholder.png"
     import Label from "./Label.svelte";
 
@@ -48,7 +48,7 @@
                     </Link>
                 </span>
                 <Link href={`/mods?developer=${owner.username}`} --link-color="var(--accent-300)">{owner.display_name}</Link>
-                <p class="description">
+                <p class="description" title={version.description || ""}>
                     {#if version.description}
                         {#if version.description?.length < 110}
                             {version.description}
@@ -64,8 +64,8 @@
         <span class="do-not-shrink right">
             <Column align="right" gap="tiny">
                 <span class="card-info"><Icon icon="version"/>{version.version}</span>
-                <span class="card-info"><Icon icon="download"/>{abbreviateNumber(mod.download_count)}</span>
-                <span class="card-info"><Icon icon="time"/>{serverTimestampToAgoString(mod.updated_at)}</span>
+                <span class="card-info" title={Intl.NumberFormat().format(mod.download_count)}><Icon icon="download"/>{abbreviateNumber(mod.download_count)}</span>
+                <span class="card-info" title={serverTimestampToDateString(mod.updated_at)}><Icon icon="time"/>{serverTimestampToAgoString(mod.updated_at)}</span>
             </Column>
         </span>
     {:else}
@@ -90,10 +90,10 @@
         <Gap size="small"/>
         <Row>
             <span class="card-info"><Icon icon="version"/>{version.version}</span>
-            <span class="card-info"><Icon icon="download"/>{abbreviateNumber(mod.download_count)}</span>
+            <span class="card-info" title={Intl.NumberFormat().format(mod.download_count)}><Icon icon="download"/>{abbreviateNumber(mod.download_count)}</span>
         </Row>
         <Gap size="tiny"/>
-        <p class="description">
+        <p class="description" title={version.description || ""}>
             {#if version.description}
                 {#if version.description?.length < 80}
                     {version.description}
