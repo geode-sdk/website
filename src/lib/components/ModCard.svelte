@@ -48,7 +48,7 @@
                     </Link>
                 </span>
                 <Link href={`/mods?developer=${owner.username}`} --link-color="var(--accent-300)">{owner.display_name}</Link>
-                <p class="description">
+                <p class="description" title={version.description || ""}>
                     {#if version.description}
                         {#if version.description?.length < 110}
                             {version.description}
@@ -90,10 +90,10 @@
         <Gap size="small"/>
         <Row>
             <span class="card-info"><Icon icon="version"/>{version.version}</span>
-            <span class="card-info"><Icon icon="download"/>{abbreviateNumber(mod.download_count)}</span>
+            <span class="card-info" title={Intl.NumberFormat().format(mod.download_count)}><Icon icon="download"/>{abbreviateNumber(mod.download_count)}</span>
         </Row>
         <Gap size="tiny"/>
-        <p class="description">
+        <p class="description" title={version.description || ""}>
             {#if version.description}
                 {#if version.description?.length < 80}
                     {version.description}
