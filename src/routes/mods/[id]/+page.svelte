@@ -17,6 +17,7 @@
     import InfoBox from "$lib/components/InfoBox.svelte";
     import iconPlaceholder from "$lib/assets/icon-placeholder.png";
     import VersionCards from "$lib/components/VersionCards.svelte";
+    import Empty from "$lib/components/Empty.svelte";
 
     export let data: PageData;
 
@@ -78,12 +79,12 @@
         <Tabs>
             <TabPage name="Description" id="description" icon="description">
                 <div class="markdown">
-                    <SvelteMarkdown source={data.mod.about ?? 'No description provided'} />
+                    <SvelteMarkdown renderers={{ html: Empty }} source={data.mod.about ?? 'No description provided'} />
                 </div>
             </TabPage>
             <TabPage name="Changelog" id="changelog" icon="changelog">
                 <div class="markdown">
-                    <SvelteMarkdown source={data.mod.changelog ?? 'No changelog provided'} />
+                    <SvelteMarkdown renderers={{ html: Empty }} source={data.mod.changelog ?? 'No changelog provided'} />
                 </div>
             </TabPage>
             <TabPage name="Versions" id="versions" icon="version">
