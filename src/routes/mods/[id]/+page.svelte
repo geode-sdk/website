@@ -17,6 +17,7 @@
     import InfoBox from "$lib/components/InfoBox.svelte";
     import iconPlaceholder from "$lib/assets/icon-placeholder.png";
     import VersionCards from "$lib/components/VersionCards.svelte";
+    import Empty from "$lib/components/Empty.svelte";
 
     export let data: PageData;
 
@@ -100,7 +101,7 @@
         <Tabs>
             <TabPage name="Description" id="description" icon="description">
                 <div class="markdown">
-                    <SvelteMarkdown source={convertColorTags(data.mod.about ?? 'No description provided')} on:parsed={() => {
+                    <SvelteMarkdown source={convertColorTags(data.mod.about ?? 'No description provided')} renderers={{ html: Empty }} on:parsed={() => {
                         const description = document.getElementById("description")?.getElementsByClassName("markdown").item(0);
                         if (description) description.innerHTML = parseColorTags(description.innerHTML);
                     }}/>
@@ -108,7 +109,7 @@
             </TabPage>
             <TabPage name="Changelog" id="changelog" icon="changelog">
                 <div class="markdown">
-                    <SvelteMarkdown source={convertColorTags(data.mod.changelog ?? 'No changelog provided')} on:parsed={() => {
+                    <SvelteMarkdown source={convertColorTags(data.mod.changelog ?? 'No changelog provided')} renderers={{ html: Empty }} on:parsed={() => {
                         const changelog = document.getElementById("changelog")?.getElementsByClassName("markdown").item(0);
                         if (changelog) changelog.innerHTML = parseColorTags(changelog.innerHTML);
                     }}/>
