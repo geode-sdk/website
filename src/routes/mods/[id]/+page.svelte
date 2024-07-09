@@ -58,7 +58,7 @@
     }
 
     function convertColorTags(text: string): string {
-        return text.replace(/<c (#[0-9a-f]{1,6})>/g, (_: string, color: string) => {
+        return text.replace(/<c ([0-9a-f]{1,6})>/g, (_: string, color: string) => {
             return `color-tag{${toHex6(color)}(`;
         }).replace(/<c([a-z])>/g, (_: string, color: string) => {
             return colorTags[color] ? `color-tag{${colorTags[color]}(` : "color-tag{#ffffff(";
