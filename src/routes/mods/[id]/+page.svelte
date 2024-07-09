@@ -43,9 +43,25 @@
         p: "#ff00ff"
     }
 
+    function toHex6(str: string): string {
+        const hex = str.startsWith("#") ? str.slice(1) : str;
+        switch (hex.length) {
+            case 1:
+                return "#" + hex[0] + hex[0] + hex[0] + hex[0] + hex[0] + hex[0];
+            case 2:
+                return "#" + hex[0] + hex[1] + hex[0] + hex[1] + hex[0] + hex[1];
+            case 3:
+                return "#" + hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+            default:
+                return "#" + hex.padStart(6, "0");
+        }
+    }
+
     function convertColorTags(text: string): string {
-        return text.replace(/<c([a-z])>/g, (_: string, color: string) => {
-            return colorTags[color] ? `color-tag{${colorTags[color]}(` : "color-tag{#f2f2f2(";
+        return text.replace(/<c (#[0-9a-f]{1,6})>/g, (_: string, color: string) => {
+            return `color-tag{${toHex6(color)}(`;
+        }).replace(/<c([a-z])>/g, (_: string, color: string) => {
+            return colorTags[color] ? `color-tag{${colorTags[color]}(` : "color-tag{#ffffff(";
         }).replace(/<\/c[a-z]?>/g, ")}/color-tag");
     }
 
@@ -104,7 +120,7 @@
                     <SvelteMarkdown source={convertColorTags(data.mod.about ?? 'No description provided')} renderers={{ html: Empty }} on:parsed={() => {
                         const description = document.getElementById("description")?.getElementsByClassName("markdown").item(0);
                         if (description) description.innerHTML = parseColorTags(description.innerHTML);
-                    }}/>
+                    }} />
                 </div>
             </TabPage>
             <TabPage name="Changelog" id="changelog" icon="changelog">
@@ -112,7 +128,7 @@
                     <SvelteMarkdown source={convertColorTags(data.mod.changelog ?? 'No changelog provided')} renderers={{ html: Empty }} on:parsed={() => {
                         const changelog = document.getElementById("changelog")?.getElementsByClassName("markdown").item(0);
                         if (changelog) changelog.innerHTML = parseColorTags(changelog.innerHTML);
-                    }}/>
+                    }} />
                 </div>
             </TabPage>
             <TabPage name="Versions" id="versions" icon="version">
