@@ -13,7 +13,7 @@
     import { onMount } from "svelte";
 
     // Until server returns this, we're doing it manually
-    let latestVersion = "v3.1.1";
+    let latestVersion = "v3.2.0";
     let latestLauncher = "v1.4.1";
     let showAllPlatforms = false;
     let curPlatform: 'windows' | 'mac' | 'android' | 'linux' | 'ios' | 'unknown' | undefined = undefined;
@@ -234,7 +234,7 @@
             You can use the <em>search button</em> on the left to search for specific mods by name or by <em>tags</em>.
         </p>
         <Row wrap="wrap">
-            <Button style="hollow">
+            <Button style="hollow" href="/faq#why-cant-i-find-certain-mods">
                 <Icon icon="help"/> Why can't I find a certain Mod?
             </Button>
         </Row>

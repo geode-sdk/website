@@ -17,6 +17,7 @@
     import InfoBox from "$lib/components/InfoBox.svelte";
     import iconPlaceholder from "$lib/assets/icon-placeholder.png";
     import VersionCards from "$lib/components/VersionCards.svelte";
+    import Empty from "$lib/components/Empty.svelte";
 
     export let data: PageData;
 
@@ -78,12 +79,12 @@
         <Tabs>
             <TabPage name="Description" id="description" icon="description">
                 <div class="markdown">
-                    <SvelteMarkdown source={data.mod.about ?? 'No description provided'} />
+                    <SvelteMarkdown renderers={{ html: Empty }} source={data.mod.about ?? 'No description provided'} />
                 </div>
             </TabPage>
             <TabPage name="Changelog" id="changelog" icon="changelog">
                 <div class="markdown">
-                    <SvelteMarkdown source={data.mod.changelog ?? 'No changelog provided'} />
+                    <SvelteMarkdown renderers={{ html: Empty }} source={data.mod.changelog ?? 'No changelog provided'} />
                 </div>
             </TabPage>
             <TabPage name="Versions" id="versions" icon="version">
@@ -173,6 +174,38 @@
                                 <input type="submit" value="Create" />
                             </fieldset>
                         </form>
+                    {/if}
+
+                    {#if can_modify_mod}
+                        <h2>Dependencies</h2>
+                        {#if data.version.dependencies?.length}
+                            <ul>
+                                {#each data.version.dependencies as dependency}
+                                    <li>
+                                        {dependency.importance} -
+                                        <Link href={`/mods/${dependency.mod_id}`}>{dependency.mod_id}</Link>
+                                        ({dependency.version})
+                                    </li>
+                                {/each}
+                            </ul>
+                        {:else}
+                            <div>Mod has no dependencies.</div>
+                        {/if}
+
+                        <h2>Incompatibilities</h2>
+                        {#if data.version.incompatibilities?.length}
+                            <ul>
+                                {#each data.version.incompatibilities as incompatibility}
+                                    <li>
+                                        {incompatibility.importance} -
+                                        <Link href={`/mods/${incompatibility.mod_id}`}>{incompatibility.mod_id}</Link>
+                                        ({incompatibility.version})
+                                    </li>
+                                {/each}
+                            </ul>
+                        {:else}
+                            <div>Mod has no incompatibilities.</div>
+                        {/if}
                     {/if}
                 </TabPage>
             {/if}
