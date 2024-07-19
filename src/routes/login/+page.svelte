@@ -98,7 +98,7 @@
 				}, 200)
 			}, 500)
 		}, 1000)
-		// there is a reason there are alot of set timeouts, it's so animations don't skip and shit.
+		// there is a reason there are alot of set timeouts, it's so animations don't skip and shit, and also because I made those animations, I want want it to be seen!
 	}
 
 	onMount(() => {
@@ -136,6 +136,8 @@
 	<Column>
 		<p>When you click <em>Sign In</em>, a GitHub window will popup asking for a code, we will display it right on this page.</p>
 		<Button style="secondary-filled" on:click={signIn}>Sign In</Button>
+		<Gap size="normal" />
+		<p>Important: Sometimes the index login system glitches and even though you did login with GitHub, it doesn't move you on and gives you the same code. If this does happen, please wait 5-20 minutes (usually it's in the 5-10 minute range) to come back here and try to login again. Also sometimes it catches up and then logs you in automatically, that can happen as well and is normal.</p>
 	</Column>
 </div>
 {:else if status_current_step == 2}
