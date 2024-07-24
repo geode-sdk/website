@@ -63,7 +63,7 @@
             <Button href="/install" style="primary-filled-dark" icon="download">Download</Button>
             <Button href="/mods" style="primary-filled-dark" icon="browse">Browse Mods</Button>
         </Row>
-        <Button href="/{data.loggedIn ? "me" : "login"}" style="primary-filled-dark" icon="tag-developer">Developer {data.loggedIn ? "Dashboard" : "Login"}</Button>
+        <Button href="/{data.loggedIn ? "dash" : "login"}" style="primary-filled-dark" icon="tag-developer">Developer {data.loggedIn ? "Dashboard" : "Login"}</Button>
     </Column>
 </div>
 <Gap size="tiny" />
@@ -168,7 +168,7 @@
             <Row wrap="wrap">
                 <Button href="/install" style="primary-filled" icon="download">Install</Button>
                 <Button href="/mods" style="primary-filled" icon="browse">Browse Mods</Button>
-                <Button href="/{data.loggedIn ? "me" : "login"}" style="primary-filled" icon="tag-developer">Developer {data.loggedIn ? "Dashboard" : "Login"}</Button>
+                <Button href="/{data.loggedIn ? "dash" : "login"}" style="primary-filled" icon="tag-developer">Developer {data.loggedIn ? "Dashboard" : "Login"}</Button>
             </Row>
         </Column>
     </FlyIntoView>

@@ -114,10 +114,11 @@
 
 
 <Waves type="top" />
-<Gap size="large" />
+<Gap size="immense" />
 
 <h1 class="title">Login</h1>
 
+<Gap size="normal" />
 
 <div class="container">
 {#if status_loading || status_current_step == 0}
@@ -137,7 +138,7 @@
 		<p>When you click <em>Sign In</em>, a GitHub window will popup asking for a code, we will display it right on this page.</p>
 		<Button style="secondary-filled" on:click={signIn}>Sign In</Button>
 		<Gap size="normal" />
-		<p>Important: Sometimes the index login system glitches and even though you did login with GitHub, it doesn't move you on and gives you the same code. If this does happen, please wait 5-20 minutes (usually it's in the 5-10 minute range) to come back here and try to login again. Also sometimes it catches up and then logs you in automatically, that can happen as well and is normal.</p>
+		<p class="note">Important: Sometimes the index login system glitches and even though you did login with GitHub, it doesn't move you on and gives you the same code. If this does happen, please wait 5-20 minutes (usually it's in the 5-10 minute range) to come back here and try to login again. Also sometimes it catches up and then logs you in automatically, that can happen as well and is normal.</p>
 	</Column>
 </div>
 {:else if status_current_step == 2}
@@ -148,6 +149,8 @@
 		<p>We also copied it to your clipboard.</p>
 		<Button style="dark-small" href={ghLoginData.uri} target="_blank">Open again (but in new tab)</Button>
 		<LoadingCircle></LoadingCircle>
+		<Gap size="small"></Gap>
+		<p class="note">Important: Sometimes the index login system glitches and even though you did login with GitHub, it doesn't move you on and gives you the same code. If this does happen, please wait 5-20 minutes (usually it's in the 5-10 minute range) to come back here and try to login again. Also sometimes it catches up and then logs you in automatically, that can happen as well and is normal.</p>
 	</Column>
 </div>
 <input id="the-code" value="{ghLoginData.code || "EXAM-PLES"}" readonly>
@@ -162,7 +165,8 @@
 {/if}
 
 </div>
-
+<Gap size="immense" />
+<Gap size="large" />
 
 <!--p>
 	Login is currently very manual. sorry :(
@@ -198,20 +202,6 @@ To manually get your login token:
 
 <style lang="scss">
 	@use '$lib/styles/media-queries.scss' as *;
-
-    .img-with-width {
-        max-width: 35vw;
-        flex-shrink: 0;
-
-		@include lt-lg {
-            max-width: 65vw;
-        }
-    }
-    section {
-        background-color: var(--background-950);
-        padding: 1rem;
-        border-radius: .5rem;
-    }
     h1 {
         margin: 0;
         font-family: var(--font-heading);
@@ -265,5 +255,9 @@ To manually get your login token:
 			width: 0px;
 			position: absolute;
 		}
+	}
+	
+	p.note {
+		text-align: center;
 	}
 </style>

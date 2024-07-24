@@ -1,6 +1,6 @@
 <script lang="ts">
-    import type { ServerMod } from "$lib/api/models/mod.js";
-    import type { ServerModVersion } from "$lib/api/models/mod-version.js";
+    import type { ServerMod, ServerSimpleMod } from "$lib/api/models/mod.js";
+    import type { ServerModVersion, ServerSimpleModVersion } from "$lib/api/models/mod-version.js";
     import { getModLogo } from "$lib/api/index-repository";
     import Link from "./Link.svelte";
     import Gap from "./Gap.svelte";
@@ -11,18 +11,24 @@
     import iconPlaceholder from "$lib/assets/icon-placeholder.png"
     import Label from "./Label.svelte";
 
-    export let mod: ServerMod;
-    export let version: ServerModVersion;
+    export let mod: ServerMod | ServerSimpleMod;
+    export let version: ServerModVersion | ServerSimpleModVersion;
     export let style: 'list' | 'grid' = 'grid';
+    export let versionDownloadCount: boolean = false;
+    export let hideDescription: boolean = false;
+    export let hideVersion: boolean = false;
+    export let noLinkInVersion: boolean = false;
 
     // add the version for non-accepted mods, as otherwise the endpoint will pick the latest accepted
-    $: mod_url = version.status != "accepted"
+    $: mod_url = version.status != "accepted" && !noLinkInVersion
         ? `/mods/${mod.id}?version=${version.version}`
         : `/mods/${mod.id}`;
 
     $: logo_url = getModLogo(mod.id).toString();
 
     $: owner = mod.developers.filter(d => d.is_owner)[0];
+
+
 </script>
 <div class="mod-background {style}" class:featured={mod.featured}>
     {#if style === 'list'}
@@ -48,6 +54,7 @@
                     </Link>
                 </span>
                 <Link href={`/mods?developer=${owner.username}`} --link-color="var(--accent-300)">{owner.display_name}</Link>
+                {#if !hideDescription}
                 <p class="description">
                     {#if version.description}
                         {#if version.description?.length < 110}
@@ -59,13 +66,14 @@
                         <i>{"Description not provided"}</i>
                     {/if}
                 </p>
+                {/if}
             </Column>
         </div>
         <span class="do-not-shrink right">
             <Column align="right" gap="tiny">
-                <span class="card-info"><Icon icon="version"/>{version.version}</span>
-                <span class="card-info"><Icon icon="download"/>{abbreviateNumber(mod.download_count)}</span>
-                <span class="card-info"><Icon icon="time"/>{serverTimestampToAgoString(mod.updated_at)}</span>
+                {#if !hideVersion}<span class="card-info"><Icon icon="version"/>{version.version}</span>{/if}
+                <span class="card-info"><Icon icon="download"/>{abbreviateNumber(versionDownloadCount ? version.download_count : mod.download_count)}</span>
+                {#if mod.updated_at != undefined}<span class="card-info"><Icon icon="time"/>{serverTimestampToAgoString(mod.updated_at)}</span>{/if}
             </Column>
         </span>
     {:else}
@@ -89,9 +97,10 @@
         <Link href={`/mods?developer=${owner.username}`} --link-color="var(--accent-300)">{owner.display_name}</Link>
         <Gap size="small"/>
         <Row>
-            <span class="card-info"><Icon icon="version"/>{version.version}</span>
-            <span class="card-info"><Icon icon="download"/>{abbreviateNumber(mod.download_count)}</span>
+            {#if !hideVersion}<span class="card-info"><Icon icon="version"/>{version.version}</span>{/if}
+            <span class="card-info"><Icon icon="download"/>{abbreviateNumber(versionDownloadCount ? version.download_count : mod.download_count)}</span>
         </Row>
+        {#if !hideDescription}
         <Gap size="tiny"/>
         <p class="description">
             {#if version.description}
@@ -104,6 +113,7 @@
                 <i>{"Description not provided"}</i>
             {/if}
         </p>
+        {/if}
     {/if}
 </div>
 

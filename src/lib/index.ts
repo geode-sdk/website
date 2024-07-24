@@ -56,6 +56,9 @@ export const icons = {
     modify: "mdi:pencil",
     update: "mdi:clock-edit",
     info: "mdi:about",
+    plus: "mdi:plus",
+    person: "mdi:person",
+    admin: "mdi:hammer-wrench",
 
     "tag-universal": "mdi:globe",
     "tag-gameplay": "mdi:gamepad-variant",

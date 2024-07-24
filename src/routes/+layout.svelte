@@ -55,11 +55,15 @@
     <nav>
         <div class="left-side">
             <Button href="/" style="primary-filled-dark" icon="home">Home</Button>
-            {#if $page.url.pathname.includes("/me/")}
+            {#if $page.url.pathname.startsWith("/me/")}
             <Gap size="small" />
             <Button href="/me" style="secondary-filled-dark" icon="left">Profile</Button>
             {/if}
-            {#if $page.url.pathname.includes("/mods/")}
+            {#if $page.url.pathname.startsWith("/dash/")}
+            <Gap size="small" />
+            <Button href="/dash" style="secondary-filled-dark" icon="left">Dashboard</Button>
+            {/if}
+            {#if $page.url.pathname.startsWith("/mods/")}
             <Gap size="small" />
             <Button href="/mods" style="secondary-filled-dark" icon="left">Mod Browser</Button>
             {/if}
@@ -74,8 +78,8 @@
                 </Button>
                 <Gap size="flex" />
                 <div class="dropdown-content">
-                    <Button href="/me" style="primary-filled-dark">Profile</Button>
-                    <Button style="primary-filled-dark">idk</Button>
+                    <Button href="/dash" style="primary-filled-dark">Dashboard</Button>
+                    <Button style="primary-filled-dark">Mods (soon tm)</Button>
                     <Button href="/logout" style="primary-filled-dark" on:click={onLogOutClick} additional-classes="red">Log Out</Button>
                 </div>
             </div>

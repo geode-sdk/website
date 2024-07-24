@@ -1,13 +1,7 @@
 <script lang="ts">
-    import Button from "$lib/components/Button.svelte";
     import Column from "$lib/components/Column.svelte";
-    import FlyIntoView from "$lib/components/FlyIntoView.svelte";
     import Gap from "$lib/components/Gap.svelte";
-    import Icon from "$lib/components/Icon.svelte";
-    import Image from "$lib/components/Image.svelte";
     import InfoBox from "$lib/components/InfoBox.svelte";
-    import Link from "$lib/components/Link.svelte";
-    import Rollover from "$lib/components/Rollover.svelte";
     import Row from "$lib/components/Row.svelte";
     import Waves from "$lib/components/Waves.svelte";
     import MoneyBox from "$lib/components/MoneyBox.svelte";

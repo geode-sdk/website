@@ -25,7 +25,7 @@
 
 </script>
 
-<a href={href} target={target} class={style + " " + additionalClasses} class:disable-style={enableTheDisabledStyle} class:disabled on:click>
+<a href={href} target={target} class={style + (additionalClasses == undefined ? "" : " " + additionalClasses)} class:disable-style={enableTheDisabledStyle} class:disabled on:click>
     {#if iconOnRight}
         <slot/>
     {/if}
