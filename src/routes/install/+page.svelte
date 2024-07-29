@@ -13,7 +13,7 @@
     import { onMount } from "svelte";
 
     // Until server returns this, we're doing it manually
-    let latestVersion = "v3.3.0";
+    let latestVersion = "v3.3.1";
     let latestLauncher = "v1.4.1";
     let showAllPlatforms = false;
     let curPlatform: 'windows' | 'mac' | 'android' | 'linux' | 'unknown' | undefined = undefined;
