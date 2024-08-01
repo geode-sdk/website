@@ -36,6 +36,7 @@
     let view: 'list' | 'dual-list' | 'grid' = 'dual-list';
     let searchBar: HTMLInputElement;
     let searchTimeout: number | null = null;
+    let filters_enabled = false;
 
     $: max_count = data.mods?.count ?? 0;
     $: max_page = Math.floor(max_count / per_page) + 1;
@@ -141,21 +142,29 @@
     <Column align="stretch" gap="small">
         <nav class="search">
             <Search placeholder="Search mods..." bind:query on:search={updateQuery} bind:ref={searchBar}></Search>
-            <Select title="Sort by" titleIcon="sort" on:select={ev => {
-                if (sort != ev.detail.value) {
-                    sort = ev.detail.value;
-                    updateSearch();
-                }
-            }}>
-                <SelectOption icon="download" title="Most Downloaded" value="downloads" isDefault/>
-                <SelectOption icon="time" title="Most Recent" value="recently_published"/>
-                <SelectOption icon="time" title="Recently Updated" value="recently_updated"/>
-                <SelectOption icon="sort-abc" title="Name (A-Z)" value="name"/>
-                <SelectOption icon="sort-cba" title="Name (Z-A)" value="name_reverse"/>
-            </Select>
+            <div class="search-filters">
+                <Select title="Sort by" titleIcon="sort" on:select={ev => {
+                    if (sort != ev.detail.value) {
+                        sort = ev.detail.value;
+                        updateSearch();
+                    }
+                }}>
+                    <SelectOption icon="download" title="Most Downloaded" value="downloads" isDefault/>
+                    <SelectOption icon="time" title="Most Recent" value="recently_published"/>
+                    <SelectOption icon="time" title="Recently Updated" value="recently_updated"/>
+                    <SelectOption icon="sort-abc" title="Name (A-Z)" value="name"/>
+                    <SelectOption icon="sort-cba" title="Name (Z-A)" value="name_reverse"/>
+                </Select>
+                <span class="toggle-filter-button">
+                    <SelectButton
+                        icon="filter"
+                        selected={filters_enabled}
+                        on:select={() => filters_enabled = !filters_enabled} />
+                </span>
+            </div>
         </nav>
 
-        <div class="filter-inline">
+        <div class="filter-inline" class:collapsed={!filters_enabled}>
             <FilterMenu
                 platforms={platforms}
                 tags={tags}
@@ -327,8 +336,10 @@
 
     .filter-inline {
         display: inherit;
-        visibility: visible;
-        overflow: hidden;
+    }
+
+    .filter-inline.collapsed {
+        display: none;
     }
 
     .filter-column {
@@ -415,6 +426,15 @@
         align-items: center;
         gap: var(--gap-small);
     }
+
+    .search .search-filters {
+        display: flex;
+        justify-content: start;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--gap-tiny);
+    }
+
     .overlay-container {
         position: relative;
     }
