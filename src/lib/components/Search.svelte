@@ -5,6 +5,7 @@
     export let placeholder: string;
     export let query: string;
     export let autofocus = false;
+    export let ref: HTMLInputElement | null = null;
 
     const dispatch = createEventDispatcher<{ 'search': { query: string } }>();
 </script>
@@ -12,7 +13,7 @@
 <div class="search">
     <Icon icon="search"/>
     <!-- svelte-ignore a11y-autofocus -->
-    <input {autofocus} placeholder={placeholder} bind:value={query} on:input={() => dispatch('search', { query })}>
+    <input {autofocus} placeholder={placeholder} bind:value={query} on:input={() => dispatch('search', { query })} bind:this={ref}>
 </div>
 
 <style lang="scss">

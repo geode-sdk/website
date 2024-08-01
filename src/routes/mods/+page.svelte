@@ -36,6 +36,8 @@
     let per_page = data.params.per_page ?? 12;
     let searching = false;
     let view: 'list' | 'dual-list' | 'grid' = 'dual-list';
+    let searchBar: HTMLInputElement;
+    let searchTimeout: number | null = null;
 
     $: max_count = data.mods?.count ?? 0;
     $: max_page = Math.floor(max_count / per_page) + 1;
@@ -44,6 +46,18 @@
 
     function toggleSet<T>(set: Set<T>, value: T) {
         set.has(value) ? set.delete(value) : set.add(value);
+    }
+
+    const updateQuery = () => {
+        // debouce search bar so we're not making a ton of useless requests
+
+        if (searchTimeout) {
+            clearTimeout(searchTimeout);
+        }
+
+        searchTimeout = setTimeout(() => {
+            updateSearch();
+        }, 300);
     }
 
     const updateSearch = async () => {
@@ -79,7 +93,7 @@
         }
         params.set("sort", sort);
 
-        await goto(`/mods?${params}`, { noScroll: true });
+        await goto(`/mods?${params}`, { noScroll: true, keepFocus: true });
         searching = false;
     }
 
@@ -97,6 +111,15 @@
 
         await goto(`/mods?${params}`, { noScroll: true });
         searching = false;
+    }
+
+    const onKeydown = (e: KeyboardEvent) => {
+        // avoid stealing focus from another element or modifier keys
+        if (!(e.target instanceof HTMLBodyElement) || e.key.length > 1) {
+            return;
+        }
+
+        searchBar.focus();
     }
 </script>
 
@@ -196,7 +219,7 @@
 
     <Column align="stretch" gap="small">
         <nav class="search">
-            <Search placeholder="Search mods..." bind:query on:search={updateSearch} autofocus></Search>
+            <Search placeholder="Search mods..." bind:query on:search={updateQuery} bind:ref={searchBar}></Search>
             <Select title="Sort by" titleIcon="sort" on:select={ev => {
                 if (sort != ev.detail.value) {
                     sort = ev.detail.value;
@@ -324,6 +347,8 @@
         </main>
     </Column>
 </div>
+
+<svelte:window on:keydown={onKeydown} />
 
 <style lang="scss">
     @use '$lib/styles/media-queries.scss' as *;

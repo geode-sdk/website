@@ -11,10 +11,13 @@
     import Row from "$lib/components/Row.svelte";
     import Waves from "$lib/components/Waves.svelte";
     import { onMount } from "svelte";
+    import type { PageData } from "./$types.js";
+
+    export let data: PageData;
 
     // Until server returns this, we're doing it manually
-    let latestVersion = "v3.3.0";
-    let latestLauncher = "v1.4.1";
+    let latestVersion = data.loader_tag;
+    let latestLauncher = `v${data.launcher_tag}`;
     let showAllPlatforms = false;
     let curPlatform: 'windows' | 'mac' | 'android' | 'linux' | 'ios' | 'unknown' | undefined = undefined;
 
@@ -100,7 +103,18 @@
             </p>
         </Column>
     </section>
-    <section>
+    <section class:hidden={!data.error}>
+        <InfoBox type="error">
+            Could not determine the latest Geode release.
+
+            <br /> <br />
+
+            You can download Geode <Link --link-color="var(--accent-300)" href="https://github.com/geode-sdk/geode/releases/latest">here</Link>.
+            <br />
+            Android users should install <Link --link-color="var(--accent-300)" href="https://github.com/geode-sdk/android-launcher/releases/latest">the Android launcher</Link> instead.
+        </InfoBox>
+    </section>
+    <section class:hidden={data.error}>
         <Column>
             <div>Latest version: <em>{latestVersion}</em></div>
             {#if curPlatform === "unknown"}
