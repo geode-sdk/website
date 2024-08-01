@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { ServerMod } from "$lib/api/models/mod.js";
     import type { ServerModVersion } from "$lib/api/models/mod-version.js";
-    import { getModLogo } from "$lib/api/index-repository";
+    import { IndexClient } from "$lib/api/index-repository";
     import Link from "./Link.svelte";
     import Gap from "./Gap.svelte";
     import Row from "./Row.svelte";
@@ -20,7 +20,7 @@
         ? `/mods/${mod.id}?version=${version.version}`
         : `/mods/${mod.id}`;
 
-    $: logo_url = getModLogo(mod.id).toString();
+    $: logo_url = IndexClient.getModLogo(mod.id).toString();
 
     $: owner = mod.developers.filter(d => d.is_owner)[0];
 </script>

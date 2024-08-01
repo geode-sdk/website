@@ -1,15 +1,14 @@
 import {
     IndexError,
     ModSort,
-    getMods,
-    getTags,
+    IndexClient,
     type ModSearchParams,
 } from "$lib/api/index-repository.js";
 import { toIntSafe, undefIfEmpty, onlyIfTrue } from "$lib/api/helpers.js";
 import type { ModStatus } from "$lib/api/models/mod-version.js";
 import type { PageServerLoad } from "./$types.js";
 
-export const load: PageServerLoad = async ({ url }) => {
+export const load: PageServerLoad = async ({ url, fetch }) => {
     const params: ModSearchParams = {
         query: url.searchParams.get("query") ?? undefined,
         page: toIntSafe(url.searchParams.get("page")),
@@ -24,12 +23,14 @@ export const load: PageServerLoad = async ({ url }) => {
         per_page: toIntSafe(url.searchParams.get("per_page")) ?? 10,
     };
 
+    const client = new IndexClient({ fetch });
+
     try {
         // ideally we would cache this information somewhere
-        const tags = getTags();
+        const tags = client.getTags();
 
         try {
-            const mods = await getMods(params);
+            const mods = await client.getMods(params);
             return { mods, params, tags };
         } catch (e) {
             if (e instanceof IndexError) {

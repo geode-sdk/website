@@ -2,7 +2,7 @@
     import SvelteMarkdown from "svelte-markdown";
     import { enhance } from '$app/forms';
     import type { PageData, ActionData } from "./$types.js";
-    import { getModLogo } from "$lib/api/index-repository.js";
+    import { IndexClient } from "$lib/api/index-repository.js";
     import Row from "$lib/components/Row.svelte";
     import Column from "$lib/components/Column.svelte";
     import Button from "$lib/components/Button.svelte";
@@ -21,7 +21,7 @@
 
     export let data: PageData;
 
-    const logoUrl = getModLogo(data.mod.id).toString();
+    const logoUrl = IndexClient.getModLogo(data.mod.id).toString();
 
     const developer_ids = data.mod.developers.map(d => d.id);
     const can_update_mod = data.user && developer_ids.includes(data.user.id) || false;

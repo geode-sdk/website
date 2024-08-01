@@ -1,24 +1,19 @@
-import {
-    IndexError,
-    createModVersion,
-    getMod,
-    getModVersion,
-    updateMod,
-    updateModVersion,
-} from "$lib/api/index-repository.js";
+import { IndexError, IndexClient } from "$lib/api/index-repository.js";
 import type { ServerDeveloper } from "$lib/api/models/base.js";
 import type { ModStatus } from "$lib/api/models/mod-version.js";
 import type { Actions, PageServerLoad } from "./$types.js";
 import { error, fail } from "@sveltejs/kit";
 
 export const actions: Actions = {
-    update_mod_version: async ({ cookies, request, params }) => {
+    update_mod_version: async ({ cookies, request, params, fetch }) => {
         const id = params.id;
 
         const token = cookies.get("token");
         if (!token) {
             return fail(401, { message: "no token provided" });
         }
+
+        const client = new IndexClient({ token, fetch });
 
         const data = await request.formData();
         const status = data.get("status") as ModStatus;
@@ -34,7 +29,7 @@ export const actions: Actions = {
         const info = (data.get("info") as string | null) ?? undefined;
 
         try {
-            await updateModVersion(token, id, version, { status, info });
+            await client.updateModVersion(id, version, { status, info });
         } catch (e) {
             if (e instanceof IndexError) {
                 return fail(400, { message: e.message });
@@ -43,13 +38,15 @@ export const actions: Actions = {
 
         return { success: true };
     },
-    update_mod: async ({ cookies, request, params }) => {
+    update_mod: async ({ cookies, request, params, fetch }) => {
         const id = params.id;
 
         const token = cookies.get("token");
         if (!token) {
             return fail(401, { message: "no token provided" });
         }
+
+        const client = new IndexClient({ token, fetch });
 
         const data = await request.formData();
 
@@ -57,7 +54,7 @@ export const actions: Actions = {
         const featured = data.has("featured");
 
         try {
-            await updateMod(token, id, { featured });
+            await client.updateMod(id, { featured });
         } catch (e) {
             if (e instanceof IndexError) {
                 return fail(400, { message: e.message });
@@ -66,13 +63,15 @@ export const actions: Actions = {
 
         return { success: true };
     },
-    create_version: async ({ cookies, request, params }) => {
+    create_version: async ({ cookies, request, params, fetch }) => {
         const id = params.id;
 
         const token = cookies.get("token");
         if (!token) {
             return fail(401, { message: "no token provided" });
         }
+
+        const client = new IndexClient({ token, fetch });
 
         const data = await request.formData();
 
@@ -82,7 +81,7 @@ export const actions: Actions = {
         }
 
         try {
-            await createModVersion(token, id, { download_link });
+            await client.createModVersion(id, { download_link });
         } catch (e) {
             if (e instanceof IndexError) {
                 return fail(400, { message: e.message });
@@ -93,7 +92,7 @@ export const actions: Actions = {
     },
 };
 
-export const load: PageServerLoad = async ({ url, params, cookies }) => {
+export const load: PageServerLoad = async ({ fetch, url, params, cookies }) => {
     const id = params.id;
     const version_string = url.searchParams.get("version") ?? "latest";
 
@@ -102,9 +101,11 @@ export const load: PageServerLoad = async ({ url, params, cookies }) => {
         ? (JSON.parse(user_str) as ServerDeveloper)
         : undefined;
 
+    const client = new IndexClient({ fetch });
+
     let mod = undefined;
     try {
-        mod = await getMod(id);
+        mod = await client.getMod(id);
     } catch (e) {
         error(404, {
             message: "Mod not found.",
@@ -113,7 +114,7 @@ export const load: PageServerLoad = async ({ url, params, cookies }) => {
 
     let version = undefined;
     try {
-        version = await getModVersion(id, version_string);
+        version = await client.getModVersion(id, version_string);
     } catch (e) {
         error(404, {
             message: "Version not found.",
@@ -123,7 +124,7 @@ export const load: PageServerLoad = async ({ url, params, cookies }) => {
     if (!version && version_string == "latest") {
         // version info is probably just stuck in pending
         // this doesn't run all the time, as it may produce undesirable results
-        version = await getModVersion(id, mod.versions[0].version);
+        version = await client.getModVersion(id, mod.versions[0].version);
     }
 
     return { mod, version, user };
