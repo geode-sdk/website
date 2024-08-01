@@ -1,17 +1,17 @@
 <script lang="ts">
 		import { createEventDispatcher } from "svelte";
 
-    import Icon from "$lib/components/Icon.svelte";
+		import Icon from "$lib/components/Icon.svelte";
 		import Rollover from "$lib/components/Rollover.svelte";
 		import SelectButton from "$lib/components/SelectButton.svelte";
 		import InfoBox from "$lib/components/InfoBox.svelte";
-    import LoadingCircle from "$lib/components/LoadingCircle.svelte";
+		import LoadingCircle from "$lib/components/LoadingCircle.svelte";
 
-    import { iconForTag } from "$lib/index.js";
+		import { iconForTag } from "$lib/index.js";
 
-    function toggleSet<T>(set: Set<T>, value: T) {
-        set.has(value) ? set.delete(value) : set.add(value);
-    }
+		function toggleSet<T>(set: Set<T>, value: T) {
+				set.has(value) ? set.delete(value) : set.add(value);
+		}
 
 		export let platforms: Set<string>;
 		export let tags: Set<string>;
@@ -110,7 +110,6 @@
 </div>
 
 <style lang="scss">
-
 	.menu {
 		background-color: var(--background-950);
 		padding: .5rem;
