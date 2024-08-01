@@ -11,7 +11,7 @@
     import Link from "$lib/components/Link.svelte";
     import Icon from "$lib/components/Icon.svelte";
     import Gap from "$lib/components/Gap.svelte";
-    import { abbreviateNumber, serverTimestampToAgoString, serverTimestampToDateString } from "$lib";
+    import { abbreviateNumber, serverTimestampToAgoString, serverTimestampToDateString, formatNumber } from "$lib";
     import Waves from "$lib/components/Waves.svelte";
     import Label from "$lib/components/Label.svelte";
     import InfoBox from "$lib/components/InfoBox.svelte";
@@ -104,7 +104,7 @@
                                     <Column gap="small" align="left">
                                         <Link href={`/mods/${data.mod.id}?version=${version.version}`}><h2>{version.version}</h2></Link>
                                         <!-- <span class="card-info"><Icon icon="time"/>{"Released " + serverTimestampToAgoString("19")}</span> -->
-                                        <span class="card-info" title="{Intl.NumberFormat().format(version.download_count)} downloads"><Icon icon="download"/>
+                                        <span class="card-info" title="{formatNumber(version.download_count)} downloads"><Icon icon="download"/>
                                             {abbreviateNumber(version.download_count)} downloads
                                         </span>
                                         <span class="card-info"><Icon icon="geode"/>
@@ -217,7 +217,7 @@
         <section>
             <Column align="left" gap="small">
                 <span class="card-info"><Icon icon="version"/>{data.version.version}</span>
-                <span class="card-info"><Icon icon="download"/>{Intl.NumberFormat().format(data.mod.download_count)}</span>
+                <span class="card-info"><Icon icon="download"/>{formatNumber(data.mod.download_count)}</span>
                 <span class="card-info" title={serverTimestampToDateString(data.mod.created_at)}><Icon icon="time"/>{serverTimestampToAgoString(data.mod.created_at)}</span>
                 <span class="card-info" title={serverTimestampToDateString(data.mod.updated_at)}><Icon icon="update"/>{serverTimestampToAgoString(data.mod.updated_at)}</span>
                 <span class="card-info"><Icon icon="geode"/>{data.version.geode}</span>

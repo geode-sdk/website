@@ -111,3 +111,6 @@ export function serverTimestampToDateString(
         timeStyle: "long"
     }).format(stamp);
 }
+export function formatNumber(num: number): string {
+    return Intl.NumberFormat().format(num);
+}
