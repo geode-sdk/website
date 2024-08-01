@@ -121,6 +121,8 @@
 		flex-direction: column;
 		align-items: stretch;
 
+		flex-grow: 1;
+
 		& > header {
 				display: flex;
 				flex-direction: row;

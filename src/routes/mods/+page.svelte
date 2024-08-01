@@ -128,13 +128,15 @@
 <h1>Browse Mods</h1>
 
 <div class="content-separator">
-    <FilterMenu
-        platforms={platforms}
-        tags={tags}
-        tagsListing={data.tags}
-        featured={featured}
-        pending={pending}
-        on:update={updateSearch} />
+    <aside class="filter-column">
+        <FilterMenu
+            platforms={platforms}
+            tags={tags}
+            tagsListing={data.tags}
+            featured={featured}
+            pending={pending}
+            on:update={updateSearch} />
+    </aside>
 
     <Column align="stretch" gap="small">
         <nav class="search">
@@ -152,6 +154,16 @@
                 <SelectOption icon="sort-cba" title="Name (Z-A)" value="name_reverse"/>
             </Select>
         </nav>
+
+        <div class="filter-inline">
+            <FilterMenu
+                platforms={platforms}
+                tags={tags}
+                tagsListing={data.tags}
+                featured={featured}
+                pending={pending}
+                on:update={updateSearch} />
+        </div>
 
         <main>
             <nav>
@@ -313,9 +325,29 @@
         }
     }
 
+    .filter-inline {
+        display: inherit;
+        visibility: visible;
+        overflow: hidden;
+    }
+
+    .filter-column {
+        display: none;
+    }
+
     @media screen and (min-width: 830px) {
         .content-separator {
             grid-template-columns: 15rem max-content;
+        }
+
+        .filter-column {
+            display: inherit;
+        }
+
+        .filter-inline,
+
+        .toggle-filter-button {
+            display: none;
         }
     }
 
