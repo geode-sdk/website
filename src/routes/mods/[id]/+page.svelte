@@ -1,6 +1,9 @@
 <script lang="ts">
-    import SvelteMarkdown from "svelte-markdown";
+    import { goto } from "$app/navigation";
+    import { page } from "$app/stores";
     import { enhance } from '$app/forms';
+
+    import SvelteMarkdown from "svelte-markdown";
     import type { PageData, ActionData } from "./$types.js";
     import { IndexClient } from "$lib/api/index-repository.js";
     import Row from "$lib/components/Row.svelte";
@@ -11,15 +14,24 @@
     import Link from "$lib/components/Link.svelte";
     import Icon from "$lib/components/Icon.svelte";
     import Gap from "$lib/components/Gap.svelte";
-    import { abbreviateNumber, serverTimestampToAgoString, serverTimestampToDateString, formatNumber, iconForTag } from "$lib";
+    import { serverTimestampToAgoString, serverTimestampToDateString, formatNumber, iconForTag } from "$lib";
     import Waves from "$lib/components/Waves.svelte";
     import Label from "$lib/components/Label.svelte";
     import InfoBox from "$lib/components/InfoBox.svelte";
     import iconPlaceholder from "$lib/assets/icon-placeholder.png";
     import VersionCards from "$lib/components/VersionCards.svelte";
     import Empty from "$lib/components/Empty.svelte";
+    import Pagination from "$lib/components/Pagination.svelte";
+    import LoadingOverlay from "$lib/components/LoadingOverlay.svelte";
+    import VersionCard from "$lib/components/VersionCard.svelte";
 
     export let data: PageData;
+
+    $: url_params = $page.url.searchParams;
+
+    $: per_page = data.version_params.per_page ?? 10;
+    $: current_page = data.version_params.page ?? 1;
+    let searching = false;
 
     const logoUrl = IndexClient.getModLogo(data.mod.id).toString();
 
@@ -27,9 +39,17 @@
     const can_update_mod = data.user && developer_ids.includes(data.user.id) || false;
     const can_modify_mod = data.user?.admin || false;
 
-    data.mod.versions.forEach(version => version.download_link)
-
     const paid = data.mod.tags.includes("paid");
+
+    const onChangePage = async (next_page: number) => {
+        searching = true;
+
+        const params = new URLSearchParams(url_params);
+        params.set("page", next_page.toString());
+
+        await goto(`/mods/${data.mod.id}?${params}`, { noScroll: true });
+        searching = false;
+    }
 
     export let form: ActionData;
 </script>
@@ -110,31 +130,25 @@
                             Some mods also require other mods as <em>dependencies</em>; you will need to find and install them yourself.
                         </InfoBox>
                     </Column>
-                    <Column gap="small" align="stretch" reverse>
-                        {#each data.mod.versions as version}
-                            <article class="version">
-                                <Row wrap="wrap">
-                                    <Column gap="small" align="left">
-                                        <Link href={`/mods/${data.mod.id}?version=${version.version}`}><h2>{version.version}</h2></Link>
-                                        <!-- <span class="card-info"><Icon icon="time"/>{"Released " + serverTimestampToAgoString("19")}</span> -->
-                                        <span class="card-info" title="{formatNumber(version.download_count)} downloads"><Icon icon="download"/>
-                                            {abbreviateNumber(version.download_count)} downloads
-                                        </span>
-                                        <span class="card-info"><Icon icon="geode"/>
-                                            Minimum Geode version: <Label icon="geode" style="gray">{version.geode}</Label>
-                                        </span>
-                                        <span class="card-info">
-                                            <VersionCards gd={version.gd} longForm={true} />
-                                        </span>
-                                    </Column>
-                                    <Column gap="small" align="stretch">
-                                        <Button href={version.download_link} icon="download" style="primary-filled">Download .geode file</Button>
-                                        <Button href="/faq#how-do-i-manually-install-mods" icon="help">How to install</Button>
-                                    </Column>
-                                </Row>
-                            </article>
-                        {/each}
-                    </Column>
+
+                    {#if data.versions.count != 0}
+                        <LoadingOverlay loading={searching}>
+                            <Column gap="small" align="stretch">
+                                <Pagination
+                                    label="versions"
+                                    perPage={per_page}
+                                    total={data.versions.count}
+                                    pageCount={data.versions.data.length}
+                                    page={current_page}
+                                    on:select={(e) => onChangePage(e.detail.page)} />
+                                {#each data.versions.data as version}
+                                    <VersionCard mod={data.mod} version={version} />
+                                {/each}
+                            </Column>
+                        </LoadingOverlay>
+                    {:else}
+                        <p>This mod has no approved versions.</p>
+                    {/if}
                 </Column>
             </TabPage>
             {#if can_modify_mod || can_update_mod}
@@ -205,6 +219,21 @@
                     {/if}
                 </TabPage>
                 <TabPage name="Extra" id="extra" icon="examples">
+                    <Column align="left">
+                        <p>Download hash: <code>{data.version.hash.substring(0, 7)}</code></p>
+
+                        {#if data.version.early_load || data.version.api}
+                            <Row align="center" justify="top" gap="small">
+                                {#if data.version.early_load}
+                                    <Label icon="time" style="accent-alt">Early Load</Label>
+                                {/if}
+                                {#if data.version.api}
+                                    <Label icon="tag-enhancement" style="accent">API</Label>
+                                {/if}
+                            </Row>
+                        {/if}
+                    </Column>
+
                     <h2>Dependencies</h2>
                     {#if data.version.dependencies?.length}
                         <ul>
@@ -234,23 +263,6 @@
                     {:else}
                         <div>Mod has no incompatibilities.</div>
                     {/if}
-
-
-                    <h2>Metadata</h2>
-                    <Column align="left">
-                        <p>Download hash: <code>{data.version.hash.substring(0, 7)}</code></p>
-
-                        {#if data.version.early_load || data.version.api}
-                            <Row align="center" justify="top" gap="small">
-                                {#if data.version.early_load}
-                                    <Label icon="time" style="accent-alt">Early Load</Label>
-                                {/if}
-                                {#if data.version.api}
-                                    <Label icon="tag-enhancement" style="accent">API</Label>
-                                {/if}
-                            </Row>
-                        {/if}
-                    </Column>
                 </TabPage>
             {/if}
         </Tabs>
@@ -335,22 +347,6 @@
             --icon-size: 1.2em;
             color: var(--secondary-300);
             transition-duration: var(--transition-duration);
-        }
-    }
-    article.version {
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        gap: .5rem;
-
-        padding: .75rem;
-        border-radius: .5rem;
-        background-color: color-mix(in srgb, var(--background-500) 25%, transparent);
-
-        h2 {
-            margin: 0;
-            font-family: var(--font-heading);
-            color: var(--accent-300);
         }
     }
 

@@ -1,6 +1,15 @@
-import { IndexError, IndexClient } from "$lib/api/index-repository.js";
+import {
+    IndexError,
+    IndexClient,
+    type Paginated,
+    type GetModVersionsParams,
+} from "$lib/api/index-repository.js";
+import { toIntSafe } from "$lib/api/helpers.js";
 import type { ServerDeveloper } from "$lib/api/models/base.js";
-import type { ModStatus } from "$lib/api/models/mod-version.js";
+import type {
+    ModStatus,
+    ServerModVersion,
+} from "$lib/api/models/mod-version.js";
 import type { Actions, PageServerLoad } from "./$types.js";
 import { error, fail } from "@sveltejs/kit";
 
@@ -147,6 +156,11 @@ export const actions: Actions = {
 };
 
 export const load: PageServerLoad = async ({ fetch, url, params, cookies }) => {
+    const version_params: GetModVersionsParams = {
+        page: toIntSafe(url.searchParams.get("page")),
+        per_page: toIntSafe(url.searchParams.get("per_page")) ?? 10,
+    };
+
     const id = params.id;
     const version_string = url.searchParams.get("version") ?? "latest";
 
@@ -175,11 +189,16 @@ export const load: PageServerLoad = async ({ fetch, url, params, cookies }) => {
         });
     }
 
+    let versions: Paginated<ServerModVersion> = { count: 0, data: [] };
+    try {
+        versions = await client.getModVersions(id, version_params);
+    } catch (e) {}
+
     if (!version && version_string == "latest") {
         // version info is probably just stuck in pending
         // this doesn't run all the time, as it may produce undesirable results
         version = await client.getModVersion(id, mod.versions[0].version);
     }
 
-    return { mod, version, user };
+    return { mod, version, user, versions, version_params };
 };
