@@ -16,8 +16,20 @@ export const actions: Actions = {
         try {
             const self = await client.getSelf();
             // token is valid
-            cookies.set("token", token, { path: "/" });
-            cookies.set("cached_profile", JSON.stringify(self), { path: "/" });
+            cookies.set("token", token, {
+                path: "/",
+                maxAge: 31536000, // = 1 year
+                httpOnly: true,
+                secure: true,
+                sameSite: "strict",
+            });
+            cookies.set("cached_profile", JSON.stringify(self), {
+                path: "/",
+                maxAge: 31536000,
+                httpOnly: true,
+                secure: true,
+                sameSite: "strict",
+            });
         } catch (e) {
             return fail(403, { invalid: true });
         }

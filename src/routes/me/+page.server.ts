@@ -89,7 +89,22 @@ export const load: PageServerLoad = async ({ cookies, fetch }) => {
     let self = undefined;
     try {
         self = await client.getSelf();
-        cookies.set("cached_profile", JSON.stringify(self), { path: "/" });
+
+        // refresh cookies
+        cookies.set("token", token, {
+            path: "/",
+            maxAge: 31536000,
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+        });
+        cookies.set("cached_profile", JSON.stringify(self), {
+            path: "/",
+            maxAge: 31536000,
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+        });
     } catch (_) {
         cookies.delete("token", { path: "/" });
         cookies.delete("cached_profile", { path: "/" });
