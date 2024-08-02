@@ -11,7 +11,7 @@
     import Link from "$lib/components/Link.svelte";
     import Icon from "$lib/components/Icon.svelte";
     import Gap from "$lib/components/Gap.svelte";
-    import { abbreviateNumber, serverTimestampToAgoString, serverTimestampToDateString, formatNumber } from "$lib";
+    import { abbreviateNumber, serverTimestampToAgoString, serverTimestampToDateString, formatNumber, iconForTag } from "$lib";
     import Waves from "$lib/components/Waves.svelte";
     import Label from "$lib/components/Label.svelte";
     import InfoBox from "$lib/components/InfoBox.svelte";
@@ -251,6 +251,16 @@
                 <span class="card-info" title={serverTimestampToDateString(data.mod.updated_at)}><Icon icon="update"/>{serverTimestampToAgoString(data.mod.updated_at)}</span>
                 <span class="card-info"><Icon icon="geode"/>{data.version.geode}</span>
                 <span class="card-info"><VersionCards gd={data.version.gd} /></span>
+
+                <div class="mod-tags">
+                    <Row wrap="wrap" gap="tiny" align="center" justify="top">
+                        {#each data.mod.tags as tag}
+                            <Label icon={iconForTag(tag)} style="secondary">
+                                {tag.charAt(0).toUpperCase() + tag.slice(1)}
+                            </Label>
+                        {/each}
+                    </Row>
+                </div>
             </Column>
         </section>
         <section>
@@ -329,5 +339,11 @@
             font-family: var(--font-heading);
             color: var(--accent-300);
         }
+    }
+
+    .mod-tags {
+        /* width chosen by fair dice roll */
+        max-width: 18rem;
+        padding-top: 0.25rem;
     }
 </style>
