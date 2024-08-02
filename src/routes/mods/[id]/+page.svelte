@@ -38,6 +38,7 @@
     const developer_ids = data.mod.developers.map(d => d.id);
     const can_update_mod = data.user && developer_ids.includes(data.user.id) || false;
     const can_modify_mod = data.user?.admin || false;
+    const owns_mod = can_update_mod && data.mod.developers.some(d => d.is_owner && d.id == data.user?.id);
 
     const paid = data.mod.tags.includes("paid");
 
@@ -203,6 +204,8 @@
                                 <input type="submit" value="Create" />
                             </fieldset>
                         </form>
+                    {/if}
+                    {#if owns_mod}
                         <form method="POST" action="?/add_developer" use:enhance>
                             <fieldset>
                                 <legend>Manage developers</legend>
