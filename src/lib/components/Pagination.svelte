@@ -11,7 +11,7 @@
     export let label: string;
     export let disabled = false;
 
-    $: max_page = Math.floor((total - 1) / perPage) + 1;
+    $: max_page = Math.max(Math.ceil(total / perPage), 1);
 
     const dispatch = createEventDispatcher<{ select: { page: number } }>();
 
