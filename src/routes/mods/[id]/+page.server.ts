@@ -90,6 +90,60 @@ export const actions: Actions = {
 
         return { success: true };
     },
+    add_developer: async ({ cookies, request, params, fetch }) => {
+        const id = params.id;
+
+        const token = cookies.get("token");
+        if (!token) {
+            return fail(401, { message: "no token provided" });
+        }
+
+        const client = new IndexClient({ token, fetch });
+
+        const data = await request.formData();
+
+        const developer = data.get("developer");
+        if (!developer || typeof developer != "string") {
+            return fail(400, { message: "invalid developer" });
+        }
+
+        try {
+            await client.addDeveloper(id, { username: developer });
+        } catch (e) {
+            if (e instanceof IndexError) {
+                return fail(400, { message: e.message });
+            }
+        }
+
+        return { success: true };
+    },
+    remove_developer: async ({ cookies, request, params, fetch }) => {
+        const id = params.id;
+
+        const token = cookies.get("token");
+        if (!token) {
+            return fail(401, { message: "no token provided" });
+        }
+
+        const client = new IndexClient({ token, fetch });
+
+        const data = await request.formData();
+
+        const developer = data.get("developer");
+        if (!developer || typeof developer != "string") {
+            return fail(400, { message: "invalid developer" });
+        }
+
+        try {
+            await client.removeDeveloper(id, developer);
+        } catch (e) {
+            if (e instanceof IndexError) {
+                return fail(400, { message: e.message });
+            }
+        }
+
+        return { success: true };
+    },
 };
 
 export const load: PageServerLoad = async ({ fetch, url, params, cookies }) => {

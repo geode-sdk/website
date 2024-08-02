@@ -176,6 +176,19 @@
                                 <input type="submit" value="Create" />
                             </fieldset>
                         </form>
+                        <form method="POST" action="?/add_developer" use:enhance>
+                            <fieldset>
+                                <legend>Manage developers</legend>
+
+                                <label for="add-developer-name">Username:</label>
+                                <input type="text" id="add-developer-name" name="developer" />
+
+                                <div>
+                                    <button formaction="?/remove_developer">Remove</button>
+                                    <input type="submit" value="Add" />
+                                </div>
+                            </fieldset>
+                        </form>
                     {/if}
                 </TabPage>
                 <TabPage name="Extra" id="extra" icon="examples">

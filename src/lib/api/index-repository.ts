@@ -86,6 +86,10 @@ export interface UpdateDeveloperBody {
     verified?: boolean;
 }
 
+export interface AddDeveloperBody {
+    username: string;
+}
+
 export interface UpdateProfileBody {
     display_name: string;
 }
@@ -303,6 +307,43 @@ export class IndexClient {
             method: "POST",
             body: JSON.stringify(body),
         });
+
+        if (r.status != 204) {
+            const data: BaseRequest<void> = await r.json();
+            throw new IndexError(data.error);
+        }
+    }
+
+    async addDeveloper(id: string, body: AddDeveloperBody) {
+        this.requireAuth();
+
+        const r = await this.fetch(`${BASE_URL}/v1/mods/${id}/developers`, {
+            headers: new Headers({
+                Authorization: `Bearer ${this.token}`,
+                "Content-Type": "application/json",
+            }),
+            method: "POST",
+            body: JSON.stringify(body),
+        });
+
+        if (r.status != 204) {
+            const data: BaseRequest<void> = await r.json();
+            throw new IndexError(data.error);
+        }
+    }
+
+    async removeDeveloper(id: string, username: string) {
+        this.requireAuth();
+
+        const r = await this.fetch(
+            `${BASE_URL}/v1/mods/${id}/developers/${username}`,
+            {
+                headers: new Headers({
+                    Authorization: `Bearer ${this.token}`,
+                }),
+                method: "DELETE",
+            },
+        );
 
         if (r.status != 204) {
             const data: BaseRequest<void> = await r.json();

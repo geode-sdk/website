@@ -108,7 +108,7 @@ export function serverTimestampToDateString(
     }
     return Intl.DateTimeFormat(undefined, {
         dateStyle: "full",
-        timeStyle: "long"
+        timeStyle: "long",
     }).format(stamp);
 }
 export function formatNumber(num: number): string {
