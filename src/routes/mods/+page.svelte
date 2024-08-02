@@ -132,11 +132,11 @@
 <div class="content-separator">
     <aside class="filter-column">
         <FilterMenu
-            platforms={platforms}
-            tags={tags}
+            bind:platforms={platforms}
+            bind:tags={tags}
             tagsListing={data.tags}
-            featured={featured}
-            pending={pending}
+            bind:featured={featured}
+            bind:pending={pending}
             on:update={updateSearch} />
     </aside>
 
@@ -167,11 +167,11 @@
 
         <div class="filter-inline" class:collapsed={!filters_enabled}>
             <FilterMenu
-                platforms={platforms}
-                tags={tags}
+                bind:platforms={platforms}
+                bind:tags={tags}
                 tagsListing={data.tags}
-                featured={featured}
-                pending={pending}
+                bind:featured={featured}
+                bind:pending={pending}
                 on:update={updateSearch} />
         </div>
 
