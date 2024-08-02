@@ -29,6 +29,8 @@
 
     data.mod.versions.forEach(version => version.download_link)
 
+    const paid = data.mod.tags.includes("paid");
+
     export let form: ActionData;
 </script>
 
@@ -65,7 +67,6 @@
     </Column>
 </header>
 
-
 {#if form?.message}
 <div>Failed to perform action: {form.message}</div>
 {/if}
@@ -74,11 +75,23 @@
 <div>Action performed!</div>
 {/if}
 
+
 <Row align="top" wrap="wrap-reverse" gap="small">
     <section>
         <Tabs>
             <TabPage name="Description" id="description" icon="description">
                 <div class="markdown">
+                    {#if paid}
+                        <Column align="center">
+                            <InfoBox type="warning">
+                                This mod contains <em>Paid Content</em>.
+                                This means that some or all features of the mod <em>require money to use</em>.
+                                <br /> <br />
+                                Geode does not handle any payments. The mod handles all transactions in their own way.
+                                The paid content may not be available in your country.
+                            </InfoBox>
+                        </Column>
+                    {/if}
                     <SvelteMarkdown renderers={{ html: Empty }} source={data.mod.about ?? 'No description provided'} />
                 </div>
             </TabPage>
