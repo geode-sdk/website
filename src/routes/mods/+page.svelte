@@ -13,11 +13,11 @@
     import SelectOption from "$lib/components/SelectOption.svelte";
     import Waves from "$lib/components/Waves.svelte";
     import Button from "$lib/components/Button.svelte";
-    import LoadingCircle from "$lib/components/LoadingCircle.svelte";
     import Image from "$lib/components/Image.svelte";
     import InfoBox from "$lib/components/InfoBox.svelte";
     import FilterMenu from "$lib/components/FilterMenu.svelte";
     import Pagination from "$lib/components/Pagination.svelte";
+    import LoadingOverlay from "$lib/components/LoadingOverlay.svelte";
 
     export let data: PageData;
 
@@ -204,10 +204,7 @@
                 </Row>
             </Pagination>
 
-            <span class="overlay-container">
-                <div class="overlay" class:hidden={!searching}>
-                    <span><LoadingCircle/></span>
-                </div>
+            <LoadingOverlay loading={searching}>
                 <!-- this goofy thing just makes sure the size of the mods list stays 
                     the same even if there are fewer items than needed to fill it -->
                 <div class="mod-listing-size-enforcer">
@@ -255,7 +252,7 @@
                         </div>
                     {/if}
                 {/if}
-            </span>
+            </LoadingOverlay>
 
             {#if
                 data.mods && data.mods.data.length < data.mods.count &&
@@ -407,25 +404,5 @@
         flex-wrap: wrap;
         align-items: center;
         gap: var(--gap-tiny);
-    }
-
-    .overlay-container {
-        position: relative;
-    }
-    .overlay {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        background-color: color-mix(in srgb, var(--background-950) 80%, transparent);
-
-        &.hidden {
-            display: none;
-            pointer-events: none;
-        }
     }
 </style>
