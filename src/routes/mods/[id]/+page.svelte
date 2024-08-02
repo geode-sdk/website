@@ -177,38 +177,54 @@
                             </fieldset>
                         </form>
                     {/if}
-
-                    {#if can_modify_mod}
-                        <h2>Dependencies</h2>
-                        {#if data.version.dependencies?.length}
-                            <ul>
-                                {#each data.version.dependencies as dependency}
-                                    <li>
-                                        {dependency.importance} -
-                                        <Link href={`/mods/${dependency.mod_id}`}>{dependency.mod_id}</Link>
-                                        ({dependency.version})
-                                    </li>
-                                {/each}
-                            </ul>
-                        {:else}
-                            <div>Mod has no dependencies.</div>
-                        {/if}
-
-                        <h2>Incompatibilities</h2>
-                        {#if data.version.incompatibilities?.length}
-                            <ul>
-                                {#each data.version.incompatibilities as incompatibility}
-                                    <li>
-                                        {incompatibility.importance} -
-                                        <Link href={`/mods/${incompatibility.mod_id}`}>{incompatibility.mod_id}</Link>
-                                        ({incompatibility.version})
-                                    </li>
-                                {/each}
-                            </ul>
-                        {:else}
-                            <div>Mod has no incompatibilities.</div>
-                        {/if}
+                </TabPage>
+                <TabPage name="Extra" id="extra" icon="examples">
+                    <h2>Dependencies</h2>
+                    {#if data.version.dependencies?.length}
+                        <ul>
+                            {#each data.version.dependencies as dependency}
+                                <li>
+                                    {dependency.importance} -
+                                    <Link href={`/mods/${dependency.mod_id}`}>{dependency.mod_id}</Link>
+                                    ({dependency.version})
+                                </li>
+                            {/each}
+                        </ul>
+                    {:else}
+                        <div>Mod has no dependencies.</div>
                     {/if}
+
+                    <h2>Incompatibilities</h2>
+                    {#if data.version.incompatibilities?.length}
+                        <ul>
+                            {#each data.version.incompatibilities as incompatibility}
+                                <li>
+                                    {incompatibility.importance} -
+                                    <Link href={`/mods/${incompatibility.mod_id}`}>{incompatibility.mod_id}</Link>
+                                    ({incompatibility.version})
+                                </li>
+                            {/each}
+                        </ul>
+                    {:else}
+                        <div>Mod has no incompatibilities.</div>
+                    {/if}
+
+
+                    <h2>Metadata</h2>
+                    <Column align="left">
+                        <p>Download hash: <code>{data.version.hash.substring(0, 7)}</code></p>
+
+                        {#if data.version.early_load || data.version.api}
+                            <Row align="center" justify="top" gap="small">
+                                {#if data.version.early_load}
+                                    <Label icon="time" style="accent-alt">Early Load</Label>
+                                {/if}
+                                {#if data.version.api}
+                                    <Label icon="tag-enhancement" style="accent">API</Label>
+                                {/if}
+                            </Row>
+                        {/if}
+                    </Column>
                 </TabPage>
             {/if}
         </Tabs>
