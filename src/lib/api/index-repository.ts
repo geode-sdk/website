@@ -1,9 +1,15 @@
+import * as publicEnv from "$env/static/public";
+
 import type { ServerDeveloper } from "./models/base";
 import type { ServerMod, ServerSimpleMod } from "./models/mod.js";
 import type { ModStatus, ServerModVersion } from "./models/mod-version.js";
 import type { ServerStats } from "./models/stats";
 
-const BASE_URL = "https://api.geode-sdk.org";
+const BASE_URL =
+    "PUBLIC_API_ENDPOINT" in publicEnv &&
+    typeof publicEnv.PUBLIC_API_ENDPOINT == "string"
+        ? publicEnv.PUBLIC_API_ENDPOINT
+        : "https://api.geode-sdk.org";
 
 export interface Paginated<T> {
     data: T[];
