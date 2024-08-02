@@ -30,6 +30,44 @@
     data.mod.versions.forEach(version => version.download_link)
 
     export let form: ActionData;
+
+    const colorTags: { [key: string]: string } = {
+        a: "#9632ff",
+        b: "#4a52e1",
+        g: "#40e348",
+        l: "#60abef",
+        j: "#32c8ff",
+        y: "#ffff00",
+        o: "#ffa54b",
+        r: "#ff5a5a",
+        p: "#ff00ff"
+    }
+
+    function toHex6(str: string): string {
+        const hex = str.startsWith("#") ? str.slice(1) : str;
+        switch (hex.length) {
+            case 1:
+                return "#" + hex[0] + hex[0] + hex[0] + hex[0] + hex[0] + hex[0];
+            case 2:
+                return "#" + hex[0] + hex[1] + hex[0] + hex[1] + hex[0] + hex[1];
+            case 3:
+                return "#" + hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+            default:
+                return "#" + hex.padStart(6, "0");
+        }
+    }
+
+    function convertColorTags(text: string): string {
+        return text.replace(/<c ([0-9a-f]{1,6})>/g, (_: string, color: string) => {
+            return `color-tag{${toHex6(color)}(`;
+        }).replace(/<c([a-z])>/g, (_: string, color: string) => {
+            return colorTags[color] ? `color-tag{${colorTags[color]}(` : "color-tag{#ffffff(";
+        }).replace(/<\/c[a-z]?>/g, ")}/color-tag");
+    }
+
+    function parseColorTags(text: string): string {
+        return text.replace(/color-tag\{(#[0-9a-f]{6})\(/g, "<span style=\"color: $1;\">").replace(/\)\}\/color-tag/g, "</span>");
+    }
 </script>
 
 <svelte:head>
@@ -58,7 +96,7 @@
             </h1>
         </div>
         <p>
-            {#each data.mod.developers as dev, index}
+            {#each data.mod.developers.sort((a, b) => a.is_owner ? -1 : b.is_owner ? 1 : 0) as dev, index}
                 {index > 0 ? ', ' : ''}<Link href={`/mods?developer=${dev.username}`} --link-color="var(--accent-300)">{dev.display_name}</Link>
             {/each}
         </p>
@@ -79,12 +117,18 @@
         <Tabs>
             <TabPage name="Description" id="description" icon="description">
                 <div class="markdown">
-                    <SvelteMarkdown renderers={{ html: Empty }} source={data.mod.about ?? 'No description provided'} />
+                    <SvelteMarkdown source={convertColorTags(data.mod.about ?? 'No description provided')} renderers={{ html: Empty }} on:parsed={() => {
+                        const description = document.getElementById("description")?.getElementsByClassName("markdown").item(0);
+                        if (description) description.innerHTML = parseColorTags(description.innerHTML);
+                    }} />
                 </div>
             </TabPage>
             <TabPage name="Changelog" id="changelog" icon="changelog">
                 <div class="markdown">
-                    <SvelteMarkdown renderers={{ html: Empty }} source={data.mod.changelog ?? 'No changelog provided'} />
+                    <SvelteMarkdown source={convertColorTags(data.mod.changelog ?? 'No changelog provided')} renderers={{ html: Empty }} on:parsed={() => {
+                        const changelog = document.getElementById("changelog")?.getElementsByClassName("markdown").item(0);
+                        if (changelog) changelog.innerHTML = parseColorTags(changelog.innerHTML);
+                    }} />
                 </div>
             </TabPage>
             <TabPage name="Versions" id="versions" icon="version">
