@@ -28,6 +28,9 @@ export interface ServerSimpleModVersion {
     version: string;
     download_count: number;
     validated: boolean;
+
+    status: ModStatus;
+    info: string | null;
 }
 
 export interface ServerModVersion {
@@ -45,4 +48,6 @@ export interface ServerModVersion {
     dependencies?: ServerDependency[];
     incompatibilities?: ServerIncompatibility[];
     status: ModStatus;
+    direct_download_link?: string;
+    info?: string | null;
 }

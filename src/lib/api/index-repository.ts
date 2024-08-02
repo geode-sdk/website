@@ -175,14 +175,33 @@ export class IndexClient {
             url.searchParams.set("sort", searchParams.sort);
         }
 
-        const r = await this.fetch(url);
+        const r = await this.fetch(
+            url,
+            this.token
+                ? {
+                      headers: new Headers({
+                          Authorization: `Bearer ${this.token}`,
+                      }),
+                  }
+                : undefined,
+        );
+
         const data: BasePaginatedRequest<ServerMod> = await r.json();
 
         return this.validate(data);
     }
 
     async getMod(id: string): Promise<ServerMod> {
-        const r = await this.fetch(`${BASE_URL}/v1/mods/${id}`);
+        const r = await this.fetch(
+            `${BASE_URL}/v1/mods/${id}`,
+            this.token
+                ? {
+                      headers: new Headers({
+                          Authorization: `Bearer ${this.token}`,
+                      }),
+                  }
+                : undefined,
+        );
         const data: BaseRequest<ServerMod> = await r.json();
 
         return this.validate(data);
@@ -256,7 +275,16 @@ export class IndexClient {
             url.searchParams.set("status", params.status);
         }
 
-        const r = await this.fetch(url);
+        const r = await this.fetch(
+            url,
+            this.token
+                ? {
+                      headers: new Headers({
+                          Authorization: `Bearer ${this.token}`,
+                      }),
+                  }
+                : undefined,
+        );
         const data: BasePaginatedRequest<ServerModVersion> = await r.json();
 
         return this.validate(data);
@@ -268,6 +296,13 @@ export class IndexClient {
     ): Promise<ServerModVersion> {
         const r = await this.fetch(
             `${BASE_URL}/v1/mods/${id}/versions/${version}`,
+            this.token
+                ? {
+                      headers: new Headers({
+                          Authorization: `Bearer ${this.token}`,
+                      }),
+                  }
+                : undefined,
         );
         const data = await r.json();
 

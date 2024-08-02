@@ -2,6 +2,8 @@
     import { enhance } from '$app/forms';
     import type { PageData, ActionData } from "./$types.js";
     import ModCard from '$lib/components/ModCard.svelte';
+    import Column from '$lib/components/Column.svelte';
+    import Link from '$lib/components/Link.svelte';
 
     export let data: PageData;
     export let form: ActionData;
@@ -75,11 +77,24 @@
             </fieldset>
         </form>
 
-        {#each data.self_mods as mod (mod.id)}
-            <p>
-                {mod.versions[0].name}
-            </p>
-        {/each}
+        <Column>
+            {#each data.self_mods as mod (mod.id)}
+                {#each mod.versions as version}
+                    <div>
+                        <Link --link-color="var(--accent-300)" href={`/mods/${mod.id}?version=${version.version}`}>{version.name} v{version.version}</Link>
+                        - {version.status}
+
+                        <p>
+                            {#if version.info}
+                                {version.info}
+                            {:else}
+                                <i>No info provided.</i>
+                            {/if}
+                        </p>
+                    </div>
+                {/each}
+            {/each}
+        </Column>
     </div>
     {:else if data.mods}
     <div>

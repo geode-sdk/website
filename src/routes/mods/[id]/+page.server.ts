@@ -171,6 +171,11 @@ export const load: PageServerLoad = async ({ fetch, url, params, cookies }) => {
 
     const client = new IndexClient({ fetch });
 
+    const token = cookies.get("token");
+    if (token) {
+        client.setToken(token);
+    }
+
     let mod = undefined;
     try {
         mod = await client.getMod(id);

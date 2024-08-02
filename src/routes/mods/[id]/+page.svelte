@@ -183,7 +183,7 @@
 
                                 <div>
                                     <label for="update-version-info">Reason:</label> <br />
-                                    <textarea name="info" id="update-version-info"></textarea>
+                                    <textarea name="info" id="update-version-info" value={data.version.info ?? null}></textarea>
                                 </div>
 
                                 <input type="hidden" name="mod_version" value={data.version.version} />
@@ -223,6 +223,10 @@
                 </TabPage>
                 <TabPage name="Extra" id="extra" icon="examples">
                     <Column align="left">
+                        {#if data.version.direct_download_link}
+                            {@const download_link = data.version.direct_download_link}
+                            <p class="color-link">Direct download: <Link href={download_link}>{new URL(download_link).hostname}</Link></p>
+                        {/if}
                         <p>Download hash: <code>{data.version.hash.substring(0, 7)}</code></p>
 
                         {#if data.version.early_load || data.version.api}
@@ -239,7 +243,7 @@
 
                     <h2>Dependencies</h2>
                     {#if data.version.dependencies?.length}
-                        <ul>
+                        <ul class="color-link">
                             {#each data.version.dependencies as dependency}
                                 <li>
                                     {dependency.importance} -
@@ -254,7 +258,7 @@
 
                     <h2>Incompatibilities</h2>
                     {#if data.version.incompatibilities?.length}
-                        <ul>
+                        <ul class="color-link">
                             {#each data.version.incompatibilities as incompatibility}
                                 <li>
                                     {incompatibility.importance} -
@@ -357,5 +361,9 @@
         /* width chosen by fair dice roll */
         max-width: 18rem;
         padding-top: 0.25rem;
+    }
+
+    .color-link {
+        --link-color: var(--accent-300);
     }
 </style>

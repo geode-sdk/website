@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { PageData } from "./$types.js";
 	import { goto } from "$app/navigation";
+    import Link from "$lib/components/Link.svelte";
 
 	export let data: PageData;
 
@@ -18,7 +19,7 @@
 <fieldset>
 	<legend>it's you!</legend>
 
-	{data.self.display_name} ({data.self.username}) ((#{data.self.id}))
+	<Link --link-color="var(--accent-300)" href={`/developers/${data.self.id}`}>{data.self.display_name} ({data.self.username}) ((#{data.self.id}))</Link>
 
 	<p>
 		admin: {data.self.admin} <br />
