@@ -16,9 +16,17 @@
     import MoneyBox from "$lib/components/MoneyBox.svelte";
     import LoadingCircle from "$lib/components/LoadingCircle.svelte";
     import InfoBox from "$lib/components/InfoBox.svelte";
-    import type { PageData } from "./$types.js";
+    import { onMount } from "svelte";
+    import { IndexClient } from "$lib/api/index-repository.js";
+    import type { ServerStats } from "$lib/api/models/stats.js";
 
-    export let data: PageData;
+    // is this a bad pattern.
+    let stats_promise: Promise<ServerStats> = new Promise(() => {});
+
+    onMount(async () => {
+        const client = new IndexClient();
+        stats_promise = client.getServerStats();
+    });
 </script>
 
 <svelte:head>
@@ -92,7 +100,7 @@
                 both users and modders, nearly every mod you can imagine has been made or suggested!
             </p>
             <Row wrap="wrap">
-                {#await data.stats}
+                {#await stats_promise}
                     <LoadingCircle size="small"/><p>Loading stats...</p>
                 {:then stats} 
                     <MoneyBox num={stats.total_geode_downloads} icon="download" text="downloads" />
