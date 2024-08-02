@@ -83,7 +83,7 @@
                 <div class="markdown">
                     {#if paid}
                         <Column align="center">
-                            <InfoBox type="warning">
+                            <InfoBox type="info">
                                 This mod contains <em>Paid Content</em>.
                                 This means that some or all features of the mod <em>require money to use</em>.
                                 <br /> <br />
