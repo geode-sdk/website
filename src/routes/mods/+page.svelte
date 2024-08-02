@@ -17,6 +17,7 @@
     import Image from "$lib/components/Image.svelte";
     import InfoBox from "$lib/components/InfoBox.svelte";
     import FilterMenu from "$lib/components/FilterMenu.svelte";
+    import Pagination from "$lib/components/Pagination.svelte";
 
     export let data: PageData;
 
@@ -39,7 +40,7 @@
     let filters_enabled = false;
 
     $: max_count = data.mods?.count ?? 0;
-    $: max_page = Math.floor(max_count / per_page) + 1;
+    $: max_page = Math.floor((max_count - 1) / per_page) + 1;
 
     const perPageOptions = [10, 15, 25];
 
@@ -175,25 +176,15 @@
         </div>
 
         <main>
-            <nav>
-                {#if data.mods?.data.length === data.mods?.count}
-                    <p>Showing {data.mods?.data.length ?? 0} mods</p>
-                {:else}
-                    <p>Showing {data.mods?.data.length ?? 0} of {data.mods?.count ?? 0} mods</p>
-                {/if}
-                <Row>
-                    <Button
-                        on:click={async () => await gotoPage(Math.max(current_page - 1, 1))}
-                        icon="left" style="dark-small"
-                        disabled={!data.mods || max_count == 0 || current_page == 1}
-                    />
-                    <span>Page {current_page} of {max_page}</span>
-                    <Button
-                        on:click={async () => await gotoPage(Math.min(current_page + 1, max_page))}
-                        icon="right" style="dark-small"
-                        disabled={!data.mods || max_count == 0 || current_page == max_page}
-                    />
-                </Row>
+            <Pagination
+                total={data.mods?.count ?? 0}
+                perPage={per_page}
+                pageCount={data.mods?.data.length ?? 0}
+                page={current_page}
+                disabled={!data.mods}
+                label="mods"
+                on:select={(e) => gotoPage(e.detail.page)}
+            >
                 <Row gap="small">
                     <SelectButton
                         on:select={() => view = 'list'} selected={view === 'list'} outsideState={true}
@@ -211,8 +202,8 @@
                         icon="view-grid"
                     />
                 </Row>
-            </nav>
-    
+            </Pagination>
+
             <span class="overlay-container">
                 <div class="overlay" class:hidden={!searching}>
                     <span><LoadingCircle/></span>
@@ -314,23 +305,6 @@
             border-radius: .5rem;
 
             background-color: var(--background-950);
-
-            & > nav {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                align-items: center;
-                gap: 1rem;
-
-                @include gt-md {
-                    display: grid;
-                    grid-template-columns: 1fr max-content 1fr;
-                }
-
-                & :global(*:last-child) {
-                    justify-self: end;
-                }
-            }
         }
     }
 
