@@ -189,6 +189,7 @@
                 page={current_page}
                 disabled={!data.mods}
                 label="mods"
+                labelOne="mod"
                 on:select={(e) => gotoPage(e.detail.page)}
             >
                 <Row gap="small">

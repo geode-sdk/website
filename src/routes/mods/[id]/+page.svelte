@@ -167,6 +167,7 @@
                         <Column gap="small" align="stretch">
                             <Pagination
                             label="versions"
+                            labelOne="version"
                             perPage={per_page}
                             total={data.versions.count}
                             pageCount={data.versions.data.length}

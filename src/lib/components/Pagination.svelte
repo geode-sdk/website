@@ -9,9 +9,11 @@
     export let page: number;
     export let pageCount: number;
     export let label: string;
+    export let labelOne: string = label;
     export let disabled = false;
 
     $: max_page = Math.max(Math.ceil(total / perPage), 1);
+    $: title = pageCount == 1 ? labelOne : label;
 
     const dispatch = createEventDispatcher<{ select: { page: number } }>();
 
@@ -22,9 +24,9 @@
 
 <nav>
     {#if pageCount === total}
-        <p>Showing {pageCount} {label}</p>
+        <p>Showing {pageCount} {title}</p>
     {:else}
-        <p>Showing {pageCount} of {total} {label}</p>
+        <p>Showing {pageCount} of {total} {title}</p>
     {/if}
     <Row>
         <Button
