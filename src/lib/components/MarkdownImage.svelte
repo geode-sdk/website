@@ -1,6 +1,5 @@
 <script lang="ts">
     import Icon from "./Icon.svelte";
-    import Image from "$lib/components/Image.svelte";
 
     export let href = "";
     export let title = undefined;
