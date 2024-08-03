@@ -61,6 +61,8 @@ export const icons = {
     info: "mdi:about",
     web: "mdi:web",
     community: "mdi:account-group",
+    image: "mdi:file-image",
+    "image-missing": "mdi:file-image-remove",
 
     "tag-universal": "mdi:globe",
     "tag-gameplay": "mdi:gamepad-variant",

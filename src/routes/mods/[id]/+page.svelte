@@ -27,6 +27,7 @@
     import Select from "$lib/components/Select.svelte";
     import SelectOption from "$lib/components/SelectOption.svelte";
     import type { ModStatus } from "$lib/api/models/mod-version.js";
+    import GeodeMarkdown from "$lib/components/GeodeMarkdown.svelte";
 
     export let data: PageData;
 
@@ -144,12 +145,12 @@
                             </InfoBox>
                         </Column>
                     {/if}
-                    <SvelteMarkdown renderers={{ html: Empty }} source={data.mod.about ?? 'No description provided'} />
+                    <GeodeMarkdown source={data.mod.about ?? 'No description provided'} />
                 </div>
             </TabPage>
             <TabPage name="Changelog" id="changelog" icon="changelog">
                 <div class="markdown">
-                    <SvelteMarkdown renderers={{ html: Empty }} source={data.mod.changelog ?? 'No changelog provided'} />
+                    <GeodeMarkdown source={data.mod.changelog ?? 'No changelog provided'} />
                 </div>
             </TabPage>
             <TabPage name="Versions" id="versions" icon="version">

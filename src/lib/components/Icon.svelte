@@ -3,15 +3,16 @@
     import Icon from '@iconify/svelte';
 
     export let icon: KnownIcon;
+    export let inline = false;
 </script>
 
 <span class="icon">
     {#if icons[icon].startsWith('@:')}
         {#await import(`$lib/assets/${icons[icon].substring('@:'.length)}.json?raw`) then svg}
-            <Icon icon={JSON.parse(svg.default)} />
+            <Icon icon={JSON.parse(svg.default)} {inline} />
         {/await}
     {:else}
-        <Icon icon={icons[icon]}/>
+        <Icon icon={icons[icon]} {inline}/>
     {/if}
 </span>
 
