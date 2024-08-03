@@ -79,6 +79,12 @@ async function get_latest_tag(
 }
 
 export const load: PageServerLoad = async () => {
+    return {
+        error: false,
+        loader_tag: "v3.4.0",
+        launcher_tag: "1.4.1"
+    };
+
     try {
         // github api says making multiple requests at the same time counts for a different ratelimit
         // otherwise i'd just Promise.all it for maximum performance
