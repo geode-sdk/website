@@ -24,10 +24,20 @@
     import Pagination from "$lib/components/Pagination.svelte";
     import LoadingOverlay from "$lib/components/LoadingOverlay.svelte";
     import VersionCard from "$lib/components/VersionCard.svelte";
+    import Select from "$lib/components/Select.svelte";
+    import SelectOption from "$lib/components/SelectOption.svelte";
+    import type { ModStatus } from "$lib/api/models/mod-version.js";
 
     export let data: PageData;
 
     $: url_params = $page.url.searchParams;
+
+    $: status = data.version_params.status ?? "accepted";
+    $: invalid_status = !verifyStatus(status);
+
+    const verifyStatus = (status: string): status is ModStatus => {
+        return status == "accepted" || status == "rejected" || status == "pending";
+    }
 
     $: per_page = data.version_params.per_page ?? 10;
     $: current_page = data.version_params.page ?? 1;
@@ -46,6 +56,22 @@
     const multiple_links = mod_source
         ? (!!data.mod.links?.homepage || !!data.mod.links?.community)
         : (!!data.mod.links?.homepage && !!data.mod.links?.community);
+
+    const updateSearch = async () => {
+        searching = true;
+
+        const params = new URLSearchParams();
+
+        const current_version = url_params.get("version");
+        if (current_version) {
+            params.set("version", current_version);
+        }
+
+        params.set("status", status);
+
+        await goto(`/mods/${data.mod.id}?${params}`, { noScroll: true });
+        searching = false;
+    }
 
     const onChangePage = async (next_page: number) => {
         searching = true;
@@ -137,24 +163,38 @@
                         </InfoBox>
                     </Column>
 
-                    {#if data.versions.count != 0}
-                        <LoadingOverlay loading={searching}>
-                            <Column gap="small" align="stretch">
-                                <Pagination
-                                    label="versions"
-                                    perPage={per_page}
-                                    total={data.versions.count}
-                                    pageCount={data.versions.data.length}
-                                    page={current_page}
-                                    on:select={(e) => onChangePage(e.detail.page)} />
+                    <LoadingOverlay loading={searching}>
+                        <Column gap="small" align="stretch">
+                            <Pagination
+                            label="versions"
+                            perPage={per_page}
+                            total={data.versions.count}
+                            pageCount={data.versions.data.length}
+                            page={current_page}
+                            on:select={(e) => onChangePage(e.detail.page)}>
+                                {#if can_modify_mod || can_update_mod}
+                                    <Select title="Status" titleIcon="status" on:select={ev => {
+                                        const new_status = ev.detail.value;
+                                        if (status != new_status && verifyStatus(new_status)) {
+                                            status = new_status;
+                                            updateSearch();
+                                        }
+                                    }}>
+                                        <SelectOption icon="verified" title="Accepted" value="accepted" isDefault={status == "accepted" || invalid_status}/>
+                                        <SelectOption icon="unverified" title="Pending" value="pending" isDefault={status == "pending"}/>
+                                        <SelectOption icon="rejected" title="Rejected" value="rejected" isDefault={status == "rejected"}/>
+                                    </Select>
+                                {/if}
+                            </Pagination>
+                            {#if data.versions.count != 0}
                                 {#each data.versions.data as version}
                                     <VersionCard mod={data.mod} version={version} />
                                 {/each}
-                            </Column>
-                        </LoadingOverlay>
-                    {:else}
-                        <p>This mod has no approved versions.</p>
-                    {/if}
+                            {:else}
+                                <p>This mod has no {status} versions.</p>
+                            {/if}
+                        </Column>
+                    </LoadingOverlay>
                 </Column>
             </TabPage>
             {#if can_modify_mod || can_update_mod}

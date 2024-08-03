@@ -159,6 +159,7 @@ export const load: PageServerLoad = async ({ fetch, url, params, cookies }) => {
     const version_params: GetModVersionsParams = {
         page: toIntSafe(url.searchParams.get("page")),
         per_page: toIntSafe(url.searchParams.get("per_page")) ?? 10,
+        status: (url.searchParams.get("status") as ModStatus) ?? "accepted",
     };
 
     const id = params.id;
@@ -194,16 +195,22 @@ export const load: PageServerLoad = async ({ fetch, url, params, cookies }) => {
         });
     }
 
-    let versions: Paginated<ServerModVersion> = { count: 0, data: [] };
-    try {
-        versions = await client.getModVersions(id, version_params);
-    } catch (e) {}
-
     if (!version && version_string == "latest") {
         // version info is probably just stuck in pending
         // this doesn't run all the time, as it may produce undesirable results
         version = await client.getModVersion(id, mod.versions[0].version);
     }
+
+    // override pending-only mods to be pending by default to show at least a version
+    const mod_pending = mod.versions.length == 1 && version.status != "accepted";
+    if (mod_pending && !url.searchParams.has("status")) {
+        version_params.status = "pending";
+    }
+
+    let versions: Paginated<ServerModVersion> = { count: 0, data: [] };
+    try {
+        versions = await client.getModVersions(id, version_params);
+    } catch (e) {}
 
     return { mod, version, user, versions, version_params };
 };
