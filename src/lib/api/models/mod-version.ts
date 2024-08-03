@@ -49,5 +49,5 @@ export interface ServerModVersion {
     incompatibilities?: ServerIncompatibility[];
     status: ModStatus;
     direct_download_link?: string;
-    info?: string | null;
+    info?: string;
 }

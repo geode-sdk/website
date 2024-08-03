@@ -12,6 +12,12 @@ export interface ServerSimpleMod {
     developers: ServerModDeveloper[];
 }
 
+export interface ServerModLinks {
+    community: string | null;
+    homepage: string | null;
+    source: string | null;
+};
+
 export interface ServerMod {
     id: string;
     repository?: string;
@@ -24,4 +30,5 @@ export interface ServerMod {
     changelog?: string;
     created_at: string;
     updated_at: string;
+    links?: ServerModLinks;
 }

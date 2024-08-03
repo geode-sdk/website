@@ -42,6 +42,11 @@
 
     const paid = data.mod.tags.includes("paid");
 
+    const mod_source = data.mod.repository ?? data.mod.links?.source;
+    const multiple_links = mod_source
+        ? (!!data.mod.links?.homepage || !!data.mod.links?.community)
+        : (!!data.mod.links?.homepage && !!data.mod.links?.community);
+
     const onChangePage = async (next_page: number) => {
         searching = true;
 
@@ -298,8 +303,35 @@
         <section>
             <Column align="stretch" gap="small">
                 <Button href={data.version.download_link} icon="download" style="primary-filled">Download</Button>
-                {#if data.mod.repository}
-                    <Button href={data.mod.repository} icon="github">Source Code</Button>
+                {#if multiple_links}
+                    <div class="link-row">
+                        <!-- wrapping in divs so i can apply grow to them -->
+                        {#if data.mod.links?.homepage}
+                            <div>
+                                <Button href={data.mod.links.homepage} icon="web" />
+                            </div>
+                        {/if}
+                        {#if mod_source}
+                            <div>
+                                <Button href={mod_source} icon="github" />
+                            </div>
+                        {/if}
+                        {#if data.mod.links?.community}
+                            <div>
+                                <Button href={data.mod.links.community} icon="community" />
+                            </div>
+                        {/if}
+                    </div>
+                {:else}
+                    {#if data.mod.links?.homepage}
+                        <Button href={data.mod.links.homepage} icon="web">Homepage</Button>
+                    {/if}
+                    {#if mod_source}
+                        <Button href={mod_source} icon="github">Source Code</Button>
+                    {/if}
+                    {#if data.mod.links?.community}
+                        <Button href={data.mod.links.community} icon="community">Community</Button>
+                    {/if}
                 {/if}
             </Column>
         </section>
@@ -365,5 +397,14 @@
 
     .color-link {
         --link-color: var(--accent-300);
+    }
+
+    .link-row {
+        display: flex;
+        gap: var(--gap-small);
+
+        & > div {
+            flex-grow: 1;
+        }
     }
 </style>
