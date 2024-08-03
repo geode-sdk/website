@@ -229,6 +229,11 @@
         display: flex;
         align-items: center;
 
+        transition-duration: var(--transition-duration);
+
+        padding: 1rem;
+        border-radius: 0.5rem;
+
         &.grid {
             height: 18rem;
             width: 12rem;
@@ -262,11 +267,6 @@
                 text-align: left;
             }
         }
-
-        transition-duration: var(--transition-duration);
-
-        padding: 1rem;
-        border-radius: 0.5rem;
 
         & .click-to-go-to-page {
             display: contents;
