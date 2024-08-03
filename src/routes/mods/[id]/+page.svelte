@@ -330,15 +330,17 @@
                 <span class="card-info"><Icon icon="geode"/>{data.version.geode}</span>
                 <span class="card-info"><VersionCards gd={data.version.gd} /></span>
 
-                <div class="mod-tags">
-                    <Row wrap="wrap" gap="tiny" align="center" justify="top">
-                        {#each data.mod.tags as tag}
-                            <Label icon={iconForTag(tag)} style="secondary">
-                                {tag.charAt(0).toUpperCase() + tag.slice(1)}
-                            </Label>
-                        {/each}
-                    </Row>
-                </div>
+                {#if data.mod.tags.length > 0}
+                    <div class="mod-tags">
+                        <Row wrap="wrap" gap="tiny" align="center" justify="top">
+                            {#each data.mod.tags as tag}
+                                <Label icon={iconForTag(tag)} style="secondary">
+                                    {tag.charAt(0).toUpperCase() + tag.slice(1)}
+                                </Label>
+                            {/each}
+                        </Row>
+                    </div>
+                {/if}
             </Column>
         </section>
         <section>
