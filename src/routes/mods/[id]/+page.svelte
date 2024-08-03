@@ -182,7 +182,7 @@
                                         }
                                     }}>
                                         <SelectOption icon="verified" title="Accepted" value="accepted" isDefault={status == "accepted" || invalid_status}/>
-                                        <SelectOption icon="unverified" title="Pending" value="pending" isDefault={status == "pending"}/>
+                                        <SelectOption icon="time" title="Pending" value="pending" isDefault={status == "pending"}/>
                                         <SelectOption icon="rejected" title="Rejected" value="rejected" isDefault={status == "rejected"}/>
                                     </Select>
                                 {/if}
