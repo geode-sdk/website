@@ -39,6 +39,12 @@
     let searchTimeout: number | null = null;
     let filters_enabled = false;
 
+    const valid_sort = sort == "downloads"
+        || sort == "recently_updated"
+        || sort == "recently_uploaded"
+        || sort == "name"
+        || sort == "name_reverse";
+
     $: max_count = data.mods?.count ?? 0;
     $: max_page = Math.floor((max_count - 1) / per_page) + 1;
 
@@ -150,11 +156,11 @@
                         updateSearch();
                     }
                 }}>
-                    <SelectOption icon="download" title="Most Downloaded" value="downloads" isDefault/>
-                    <SelectOption icon="time" title="Most Recent" value="recently_published"/>
-                    <SelectOption icon="time" title="Recently Updated" value="recently_updated"/>
-                    <SelectOption icon="sort-abc" title="Name (A-Z)" value="name"/>
-                    <SelectOption icon="sort-cba" title="Name (Z-A)" value="name_reverse"/>
+                    <SelectOption icon="download" title="Most Downloaded" value="downloads" isDefault={sort == "downloads" || !valid_sort}/>
+                    <SelectOption icon="time" title="Most Recent" value="recently_published" isDefault={sort == "recently_published"} />
+                    <SelectOption icon="time" title="Recently Updated" value="recently_updated" isDefault={sort == "recently_updated"} />
+                    <SelectOption icon="sort-abc" title="Name (A-Z)" value="name" isDefault={sort == "name"} />
+                    <SelectOption icon="sort-cba" title="Name (Z-A)" value="name_reverse" isDefault={sort == "name_reverse"} />
                 </Select>
                 <span class="toggle-filter-button">
                     <SelectButton
