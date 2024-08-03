@@ -8,7 +8,7 @@ import { toIntSafe, undefIfEmpty, onlyIfTrue } from "$lib/api/helpers.js";
 import type { ModStatus } from "$lib/api/models/mod-version.js";
 import type { PageServerLoad } from "./$types.js";
 
-export const load: PageServerLoad = async ({ url, fetch }) => {
+export const load: PageServerLoad = async ({ url, fetch, cookies }) => {
     const params: ModSearchParams = {
         query: url.searchParams.get("query") ?? undefined,
         page: toIntSafe(url.searchParams.get("page")),
@@ -30,11 +30,20 @@ export const load: PageServerLoad = async ({ url, fetch }) => {
         const tags = client.getTags();
 
         try {
+            const token = cookies.get("token");
+            if (token && params.status == "rejected") {
+                client.setToken(token);
+            }
+
             const mods = await client.getMods(params);
             return { mods, params, tags };
         } catch (e) {
             if (e instanceof IndexError) {
                 return { error: e.message, params, tags };
+            }
+
+            if (e instanceof Error) {
+                return { error: `Failed to search index: ${e.name}`, params, tags };
             }
         }
 
