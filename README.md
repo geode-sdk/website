@@ -33,4 +33,6 @@ The site uses the following (optional) static environment variables:
 
 -   `PRIVATE_ENDPOINT_ENABLED`: Enables the `PRIVATE_API_ENDPOINT` option if set to "true". Disabled by default.
 
+-   `PRIVATE_REDIS_URL`: Allows for caching of some data (such as GitHub API requests) through Redis. Disabled by default.
+
 nsfm (not safe for mat)
