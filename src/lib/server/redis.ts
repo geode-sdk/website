@@ -15,6 +15,11 @@ async function asyncTimeout(timeoutMs: number) {
     return new Promise((r) => setTimeout(r, timeoutMs));
 }
 
+/**
+ * waits for exclusive access to the database based on the given id. no effect is redis is not present
+ * @param id cache key to use for lock
+ * @param timeoutMs amount of time (ms) to wait before stopping and throwing an error
+ */
 export async function redis_lock(id: string, timeoutMs = 5_000) {
     if (!redis) {
         return;
@@ -41,6 +46,10 @@ export async function redis_lock(id: string, timeoutMs = 5_000) {
     throw new Error(`failed to acquire lock: ${id}`);
 }
 
+/**
+ * unlocks the exclusive access given in redis_lock. no effect if redis is not present
+ * @param id cache key used in redis_lock
+ */
 export async function redis_unlock(id: string) {
     if (!redis) {
         return;

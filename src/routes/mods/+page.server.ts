@@ -7,6 +7,26 @@ import {
 import { toIntSafe, undefIfEmpty, onlyIfTrue } from "$lib/api/helpers.js";
 import type { ModStatus } from "$lib/api/models/mod-version.js";
 import type { PageServerLoad } from "./$types.js";
+import { redis } from "$lib/server/redis.js";
+
+async function getTags(client: IndexClient): Promise<string[]> {
+    const cache_key = `listing_tags:1`;
+    if (redis) {
+        const cached_tags = await redis.get(cache_key);
+        if (cached_tags) {
+            return JSON.parse(cached_tags);
+        }
+    }
+
+    const tags = await client.getTags();
+
+    if (redis) {
+        // this delay is more arbitrary ig
+        await redis.set(cache_key, JSON.stringify(tags), { EX: 5 * 60 });
+    }
+
+    return tags;
+}
 
 export const load: PageServerLoad = async ({ url, fetch, cookies }) => {
     const params: ModSearchParams = {
@@ -26,8 +46,8 @@ export const load: PageServerLoad = async ({ url, fetch, cookies }) => {
     const client = new IndexClient({ fetch });
 
     try {
-        // ideally we would cache this information somewhere
-        const tags = client.getTags();
+        // we don't need to worry about locks as we're not about to get ratelimited for this
+        const tags = getTags(client);
 
         try {
             const token = cookies.get("token");
@@ -43,7 +63,11 @@ export const load: PageServerLoad = async ({ url, fetch, cookies }) => {
             }
 
             if (e instanceof Error) {
-                return { error: `Failed to search index: ${e.name}`, params, tags };
+                return {
+                    error: `Failed to search index: ${e.name}`,
+                    params,
+                    tags,
+                };
             }
         }
 
