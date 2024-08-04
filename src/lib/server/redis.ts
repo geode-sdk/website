@@ -9,6 +9,20 @@ const redisUrl =
 
 export const redis = redisUrl ? createClient({ url: redisUrl }) : null;
 
+function formatError(e: Error) {
+    return `${e.name}: ${e.message}`;
+}
+
+redis?.on("error", (e: Error) => {
+    if (e instanceof AggregateError) {
+        console.error(
+            `Redis threw errors: ${e.errors.map((a) => formatError(a))}`,
+        );
+    } else {
+        console.error(`Redis threw error: ${formatError(e)}`);
+    }
+});
+
 await redis?.connect();
 
 async function asyncTimeout(timeoutMs: number) {
