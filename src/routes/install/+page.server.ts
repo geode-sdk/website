@@ -1,5 +1,5 @@
 import type { PageServerLoad } from "./$types.js";
-import { redis } from "$lib/server/redis.js";
+import { redis, redis_lock, redis_unlock } from "$lib/server/redis.js";
 
 const GITHUB_BASE_URL = "https://api.github.com/repos/";
 const RELEASE_PREFIX = "/releases/latest";
@@ -29,7 +29,7 @@ async function get_latest_tag(
     // dynamic fetch function, in case you want to run this on the client
 
     const url = `${GITHUB_BASE_URL}${repo}${RELEASE_PREFIX}`;
-    const cache_key = `site::install:1:${repo}`;
+    const cache_key = `install:1:${repo}`;
 
     if (redis) {
         const tag = await redis.get(cache_key);
@@ -57,7 +57,13 @@ async function get_latest_tag(
 }
 
 export const load: PageServerLoad = async () => {
+    const lock_key = "install:1:lock";
+
     try {
+        if (redis) {
+            await redis_lock(lock_key);
+        }
+
         // github api says making multiple requests at the same time counts for a different ratelimit
         // otherwise i'd just Promise.all it for maximum performance
         const loader_data = await get_latest_tag(fetch, LOADER_REPO);
@@ -72,5 +78,9 @@ export const load: PageServerLoad = async () => {
         return {
             error: true,
         };
+    } finally {
+        if (redis) {
+            await redis_unlock(lock_key);
+        }
     }
 };
