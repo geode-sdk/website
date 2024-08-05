@@ -230,7 +230,7 @@
 
                                 <div>
                                     <label for="update-version-info">Reason:</label> <br />
-                                    <textarea name="info" id="update-version-info" value={data.version.info ?? null}></textarea>
+                                    <textarea name="info" id="update-version-info" rows=6 cols=40 value={data.version.info ?? null}></textarea>
                                 </div>
 
                                 <input type="hidden" name="mod_version" value={data.version.version} />
