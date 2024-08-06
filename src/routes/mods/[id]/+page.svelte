@@ -120,15 +120,6 @@
     </Column>
 </header>
 
-{#if form?.message}
-<div>Failed to perform action: {form.message}</div>
-{/if}
-
-{#if form?.success}
-<div>Action performed!</div>
-{/if}
-
-
 <Row align="top" wrap="wrap-reverse" gap="small">
     <section>
         <Tabs>
@@ -201,72 +192,83 @@
             </TabPage>
             {#if can_modify_mod || can_update_mod}
                 <TabPage name="Modify" id="modify" icon="modify">
-                    {#if can_modify_mod}
-                        <form method="POST" action="?/update_mod" use:enhance>
-                            <fieldset>
-                                <legend>Update mod info</legend>
+                    <Column align="left" gap="small">
+                        {#if form?.message}
+                            <InfoBox type="error">
+                                Failed to perform action: {form.message}
+                            </InfoBox>
+                        {/if}
 
-                                <div>
-                                    <input type="checkbox" checked={data.mod.featured} name="featured" id="update-mod-featured" />
-                                    <label for="update-mod-featured">Featured</label>
-                                </div>
+                        {#if form?.success}
+                            <InfoBox type="info">Action performed!</InfoBox>
+                        {/if}
+                        {#if can_modify_mod}
+                            <form method="POST" action="?/update_mod" use:enhance>
+                                <fieldset>
+                                    <legend>Update mod info</legend>
 
-                                <input type="submit" value="Update" />
-                            </fieldset>
-                        </form>
-                        <form method="POST" action="?/update_mod_version" use:enhance>
-                            <fieldset>
-                                <legend>Update version status</legend>
+                                    <div>
+                                        <input type="checkbox" checked={data.mod.featured} name="featured" id="update-mod-featured" />
+                                        <label for="update-mod-featured">Featured</label>
+                                    </div>
 
-                                <div>
-                                    <label for="update-version-status">Status:</label>
-                                    <select name="status" id="update-version-status" value={data.version.status}>
-                                        <option value="accepted">Accepted</option>
-                                        <option value="pending">Pending</option>
-                                        <option value="rejected">Rejected</option>
-                                        <option value="unlisted">Unlisted</option>
-                                    </select>
-                                </div>
+                                    <input type="submit" value="Update" />
+                                </fieldset>
+                            </form>
+                            <form method="POST" action="?/update_mod_version" use:enhance>
+                                <fieldset>
+                                    <legend>Update version status</legend>
 
-                                <div>
-                                    <label for="update-version-info">Reason:</label> <br />
-                                    <textarea name="info" id="update-version-info" rows=6 cols=40 value={data.version.info ?? null}></textarea>
-                                </div>
+                                    <div>
+                                        <label for="update-version-status">Status:</label>
+                                        <select name="status" id="update-version-status" value={data.version.status}>
+                                            <option value="accepted">Accepted</option>
+                                            <option value="pending">Pending</option>
+                                            <option value="rejected">Rejected</option>
+                                            <option value="unlisted">Unlisted</option>
+                                        </select>
+                                    </div>
 
-                                <input type="hidden" name="mod_version" value={data.version.version} />
+                                    <div>
+                                        <label for="update-version-info">Reason:</label> <br />
+                                        <textarea name="info" id="update-version-info" rows=6 cols=40 value={data.version.info ?? null}></textarea>
+                                    </div>
 
-                                <input type="submit" value="Update" />
-                            </fieldset>
-                        </form>
-                    {/if}
+                                    <input type="hidden" name="mod_version" value={data.version.version} />
 
-                    {#if can_update_mod}
-                        <form method="POST" action="?/create_version" use:enhance>
-                            <fieldset>
-                                <legend>Create new version</legend>
+                                    <input type="submit" value="Update" />
+                                </fieldset>
+                            </form>
+                        {/if}
 
-                                <label for="create-mod-download">Download link:</label>
-                                <input type="url" id="create-mod-download" name="download_link" />
+                        {#if can_update_mod}
+                            <form method="POST" action="?/create_version" use:enhance>
+                                <fieldset>
+                                    <legend>Create new version</legend>
 
-                                <input type="submit" value="Create" />
-                            </fieldset>
-                        </form>
-                    {/if}
-                    {#if owns_mod}
-                        <form method="POST" action="?/add_developer" use:enhance>
-                            <fieldset>
-                                <legend>Manage developers</legend>
+                                    <label for="create-mod-download">Download link:</label>
+                                    <input type="url" id="create-mod-download" name="download_link" />
 
-                                <label for="add-developer-name">Username:</label>
-                                <input type="text" id="add-developer-name" name="developer" />
+                                    <input type="submit" value="Create" />
+                                </fieldset>
+                            </form>
+                        {/if}
+                        {#if owns_mod}
+                            <form method="POST" action="?/add_developer" use:enhance>
+                                <fieldset>
+                                    <legend>Manage developers</legend>
 
-                                <div>
-                                    <button formaction="?/remove_developer">Remove</button>
-                                    <input type="submit" value="Add" />
-                                </div>
-                            </fieldset>
-                        </form>
-                    {/if}
+                                    <label for="add-developer-name">Username:</label>
+                                    <input type="text" id="add-developer-name" name="developer" />
+
+                                    <div>
+                                        <button formaction="?/remove_developer">Remove</button>
+                                        <input type="submit" value="Add" />
+                                    </div>
+                                </fieldset>
+                            </form>
+                        {/if}
+                    </Column>
                 </TabPage>
                 <TabPage name="Extra" id="extra" icon="examples">
                     <Column align="left">
