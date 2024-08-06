@@ -123,7 +123,7 @@
                 <Button href="https://docs.geode-sdk.org/" style="secondary-filled">
                     <Icon icon="docs"/>Documentation
                 </Button>
-                <Button href="https://github.com/geode-sdk/examples/">
+                <Button href="https://github.com/geode-sdk/example-mod/">
                     <Icon icon="examples"/>Examples
                 </Button>
             </Row>
