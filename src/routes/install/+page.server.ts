@@ -1,4 +1,5 @@
 import type { PageServerLoad } from "./$types.js";
+import { redis, redis_lock, redis_unlock } from "$lib/server/redis.js";
 
 const GITHUB_BASE_URL = "https://api.github.com/repos/";
 const RELEASE_PREFIX = "/releases/latest";
@@ -21,82 +22,114 @@ interface Release {
     assets: Asset[];
 }
 
-interface CachedData {
-    etag: string | null;
-    tag: string;
-}
-
-// this cache lasts for as long as the server does
-// ideally, this is >1 minute, or we should consider an alternative caching solution
-let loader_cache: CachedData | null = null;
-let launcher_cache: CachedData | null = null;
-
 async function get_latest_tag(
     fetch_fn: typeof fetch,
     repo: string,
-    cache: CachedData | null,
-): Promise<CachedData> {
+): Promise<string> {
     // dynamic fetch function, in case you want to run this on the client
 
     const url = `${GITHUB_BASE_URL}${repo}${RELEASE_PREFIX}`;
+    const cache_key = `install:2:${repo}`;
 
-    if (cache?.etag) {
-        const resp = await fetch_fn(url, {
-            headers: {
-                "If-None-Match": cache.etag,
-            },
-        });
+    let last_modified: string | undefined = undefined;
+    if (redis) {
+        const cached_at = await redis.hGet(cache_key, "cached");
 
-        if (resp.status == 304) {
-            return cache;
+        if (cached_at) {
+            const begin_time = +cached_at;
+            const elapsed_time = Date.now() - begin_time;
+
+            // we can really set this to whatever
+            if (elapsed_time < 1000 * 60 * 5) {
+                const tag = await redis.hGet(cache_key, "tag");
+                if (tag) {
+                    return tag;
+                }
+            }
+
+            // perform a refetch
+            last_modified = await redis.hGet(cache_key, "modified");
         }
-
-        if (resp.status != 200) {
-            throw Error(
-                `Failed to find a release for repo ${repo} (cache path)`,
-            );
-        }
-
-        const release: Release = await resp.json();
-
-        return {
-            etag: resp.headers.get("ETag"),
-            tag: release.tag_name,
-        };
     }
 
-    const resp = await fetch_fn(url);
-    const release: Release = await resp.json();
+    const headers = last_modified
+        ? { headers: { "If-Modified-Since": last_modified } }
+        : undefined;
+
+    const resp = await fetch_fn(url, headers);
+
+    if (resp.status == 304 && redis) {
+        const tag = await redis.hGet(cache_key, "tag");
+        if (!tag) {
+            await redis.del(cache_key);
+            throw new Error("expected cached tag, but found nothing");
+        }
+
+        const cached = Date.now();
+        await redis.hSet(cache_key, "cached", cached);
+
+        return tag;
+    }
 
     if (resp.status != 200) {
+        if (redis) {
+            // use cache in case of an error. we can try again later
+            const tag = await redis.hGet(cache_key, "tag");
+            if (tag) {
+                return tag;
+            }
+        }
+
         throw Error(`Failed to find a release for repo ${repo}`);
     }
 
-    return {
-        etag: resp.headers.get("ETag"),
-        tag: release.tag_name,
-    };
+    const release: Release = await resp.json();
+
+    const tag = release.tag_name;
+    last_modified = resp.headers.get("last-modified") ?? undefined;
+
+    if (redis) {
+        const cached = Date.now();
+
+        if (last_modified) {
+            await redis.hSet(cache_key, {
+                cached,
+                tag,
+                modified: last_modified,
+            });
+        } else {
+            await redis.hSet(cache_key, { cached, tag });
+        }
+    }
+
+    return tag;
 }
 
 export const load: PageServerLoad = async () => {
+    const lock_key = "install:1:lock";
+
     try {
+        if (redis) {
+            await redis_lock(lock_key);
+        }
+
         // github api says making multiple requests at the same time counts for a different ratelimit
         // otherwise i'd just Promise.all it for maximum performance
-        loader_cache = await get_latest_tag(fetch, LOADER_REPO, loader_cache);
-        launcher_cache = await get_latest_tag(
-            fetch,
-            LAUNCHER_REPO,
-            launcher_cache,
-        );
+        const loader_data = await get_latest_tag(fetch, LOADER_REPO);
+        const launcher_data = await get_latest_tag(fetch, LAUNCHER_REPO);
+
+        return {
+            error: false,
+            loader_tag: loader_data,
+            launcher_tag: launcher_data,
+        };
     } catch (e) {
         return {
             error: true,
         };
+    } finally {
+        if (redis) {
+            await redis_unlock(lock_key);
+        }
     }
-
-    return {
-        error: false,
-        loader_tag: loader_cache.tag,
-        launcher_tag: launcher_cache.tag,
-    };
 };

@@ -1,22 +1,10 @@
-# create-svelte
+# Geode Site (v2)
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
-
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+Geode Site. The second version
 
 ## Developing
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Once you've installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
 
 ```bash
 npm run dev
@@ -35,6 +23,16 @@ npm run build
 
 You can preview the production build with `npm run preview`.
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+## Configuration
+
+The site uses the following (optional) static environment variables:
+
+-   `PUBLIC_API_ENDPOINT`: Base API endpoint for all requests. Current default is "https://api.geode-sdk.org".
+
+-   `PRIVATE_API_ENDPOINT`: API endpoint for requests made from the server, if enabled. This replaces the `PUBLIC_API_ENDPOINT`, so it should follow the same format.
+
+-   `PRIVATE_ENDPOINT_ENABLED`: Enables the `PRIVATE_API_ENDPOINT` option if set to "true". Disabled by default.
+
+-   `PRIVATE_REDIS_URL`: Allows for caching of some data (such as GitHub API requests) through Redis. Disabled by default.
 
 nsfm (not safe for mat)

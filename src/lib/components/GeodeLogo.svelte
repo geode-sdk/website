@@ -19,6 +19,7 @@
 <style is:global>
     .geode-logo {
         display: flex;
+        width: var(--font-size-title);
         height: var(--font-size-title);
         fill: var(--text-50);
     }

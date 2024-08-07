@@ -45,7 +45,10 @@ export const icons = {
     filter: "mdi:filter",
     "filter-clear": "mdi:filter-off",
     featured: "mdi:star",
+    status: "mdi:shield",
+    verified: "mdi:shield-check",
     unverified: "mdi:shield-off",
+    rejected: "mdi:shield-alert",
     view: "mdi:external-link",
     version: "mdi:source-branch",
     "view-grid": "mdi:view-comfy",
@@ -56,6 +59,13 @@ export const icons = {
     modify: "mdi:pencil",
     update: "mdi:clock-edit",
     info: "mdi:about",
+    plus: "mdi:plus",
+    person: "mdi:person",
+    admin: "mdi:hammer-wrench",
+    web: "mdi:web",
+    community: "mdi:account-group",
+    image: "mdi:file-image",
+    "image-missing": "mdi:file-image-remove",
     plus: "mdi:plus",
     person: "mdi:person",
     admin: "mdi:hammer-wrench",
@@ -101,4 +111,19 @@ export function abbreviateNumber(num: number): string {
         notation: "compact",
         maximumFractionDigits: 1,
     }).format(num);
+}
+export function serverTimestampToDateString(
+    timestamp: string,
+): string | undefined {
+    const stamp = Date.parse(timestamp);
+    if (isNaN(stamp)) {
+        return undefined;
+    }
+    return Intl.DateTimeFormat(undefined, {
+        dateStyle: "full",
+        timeStyle: "long",
+    }).format(stamp);
+}
+export function formatNumber(num: number): string {
+    return Intl.NumberFormat().format(num);
 }

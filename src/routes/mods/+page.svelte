@@ -7,18 +7,17 @@
     import Gap from "$lib/components/Gap.svelte";
     import Column from "$lib/components/Column.svelte";
     import SelectButton from "$lib/components/SelectButton.svelte";
-    import Icon from "$lib/components/Icon.svelte";
-    import { iconForTag } from "$lib/index.js";
     import Row from "$lib/components/Row.svelte";
     import Select from "$lib/components/Select.svelte";
     import Search from "$lib/components/Search.svelte";
     import SelectOption from "$lib/components/SelectOption.svelte";
-    import Rollover from "$lib/components/Rollover.svelte";
     import Waves from "$lib/components/Waves.svelte";
     import Button from "$lib/components/Button.svelte";
-    import LoadingCircle from "$lib/components/LoadingCircle.svelte";
     import Image from "$lib/components/Image.svelte";
     import InfoBox from "$lib/components/InfoBox.svelte";
+    import FilterMenu from "$lib/components/FilterMenu.svelte";
+    import Pagination from "$lib/components/Pagination.svelte";
+    import LoadingOverlay from "$lib/components/LoadingOverlay.svelte";
 
     export let data: PageData;
 
@@ -38,15 +37,18 @@
     let view: 'list' | 'dual-list' | 'grid' = 'dual-list';
     let searchBar: HTMLInputElement;
     let searchTimeout: number | null = null;
+    let filters_enabled = false;
+
+    const valid_sort = sort == "downloads"
+        || sort == "recently_updated"
+        || sort == "recently_uploaded"
+        || sort == "name"
+        || sort == "name_reverse";
 
     $: max_count = data.mods?.count ?? 0;
-    $: max_page = Math.floor(max_count / per_page) + 1;
+    $: max_page = Math.floor((max_count - 1) / per_page) + 1;
 
     const perPageOptions = [10, 15, 25];
-
-    function toggleSet<T>(set: Set<T>, value: T) {
-        set.has(value) ? set.delete(value) : set.add(value);
-    }
 
     const updateQuery = () => {
         // debouce search bar so we're not making a ton of useless requests
@@ -134,126 +136,62 @@
 <h1>Browse Mods</h1>
 
 <div class="content-separator">
-    <aside>
-        <header><Icon icon="filter" --icon-size=1.2em/>Search Filters</header>
-        <nav>
-            <Rollover title="Platform">
-                <SelectButton
-                    icon="windows"
-                    selected={platforms.has('windows')}
-                    on:select={() => {
-                        toggleSet(platforms, 'windows');
-                        updateSearch();
-                    }}
-                >Windows</SelectButton>
-                <SelectButton
-                    icon="mac"
-                    selected={platforms.has('mac-arm')}
-                    on:select={() => {
-                        toggleSet(platforms, 'mac-arm');
-                        updateSearch();
-                    }}
-                >macOS (ARM)</SelectButton>
-                <SelectButton
-                    icon="mac"
-                    selected={platforms.has('mac-intel')}
-                    on:select={() => {
-                        toggleSet(platforms, 'mac-intel');
-                        updateSearch();
-                    }}
-                >macOS (x64)</SelectButton>
-                <SelectButton
-                    icon="android"
-                    selected={platforms.has('android64')}
-                    on:select={() => {
-                        toggleSet(platforms, 'android64');
-                        updateSearch();
-                    }}
-                >Android (64-bit)</SelectButton>
-                <SelectButton
-                    icon="android"
-                    selected={platforms.has('android32')}
-                    on:select={() => {
-                        toggleSet(platforms, 'android32');
-                        updateSearch();
-                    }}
-                >Android (32-bit)</SelectButton>
-            </Rollover>
-
-            <Rollover title="Tags">
-                {#await data.tags}
-                    <LoadingCircle size="small" />
-                {:then server_tags}
-                    {#if server_tags}
-                        {#each server_tags as tag}
-                            <SelectButton
-                                icon={iconForTag(tag)}
-                                selected={tags.has(tag)}
-                                on:select={() => {
-                                    toggleSet(tags, tag);
-                                    updateSearch();
-                                }}>
-                                {tag.charAt(0).toUpperCase() + tag.slice(1)}
-                            </SelectButton>
-                        {/each}
-                    {:else}
-                        <InfoBox type="error">Failed to list tags!</InfoBox>
-                    {/if}
-                {:catch error}
-                    <InfoBox type="error">Unable to connect to servers!</InfoBox>
-                {/await}
-            </Rollover>
-
-            <Rollover title="Other">
-                <SelectButton
-                    icon="featured"
-                    bind:selected={featured} on:select={updateSearch}
-                >Featured only</SelectButton>
-                <SelectButton
-                    icon="unverified"
-                    bind:selected={pending} on:select={updateSearch}
-                >Unverified only</SelectButton>
-            </Rollover>
-        </nav>
+    <aside class="filter-column">
+        <FilterMenu
+            bind:platforms={platforms}
+            bind:tags={tags}
+            tagsListing={data.tags}
+            bind:featured={featured}
+            bind:pending={pending}
+            on:update={updateSearch} />
     </aside>
 
     <Column align="stretch" gap="small">
         <nav class="search">
             <Search placeholder="Search mods..." bind:query on:search={updateQuery} bind:ref={searchBar}></Search>
-            <Select title="Sort by" titleIcon="sort" on:select={ev => {
-                if (sort != ev.detail.value) {
-                    sort = ev.detail.value;
-                    updateSearch();
-                }
-            }}>
-                <SelectOption icon="download" title="Most Downloaded" value="downloads" isDefault/>
-                <SelectOption icon="time" title="Most Recent" value="recently_published"/>
-                <SelectOption icon="time" title="Recently Updated" value="recently_updated"/>
-                <SelectOption icon="sort-abc" title="Name (A-Z)" value="name"/>
-                <SelectOption icon="sort-cba" title="Name (Z-A)" value="name_reverse"/>
-            </Select>
+            <div class="search-filters">
+                <Select title="Sort by" titleIcon="sort" on:select={ev => {
+                    if (sort != ev.detail.value) {
+                        sort = ev.detail.value;
+                        updateSearch();
+                    }
+                }}>
+                    <SelectOption icon="download" title="Most Downloaded" value="downloads" isDefault={sort == "downloads" || !valid_sort}/>
+                    <SelectOption icon="time" title="Most Recent" value="recently_published" isDefault={sort == "recently_published"} />
+                    <SelectOption icon="time" title="Recently Updated" value="recently_updated" isDefault={sort == "recently_updated"} />
+                    <SelectOption icon="sort-abc" title="Name (A-Z)" value="name" isDefault={sort == "name"} />
+                    <SelectOption icon="sort-cba" title="Name (Z-A)" value="name_reverse" isDefault={sort == "name_reverse"} />
+                </Select>
+                <span class="toggle-filter-button">
+                    <SelectButton
+                        icon="filter"
+                        selected={filters_enabled}
+                        on:select={() => filters_enabled = !filters_enabled} />
+                </span>
+            </div>
         </nav>
 
+        <div class="filter-inline" class:collapsed={!filters_enabled}>
+            <FilterMenu
+                bind:platforms={platforms}
+                bind:tags={tags}
+                tagsListing={data.tags}
+                bind:featured={featured}
+                bind:pending={pending}
+                on:update={updateSearch} />
+        </div>
+
         <main>
-            <nav>
-                {#if data.mods?.data.length === data.mods?.count}
-                    <p>Showing {data.mods?.data.length ?? 0} mods</p>
-                {:else}
-                    <p>Showing {data.mods?.data.length ?? 0} of {data.mods?.count ?? 0} mods</p>
-                {/if}
-                <Row>
-                    <Button
-                        on:click={async () => await gotoPage(Math.max(current_page - 1, 1))}
-                        icon="left" style="dark-small"
-                        disabled={!data.mods || max_count == 0 || current_page == 1}
-                    />
-                    <span>Page {current_page} of {max_page}</span>
-                    <Button
-                        on:click={async () => await gotoPage(Math.min(current_page + 1, max_page))}
-                        icon="right" style="dark-small"
-                        disabled={!data.mods || max_count == 0 || current_page == max_page}
-                    />
-                </Row>
+            <Pagination
+                total={data.mods?.count ?? 0}
+                perPage={per_page}
+                pageCount={data.mods?.data.length ?? 0}
+                page={current_page}
+                disabled={!data.mods}
+                label="mods"
+                labelOne="mod"
+                on:select={(e) => gotoPage(e.detail.page)}
+            >
                 <Row gap="small">
                     <SelectButton
                         on:select={() => view = 'list'} selected={view === 'list'} outsideState={true}
@@ -271,12 +209,9 @@
                         icon="view-grid"
                     />
                 </Row>
-            </nav>
-    
-            <span class="overlay-container">
-                <div class="overlay" class:hidden={!searching}>
-                    <span><LoadingCircle/></span>
-                </div>
+            </Pagination>
+
+            <LoadingOverlay loading={searching}>
                 <!-- this goofy thing just makes sure the size of the mods list stays 
                     the same even if there are fewer items than needed to fill it -->
                 <div class="mod-listing-size-enforcer">
@@ -324,7 +259,7 @@
                         </div>
                     {/if}
                 {/if}
-            </span>
+            </LoadingOverlay>
 
             {#if
                 data.mods && data.mods.data.length < data.mods.count &&
@@ -366,30 +301,6 @@
         align-items: start;
         gap: var(--gap-small);
 
-        & > aside {
-            background-color: var(--background-950);
-            padding: .5rem;
-            gap: .5rem;
-            border-radius: .5rem;
-
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-
-            & > header {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                color: var(--text-300);
-                font-size: .9em;
-                gap: var(--gap-small);
-            }
-            & > nav {
-                display: flex;
-                flex-direction: column;
-                gap: var(--gap-small);
-            }
-        }
         & main {
             display: grid;
             grid-template-columns: 1fr;
@@ -398,29 +309,34 @@
             border-radius: .5rem;
 
             background-color: var(--background-950);
-
-            & > nav {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                align-items: center;
-                gap: 1rem;
-
-                @include gt-md {
-                    display: grid;
-                    grid-template-columns: 1fr max-content 1fr;
-                }
-
-                & :global(*:last-child) {
-                    justify-self: end;
-                }
-            }
         }
+    }
+
+    .filter-inline {
+        display: inherit;
+    }
+
+    .filter-inline.collapsed {
+        display: none;
+    }
+
+    .filter-column {
+        display: none;
     }
 
     @media screen and (min-width: 830px) {
         .content-separator {
             grid-template-columns: 15rem max-content;
+        }
+
+        .filter-column {
+            display: inherit;
+        }
+
+        .filter-inline,
+
+        .toggle-filter-button {
+            display: none;
         }
     }
 
@@ -488,23 +404,12 @@
         align-items: center;
         gap: var(--gap-small);
     }
-    .overlay-container {
-        position: relative;
-    }
-    .overlay {
-        position: absolute;
-        width: 100%;
-        height: 100%;
 
+    .search .search-filters {
         display: flex;
+        justify-content: start;
+        flex-wrap: wrap;
         align-items: center;
-        justify-content: center;
-
-        background-color: color-mix(in srgb, var(--background-950) 80%, transparent);
-
-        &.hidden {
-            display: none;
-            pointer-events: none;
-        }
+        gap: var(--gap-tiny);
     }
 </style>

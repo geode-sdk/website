@@ -19,7 +19,6 @@
 	import type { GithubLogin } from '$lib/api/models/developer';
     import FlyIntoView from "$lib/components/FlyIntoView.svelte";
 
-
 	export let data: PageData;
 
 	let status = "accepted";
@@ -45,7 +44,7 @@
 <fieldset>
 	<legend>it's you!</legend>
 
-	{data.self.display_name} ({data.self.username}) ((ID: #{data.self.id}))
+	<Link --link-color="var(--accent-300)" href={`/developers/${data.self.id}`}>{data.self.display_name} ({data.self.username}) ((#{data.self.id}))</Link>
 
 	<p>
 		admin: {data.self.admin} <br />

@@ -1,19 +1,15 @@
 import { fail, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types.js";
-import {
-    IndexError,
-    deleteAllTokens,
-    deleteToken,
-    getSelf,
-    updateProfile,
-} from "$lib/api/index-repository.js";
+import { IndexError, IndexClient } from "$lib/api/index-repository.js";
 
 export const actions: Actions = {
-    update_self: async ({ cookies, request }) => {
+    update_self: async ({ cookies, request, fetch }) => {
         const token = cookies.get("token");
         if (!token) {
             redirect(302, "/login");
         }
+
+        const client = new IndexClient({ token, fetch });
 
         const data = await request.formData();
         const display_name = data.get("display_name");
@@ -22,7 +18,7 @@ export const actions: Actions = {
         }
 
         try {
-            await updateProfile(token, { display_name });
+            await client.updateProfile({ display_name });
         } catch (e) {
             if (e instanceof IndexError) {
                 return fail(400, { cause: e.message });
@@ -33,14 +29,16 @@ export const actions: Actions = {
 
         return { success: true };
     },
-    logout: async ({ cookies }) => {
+    logout: async ({ cookies, fetch }) => {
         const token = cookies.get("token");
         if (!token) {
             redirect(302, "/login");
         }
 
+        const client = new IndexClient({ token, fetch });
+
         try {
-            await deleteToken(token);
+            await client.deleteToken();
         } catch (e) {
             if (e instanceof IndexError) {
                 return fail(400, { cause: e.message });
@@ -54,14 +52,16 @@ export const actions: Actions = {
 
         return { success: true };
     },
-    logout_all: async ({ cookies }) => {
+    logout_all: async ({ cookies, fetch }) => {
         const token = cookies.get("token");
         if (!token) {
             redirect(302, "/login");
         }
 
+        const client = new IndexClient({ token, fetch });
+
         try {
-            await deleteAllTokens(token);
+            await client.deleteAllTokens();
         } catch (e) {
             if (e instanceof IndexError) {
                 return fail(400, { cause: e.message });
@@ -77,17 +77,34 @@ export const actions: Actions = {
     },
 };
 
-export const load: PageServerLoad = async ({ cookies }) => {
+export const load: PageServerLoad = async ({ cookies, fetch }) => {
     const token = cookies.get("token");
     if (!token) {
         redirect(302, "/login");
     }
 
+    const client = new IndexClient({ token, fetch });
+
     // i'm having a js moment, honestly
     let self = undefined;
     try {
-        self = await getSelf(token);
-        cookies.set("cached_profile", JSON.stringify(self), { path: "/" });
+        self = await client.getSelf();
+
+        // refresh cookies
+        cookies.set("token", token, {
+            path: "/",
+            maxAge: 31536000,
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+        });
+        cookies.set("cached_profile", JSON.stringify(self), {
+            path: "/",
+            maxAge: 31536000,
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+        });
     } catch (_) {
         cookies.delete("token", { path: "/" });
         cookies.delete("cached_profile", { path: "/" });

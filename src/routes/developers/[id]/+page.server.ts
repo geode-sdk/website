@@ -1,12 +1,4 @@
-import {
-    IndexError,
-    ModSort,
-    createMod,
-    getDeveloper,
-    getMods,
-    getSelfMods,
-    updateDeveloper,
-} from "$lib/api/index-repository.js";
+import { IndexError, ModSort, IndexClient } from "$lib/api/index-repository.js";
 import { toIntSafe } from "$lib/api/helpers.js";
 import type { ServerDeveloper } from "$lib/api/models/base.js";
 import type { ModStatus } from "$lib/api/models/mod-version.js";
@@ -14,11 +6,13 @@ import type { Actions, PageServerLoad } from "./$types.js";
 import { error, fail } from "@sveltejs/kit";
 
 export const actions: Actions = {
-    upload_mod: async ({ cookies, request }) => {
+    upload_mod: async ({ cookies, request, fetch }) => {
         const token = cookies.get("token");
         if (!token) {
             return fail(401, { message: "no token provided" });
         }
+
+        const client = new IndexClient({ fetch, token });
 
         const data = await request.formData();
 
@@ -28,7 +22,7 @@ export const actions: Actions = {
         }
 
         try {
-            await createMod(token, { download_link });
+            await client.createMod({ download_link });
         } catch (e) {
             if (e instanceof IndexError) {
                 return fail(400, { message: e.message });
@@ -37,7 +31,7 @@ export const actions: Actions = {
 
         return { success: true };
     },
-    modify_user: async ({ cookies, params, request }) => {
+    modify_user: async ({ cookies, params, request, fetch }) => {
         const id = toIntSafe(params.id);
         if (!id) {
             return fail(404, { message: "Developer not found" });
@@ -48,6 +42,8 @@ export const actions: Actions = {
             return fail(401, { message: "no token provided" });
         }
 
+        const client = new IndexClient({ fetch, token });
+
         const data = await request.formData();
 
         // only be present if true, just in case it messes up auth or something
@@ -55,7 +51,7 @@ export const actions: Actions = {
         const admin = data.has("admin") ? true : undefined;
 
         try {
-            await updateDeveloper(token, id, { verified, admin });
+            await client.updateDeveloper(id, { verified, admin });
         } catch (e) {
             if (e instanceof IndexError) {
                 return fail(400, { message: e.message });
@@ -66,11 +62,13 @@ export const actions: Actions = {
     },
 };
 
-export const load: PageServerLoad = async ({ url, params, cookies }) => {
+export const load: PageServerLoad = async ({ url, params, cookies, fetch }) => {
     const id = toIntSafe(params.id);
     if (!id) {
         error(404, "Developer not found");
     }
+
+    const client = new IndexClient({ fetch });
 
     const user_str = cookies.get("cached_profile");
     const user = user_str
@@ -79,7 +77,7 @@ export const load: PageServerLoad = async ({ url, params, cookies }) => {
 
     let developer = undefined;
     try {
-        developer = await getDeveloper(id);
+        developer = await client.getDeveloper(id);
     } catch (e) {
         if (e instanceof IndexError) {
             error(404, "Developer not found");
@@ -101,8 +99,10 @@ export const load: PageServerLoad = async ({ url, params, cookies }) => {
                     (url.searchParams.get("status") as ModStatus) ?? "accepted",
             };
 
+            client.setToken(token);
+
             try {
-                self_mods = await getSelfMods(token, {
+                self_mods = await client.getSelfMods({
                     status: search_params.status,
                 });
             } catch (e) {
@@ -126,7 +126,7 @@ export const load: PageServerLoad = async ({ url, params, cookies }) => {
     let mods = undefined;
 
     try {
-        mods = await getMods({
+        mods = await client.getMods({
             developer: developer.username,
             sort: ModSort.Downloads,
             per_page: 5,
