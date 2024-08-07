@@ -19,7 +19,7 @@
     let latestVersion = data.loader_tag;
     let latestLauncher = `v${data.launcher_tag}`;
     let showAllPlatforms = false;
-    let curPlatform: 'windows' | 'mac' | 'android' | 'linux' | 'unknown' | undefined = undefined;
+    let curPlatform: 'windows' | 'mac' | 'android' | 'linux' | 'ios' | 'unknown' | undefined = undefined;
 
     const createVersionString = (platform: 'windows' | 'mac' | 'android' | "linux"): string => {
         let filename = "";
@@ -44,6 +44,8 @@
     }
 
     onMount(() => {
+        let isiOS = (window.navigator.userAgent.includes("iPad Simulator") || window.navigator.userAgent.includes("iPhone Simulator") || window.navigator.userAgent.includes("iPod Simulator") || window.navigator.userAgent.includes("iPad") || window.navigator.userAgent.includes("iPhone") || window.navigator.userAgent.includes("iPod"))
+
         if (window.navigator.userAgent.includes("Windows")) {
             curPlatform = "windows";
         } else if (window.navigator.userAgent.includes("Macintosh")) {
@@ -52,6 +54,9 @@
             curPlatform = "android";
         } else if (window.navigator.userAgent.includes("Linux")) {
             curPlatform = "linux";
+        } else if (isiOS) {
+            curPlatform = "ios";
+            showAllPlatforms = true;
         } else {
             curPlatform = "unknown";
             showAllPlatforms = true;
@@ -94,7 +99,7 @@
                 </Column>
             </span>
             <p>
-                Geode is available for <em>Windows</em>, <em>MacOS</em>, <em>Linux</em> (through <em>Wine / Proton</em>) and <em>Android</em>.
+                Geode is available for <em>Windows</em>, <em>macOS</em>, <em>Linux</em> (through <em>Wine / Proton</em>) and <em>Android</em>.
             </p>
         </Column>
     </section>
@@ -115,10 +120,19 @@
             {#if curPlatform === "unknown"}
                 <p>Couldn't auto detect your platform. You can download Geode for your chosen platform below.</p> 
             {/if}
+            {#if curPlatform === "ios"}
+                <p>Geode is not available on <em>iOS</em> right now. If you got it from another source or a YouTube video, it's a <em>scam</em>. <Link href="faq#why-is-geode-not-available-for-ios-nor-ipados" --link-color=var(--secondary-300)><i>Click here for more info</i></Link>.</p>
+                <Row>
+                    <Button style="primary-filled" icon="ios" disabled>
+                        Unavailable
+                    </Button>
+                    <Button style="primary-hollow" href="faq#why-is-geode-not-available-for-ios-nor-ipados" icon="help" />
+                </Row>
+            {/if}
             {#if curPlatform === "linux"}
-                <p>Geometry Dash is not available on <em>Linux</em>, but you can run the <em>Windows</em> version through <em>Wine / Proton</em>. <Link href="faq#i-am-installing-geode-on-linux-what-do-i-have-to-do">Click here for more info.</Link> </p>
-                <Button style="primary-filled" href={createVersionString("windows")}>
-                    <Icon icon="windows"/>Download for Windows
+                <p>Geometry Dash is not available on <em>Linux</em>, but you can run the <em>Windows</em> version through <em>Wine / Proton</em>. <Link href="faq#i-am-installing-geode-on-linux-what-do-i-have-to-do" --link-color=var(--secondary-300)><i>Click here for more info</i></Link>. </p>
+                <Button style="primary-filled" href={createVersionString("windows")} icon="windows">
+                    Download for Windows
                 </Button>
             {/if}
             {#if curPlatform === "android"}
@@ -126,39 +140,39 @@
             {/if}
             {#if !showAllPlatforms}
             {#if curPlatform == "windows"}
-                <Button style="primary-filled" href={createVersionString("windows")}>
-                    <Icon icon="windows"/>Download for Windows
+                <Button style="primary-filled" href={createVersionString("windows")} icon="windows">
+                    Download for Windows
                 </Button>
             {/if}
             {#if curPlatform == "mac"}
-                <Button style="primary-filled" href={createVersionString("mac")}>
-                    <Icon icon="mac"/>Download for macOS
+                <Button style="primary-filled" href={createVersionString("mac")} icon="mac">
+                    Download for macOS
                 </Button>
             {/if}
             {#if curPlatform == "android"}
-                <Button style="primary-filled" href={createVersionString("android")}>
-                    <Icon icon="android"/>Download for Android
+                <Button style="primary-filled" href={createVersionString("android")} icon="android">
+                    Download for Android
                 </Button>
             {/if}
             <!-- {#if curPlatform == "android"}
-                <Button style="primary-filled">
-                    <Icon icon="android"/>Download for Android (32 bit)
+                <Button style="primary-filled" icon="android">
+                    Download for Android (32 bit)
                 </Button>
             {/if} -->
             {/if}
             <Rollover title="Show All Platforms" bind:open={showAllPlatforms}>
                 <Column align="stretch">
-                    <Button style="primary-filled" href={createVersionString("windows")}>
-                        <Icon icon="windows"/>Download for Windows
+                    <Button style="primary-filled" href={createVersionString("windows")} icon="windows">
+                        Download for Windows
                     </Button>
-                    <Button style="primary-filled" href={createVersionString("mac")}>
-                        <Icon icon="mac"/>Download for macOS
+                    <Button style="primary-filled" href={createVersionString("mac")} icon="mac">
+                        Download for macOS
                     </Button>
-                    <Button style="primary-filled" href={createVersionString("android")}>
-                        <Icon icon="android"/>Download for Android
+                    <Button style="primary-filled" href={createVersionString("android")} icon="android">
+                        Download for Android
                     </Button>
-                    <!-- <Button style="primary-filled">
-                        <Icon icon="android"/>Download for Android (32 bit)
+                    <!-- <Button style="primary-filled" icon="android">
+                        Download for Android (32 bit)
                     </Button> -->
                 </Column>
             </Rollover>

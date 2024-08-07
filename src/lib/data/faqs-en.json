@@ -13,6 +13,10 @@
             {
                 "question": "Is Geode Free?",
                 "answer": "Geode is *100% free* and always will be! However, individual mods may be paid."
+            },
+            {
+                "question": "Why is Geode not available for iOS (nor iPadOS)",
+                "answer": "Geode needs to *inject code* at runtime and iOS is very very keen on making sure that *doesn't happen*.\n\nMaybe some day with something called JIT (Just-in-time) Geode could be viable on iOS, but at the moment, there is *nothing officially released*."
             }
         ]
     },

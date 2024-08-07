@@ -16,6 +16,8 @@
 
     let number: HTMLSpanElement;
 
+    $: countup.set(num);
+
     onMount(() => {
         const observer = new IntersectionObserver(entries => {
             entries.reverse().forEach(entry => {

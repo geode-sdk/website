@@ -1,4 +1,4 @@
-import type { ServerModDeveloper } from "./mod-developer.js";
+import type { ServerModDeveloper } from "./developer";
 import type {
     ServerModVersion,
     ServerSimpleModVersion,

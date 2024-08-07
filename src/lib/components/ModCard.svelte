@@ -1,7 +1,7 @@
 <script lang="ts">
-    import type { ServerMod } from "$lib/api/models/mod.js";
-    import type { ServerModVersion } from "$lib/api/models/mod-version.js";
-    import { IndexClient } from "$lib/api/index-repository";
+    import type { ServerMod, ServerSimpleMod } from "$lib/api/models/mod.js";
+    import type { ServerModVersion, ServerSimpleModVersion } from "$lib/api/models/mod-version.js";
+    import { getModLogo, IndexClient } from "$lib/api/index-repository";
     import Link from "./Link.svelte";
     import Gap from "./Gap.svelte";
     import Row from "./Row.svelte";
@@ -16,9 +16,13 @@
     import iconPlaceholder from "$lib/assets/icon-placeholder.png";
     import Label from "./Label.svelte";
 
-    export let mod: ServerMod;
-    export let version: ServerModVersion;
-    export let style: "list" | "grid" = "grid";
+    export let mod: ServerMod | ServerSimpleMod;
+    export let version: ServerModVersion | ServerSimpleModVersion;
+    export let style: 'list' | 'grid' = 'grid';
+    export let versionDownloadCount: boolean = false;
+    export let hideDescription: boolean = false;
+    export let hideVersion: boolean = false;
+    export let noLinkInVersion: boolean = false;
 
     // add the version for non-accepted mods, as otherwise the endpoint will pick the latest accepted
     $: mod_url =
@@ -27,7 +31,6 @@
             : `/mods/${mod.id}`;
 
     $: logo_url = IndexClient.getModLogo(mod.id).toString();
-
     $: owner = mod.developers.filter((d) => d.is_owner)[0];
     $: paid = mod.tags.includes("paid");
 </script>
@@ -78,6 +81,7 @@
                     --link-color="var(--accent-300)">
                     {owner.display_name}
                 </Link>
+                {#if !hideDescription}
                 <p class="description" title={version.description || ""}>
                     {#if version.description}
                         {#if version.description?.length < 110}
@@ -89,20 +93,24 @@
                         <i>{"Description not provided"}</i>
                     {/if}
                 </p>
+                {/if}
             </Column>
         </div>
         <span class="do-not-shrink right">
             <Column align="right" gap="tiny">
+                {#if !hideVersion}
                 <span class="card-info">
                     <Icon icon="version" />{version.version}
                 </span>
+                {/if}
                 <span
                     class="card-info"
                     title={formatNumber(mod.download_count)}>
                     <Icon icon="download" />{abbreviateNumber(
-                        mod.download_count,
+                        versionDownloadCount ? version.download_count : mod.download_count,
                     )}
                 </span>
+                {#if mod.updated_at != undefined}
                 <span
                     class="card-info"
                     title={serverTimestampToDateString(mod.updated_at)}>
@@ -110,6 +118,7 @@
                         mod.updated_at,
                     )}
                 </span>
+                {/if}
             </Column>
         </span>
     {:else}
@@ -151,13 +160,16 @@
         </Link>
         <Gap size="small" />
         <Row>
+            {#if !hideVersion}
             <span class="card-info">
                 <Icon icon="version" />{version.version}
             </span>
-            <span class="card-info" title={formatNumber(mod.download_count)}>
-                <Icon icon="download" />{abbreviateNumber(mod.download_count)}
+            {/if}
+            <span class="card-info" title={formatNumber(versionDownloadCount ? version.download_count : mod.download_count)}>
+                <Icon icon="download" />{abbreviateNumber(versionDownloadCount ? version.download_count : mod.download_count)}
             </span>
         </Row>
+        {#if !hideDescription}
         <Gap size="tiny" />
         <p class="description" title={version.description || ""}>
             {#if version.description}
@@ -170,6 +182,7 @@
                 <i>{"Description not provided"}</i>
             {/if}
         </p>
+        {/if}
     {/if}
 </div>
 

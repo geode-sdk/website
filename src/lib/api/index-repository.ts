@@ -1,8 +1,8 @@
 import * as publicEnv from "$env/static/public";
 
-import type { ServerDeveloper } from "./models/base";
-import type { ServerMod, ServerSimpleMod } from "./models/mod.js";
-import type { ModStatus, ServerModVersion } from "./models/mod-version.js";
+import type { ServerDeveloper, ServerModDeveloper, GithubLogin } from "./models/developer";
+import type { ServerMod, ServerSimpleMod } from "./models/mod";
+import type { ModStatus, ServerModVersion } from "./models/mod-version";
 import type { ServerStats } from "./models/stats";
 
 const BASE_URL =
@@ -39,6 +39,19 @@ interface BaseRequest<T> {
 
 type BasePaginatedRequest<T> = BaseRequest<Paginated<T>>;
 
+function validate<T>(data: BaseRequest<T>) {
+    if (data.error) {
+        throw new IndexError(data.error);
+    }
+    return data.payload;
+}
+function validateNoThrow<T>(data: BaseRequest<T>) {
+    if (data.error) {
+        console.log("ERROR: " + data.error)
+        return null;
+    }
+    return data.payload;
+}
 export interface ModSearchParams {
     page?: number;
     developer?: string;
@@ -517,27 +530,49 @@ export class IndexClient {
         this.token = null;
     }
 
-    async deleteAllTokens(): Promise<void> {
-        this.requireAuth();
+export async function githubAuth(): Promise<GithubLogin> {
+    const r = await fetch(`${BASE_URL}/v1/login/github`, {
+        headers: new Headers({
+            "Content-Type": "application/json",
+        }),
+        method: "POST",
+    });
+    const data = await r.json();
 
-        const r = await this.fetch(`${BASE_URL}/v1/me/tokens`, {
-            headers: new Headers({
-                Authorization: `Bearer ${this.token}`,
-            }),
-            method: "DELETE",
-        });
+    return validate<GithubLogin>(data);
+}
 
-        if (r.status != 204) {
-            const data: BaseRequest<void> = await r.json();
-            throw new IndexError(data.error);
-        }
+export async function githubAuthPoll(uuid: string): Promise<string | null> {
+    const r = await fetch(`${BASE_URL}/v1/login/github/poll`, {
+        headers: new Headers({
+            "Content-Type": "application/json",
+        }),
+        method: "POST",
+        body: JSON.stringify({ uuid })
+    });
+    const data = await r.json();
 
-        this.token = null;
+    return validateNoThrow<string>(data);
+}
+async deleteAllTokens(): Promise<void> {
+    this.requireAuth();
+
+    const r = await this.fetch(`${BASE_URL}/v1/me/tokens`, {
+        headers: new Headers({
+            Authorization: `Bearer ${this.token}`,
+        }),
+        method: "DELETE",
+    });
+
+    if (r.status != 204) {
+        const data: BaseRequest<void> = await r.json();
+        throw new IndexError(data.error);
     }
 
-    async getServerStats(): Promise<ServerStats> {
-        const r = await this.fetch(`${BASE_URL}/v1/stats`);
-        const data = await r.json();
-        return this.validate<ServerStats>(data);
-    }
+    this.token = null;
+}
+export async function getServerStats(): Promise<ServerStats> {
+    const r = await fetch(`${BASE_URL}/v1/stats`);
+    const data = await r.json();
+    return this.validate<ServerStats>(data);
 }

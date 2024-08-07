@@ -1,4 +1,7 @@
 <script lang="ts">
+    import type { PageData } from "./$types.js";
+    import { onMount } from "svelte";
+    import { events, startEvents } from "$lib/events.js";
     import Button from "$lib/components/Button.svelte";
     import Column from "$lib/components/Column.svelte";
     import Gap from "$lib/components/Gap.svelte";
@@ -16,9 +19,10 @@
     import MoneyBox from "$lib/components/MoneyBox.svelte";
     import LoadingCircle from "$lib/components/LoadingCircle.svelte";
     import InfoBox from "$lib/components/InfoBox.svelte";
-    import { onMount } from "svelte";
     import { IndexClient } from "$lib/api/index-repository.js";
     import type { ServerStats } from "$lib/api/models/stats.js";
+      
+    export let data: PageData;
 
     // is this a bad pattern.
     let stats_promise: Promise<ServerStats> = new Promise(() => {});
@@ -26,6 +30,11 @@
     onMount(async () => {
         const client = new IndexClient();
         stats_promise = client.getServerStats();
+        startEvents(document);
+        events.addEventListener("loggedout", async (e: Event) => {
+            data.loggedIn = false;
+            console.log(data.self);
+        });
     });
 </script>
 
@@ -60,8 +69,10 @@
             <Button href="/install" style="primary-filled-dark" icon="download">Download</Button>
             <Button href="/mods" style="primary-filled-dark" icon="browse">Browse Mods</Button>
         </Row>
+        <Button href="/{data.loggedIn ? "dash" : "login"}" style="primary-filled-dark" icon="tag-developer">Developer {data.loggedIn ? "Dashboard" : "Login"}</Button>
     </Column>
 </div>
+<Gap size="tiny" />
 <Image name="main-page" alt="The main page" style="shadow"></Image>
 <Row wrap="wrap" --link-color=var(--secondary-300)>
     <Link href="https://discord.gg/9e43WMKzhp" icon="discord">Discord</Link>
@@ -77,8 +88,8 @@
     <FlyIntoView reverseOnSmallScreen={true}>
         <Column>
             <p>
-                Geode is a <em>fan-made extension</em> for Geometry Dash that adds <em>mod support</em> to the game. 
-                Browse from an in-game list to seamlessly download mods on <em>Windows</em>, <em>Mac</em>, 
+                Geode is a <em>fan-made extension</em> for Geometry Dash that adds <em>mod support</em> to the game.
+                Browse from an in-game list to seamlessly download mods on <em>Windows</em>, <em>Mac</em>,
                 and <em>Android</em>!
             </p>
             <span class="platform-icons">
@@ -96,15 +107,16 @@
         <ModCollage/>
         <Column>
             <p>
-                Geode is the <em>most popular</em> GD mod loader across all platforms. With an <em>active community</em> of 
+                Geode is the <em>most popular</em> GD mod loader across all platforms. With an <em>active community</em> of
                 both users and modders, nearly every mod you can imagine has been made or suggested!
             </p>
             <Row wrap="wrap">
                 {#await stats_promise}
                     <LoadingCircle size="small"/><p>Loading stats...</p>
-                {:then stats} 
+                {:then stats}
                     <MoneyBox num={stats.total_geode_downloads} icon="download" text="downloads" />
                     <MoneyBox num={stats.total_mod_count} icon="graph" text="mods published" />
+                    <Button href="stats" icon="right" style="money-box" />
                 {:catch error}
                     <InfoBox type="error">Unable to load stats!</InfoBox>
                 {/await}
@@ -115,8 +127,8 @@
     <FlyIntoView reverseOnSmallScreen={true}>
         <Column>
             <p>
-                Geode is <em>open-source</em> and is designed to make the modding experience infinitely smoother for 
-                developers. Geode comes with a <em>special hooking syntax</em> as well as dozens of built-in 
+                Geode is <em>open-source</em> and is designed to make the modding experience infinitely smoother for
+                developers. Geode comes with a <em>special hooking syntax</em> as well as dozens of built-in
                 <em>UI components</em>, <em>utility functions</em>, and everything else needed to make mods.
             </p>
             <Row wrap="wrap">
@@ -156,12 +168,13 @@
     <FlyIntoView>
         <Column>
             <p>
-                Interested? Go to the <em>Installation Page</em> to download Geode for your device, or the 
+                Interested? Go to the <em>Installation Page</em> to download Geode for your device, or the
                 <em>Mods Browser</em> to view what mods Geode has to offer!
             </p>
             <Row wrap="wrap">
                 <Button href="/install" style="primary-filled" icon="download">Install</Button>
                 <Button href="/mods" style="primary-filled" icon="browse">Browse Mods</Button>
+                <Button href="/{data.loggedIn ? "dash" : "login"}" style="primary-filled" icon="tag-developer">Developer {data.loggedIn ? "Dashboard" : "Login"}</Button>
             </Row>
         </Column>
     </FlyIntoView>
