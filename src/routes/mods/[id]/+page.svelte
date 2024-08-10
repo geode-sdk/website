@@ -90,6 +90,8 @@
 <svelte:head>
     <title>{data.version.name}</title>
     <meta property="og:title" content={data.version.name} />
+    <meta name="description" content={data.version.description} />
+    <meta name="og:description" content={data.version.description} />
     <meta property="og:image" content={logoUrl} />
     <meta property="og:image:width" content="80" />
     <meta property="og:image:height" content="80" />
