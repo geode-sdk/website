@@ -271,7 +271,7 @@
                         updateSearch();
                     }}>Show more ({perPageOptions[perPageOptions.indexOf(per_page) + 1]})</Button>
                 </div>
-            {:else if data.mods && data.mods.data.length > 0}
+            {:else if data.mods && data.mods.data.length > 0 && data.mods.count > 10}
                 <div class="show-more-container">
                     <Button style="secondary-filled" on:click={() => {
                         per_page = perPageOptions[0];
