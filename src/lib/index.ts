@@ -18,7 +18,7 @@ export const icons = {
     windows: "mdi:microsoft-windows",
     mac: "mdi:apple",
     android: "mdi:android",
-    ios: "mdi:apple-ios",
+    ios: "ic:baseline-phone-iphone",
     linux: "mdi:linux",
     copyright: "mdi:copyright",
     help: "mdi:help-circle",
