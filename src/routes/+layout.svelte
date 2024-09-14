@@ -26,6 +26,9 @@
                     <Dot/>
                     <Link href="https://twitter.com/GeodeSDK" icon="twitter">Twitter</Link>
                     <Dot/>
+                    <Link href="https://bsky.app/profile/geode-sdk.org" icon="bluesky">Bluesky</Link>
+                </Row>
+                <Row wrap="wrap" align="center">
                     <Link href="https://docs.geode-sdk.org/" icon="docs">Documentation</Link>
                     <Dot/>
                     <Link href="https://github.com/geode-sdk" icon="github">Source Code</Link>

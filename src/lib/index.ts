@@ -7,6 +7,7 @@ export const icons = {
     error: "mdi:error",
     twitter: "mdi:twitter",
     discord: "simple-icons:discord",
+    bluesky: "simple-icons:bluesky",
     docs: "mdi:file-document",
     github: "mdi:github",
     download: "mdi:download",
