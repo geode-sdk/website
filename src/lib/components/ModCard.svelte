@@ -203,8 +203,12 @@
         -webkit-box-orient: vertical;
         overflow: hidden;
     }
+
     .mod-image {
-        max-height: 5rem;
+       	height: 336px;
+       	width: 336px;
+       	max-height: 5rem;
+       	max-width: 5rem;
     }
 
     .mod-background.featured {
