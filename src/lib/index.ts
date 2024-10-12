@@ -105,6 +105,7 @@ export function abbreviateNumber(num: number): string {
     return Intl.NumberFormat("en-US", {
         notation: "compact",
         maximumFractionDigits: 1,
+        roundingMode: "trunc",
     }).format(num);
 }
 export function serverTimestampToDateString(
