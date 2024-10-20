@@ -14,6 +14,8 @@
         formatNumber,
     } from "$lib";
     import iconPlaceholder from "$lib/assets/icon-placeholder.png";
+    import iconPending from "$lib/assets/icon-pending.png";
+
     import Label from "./Label.svelte";
 
     export let mod: ServerMod;
@@ -30,6 +32,8 @@
 
     $: owner = mod.developers.filter((d) => d.is_owner)[0];
     $: paid = mod.tags.includes("paid");
+    
+    $: placeholder_icon = version.status == "accepted" ? iconPlaceholder : iconPending;
 </script>
 
 <div
@@ -46,7 +50,7 @@
                         title={`Logo for the mod ${version.name}`}
                         class="mod-image">
                         <img
-                            src={iconPlaceholder}
+                            src={placeholder_icon}
                             alt={`Placeholder logo for the mod ${version.name}`}
                             class="mod-image" />
                     </object>
@@ -137,7 +141,7 @@
                         title={`Logo for the mod ${version.name}`}
                         style="max-height: 6rem;">
                         <img
-                            src={iconPlaceholder}
+                            src={placeholder_icon}
                             alt={`Placeholder logo for the mod ${version.name}`}
                             style="max-height: 6rem;" />
                     </object>

@@ -19,8 +19,8 @@
     import Label from "$lib/components/Label.svelte";
     import InfoBox from "$lib/components/InfoBox.svelte";
     import iconPlaceholder from "$lib/assets/icon-placeholder.png";
+    import iconPending from "$lib/assets/icon-pending.png";
     import VersionCards from "$lib/components/VersionCards.svelte";
-    import Empty from "$lib/components/Empty.svelte";
     import Pagination from "$lib/components/Pagination.svelte";
     import LoadingOverlay from "$lib/components/LoadingOverlay.svelte";
     import VersionCard from "$lib/components/VersionCard.svelte";
@@ -57,6 +57,8 @@
     const multiple_links = mod_source
         ? (!!data.mod.links?.homepage || !!data.mod.links?.community)
         : (!!data.mod.links?.homepage && !!data.mod.links?.community);
+
+    $: placeholder_icon = data.version.status == "accepted" ? iconPlaceholder : iconPending;
 
     const updateSearch = async () => {
         searching = true;
@@ -102,7 +104,7 @@
 
 <header>
     <object type="image/png" data={logoUrl} title={`mod logo for ${data.version.name}`} style="max-height: 8rem;">
-        <img src={iconPlaceholder} alt={`placeholder logo for ${data.version.name}`} style="max-height: 8rem;" />
+        <img src={placeholder_icon} alt={`placeholder logo for ${data.version.name}`} style="max-height: 8rem;" />
     </object>
 
     <Column align="left" gap="tiny">
