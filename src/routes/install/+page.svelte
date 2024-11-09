@@ -78,6 +78,16 @@
             You can join <Link --link-color="var(--accent-300)" href="https://youtu.be/RKwBBcHk6OA">the Premiere of our announcement video</Link> when the update releases!
         </InfoBox>
     </section>
+    <InfoBox type="warning">
+        Geode is not yet out for Geometry Dash 2.207. Older downloads are provided below, but <b>will not work</b> on 2.207.
+        <br /> <br />
+        For news on Geode for Geometry Dash 2.207, please join the
+        <Link --link-color="var(--accent-300)" href="https://discord.gg/9e43WMKzhp">Discord server</Link>
+        and follow our accounts on
+        <Link --link-color="var(--accent-300)" href="https://bsky.app/profile/geode-sdk.org">Bluesky</Link>
+        or
+        <Link --link-color="var(--accent-300)" href="https://twitter.com/GeodeSDK">Twitter</Link>.
+    </InfoBox>
     <section>
         <Column>
             <p><strong>Installation instructions</strong></p>
