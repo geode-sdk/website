@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { abbreviateNumber, formatNumber } from "$lib";
+    import { serverTimestampToAgoString, serverTimestampToDateString, abbreviateNumber, formatNumber } from "$lib";
     import type { ServerMod } from "$lib/api/models/mod.js";
     import type { ServerModVersion } from "$lib/api/models/mod-version.js";
     import Column from "./Column.svelte";
@@ -20,7 +20,11 @@
             <Link href={`/mods/${mod.id}?version=${version.version}`}>
                 <h2>{version.version}</h2>
             </Link>
-            <!-- <span class="card-info"><Icon icon="time"/>{"Released " + serverTimestampToAgoString("19")}</span> -->
+            {#if version.created_at}
+                <span class="card-info" title={serverTimestampToDateString(version.created_at)}>
+                    <Icon icon="time"/>{"Released " + serverTimestampToAgoString(version.created_at)}
+                </span>
+            {/if}
             <span
                 class="card-info"
                 title="{formatNumber(version.download_count)} downloads">

@@ -50,4 +50,6 @@ export interface ServerModVersion {
     status: ModStatus;
     direct_download_link?: string;
     info?: string;
+    created_at: string | null;
+    updated_at: string | null;
 }
