@@ -7,6 +7,7 @@
     export let href: string;
     export let bold = false;
     export let centered = false;
+    export let newTab = false;
 
     function scrollToElement(id: string) {
         // Remove any existing scroll highlights
@@ -35,6 +36,8 @@
 <a
     href={href} style="{bold ? '--link-weight: 600' : undefined}"
     on:click={href.startsWith('#') ? smoothScrollToAnchor : undefined}
+    target={newTab ? '_blank' : undefined}
+    rel={newTab ? 'noopener noreferrer' : undefined}
 >
     {#if icon}
         <Icon {icon} --icon-size=1.15em/>

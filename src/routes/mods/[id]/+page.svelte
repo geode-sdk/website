@@ -281,7 +281,7 @@
                             <p class="color-link">Direct download: <Link href={download_link}>{new URL(download_link).hostname}</Link></p>
                             {@const match = /^(https?:\/\/github\.com\/[\w-]+\/[\w-]+).+/.exec(data.version.direct_download_link)}
                             {#if match}
-                                <p class="color-link">Github repo: <Link href={match[1]}>{match[1]}</Link></p>
+                                <p class="color-link">Github repo: <Link href={match[1]} newTab={true}>{match[1]}</Link></p>
                             {/if}
                         {/if}
                         <p>Download hash: <code>{data.version.hash.substring(0, 7)}</code></p>
