@@ -44,7 +44,7 @@
     $: current_page = data.version_params.page ?? 1;
     let searching = false;
 
-    const logoUrl = IndexClient.getModLogo(data.mod.id).toString();
+    const logoUrl = IndexClient.getModLogo(data.mod.id, data.version.version).toString();
 
     const developer_ids = data.mod.developers.map(d => d.id);
     const can_update_mod = data.user && developer_ids.includes(data.user.id) || false;

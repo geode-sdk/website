@@ -207,8 +207,14 @@ export class IndexClient {
         return this.validate(data);
     }
 
-    static getModLogo(id: string): URL {
-        return new URL(`${BASE_URL}/v1/mods/${id}/logo`);
+    static getModLogo(id: string, version?: string): URL {
+        const url = new URL(`${BASE_URL}/v1/mods/${id}/logo`);
+
+        if (version) {
+            url.searchParams.append("version", version);
+        }
+
+        return url;
     }
 
     async updateMod(id: string, body: UpdateModBody): Promise<void> {

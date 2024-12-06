@@ -28,7 +28,7 @@
             ? `/mods/${mod.id}?version=${version.version}`
             : `/mods/${mod.id}`;
 
-    $: logo_url = IndexClient.getModLogo(mod.id).toString();
+    $: logo_url = IndexClient.getModLogo(mod.id, version.version).toString();
 
     $: owner = mod.developers.filter((d) => d.is_owner)[0];
     $: paid = mod.tags.includes("paid");
