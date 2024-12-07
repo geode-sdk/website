@@ -192,7 +192,7 @@
                 labelOne="mod"
                 on:select={(e) => gotoPage(e.detail.page)}
             >
-                <Row gap="small">
+                <Row gap="small" justify="bottom">
                     <SelectButton
                         on:select={() => view = 'list'} selected={view === 'list'} outsideState={true}
                         style="secondary"

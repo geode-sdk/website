@@ -41,7 +41,10 @@
             style="dark-small"
             disabled={disabled || total == 0 || page == max_page} />
     </Row>
-    <slot />
+    
+    <div style="justify-self: end;">
+        <slot />
+    </div>
 </nav>
 
 <style lang="scss">
@@ -57,10 +60,6 @@
         @include gt-md {
             display: grid;
             grid-template-columns: 1fr max-content 1fr;
-        }
-
-        & :global(*:last-child) {
-            justify-self: end;
         }
     }
 </style>
