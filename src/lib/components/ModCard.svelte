@@ -17,6 +17,7 @@
     import iconPending from "$lib/assets/icon-pending.png";
 
     import Label from "./Label.svelte";
+    import ModLogo from "./ModLogo.svelte";
 
     export let mod: ServerMod;
     export let version: ServerModVersion;
@@ -44,16 +45,9 @@
         <div class="left">
             <span class="click-to-go-to-page">
                 <Link href={mod_url} centered={true}>
-                    <object
-                        type="image/png"
-                        data={logo_url}
-                        title={`Logo for the mod ${version.name}`}
-                        class="mod-image">
-                        <img
-                            src={placeholder_icon}
-                            alt={`Placeholder logo for the mod ${version.name}`}
-                            class="mod-image" />
-                    </object>
+                    <div class="mod-icon-container">
+                        <ModLogo mod={mod} version={version} />
+                    </div>
                 </Link>
             </span>
             <Gap size="normal" />
@@ -135,16 +129,9 @@
                     </span>
                 </Link>
                 <Link href={mod_url} centered={true}>
-                    <object
-                        type="image/png"
-                        data={logo_url}
-                        title={`Logo for the mod ${version.name}`}
-                        style="max-height: 6rem;">
-                        <img
-                            src={placeholder_icon}
-                            alt={`Placeholder logo for the mod ${version.name}`}
-                            style="max-height: 6rem;" />
-                    </object>
+                    <div class="mod-icon-container">
+                        <ModLogo mod={mod} version={version} size="medium" />
+                    </div>
                 </Link>
             </Column>
         </span>
@@ -206,13 +193,6 @@
         line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
-    }
-
-    .mod-image {
-       	height: 336px;
-       	width: 336px;
-       	max-height: 5rem;
-       	max-width: 5rem;
     }
 
     .mod-background.featured {
@@ -283,7 +263,7 @@
                 flex-shrink: 0;
             }
 
-            & object {
+            & .mod-icon-container {
                 transition-duration: var(--transition-duration);
                 pointer-events: none;
             }
@@ -295,7 +275,7 @@
                 transparent
             );
 
-            & .click-to-go-to-page object {
+            & .click-to-go-to-page .mod-icon-container {
                 transform: scale(110%);
             }
             & h1 {

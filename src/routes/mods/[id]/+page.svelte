@@ -28,6 +28,7 @@
     import SelectOption from "$lib/components/SelectOption.svelte";
     import type { ModStatus } from "$lib/api/models/mod-version.js";
     import GeodeMarkdown from "$lib/components/GeodeMarkdown.svelte";
+    import ModLogo from "$lib/components/ModLogo.svelte";
 
     export let data: PageData;
 
@@ -103,9 +104,7 @@
 <Gap size="large" />
 
 <header>
-    <object type="image/png" data={logoUrl} title={`mod logo for ${data.version.name}`} style="max-height: 8rem;">
-        <img src={placeholder_icon} alt={`placeholder logo for ${data.version.name}`} style="max-height: 8rem;" />
-    </object>
+    <ModLogo mod={data.mod} version={data.version} size="large" />
 
     <Column align="left" gap="tiny">
         <div class="title-container">
