@@ -13,8 +13,6 @@
         serverTimestampToDateString,
         formatNumber,
     } from "$lib";
-    import iconPlaceholder from "$lib/assets/icon-placeholder.png";
-    import iconPending from "$lib/assets/icon-pending.png";
 
     import Label from "./Label.svelte";
     import ModLogo from "./ModLogo.svelte";
@@ -29,12 +27,8 @@
             ? `/mods/${mod.id}?version=${version.version}`
             : `/mods/${mod.id}`;
 
-    $: logo_url = IndexClient.getModLogo(mod.id, version.version).toString();
-
     $: owner = mod.developers.filter((d) => d.is_owner)[0];
     $: paid = mod.tags.includes("paid");
-    
-    $: placeholder_icon = version.status == "accepted" ? iconPlaceholder : iconPending;
 </script>
 
 <div

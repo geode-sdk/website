@@ -17,8 +17,18 @@
 			? "6rem"
 			: "5rem";
 
-	let logoUrl = IndexClient.getModLogo(mod.id, version.version).toString();
-	const placeholderIcon = version.status == "accepted" ? iconPlaceholder : iconPending;
+	$: accepted = version.status == "accepted";
+
+	// put both the version and status into the cache to prevent stale icons from being cached
+	// (pending icons show the old accepted icon for that version until that version is accepted)
+	$: logoUrl = IndexClient.getModLogo(mod.id, {
+		version: version.version,
+		status: version.status != "accepted"
+			? version.status
+			: undefined,
+	}).toString();
+
+	$: placeholderIcon = accepted ? iconPlaceholder : iconPending;
 
 	const checkPlaceholder = (node: HTMLImageElement) => {
 		if (node.complete && node.naturalWidth == 0 && node.naturalHeight == 0) {

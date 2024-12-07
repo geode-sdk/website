@@ -100,6 +100,11 @@ export interface UpdateProfileBody {
     display_name: string;
 }
 
+export interface ModLogoCacheParams {
+	version?: string;
+	status?: ModStatus;
+}
+
 type GlobalFetch = typeof fetch;
 
 export class IndexClient {
@@ -207,11 +212,15 @@ export class IndexClient {
         return this.validate(data);
     }
 
-    static getModLogo(id: string, version?: string): URL {
+    static getModLogo(id: string, params?: ModLogoCacheParams): URL {
         const url = new URL(`${BASE_URL}/v1/mods/${id}/logo`);
 
-        if (version) {
-            url.searchParams.append("version", version);
+        if (params?.version) {
+            url.searchParams.append("version", params.version);
+        }
+
+        if (params?.status) {
+            url.searchParams.append("status", params.status);
         }
 
         return url;

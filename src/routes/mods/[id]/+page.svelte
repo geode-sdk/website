@@ -18,8 +18,6 @@
     import Waves from "$lib/components/Waves.svelte";
     import Label from "$lib/components/Label.svelte";
     import InfoBox from "$lib/components/InfoBox.svelte";
-    import iconPlaceholder from "$lib/assets/icon-placeholder.png";
-    import iconPending from "$lib/assets/icon-pending.png";
     import VersionCards from "$lib/components/VersionCards.svelte";
     import Pagination from "$lib/components/Pagination.svelte";
     import LoadingOverlay from "$lib/components/LoadingOverlay.svelte";
@@ -45,7 +43,12 @@
     $: current_page = data.version_params.page ?? 1;
     let searching = false;
 
-    const logoUrl = IndexClient.getModLogo(data.mod.id, data.version.version).toString();
+    const logoUrl = IndexClient.getModLogo(data.mod.id, {
+        version: data.version.version,
+        status: data.version.status != "accepted"
+            ? data.version.status
+            : undefined,
+    }).toString();
 
     const developer_ids = data.mod.developers.map(d => d.id);
     const can_update_mod = data.user && developer_ids.includes(data.user.id) || false;
@@ -58,8 +61,6 @@
     const multiple_links = mod_source
         ? (!!data.mod.links?.homepage || !!data.mod.links?.community)
         : (!!data.mod.links?.homepage && !!data.mod.links?.community);
-
-    $: placeholder_icon = data.version.status == "accepted" ? iconPlaceholder : iconPending;
 
     const updateSearch = async () => {
         searching = true;
