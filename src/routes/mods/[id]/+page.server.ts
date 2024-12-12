@@ -4,6 +4,7 @@ import {
     type Paginated,
     type GetModVersionsParams,
 } from "$lib/api/index-repository.js";
+import { getCachedTags } from "$lib/server/cache.js";
 import { toIntSafe } from "$lib/api/helpers.js";
 import type { ServerDeveloper, ServerTag } from "$lib/api/models/base.js";
 import type {
@@ -214,7 +215,7 @@ export const load: PageServerLoad = async ({ fetch, url, params, cookies }) => {
 
     let tags: ServerTag[] = [];
     try {
-        tags = await client.getTags();
+        tags = await getCachedTags(client);
     } catch (e) {}
 
     return { mod, version, user, versions, tags, version_params };

@@ -4,30 +4,10 @@ import {
     IndexClient,
     type ModSearchParams,
 } from "$lib/api/index-repository.js";
+import { getCachedTags } from "$lib/server/cache.js";
 import { toIntSafe, undefIfEmpty, onlyIfTrue } from "$lib/api/helpers.js";
 import type { ModStatus } from "$lib/api/models/mod-version.js";
 import type { PageServerLoad } from "./$types.js";
-import { redis } from "$lib/server/redis.js";
-import type { ServerTag } from "$lib/api/models/base.js";
-
-async function getTags(client: IndexClient): Promise<ServerTag[]> {
-    const cache_key = `listing_tags:1`;
-    if (redis) {
-        const cached_tags = await redis.get(cache_key);
-        if (cached_tags) {
-            return JSON.parse(cached_tags);
-        }
-    }
-
-    const tags = await client.getTags();
-
-    if (redis) {
-        // this delay is more arbitrary ig
-        await redis.set(cache_key, JSON.stringify(tags), { EX: 5 * 60 });
-    }
-
-    return tags;
-}
 
 export const load: PageServerLoad = async ({ url, fetch, cookies }) => {
     const params: ModSearchParams = {
@@ -48,7 +28,7 @@ export const load: PageServerLoad = async ({ url, fetch, cookies }) => {
 
     try {
         // we don't need to worry about locks as we're not about to get ratelimited for this
-        const tags = getTags(client);
+        const tags = getCachedTags(client);
 
         try {
             const token = cookies.get("token");
