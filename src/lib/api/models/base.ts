@@ -5,3 +5,10 @@ export interface ServerDeveloper {
     verified: boolean;
     admin: boolean;
 }
+
+export interface ServerTag {
+    id: number;
+    name: string;
+    display_name: string;
+    is_readonly: boolean;
+}

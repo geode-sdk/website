@@ -8,6 +8,7 @@
 		import LoadingCircle from "$lib/components/LoadingCircle.svelte";
 
 		import { iconForTag } from "$lib/index.js";
+		import type { ServerTag } from "$lib/api/models/base";
 
 		function toggleSet<T>(set: Set<T>, value: T) {
 				set.has(value) ? set.delete(value) : set.add(value);
@@ -15,7 +16,7 @@
 
 		export let platforms: Set<string>;
 		export let tags: Set<string>;
-		export let tagsListing: Promise<string[]> | undefined;
+		export let tagsListing: Promise<ServerTag[]> | undefined;
 		export let featured: boolean;
 		export let pending: boolean;
 
@@ -79,13 +80,13 @@
 							{#if server_tags}
 									{#each server_tags as tag}
 											<SelectButton
-													icon={iconForTag(tag)}
-													selected={tags.has(tag)}
+													icon={iconForTag(tag.name)}
+													selected={tags.has(tag.name)}
 													on:select={() => {
-															toggleSet(tags, tag);
+															toggleSet(tags, tag.name);
 															updateSearch();
 													}}>
-													{tag.charAt(0).toUpperCase() + tag.slice(1)}
+													{tag.display_name}
 											</SelectButton>
 									{/each}
 							{:else}

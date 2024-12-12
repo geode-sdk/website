@@ -8,8 +8,9 @@ import { toIntSafe, undefIfEmpty, onlyIfTrue } from "$lib/api/helpers.js";
 import type { ModStatus } from "$lib/api/models/mod-version.js";
 import type { PageServerLoad } from "./$types.js";
 import { redis } from "$lib/server/redis.js";
+import type { ServerTag } from "$lib/api/models/base.js";
 
-async function getTags(client: IndexClient): Promise<string[]> {
+async function getTags(client: IndexClient): Promise<ServerTag[]> {
     const cache_key = `listing_tags:1`;
     if (redis) {
         const cached_tags = await redis.get(cache_key);

@@ -1,6 +1,6 @@
 import * as publicEnv from "$env/static/public";
 
-import type { ServerDeveloper } from "./models/base";
+import type { ServerDeveloper, ServerTag } from "./models/base";
 import type { ServerMod, ServerSimpleMod } from "./models/mod.js";
 import type { ModStatus, ServerModVersion } from "./models/mod-version.js";
 import type { ServerStats } from "./models/stats";
@@ -407,11 +407,11 @@ export class IndexClient {
         }
     }
 
-    async getTags(): Promise<string[]> {
-        const r = await this.fetch(`${BASE_URL}/v1/tags`);
+    async getTags(): Promise<ServerTag[]> {
+        const r = await this.fetch(`${BASE_URL}/v1/detailed-tags`);
         const data = await r.json();
 
-        return this.validate<string[]>(data);
+        return this.validate<ServerTag[]>(data);
     }
 
     async getDevelopers(

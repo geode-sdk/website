@@ -5,7 +5,7 @@ import {
     type GetModVersionsParams,
 } from "$lib/api/index-repository.js";
 import { toIntSafe } from "$lib/api/helpers.js";
-import type { ServerDeveloper } from "$lib/api/models/base.js";
+import type { ServerDeveloper, ServerTag } from "$lib/api/models/base.js";
 import type {
     ModStatus,
     ServerModVersion,
@@ -212,5 +212,10 @@ export const load: PageServerLoad = async ({ fetch, url, params, cookies }) => {
         versions = await client.getModVersions(id, version_params);
     } catch (e) {}
 
-    return { mod, version, user, versions, version_params };
+    let tags: ServerTag[] = [];
+    try {
+        tags = await client.getTags();
+    } catch (e) {}
+
+    return { mod, version, user, versions, tags, version_params };
 };
