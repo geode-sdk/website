@@ -52,6 +52,10 @@
         //     transform: scale(105%) translateY(-.2em);
         // }
 
+        &:focus-visible {
+            outline: revert;
+        }
+
         &.primary-filled-dark {
             color: var(--primary-300);
             background-color: var(--primary-950);

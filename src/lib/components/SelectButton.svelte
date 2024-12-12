@@ -44,6 +44,11 @@
             background-color: color-mix(in srgb, var(--secondary-300) 25%, transparent);
             cursor: pointer;
         }
+
+        &:focus-visible {
+            outline: revert;
+        }
+
         &.selected {
             &.primary {
                 border-color: color-mix(in srgb, var(--primary-300) 50%, transparent);
