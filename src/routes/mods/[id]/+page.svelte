@@ -88,6 +88,11 @@
         searching = false;
     }
 
+    const getTagDisplay = (tag: string) => {
+        const foundTag = data.tags.find(x => x.name == tag);
+        return foundTag ? foundTag.display_name : (tag.charAt(0).toUpperCase() + tag.slice(1));
+    }
+
     export let form: ActionData;
 </script>
 
@@ -346,7 +351,7 @@
                         <Row wrap="wrap" gap="tiny" align="center" justify="top">
                             {#each data.mod.tags as tag}
                                 <Label icon={iconForTag(tag)} style="secondary">
-                                    {tag.charAt(0).toUpperCase() + tag.slice(1)}
+                                    {getTagDisplay(tag)}
                                 </Label>
                             {/each}
                         </Row>
