@@ -5,7 +5,18 @@
 </script>
 
 {#if text}
-	<span style={`color: ${color}`}>{raw}</span>
-{:else}
-	<slot />
+	<span class="colored" style={`--custom-color: ${color}`}>{raw}</span>
 {/if}
+
+<style lang="scss">
+
+.colored {
+	color: var(--custom-color);
+}
+
+@media (prefers-contrast: more) {
+	.colored {
+		color: var(--text-color);
+	}
+}
+</style>
