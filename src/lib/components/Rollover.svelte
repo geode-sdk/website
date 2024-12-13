@@ -44,6 +44,10 @@
             & > :global(.icon) {
                 transition: all 150ms;
             }
+            
+            &::marker, &::-webkit-details-marker {
+            	display: none;
+            }
         }
         & > article {
             opacity: 0%;
