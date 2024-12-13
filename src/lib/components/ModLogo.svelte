@@ -8,7 +8,6 @@
 
 	export let mod: ServerMod;
 	export let version: ServerModVersion;
-
 	export let size: "large" | "medium" | "small" = "small";
 
 	$: iconSize = size == "large"
@@ -31,18 +30,25 @@
 	$: placeholderIcon = accepted ? iconPlaceholder : iconPending;
 
 	const checkPlaceholder = (node: HTMLImageElement) => {
-		if (node.complete && node.naturalWidth == 0 && node.naturalHeight == 0) {
-			logoUrl = placeholderIcon;
+		if (node.complete) {
+			imageLoaded = true;
+			if (node.naturalWidth == 0 && node.naturalHeight == 0) {
+				logoUrl = placeholderIcon;
+			}
 		}
 	}
+	
+	let imageLoaded = false;
 </script>
 
 <!-- on:error doesn't run early enough, but the language server complains, lol -->
-<img onerror={`this.src="${placeholderIcon}"`}
+<img onerror={`this.src="${placeholderIcon}";`}
+	onload="this.style.removeProperty('visibility');"
 	src={logoUrl}
 	use:checkPlaceholder
 	alt={`Logo for the mod ${version.name}`}
 	style:--icon-size={iconSize}
+	style:visibility={imageLoaded ? "initial" : "hidden"}
 	class="mod-image" />
 
 <style>
