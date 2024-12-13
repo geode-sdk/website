@@ -1,9 +1,10 @@
 <script lang="ts">
-    import SvelteMarkdown from "svelte-markdown";
-    import Empty from "$lib/components/Empty.svelte";
-    import MarkdownImage from "./MarkdownImage.svelte";
+	import SvelteMarkdown from "svelte-markdown";
+	import Empty from "$lib/components/Empty.svelte";
+	import MarkdownImage from "./MarkdownImage.svelte";
+	import MarkdownLink from "./MarkdownLink.svelte";
 
-    export let source: string;
+	export let source: string;
 </script>
 
-<SvelteMarkdown renderers={{ html: Empty, image: MarkdownImage }} {source} />
+<SvelteMarkdown renderers={{ html: Empty, image: MarkdownImage, link: MarkdownLink }} {source} />
