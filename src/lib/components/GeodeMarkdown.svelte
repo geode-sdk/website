@@ -60,35 +60,38 @@
 	}
 	
 	export let source: string;
-	const tokens = marked.lexer(source);
 
-	const colors: string[] = [];
+	$: tokens = marked.lexer(source);
+
 	const colorExp = /^<\/?c[- a-zA-Z0-9]*?>$/;
-
-	// this is incredibly bad. i'm sorry
-	marked.walkTokens(tokens, (token) => {
-		if (colorExp.test(token.raw)) {
-			const isClosing = token.raw[1] == "/";
-			
-			if (!isClosing) {
-				const color = parseColorTag(token.raw);
-				if (color) {
-					colors.push(color);
+	$: {
+		const colors: string[] = [];
+		
+		// this is incredibly bad. i'm sorry
+		marked.walkTokens(tokens, (token) => {
+			if (colorExp.test(token.raw)) {
+				const isClosing = token.raw[1] == "/";
+				
+				if (!isClosing) {
+					const color = parseColorTag(token.raw);
+					if (color) {
+						colors.push(color);
+					}
+				} else {
+					colors.pop();
 				}
-			} else {
-				colors.pop();
+				
+				token.type = "text";
+				token.raw = "";
+				return;
 			}
 			
-			token.type = "text";
-			token.raw = "";
-			return;
-		}
-		
-		if (colors.length > 0 && token.type == "text") {
-			token.type = "html";
-			(token as any).color = colors[colors.length - 1];
-		}
-	});
+			if (colors.length > 0 && token.type == "text") {
+				token.type = "html";
+				(token as any).color = colors[colors.length - 1];
+			}
+		});
+	}
 </script>
 
 <SvelteMarkdown renderers={{

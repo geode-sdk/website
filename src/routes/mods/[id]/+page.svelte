@@ -43,22 +43,22 @@
     $: current_page = data.version_params.page ?? 1;
     let searching = false;
 
-    const logoUrl = IndexClient.getModLogo(data.mod.id, {
+    $: logoUrl = IndexClient.getModLogo(data.mod.id, {
         version: data.version.version,
         status: data.version.status != "accepted"
             ? data.version.status
             : undefined,
     }).toString();
 
-    const developer_ids = data.mod.developers.map(d => d.id);
-    const can_update_mod = data.user && developer_ids.includes(data.user.id) || false;
-    const can_modify_mod = data.user?.admin || false;
-    const owns_mod = can_update_mod && data.mod.developers.some(d => d.is_owner && d.id == data.user?.id);
+    $: developer_ids = data.mod.developers.map(d => d.id);
+    $: can_update_mod = data.user && developer_ids.includes(data.user.id) || false;
+    $: can_modify_mod = data.user?.admin || false;
+    $: owns_mod = can_update_mod && data.mod.developers.some(d => d.is_owner && d.id == data.user?.id);
 
-    const paid = data.mod.tags.includes("paid");
+    $: paid = data.mod.tags.includes("paid");
 
-    const mod_source = data.mod.repository ?? data.mod.links?.source;
-    const multiple_links = mod_source
+    $: mod_source = data.mod.repository ?? data.mod.links?.source;
+    $: multiple_links = mod_source
         ? (!!data.mod.links?.homepage || !!data.mod.links?.community)
         : (!!data.mod.links?.homepage && !!data.mod.links?.community);
 
