@@ -55,6 +55,7 @@
         background-repeat: repeat-y;
         
         filter: blur(4px);
+        will-change: transform;
 
         position: absolute;
         z-index: -11;
