@@ -50,6 +50,7 @@ export interface ModSearchParams {
     query?: string;
     gd?: string;
     sort?: ModSort;
+    geode?: string;
 }
 
 export interface UpdateModBody {

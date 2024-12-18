@@ -31,6 +31,7 @@
     let featured = data.params.featured ?? false;
     let developer = data.params.developer ?? "";
     let pending = data.params.status != "accepted";
+    let geode = data.params.geode ?? "";
     let gd = data.params.gd ?? "";
     let per_page = data.params.per_page ?? 12;
     let searching = false;
@@ -92,6 +93,9 @@
         }
         if (gd) {
             params.set("gd", gd);
+        }
+        if (geode) {
+            params.set("geode", geode);
         }
         params.set("sort", sort);
 
