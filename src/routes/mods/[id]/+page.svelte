@@ -122,7 +122,7 @@
             </h1>
         </div>
         <p>
-            {#each data.mod.developers as dev, index}
+            {#each data.mod.developers.sort((a, b) => a.is_owner ? -1 : b.is_owner ? 1 : 0) as dev, index}
                 {index > 0 ? ', ' : ''}<Link href={`/mods?developer=${dev.username}`} --link-color="var(--accent-300)">{dev.display_name}</Link>
             {/each}
         </p>
