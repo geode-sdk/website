@@ -50,12 +50,9 @@
     @use '$lib/styles/media-queries.scss' as *;
 
     .bg {
-        background-image: url("$lib/assets/bgart.png");
+        background-image: url("$lib/assets/bgart-blur.png");
         background-size: contain;
         background-repeat: repeat-y;
-        
-        filter: blur(4px);
-        will-change: transform;
 
         position: absolute;
         z-index: -11;
