@@ -64,6 +64,7 @@ export const icons = {
     community: "mdi:account-group",
     image: "mdi:file-image",
     "image-missing": "mdi:file-image-remove",
+    eye: "mdi:eye",
 
     "tag-universal": "mdi:globe",
     "tag-gameplay": "mdi:gamepad-variant",

@@ -33,7 +33,7 @@
     let pending = data.params.status != "accepted";
     let geode = data.params.geode ?? "";
     let gd = data.params.gd ?? "";
-    let per_page = data.params.per_page ?? 12;
+    let per_page = data.params.per_page ?? 10;
     let searching = false;
     let view: 'list' | 'dual-list' | 'grid' = 'dual-list';
     let searchBar: HTMLInputElement;
@@ -49,7 +49,7 @@
     $: max_count = data.mods?.count ?? 0;
     $: max_page = Math.floor((max_count - 1) / per_page) + 1;
 
-    const perPageOptions = [10, 15, 25];
+    const perPageOptions = [10, 15, 20];
 
     const updateQuery = () => {
         // debouce search bar so we're not making a ton of useless requests
@@ -63,7 +63,14 @@
         }, 300);
     }
 
-    const updateSearch = async () => {
+    const scrollToTop = () => {
+        document.body.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+        });
+    }
+
+    const updateSearch = async (scroll = false) => {
         searching = true;
         const params = new URLSearchParams();
         if (query) {
@@ -101,6 +108,8 @@
 
         await goto(`/mods?${params}`, { noScroll: true, keepFocus: true });
         searching = false;
+        if (scroll)
+            scrollToTop();
     }
 
     const gotoPage = async (page: number) => {
@@ -117,6 +126,7 @@
 
         await goto(`/mods?${params}`, { noScroll: true });
         searching = false;
+        scrollToTop();
     }
 
     const onKeydown = (e: KeyboardEvent) => {
@@ -265,22 +275,31 @@
                 {/if}
             </LoadingOverlay>
 
-            {#if
-                data.mods && data.mods.data.length < data.mods.count &&
-                per_page !== perPageOptions[perPageOptions.length - 1]
-            }
+            {#if data.mods && data.mods.data.length > 0}
                 <div class="show-more-container">
-                    <Button style="primary-filled" on:click={() => {
-                        per_page = perPageOptions[perPageOptions.indexOf(per_page) + 1];
-                        updateSearch();
-                    }}>Show more ({perPageOptions[perPageOptions.indexOf(per_page) + 1]})</Button>
-                </div>
-            {:else if data.mods && data.mods.data.length > 0 && data.mods.count > 10}
-                <div class="show-more-container">
-                    <Button style="secondary-filled" on:click={() => {
-                        per_page = perPageOptions[0];
-                        updateSearch();
-                    }}>Show less (10)</Button>
+                    <Pagination
+                        total={data.mods?.count ?? 0}
+                        perPage={per_page}
+                        pageCount={data.mods?.data.length ?? 0}
+                        page={current_page}
+                        disabled={!data.mods}
+                        label="mods"
+                        labelOne="mod"
+                        on:select={(e) => gotoPage(e.detail.page)}
+                    >
+                        <Select title="Per page" titleIcon="eye" on:select={ev => {
+                            const newValue = parseInt(ev.detail.value);
+                            if (per_page != newValue) {
+                                const scroll = newValue < per_page;
+                                per_page = newValue;
+                                updateSearch(scroll);
+                            }
+                        }}>
+                            {#each perPageOptions as option}
+                                <SelectOption icon="right" title={option.toString()} value={option.toString()} isDefault={option == per_page}/>
+                            {/each}
+                        </Select>
+                    </Pagination>
                 </div>
             {/if}
         </main>
@@ -345,9 +364,6 @@
     }
 
     .show-more-container {
-        display: flex;
-        align-self: center;
-        justify-self: center;
         margin-top: .5rem;
     }
     .mod-listing {
