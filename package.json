@@ -33,6 +33,7 @@
     "type": "module",
     "dependencies": {
         "dayjs": "^1.11.11",
+        "marked": "^15.0.4",
         "redis": "^4.7.0",
         "svelte-markdown": "^0.4.1"
     }
