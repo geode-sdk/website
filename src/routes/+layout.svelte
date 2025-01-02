@@ -39,7 +39,7 @@
                 </p>
                 <Row gap=small>
                     <Icon icon="copyright"/> 
-                    <p>Geode Team 2024</p>
+                    <p>Geode Team {new Date().getFullYear()}</p>
                 </Row>
             </Column>
         </Waves>
