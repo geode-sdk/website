@@ -43,9 +43,7 @@ export const load: PageServerLoad = async ({ url, fetch, cookies }) => {
                 }
             }
 
-            console.log("BEFORE");
             const mods = await client.getMods(params);
-            console.log("AFTER");
             return { mods, params, tags };
         } catch (e) {
             if (e instanceof IndexError) {
