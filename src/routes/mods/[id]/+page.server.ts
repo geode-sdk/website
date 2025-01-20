@@ -174,7 +174,7 @@ export const load: PageServerLoad = async ({ fetch, url, params, cookies }) => {
     try {
         mod = await client.getMod(id);
     } catch (e) {
-        error(404, {
+        return error(404, {
             message: "Mod not found.",
         });
     }
@@ -183,7 +183,7 @@ export const load: PageServerLoad = async ({ fetch, url, params, cookies }) => {
     try {
         version = await client.getModVersion(id, version_string);
     } catch (e) {
-        error(404, {
+        return error(404, {
             message: "Version not found.",
         });
     }
