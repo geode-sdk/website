@@ -2,7 +2,7 @@ import {
     IndexError,
     IndexClient,
     type Paginated,
-    type GetModVersionsParams,
+    type GetModVersionsParams, SetTokensResult
 } from "$lib/api/index-repository.js";
 import { getCachedTags } from "$lib/server/cache.js";
 import { toIntSafe } from "$lib/api/helpers.js";
@@ -13,17 +13,17 @@ import type {
 } from "$lib/api/models/mod-version.js";
 import type { Actions, PageServerLoad } from "./$types.js";
 import { error, fail } from "@sveltejs/kit";
+import type { ServerMod } from "$lib/api/models/mod";
 
 export const actions: Actions = {
     update_mod_version: async ({ cookies, request, params, fetch }) => {
         const id = params.id;
 
-        const token = cookies.get("token");
-        if (!token) {
-            return fail(401, { message: "no token provided" });
-        }
+        const client = new IndexClient({ fetch });
 
-        const client = new IndexClient({ token, fetch });
+        if ((await client.trySetTokens(cookies)) === SetTokensResult.UNSET) {
+            return fail(401, { message: "You are not authenticated" });
+        }
 
         const data = await request.formData();
         const status = data.get("status") as ModStatus;
@@ -51,12 +51,11 @@ export const actions: Actions = {
     update_mod: async ({ cookies, request, params, fetch }) => {
         const id = params.id;
 
-        const token = cookies.get("token");
-        if (!token) {
-            return fail(401, { message: "no token provided" });
-        }
+        const client = new IndexClient({ fetch });
 
-        const client = new IndexClient({ token, fetch });
+        if ((await client.trySetTokens(cookies)) === SetTokensResult.UNSET) {
+            return fail(401, { message: "You are not authenticated" });
+        }
 
         const data = await request.formData();
 
@@ -76,12 +75,11 @@ export const actions: Actions = {
     create_version: async ({ cookies, request, params, fetch }) => {
         const id = params.id;
 
-        const token = cookies.get("token");
-        if (!token) {
-            return fail(401, { message: "no token provided" });
-        }
+        const client = new IndexClient({ fetch });
 
-        const client = new IndexClient({ token, fetch });
+        if ((await client.trySetTokens(cookies)) === SetTokensResult.UNSET) {
+            return fail(401, { message: "You are not authenticated" });
+        }
 
         const data = await request.formData();
 
@@ -103,12 +101,11 @@ export const actions: Actions = {
     add_developer: async ({ cookies, request, params, fetch }) => {
         const id = params.id;
 
-        const token = cookies.get("token");
-        if (!token) {
-            return fail(401, { message: "no token provided" });
-        }
+        const client = new IndexClient({ fetch });
 
-        const client = new IndexClient({ token, fetch });
+        if ((await client.trySetTokens(cookies)) === SetTokensResult.UNSET) {
+            return fail(401, { message: "You are not authenticated" });
+        }
 
         const data = await request.formData();
 
@@ -130,12 +127,11 @@ export const actions: Actions = {
     remove_developer: async ({ cookies, request, params, fetch }) => {
         const id = params.id;
 
-        const token = cookies.get("token");
-        if (!token) {
-            return fail(401, { message: "no token provided" });
-        }
+        const client = new IndexClient({ fetch });
 
-        const client = new IndexClient({ token, fetch });
+        if ((await client.trySetTokens(cookies)) === SetTokensResult.UNSET) {
+            return fail(401, { message: "You are not authenticated" });
+        }
 
         const data = await request.formData();
 
@@ -172,13 +168,9 @@ export const load: PageServerLoad = async ({ fetch, url, params, cookies }) => {
         : undefined;
 
     const client = new IndexClient({ fetch });
+    await client.trySetTokens(cookies);
 
-    const token = cookies.get("token");
-    if (token) {
-        client.setToken(token);
-    }
-
-    let mod = undefined;
+    let mod: ServerMod | undefined = undefined;
     try {
         mod = await client.getMod(id);
     } catch (e) {

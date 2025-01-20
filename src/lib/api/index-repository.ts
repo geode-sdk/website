@@ -4,6 +4,7 @@ import type { ServerDeveloper, ServerTag } from "./models/base";
 import type { ServerMod, ServerSimpleMod } from "./models/mod.js";
 import type { ModStatus, ServerModVersion } from "./models/mod-version.js";
 import type { ServerStats } from "./models/stats";
+import type { Cookies } from "@sveltejs/kit";
 
 const BASE_URL =
     "PUBLIC_API_ENDPOINT" in publicEnv &&
@@ -106,14 +107,22 @@ export interface ModLogoCacheParams {
 	status?: ModStatus;
 }
 
+export enum SetTokensResult {
+    SET_FROM_COOKIE,
+    REFRESHED,
+    UNSET
+}
+
 type GlobalFetch = typeof fetch;
 
 export class IndexClient {
     private token: string | null;
+    private refreshToken: string | null;
     private fetch: typeof fetch;
 
-    constructor(options: { token?: string | null; fetch?: GlobalFetch } = {}) {
+    constructor(options: { token?: string; refreshToken?: string; fetch?: GlobalFetch } = {}) {
         this.token = options.token ?? null;
+        this.refreshToken = options.refreshToken ?? null;
         this.fetch = options.fetch ?? fetch;
     }
 
@@ -124,14 +133,146 @@ export class IndexClient {
         return data.payload;
     }
 
-    private requireAuth() {
+    private async withRetry(callback: () => Promise<Response>): Promise<Response> {
+        if (!this.refreshToken) {
+            return await callback();
+        }
+
+        const firstResponse = await callback();
+        if (firstResponse.status === 401 && await this.tryRefreshTokens()) {
+            return await callback();
+        }
+
+        return firstResponse;
+    }
+
+    private async requireAuth() {
+        if (!this.token && this.refreshToken) {
+            await this.tryRefreshTokens();
+        }
+
         if (!this.token) {
             throw new IndexError("Not logged into client");
         }
     }
 
-    setToken(token: string) {
-        this.token = token;
+    async trySetTokens(cookies: Cookies): Promise<SetTokensResult> {
+        const auth = cookies.get("authtoken");
+        const refresh = cookies.get("refreshtoken");
+
+        if (auth && refresh) {
+            this.token = auth;
+            this.refreshToken = refresh;
+            return SetTokensResult.SET_FROM_COOKIE;
+        }
+
+        if (!auth && !refresh) {
+            return SetTokensResult.UNSET;
+        }
+
+        if (!auth && refresh) {
+            this.token = null;
+            this.refreshToken = refresh;
+
+            if (await this.tryRefreshTokens()) {
+                cookies.set("authtoken", this.token!, {
+                    path: "/",
+                    maxAge: 86400, // = 1 day
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: "strict",
+                });
+                cookies.set("refreshtoken", this.refreshToken, {
+                    path: "/",
+                    maxAge: 2592000, // = 30 days
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: "strict",
+                });
+                return SetTokensResult.REFRESHED;
+            }
+        }
+
+        return SetTokensResult.UNSET;
+    }
+
+    async startGitHubAuth(): Promise<string> {
+        const url = new URL(`${BASE_URL}/v1/login/github/web`);
+
+        const res = await this.fetch(url, {
+            headers: {
+                "Content-Type": "application/json"
+            },
+            method: "POST",
+        });
+
+        const json: BaseRequest<string> = await res.json();
+        return this.validate(json);
+    }
+
+    async onGitHubCallback(code: string, state: string): Promise<{ access_token: string, refresh_token: string }> {
+        const url = new URL(`${BASE_URL}/v1/login/github/callback`);
+
+        const res = await this.fetch(url, {
+            headers: {
+                "Content-Type": "application/json"
+            },
+            method: "POST",
+            body: JSON.stringify({ code, state })
+        });
+
+        if (res.status !== 200) {
+            // invalid code / state
+
+            throw new IndexError("Couldn't authenticate");
+        }
+        
+        const json: BaseRequest<{ access_token: string, refresh_token: string }> = await res.json();
+        const validated = this.validate(json);
+
+        this.token = validated.access_token;
+        this.refreshToken = validated.refresh_token;
+        return validated;
+    }
+
+    /**
+     * @returns true if refreshed successfuly, false otherwise
+     */
+    async tryRefreshTokens(): Promise<boolean> {
+        // No need to refresh them (hopefully)
+        if (this.token) {
+            return true;
+        }
+
+        const refresh = this.refreshToken;
+        if (!refresh) {
+            throw new IndexError("No refresh token");
+        }
+
+        const url = new URL(`${BASE_URL}/v1/login/refresh`);
+
+        const res = await this.fetch(url, {
+            headers: {
+                "Content-Type": "application/json"
+            },
+            method: "POST",
+            body: JSON.stringify({ refresh_token: refresh })
+        });
+
+        if (res.status !== 200) {
+            console.log(res.status);
+            console.log(await res.json());
+            // Bad refresh token
+
+            this.token = null;
+            this.refreshToken = null;
+            return false;
+        } else {
+            const json: BaseRequest<{ access_token: string, refresh_token: string }> = await res.json();
+            this.token = json.payload.access_token;
+            this.refreshToken = json.payload.refresh_token;
+            return true;
+        }
     }
 
     async getMods(
@@ -181,16 +322,13 @@ export class IndexClient {
             url.searchParams.set("sort", searchParams.sort);
         }
 
-        const r = await this.fetch(
-            url,
-            this.token
-                ? {
-                      headers: new Headers({
-                          Authorization: `Bearer ${this.token}`,
-                      }),
-                  }
-                : undefined,
-        );
+        const r = await this.withRetry(async () => {
+            return await this.fetch(url, {
+                headers: this.token
+                    ? {"Authorization": `Bearer ${this.token}`}
+                    : {}
+            });
+        });
 
         const data: BasePaginatedRequest<ServerMod> = await r.json();
 
@@ -198,16 +336,14 @@ export class IndexClient {
     }
 
     async getMod(id: string): Promise<ServerMod> {
-        const r = await this.fetch(
-            `${BASE_URL}/v1/mods/${id}`,
-            this.token
-                ? {
-                      headers: new Headers({
-                          Authorization: `Bearer ${this.token}`,
-                      }),
-                  }
-                : undefined,
-        );
+        const r = await this.withRetry(async () => {
+            return await this.fetch(`${BASE_URL}/v1/mods/${id}`, {
+                    headers: this.token
+                        ? { "Authorization": `Bearer ${this.token}` }
+                        : {}
+                }
+            );
+        });
         const data: BaseRequest<ServerMod> = await r.json();
 
         return this.validate(data);
@@ -228,15 +364,17 @@ export class IndexClient {
     }
 
     async updateMod(id: string, body: UpdateModBody): Promise<void> {
-        this.requireAuth();
+        await this.requireAuth();
 
-        const r = await this.fetch(`${BASE_URL}/v1/mods/${id}`, {
-            headers: new Headers({
-                Authorization: `Bearer ${this.token}`,
-                "Content-Type": "application/json",
-            }),
-            method: "PUT",
-            body: JSON.stringify(body),
+        const r = await this.withRetry(async () => {
+            return await this.fetch(`${BASE_URL}/v1/mods/${id}`, {
+                headers: new Headers({
+                    Authorization: `Bearer ${this.token}`,
+                    "Content-Type": "application/json",
+                }),
+                method: "PUT",
+                body: JSON.stringify(body),
+            });
         });
 
         if (r.status != 204) {
@@ -246,16 +384,18 @@ export class IndexClient {
     }
 
     async createMod(body: CreateModBody): Promise<void> {
-        this.requireAuth();
+        await this.requireAuth();
 
-        const r = await this.fetch(`${BASE_URL}/v1/mods`, {
-            headers: new Headers({
-                Authorization: `Bearer ${this.token}`,
-                "Content-Type": "application/json",
-            }),
-            method: "POST",
-            body: JSON.stringify(body),
-        });
+        const r = await this.withRetry(async () => {
+            return await this.fetch(`${BASE_URL}/v1/mods`, {
+                headers: new Headers({
+                    Authorization: `Bearer ${this.token}`,
+                    "Content-Type": "application/json",
+                }),
+                method: "POST",
+                body: JSON.stringify(body),
+            });
+        })
 
         if (r.status != 204) {
             const data: BaseRequest<void> = await r.json();
@@ -330,19 +470,21 @@ export class IndexClient {
         version: string,
         body: UpdateModVersionBody,
     ): Promise<void> {
-        this.requireAuth();
+        await this.requireAuth();
 
-        const r = await this.fetch(
-            `${BASE_URL}/v1/mods/${id}/versions/${version}`,
-            {
-                headers: new Headers({
-                    Authorization: `Bearer ${this.token}`,
-                    "Content-Type": "application/json",
-                }),
-                method: "PUT",
-                body: JSON.stringify(body),
-            },
-        );
+        const r = await this.withRetry(async () => {
+            return await this.fetch(
+                `${BASE_URL}/v1/mods/${id}/versions/${version}`,
+                {
+                    headers: new Headers({
+                        Authorization: `Bearer ${this.token}`,
+                        "Content-Type": "application/json",
+                    }),
+                    method: "PUT",
+                    body: JSON.stringify(body),
+                },
+            );
+        });
 
         if (r.status != 204) {
             const data: BaseRequest<void> = await r.json();
@@ -354,15 +496,17 @@ export class IndexClient {
         id: string,
         body: CreateModVersionBody,
     ): Promise<void> {
-        this.requireAuth();
+        await this.requireAuth();
 
-        const r = await this.fetch(`${BASE_URL}/v1/mods/${id}/versions`, {
-            headers: new Headers({
-                Authorization: `Bearer ${this.token}`,
-                "Content-Type": "application/json",
-            }),
-            method: "POST",
-            body: JSON.stringify(body),
+        const r = await this.withRetry(async () => {
+            return await this.fetch(`${BASE_URL}/v1/mods/${id}/versions`, {
+                headers: new Headers({
+                    Authorization: `Bearer ${this.token}`,
+                    "Content-Type": "application/json",
+                }),
+                method: "POST",
+                body: JSON.stringify(body),
+            });
         });
 
         if (r.status != 204) {
@@ -372,15 +516,17 @@ export class IndexClient {
     }
 
     async addDeveloper(id: string, body: AddDeveloperBody) {
-        this.requireAuth();
+        await this.requireAuth();
 
-        const r = await this.fetch(`${BASE_URL}/v1/mods/${id}/developers`, {
-            headers: new Headers({
-                Authorization: `Bearer ${this.token}`,
-                "Content-Type": "application/json",
-            }),
-            method: "POST",
-            body: JSON.stringify(body),
+        const r = await this.withRetry(async () => {
+            return await this.fetch(`${BASE_URL}/v1/mods/${id}/developers`, {
+                headers: new Headers({
+                    Authorization: `Bearer ${this.token}`,
+                    "Content-Type": "application/json",
+                }),
+                method: "POST",
+                body: JSON.stringify(body),
+            });
         });
 
         if (r.status != 204) {
@@ -390,17 +536,19 @@ export class IndexClient {
     }
 
     async removeDeveloper(id: string, username: string) {
-        this.requireAuth();
+        await this.requireAuth();
 
-        const r = await this.fetch(
-            `${BASE_URL}/v1/mods/${id}/developers/${username}`,
-            {
-                headers: new Headers({
-                    Authorization: `Bearer ${this.token}`,
-                }),
-                method: "DELETE",
-            },
-        );
+        const r = await this.withRetry(async () => {
+            return await this.fetch(
+                `${BASE_URL}/v1/mods/${id}/developers/${username}`,
+                {
+                    headers: new Headers({
+                        Authorization: `Bearer ${this.token}`,
+                    }),
+                    method: "DELETE",
+                },
+            );
+        });
 
         if (r.status != 204) {
             const data: BaseRequest<void> = await r.json();
@@ -448,15 +596,17 @@ export class IndexClient {
     }
 
     async updateDeveloper(id: number, body: UpdateDeveloperBody) {
-        this.requireAuth();
+        await this.requireAuth();
 
-        const r = await this.fetch(`${BASE_URL}/v1/developers/${id}`, {
-            headers: new Headers({
-                Authorization: `Bearer ${this.token}`,
-                "Content-Type": "application/json",
-            }),
-            method: "PUT",
-            body: JSON.stringify(body),
+        const r = await this.withRetry(async () => {
+            return await this.fetch(`${BASE_URL}/v1/developers/${id}`, {
+                headers: new Headers({
+                    Authorization: `Bearer ${this.token}`,
+                    "Content-Type": "application/json",
+                }),
+                method: "PUT",
+                body: JSON.stringify(body),
+            });
         });
 
         if (r.status != 204) {
@@ -466,12 +616,14 @@ export class IndexClient {
     }
 
     async getSelf(): Promise<ServerDeveloper> {
-        this.requireAuth();
+        await this.requireAuth();
 
-        const r = await this.fetch(`${BASE_URL}/v1/me`, {
-            headers: new Headers({
-                Authorization: `Bearer ${this.token}`,
-            }),
+        const r = await this.withRetry(async () => {
+            return await this.fetch(`${BASE_URL}/v1/me`, {
+                headers: new Headers({
+                    Authorization: `Bearer ${this.token}`,
+                }),
+            });
         });
         const data = await r.json();
 
@@ -479,17 +631,19 @@ export class IndexClient {
     }
 
     async getSelfMods(params?: GetSelfModsParams) {
-        this.requireAuth();
+        await this.requireAuth();
 
         const url = new URL(`${BASE_URL}/v1/me/mods`);
         if (params?.status != null) {
             url.searchParams.set("status", params.status);
         }
 
-        const r = await this.fetch(url, {
-            headers: new Headers({
-                Authorization: `Bearer ${this.token}`,
-            }),
+        const r = await this.withRetry(async () => {
+            return await this.fetch(url, {
+                headers: new Headers({
+                    Authorization: `Bearer ${this.token}`,
+                }),
+            });
         });
 
         const data = await r.json();
@@ -498,15 +652,17 @@ export class IndexClient {
     }
 
     async updateProfile(body: UpdateProfileBody) {
-        this.requireAuth();
+        await this.requireAuth();
 
-        const r = await this.fetch(`${BASE_URL}/v1/me`, {
-            headers: new Headers({
-                Authorization: `Bearer ${this.token}`,
-                "Content-Type": "application/json",
-            }),
-            method: "PUT",
-            body: JSON.stringify(body),
+        const r = await this.withRetry(async () => {
+            return await this.fetch(`${BASE_URL}/v1/me`, {
+                headers: new Headers({
+                    Authorization: `Bearer ${this.token}`,
+                    "Content-Type": "application/json",
+                }),
+                method: "PUT",
+                body: JSON.stringify(body),
+            });
         });
 
         if (r.status != 204) {
@@ -516,13 +672,15 @@ export class IndexClient {
     }
 
     async deleteToken(): Promise<void> {
-        this.requireAuth();
+        await this.requireAuth();
 
-        const r = await this.fetch(`${BASE_URL}/v1/me/token`, {
-            headers: new Headers({
-                Authorization: `Bearer ${this.token}`,
-            }),
-            method: "DELETE",
+        const r = await this.withRetry(async () => {
+            return await this.fetch(`${BASE_URL}/v1/me/token`, {
+                headers: new Headers({
+                    Authorization: `Bearer ${this.token}`,
+                }),
+                method: "DELETE",
+            });
         });
 
         if (r.status != 204) {
@@ -534,13 +692,15 @@ export class IndexClient {
     }
 
     async deleteAllTokens(): Promise<void> {
-        this.requireAuth();
+        await this.requireAuth();
 
-        const r = await this.fetch(`${BASE_URL}/v1/me/tokens`, {
-            headers: new Headers({
-                Authorization: `Bearer ${this.token}`,
-            }),
-            method: "DELETE",
+        const r = await this.withRetry(async () => {
+            return await this.fetch(`${BASE_URL}/v1/me/tokens`, {
+                headers: new Headers({
+                    Authorization: `Bearer ${this.token}`,
+                }),
+                method: "DELETE",
+            });
         });
 
         if (r.status != 204) {

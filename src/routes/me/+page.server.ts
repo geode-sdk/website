@@ -1,6 +1,10 @@
 import { fail, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types.js";
-import { IndexError, IndexClient } from "$lib/api/index-repository.js";
+import {
+    IndexClient,
+    IndexError,
+    SetTokensResult,
+} from "$lib/api/index-repository.js";
 
 export const actions: Actions = {
     update_self: async ({ cookies, request, fetch }) => {
@@ -78,26 +82,20 @@ export const actions: Actions = {
 };
 
 export const load: PageServerLoad = async ({ cookies, fetch }) => {
-    const token = cookies.get("token");
-    if (!token) {
+    const client = new IndexClient({ fetch });
+
+    const result = await client.trySetTokens(cookies);
+
+    if (result === SetTokensResult.UNSET) {
+        console.log("unset");
         redirect(302, "/login");
     }
-
-    const client = new IndexClient({ token, fetch });
 
     // i'm having a js moment, honestly
     let self = undefined;
     try {
         self = await client.getSelf();
 
-        // refresh cookies
-        cookies.set("token", token, {
-            path: "/",
-            maxAge: 31536000,
-            httpOnly: true,
-            secure: true,
-            sameSite: "strict",
-        });
         cookies.set("cached_profile", JSON.stringify(self), {
             path: "/",
             maxAge: 31536000,
@@ -105,8 +103,8 @@ export const load: PageServerLoad = async ({ cookies, fetch }) => {
             secure: true,
             sameSite: "strict",
         });
-    } catch (_) {
-        cookies.delete("token", { path: "/" });
+    } catch (e) {
+        console.log(e);
         cookies.delete("cached_profile", { path: "/" });
 
         redirect(302, "/login");

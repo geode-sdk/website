@@ -1,13 +1,15 @@
 import {
-    IndexError,
-    ModSort,
     IndexClient,
+    IndexError,
     type ModSearchParams,
+    ModSort,
+    SetTokensResult,
 } from "$lib/api/index-repository.js";
 import { getCachedTags } from "$lib/server/cache.js";
-import { toIntSafe, undefIfEmpty, onlyIfTrue } from "$lib/api/helpers.js";
+import { onlyIfTrue, toIntSafe, undefIfEmpty } from "$lib/api/helpers.js";
 import type { ModStatus } from "$lib/api/models/mod-version.js";
 import type { PageServerLoad } from "./$types.js";
+import { fail } from "@sveltejs/kit";
 
 export const load: PageServerLoad = async ({ url, fetch, cookies }) => {
     const params: ModSearchParams = {
@@ -32,12 +34,18 @@ export const load: PageServerLoad = async ({ url, fetch, cookies }) => {
         const tags = getCachedTags(client);
 
         try {
-            const token = cookies.get("token");
-            if (token && params.status == "rejected") {
-                client.setToken(token);
+            if (params.status === "rejected") {
+                if (
+                    (await client.trySetTokens(cookies)) ===
+                    SetTokensResult.UNSET
+                ) {
+                    return fail(401, { message: "You are not authenticated" });
+                }
             }
 
+            console.log("BEFORE");
             const mods = await client.getMods(params);
+            console.log("AFTER");
             return { mods, params, tags };
         } catch (e) {
             if (e instanceof IndexError) {

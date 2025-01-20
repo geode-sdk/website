@@ -1,4 +1,9 @@
-import { IndexError, ModSort, IndexClient } from "$lib/api/index-repository.js";
+import {
+    IndexClient,
+    IndexError,
+    ModSort,
+    SetTokensResult,
+} from "$lib/api/index-repository.js";
 import { toIntSafe } from "$lib/api/helpers.js";
 import type { ServerDeveloper } from "$lib/api/models/base.js";
 import type { ModStatus } from "$lib/api/models/mod-version.js";
@@ -7,12 +12,10 @@ import { error, fail } from "@sveltejs/kit";
 
 export const actions: Actions = {
     upload_mod: async ({ cookies, request, fetch }) => {
-        const token = cookies.get("token");
-        if (!token) {
-            return fail(401, { message: "no token provided" });
+        const client = new IndexClient({ fetch });
+        if ((await client.trySetTokens(cookies)) === SetTokensResult.UNSET) {
+            return fail(401, { message: "You are not authenticated" });
         }
-
-        const client = new IndexClient({ fetch, token });
 
         const data = await request.formData();
 
@@ -37,12 +40,12 @@ export const actions: Actions = {
             return fail(404, { message: "Developer not found" });
         }
 
-        const token = cookies.get("token");
-        if (!token) {
-            return fail(401, { message: "no token provided" });
-        }
+        const client = new IndexClient({ fetch });
 
-        const client = new IndexClient({ fetch, token });
+        const result = await client.trySetTokens(cookies);
+        if (result === SetTokensResult.UNSET) {
+            return fail(401, { message: "You are not authenticated" });
+        }
 
         const data = await request.formData();
 
@@ -90,16 +93,14 @@ export const load: PageServerLoad = async ({ url, params, cookies, fetch }) => {
     let load_error = undefined;
 
     if (developer.id == user?.id) {
-        const token = cookies.get("token");
-        if (token) {
+        const result = await client.trySetTokens(cookies);
+        if (result !== SetTokensResult.UNSET) {
             let self_mods = undefined;
 
             const search_params = {
                 status:
                     (url.searchParams.get("status") as ModStatus) ?? "accepted",
             };
-
-            client.setToken(token);
 
             try {
                 self_mods = await client.getSelfMods({
