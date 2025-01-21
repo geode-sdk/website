@@ -50,7 +50,7 @@ export const actions: Actions = {
         cookies.delete("refreshtoken", { path: "/" });
         cookies.delete("cached_profile", { path: "/" });
 
-        return { success: true };
+        return redirect(302, "/");
     },
     logout_all: async ({ cookies, fetch }) => {
         const client = await tryCreateAuthenticatedClient(cookies, fetch);
@@ -73,7 +73,7 @@ export const actions: Actions = {
         cookies.delete("refreshtoken", { path: "/" });
         cookies.delete("cached_profile", { path: "/" });
 
-        return { success: true };
+        return redirect(302, "/");
     },
 };
 
