@@ -25,6 +25,13 @@ export class IndexError extends Error {
     }
 }
 
+export class IndexNotAuthenticated extends IndexError {
+    constructor() {
+        super("You must be authenticated to perform this action");
+        this.name = "IndexNotAuthenticated";
+    }
+}
+
 export enum ModSort {
     Downloads = "downloads",
     RecentlyUpdated = "recently_updated",
@@ -140,20 +147,30 @@ export class IndexClient {
         }
 
         const firstResponse = await callback();
-        if (firstResponse.status === 401 && await this.tryRefreshTokens()) {
-            return await callback();
+        if (firstResponse.status === 401) {
+            this.token = null;
+
+            if (await this.tryRefreshTokens()) {
+                return await callback();
+            }
         }
 
         return firstResponse;
     }
 
-    private async requireAuth() {
+    private throwOnUnauth(response: Response): void {
+        if (response.status === 401) {
+            throw new IndexNotAuthenticated();
+        }
+    }
+
+    private async checkAndTryRefreshAuth() {
         if (!this.token && this.refreshToken) {
             await this.tryRefreshTokens();
         }
 
         if (!this.token) {
-            throw new IndexError("Not logged into client");
+            throw new IndexNotAuthenticated();
         }
     }
 
@@ -163,6 +180,11 @@ export class IndexClient {
 
     wasAuthSuccessful(): boolean {
         return this._lastAuthStatus !== null && this._lastAuthStatus !== SetTokensResult.UNSET;
+    }
+
+    wipeTokens(): void {
+        this.token = null;
+        this.refreshToken = null;
     }
 
     async trySetTokens(cookies: Cookies): Promise<SetTokensResult> {
@@ -259,7 +281,7 @@ export class IndexClient {
 
         const refresh = this.refreshToken;
         if (!refresh) {
-            throw new IndexError("No refresh token");
+            return false;
         }
 
         const url = new URL(`${BASE_URL}/v1/login/refresh`);
@@ -273,8 +295,6 @@ export class IndexClient {
         });
 
         if (res.status !== 200) {
-            console.log(res.status);
-            console.log(await res.json());
             // Bad refresh token
 
             this.token = null;
@@ -377,7 +397,7 @@ export class IndexClient {
     }
 
     async updateMod(id: string, body: UpdateModBody): Promise<void> {
-        await this.requireAuth();
+        await this.checkAndTryRefreshAuth();
 
         const r = await this.withRetry(async () => {
             return await this.fetch(`${BASE_URL}/v1/mods/${id}`, {
@@ -397,7 +417,7 @@ export class IndexClient {
     }
 
     async createMod(body: CreateModBody): Promise<void> {
-        await this.requireAuth();
+        await this.checkAndTryRefreshAuth();
 
         const r = await this.withRetry(async () => {
             return await this.fetch(`${BASE_URL}/v1/mods`, {
@@ -483,7 +503,7 @@ export class IndexClient {
         version: string,
         body: UpdateModVersionBody,
     ): Promise<void> {
-        await this.requireAuth();
+        await this.checkAndTryRefreshAuth();
 
         const r = await this.withRetry(async () => {
             return await this.fetch(
@@ -509,7 +529,7 @@ export class IndexClient {
         id: string,
         body: CreateModVersionBody,
     ): Promise<void> {
-        await this.requireAuth();
+        await this.checkAndTryRefreshAuth();
 
         const r = await this.withRetry(async () => {
             return await this.fetch(`${BASE_URL}/v1/mods/${id}/versions`, {
@@ -529,7 +549,7 @@ export class IndexClient {
     }
 
     async addDeveloper(id: string, body: AddDeveloperBody) {
-        await this.requireAuth();
+        await this.checkAndTryRefreshAuth();
 
         const r = await this.withRetry(async () => {
             return await this.fetch(`${BASE_URL}/v1/mods/${id}/developers`, {
@@ -549,7 +569,7 @@ export class IndexClient {
     }
 
     async removeDeveloper(id: string, username: string) {
-        await this.requireAuth();
+        await this.checkAndTryRefreshAuth();
 
         const r = await this.withRetry(async () => {
             return await this.fetch(
@@ -609,7 +629,7 @@ export class IndexClient {
     }
 
     async updateDeveloper(id: number, body: UpdateDeveloperBody) {
-        await this.requireAuth();
+        await this.checkAndTryRefreshAuth();
 
         const r = await this.withRetry(async () => {
             return await this.fetch(`${BASE_URL}/v1/developers/${id}`, {
@@ -629,7 +649,7 @@ export class IndexClient {
     }
 
     async getSelf(): Promise<ServerDeveloper> {
-        await this.requireAuth();
+        await this.checkAndTryRefreshAuth();
 
         const r = await this.withRetry(async () => {
             return await this.fetch(`${BASE_URL}/v1/me`, {
@@ -638,13 +658,15 @@ export class IndexClient {
                 }),
             });
         });
+
+        this.throwOnUnauth(r);
         const data = await r.json();
 
         return this.validate<ServerDeveloper>(data);
     }
 
     async getSelfMods(params?: GetSelfModsParams) {
-        await this.requireAuth();
+        await this.checkAndTryRefreshAuth();
 
         const url = new URL(`${BASE_URL}/v1/me/mods`);
         if (params?.status != null) {
@@ -665,7 +687,7 @@ export class IndexClient {
     }
 
     async updateProfile(body: UpdateProfileBody) {
-        await this.requireAuth();
+        await this.checkAndTryRefreshAuth();
 
         const r = await this.withRetry(async () => {
             return await this.fetch(`${BASE_URL}/v1/me`, {
@@ -685,7 +707,7 @@ export class IndexClient {
     }
 
     async deleteToken(): Promise<void> {
-        await this.requireAuth();
+        await this.checkAndTryRefreshAuth();
 
         const r = await this.withRetry(async () => {
             return await this.fetch(`${BASE_URL}/v1/me/token`, {
@@ -705,7 +727,7 @@ export class IndexClient {
     }
 
     async deleteAllTokens(): Promise<void> {
-        await this.requireAuth();
+        await this.checkAndTryRefreshAuth();
 
         const r = await this.withRetry(async () => {
             return await this.fetch(`${BASE_URL}/v1/me/tokens`, {
