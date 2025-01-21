@@ -115,7 +115,7 @@
     <Column align="left" gap="tiny">
         <div class="title-container">
             {#if data.mod.featured}
-                <Label style="accent-transparent" icon="featured" />
+                <Label design="accent-transparent" icon="featured" />
             {/if}
             <h1>
                 {data.version.name}
@@ -296,10 +296,10 @@
                         {#if data.version.early_load || data.version.api}
                             <Row align="center" justify="top" gap="small">
                                 {#if data.version.early_load}
-                                    <Label icon="time" style="accent-alt">Early Load</Label>
+                                    <Label icon="time" design="accent-alt">Early Load</Label>
                                 {/if}
                                 {#if data.version.api}
-                                    <Label icon="tag-enhancement" style="accent">API</Label>
+                                    <Label icon="tag-enhancement" design="accent">API</Label>
                                 {/if}
                             </Row>
                         {/if}
@@ -352,7 +352,7 @@
                     <div class="mod-tags">
                         <Row wrap="wrap" gap="tiny" align="center" justify="top">
                             {#each data.mod.tags as tag}
-                                <Label icon={iconForTag(tag)} style="secondary">
+                                <Label icon={iconForTag(tag)} design="secondary">
                                     {getTagDisplay(tag)}
                                 </Label>
                             {/each}

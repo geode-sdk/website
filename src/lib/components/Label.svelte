@@ -3,7 +3,7 @@
     import Icon from "./Icon.svelte";
 
     export let icon: KnownIcon | undefined = undefined;
-    export let style:
+    export let design:
         | "primary"
         | "secondary"
         | "gray"
@@ -13,7 +13,7 @@
         | "accent-alt-transparent" = "primary";
 </script>
 
-<span class={style}>
+<span class={design}>
     {#if icon}<Icon {icon} />{/if}<slot />
 </span>
 

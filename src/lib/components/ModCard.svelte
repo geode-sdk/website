@@ -1,7 +1,6 @@
 <script lang="ts">
     import type { ServerMod } from "$lib/api/models/mod.js";
     import type { ServerModVersion } from "$lib/api/models/mod-version.js";
-    import { IndexClient } from "$lib/api/index-repository";
     import Link from "./Link.svelte";
     import Gap from "./Gap.svelte";
     import Row from "./Row.svelte";
@@ -46,25 +45,25 @@
             </span>
             <Gap size="normal" />
             <Column align="left" gap="tiny">
-                <span class="click-to-go-to-page">
+                <div class="click-to-go-to-page">
                     <Link href={mod_url}>
-                        <span class="title-container">
+                        <div class="title-container">
                             <h1 class:small={version.name.length > 16}>
                                 {version.name}
                             </h1>
                             {#if mod.featured}
                                 <Label
                                     icon="featured"
-                                    style="accent-transparent" />
+                                    design="accent-transparent" />
                             {/if}
                             {#if paid}
                                 <Label
                                     icon="tag-paid"
-                                    style="accent-alt-transparent" />
+                                    design="accent-alt-transparent" />
                             {/if}
-                        </span>
+                        </div>
                     </Link>
-                </span>
+                </div>
                 <Link
                     href={`/mods?developer=${owner.username}`}
                     --link-color="var(--accent-300)">
@@ -110,12 +109,12 @@
                 <Link href={mod_url}>
                     <span class="title-container">
                         {#if mod.featured}
-                            <Label icon="featured" style="accent-transparent" />
+                            <Label icon="featured" design="accent-transparent" />
                         {/if}
                         {#if paid}
                             <Label
                                 icon="tag-paid"
-                                style="accent-alt-transparent" />
+                                design="accent-alt-transparent" />
                         {/if}
                         <h1 class:small={version.name.length > 16}>
                             {version.name}

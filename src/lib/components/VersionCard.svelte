@@ -33,7 +33,7 @@
             </span>
             <span class="card-info">
                 <Icon icon="geode" />
-                Minimum Geode version: <Label icon="geode" style="gray">
+                Minimum Geode version: <Label icon="geode" design="gray">
                     {version.geode}
                 </Label>
             </span>
