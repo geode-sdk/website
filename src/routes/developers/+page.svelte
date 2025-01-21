@@ -98,6 +98,15 @@
 </main>
 
 <style lang="scss">
+    h1 {
+        margin-bottom: 1rem;
+        text-align: center;
+        font-family: var(--font-heading);
+        font-weight: 600;
+        color: var(--text-50);
+        font-size: var(--font-size-long-title);
+    }
+
     .container {
         display: flex;
         flex-direction: column;
