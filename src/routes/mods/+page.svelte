@@ -74,6 +74,7 @@
         });
     }
 
+
     const updateSearch = async (scroll = false) => {
         searching = true;
         const params = new URLSearchParams();
@@ -116,6 +117,10 @@
         searching = false;
         if (scroll)
             scrollToTop();
+    }
+
+    const onFilterUpdate = (_: CustomEvent) => {
+        updateSearch();
     }
 
     const gotoPage = async (page: number) => {
@@ -165,7 +170,7 @@
             bind:featured={featured}
             bind:pending={pending}
             bind:userMods={userMods}
-            on:update={updateSearch} />
+            on:update={onFilterUpdate} />
     </aside>
 
     <Column align="stretch" gap="small">
@@ -173,16 +178,16 @@
             <Search placeholder="Search mods..." bind:query on:search={updateQuery} bind:ref={searchBar}></Search>
             <div class="search-filters">
                 <Select title="Sort by" titleIcon="sort" on:select={ev => {
-                    if (sort != ev.detail.value) {
+                    if (sort !== ev.detail.value) {
                         sort = ev.detail.value;
                         updateSearch();
                     }
                 }}>
-                    <SelectOption icon="download" title="Most Downloaded" value="downloads" isDefault={sort == "downloads" || !valid_sort}/>
-                    <SelectOption icon="time" title="Most Recent" value="recently_published" isDefault={sort == "recently_published"} />
-                    <SelectOption icon="time" title="Recently Updated" value="recently_updated" isDefault={sort == "recently_updated"} />
-                    <SelectOption icon="sort-abc" title="Name (A-Z)" value="name" isDefault={sort == "name"} />
-                    <SelectOption icon="sort-cba" title="Name (Z-A)" value="name_reverse" isDefault={sort == "name_reverse"} />
+                    <SelectOption icon="download" title="Most Downloaded" value="downloads" isDefault={sort === "downloads" || !valid_sort}/>
+                    <SelectOption icon="time" title="Most Recent" value="recently_published" isDefault={sort === "recently_published"} />
+                    <SelectOption icon="time" title="Recently Updated" value="recently_updated" isDefault={sort === "recently_updated"} />
+                    <SelectOption icon="sort-abc" title="Name (A-Z)" value="name" isDefault={sort === "name"} />
+                    <SelectOption icon="sort-cba" title="Name (Z-A)" value="name_reverse" isDefault={sort === "name_reverse"} />
                 </Select>
                 <span class="toggle-filter-button">
                     <SelectButton
@@ -198,10 +203,11 @@
                 bind:platforms={platforms}
                 bind:tags={tags}
                 tagsListing={data.tags}
+                loggedIn="{profile !== null}"
                 bind:featured={featured}
                 bind:pending={pending}
                 bind:userMods={userMods}
-                on:update={updateSearch} />
+                on:update={onFilterUpdate} />
         </div>
 
         <main>
@@ -218,17 +224,17 @@
                 <Row gap="small" justify="bottom">
                     <SelectButton
                         on:select={() => view = 'list'} selected={view === 'list'} outsideState={true}
-                        style="secondary"
+                        design="secondary"
                         icon="view-list"
                     />
                     <SelectButton
                         on:select={() => view = 'dual-list'} selected={view === 'dual-list'} outsideState={true}
-                        style="secondary"
+                        design="secondary"
                         icon="view-dual-list"
                     />
                     <SelectButton
                         on:select={() => view = 'grid'} selected={view === 'grid'} outsideState={true}
-                        style="secondary"
+                        design="secondary"
                         icon="view-grid"
                     />
                 </Row>
@@ -298,14 +304,14 @@
                     >
                         <Select title="Per page" titleIcon="eye" on:select={ev => {
                             const newValue = parseInt(ev.detail.value);
-                            if (per_page != newValue) {
+                            if (per_page !== newValue) {
                                 const scroll = newValue < per_page;
                                 per_page = newValue;
                                 updateSearch(scroll);
                             }
                         }}>
                             {#each perPageOptions as option}
-                                <SelectOption icon="right" title={option.toString()} value={option.toString()} isDefault={option == per_page}/>
+                                <SelectOption icon="right" title={option.toString()} value={option.toString()} isDefault={option === per_page}/>
                             {/each}
                         </Select>
                     </Pagination>
