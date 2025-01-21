@@ -6,7 +6,7 @@
     import Pagination from "$lib/components/Pagination.svelte";
     import Column from "$lib/components/Column.svelte";
     import DeveloperCard from "$lib/components/DeveloperCard.svelte";
-    import Row from "$lib/components/Row.svelte";
+    import LoadingCircle from "$lib/components/LoadingCircle.svelte";
 
     export let data: PageData;
 
@@ -19,6 +19,7 @@
 
     $: max_count = data.developers?.count ?? 0;
     $: max_page = Math.floor(max_count / per_page) + 1;
+    $: searching = false;
 
     const updateParams = async () => {
         const params = new URLSearchParams();
@@ -27,6 +28,7 @@
         params.set("page", current_page.toString());
         params.set("per_page", per_page.toString());
 
+        searching = true;
         await goto(`/developers?${params}`, {
             noScroll: true,
             keepFocus: true,
@@ -35,6 +37,8 @@
         if (current_page > max_page) {
             current_page = max_page;
             await updateParams();
+        } else {
+            searching = false;
         }
     };
 
@@ -83,7 +87,11 @@
                 labelOne="developer"
                 on:select={(e) => gotoPage(e.detail.page)} />
             <ul class="developer-list">
-                {#if data.developers}
+                {#if searching}
+                    <div class="loading">
+                        <LoadingCircle />
+                    </div>
+                {:else if data.developers}
                     {#each data.developers.data as developer}
                         <li>
                             <DeveloperCard {developer} />
@@ -113,7 +121,7 @@
         gap: 1rem;
 
         background-color: var(--background-950);
-        padding: 1rem;
+        padding: 0.5rem;
         border-radius: 0.5rem;
     }
 
@@ -125,5 +133,12 @@
 
     .developer-list > * + * {
         margin-block-start: 0.5rem;
+    }
+
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 700px;
     }
 </style>
