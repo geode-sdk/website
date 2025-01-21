@@ -177,18 +177,18 @@
                                 {#if can_modify_mod || can_update_mod}
                                     <Select title="Status" titleIcon="status" on:select={ev => {
                                         const new_status = ev.detail.value;
-                                        if (status != new_status && verifyStatus(new_status)) {
+                                        if (status !== new_status && verifyStatus(new_status)) {
                                             status = new_status;
                                             updateSearch();
                                         }
                                     }}>
-                                        <SelectOption icon="verified" title="Accepted" value="accepted" isDefault={status == "accepted" || invalid_status}/>
-                                        <SelectOption icon="time" title="Pending" value="pending" isDefault={status == "pending"}/>
-                                        <SelectOption icon="rejected" title="Rejected" value="rejected" isDefault={status == "rejected"}/>
+                                        <SelectOption icon="verified" title="Accepted" value="accepted" isDefault={status === "accepted" || invalid_status}/>
+                                        <SelectOption icon="time" title="Pending" value="pending" isDefault={status === "pending"}/>
+                                        <SelectOption icon="rejected" title="Rejected" value="rejected" isDefault={status === "rejected"}/>
                                     </Select>
                                 {/if}
                             </Pagination>
-                            {#if data.versions.count != 0}
+                            {#if data.versions.count !== 0}
                                 {#each data.versions.data as version}
                                     <VersionCard mod={data.mod} version={version} />
                                 {/each}
@@ -230,17 +230,19 @@
 
                                     <div>
                                         <label for="update-version-status">Status:</label>
-                                        <select name="status" id="update-version-status" value={data.version.status}>
-                                            <option value="accepted">Accepted</option>
-                                            <option value="pending">Pending</option>
-                                            <option value="rejected">Rejected</option>
-                                            <option value="unlisted">Unlisted</option>
+                                        <select name="status" id="update-version-status">
+                                            <option selected="{data.version.status === 'accepted'}" value="accepted">Accepted</option>
+                                            <option selected="{data.version.status === 'pending'}" value="pending">Pending</option>
+                                            <option selected="{data.version.status === 'rejected'}" value="rejected">Rejected</option>
+                                            <option selected="{data.version.status === 'unlisted'}" value="unlisted">Unlisted</option>
                                         </select>
                                     </div>
 
                                     <div>
                                         <label for="update-version-info">Reason:</label> <br />
-                                        <textarea name="info" id="update-version-info" rows=6 cols=40 value={data.version.info ?? null}></textarea>
+                                        <textarea name="info" id="update-version-info" rows=6 cols=40>
+                                            {data.version.info ?? ''}
+                                        </textarea>
                                     </div>
 
                                     <input type="hidden" name="mod_version" value={data.version.version} />
@@ -361,7 +363,7 @@
         </section>
         <section>
             <Column align="stretch" gap="small">
-                <Button href={data.version.download_link} icon="download" style="primary-filled">Download</Button>
+                <Button href={data.version.download_link} icon="download" design="primary-filled">Download</Button>
                 {#if multiple_links}
                     <div class="link-row">
                         <!-- wrapping in divs so i can apply grow to them -->

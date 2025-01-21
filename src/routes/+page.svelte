@@ -57,8 +57,8 @@
         </span>
         <Gap size="0"/>
         <Row>
-            <Button href="/install" style="primary-filled-dark" icon="download">Download</Button>
-            <Button href="/mods" style="primary-filled-dark" icon="browse">Browse Mods</Button>
+            <Button href="/install" design="primary-filled-dark" icon="download">Download</Button>
+            <Button href="/mods" design="primary-filled-dark" icon="browse">Browse Mods</Button>
         </Row>
     </Column>
 </div>
@@ -126,7 +126,7 @@
                 <em>UI components</em>, <em>utility functions</em>, and everything else needed to make mods.
             </p>
             <Row wrap="wrap">
-                <Button href="https://docs.geode-sdk.org/" style="secondary-filled">
+                <Button href="https://docs.geode-sdk.org/" design="secondary-filled">
                     <Icon icon="docs"/>Documentation
                 </Button>
                 <Button href="https://github.com/geode-sdk/example-mod/">
@@ -166,8 +166,8 @@
                 <em>Mods Browser</em> to view what mods Geode has to offer!
             </p>
             <Row wrap="wrap">
-                <Button href="/install" style="primary-filled" icon="download">Install</Button>
-                <Button href="/mods" style="primary-filled" icon="browse">Browse Mods</Button>
+                <Button href="/install" design="primary-filled" icon="download">Install</Button>
+                <Button href="/mods" design="primary-filled" icon="browse">Browse Mods</Button>
             </Row>
         </Column>
     </FlyIntoView>

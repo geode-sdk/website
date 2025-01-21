@@ -32,14 +32,14 @@
         <Button
             on:click={async () => gotoPage(Math.max(page - 1, 1))}
             icon="left"
-            style="dark-small"
-            disabled={disabled || total == 0 || page == 1} />
+            design="dark-small"
+            disabled={disabled || total === 0 || page === 1} />
         <span>Page {page} of {max_page}</span>
         <Button
             on:click={async () => gotoPage(Math.min(page + 1, max_page))}
             icon="right"
-            style="dark-small"
-            disabled={disabled || total == 0 || page == max_page} />
+            design="dark-small"
+            disabled={disabled || total === 0 || page === max_page} />
     </Row>
     
     <div style="justify-self: end;">

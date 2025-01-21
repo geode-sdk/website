@@ -22,13 +22,13 @@
     <slot/>
     <nav>
         <div class="nav-left">
-            <Button href=".." style="primary-filled-dark" icon="home">Home</Button>
-            <Button href="/mods" style="primary-filled-dark" icon="browse">Mods</Button>
-            <Button href="/faq" style="primary-filled-dark" icon="help">FAQ</Button>
+            <Button href=".." design="primary-filled-dark" icon="home">Home</Button>
+            <Button href="/mods" design="primary-filled-dark" icon="browse">Mods</Button>
+            <Button href="/faq" design="primary-filled-dark" icon="help">FAQ</Button>
         </div>
         {#if user !== null}
         <div class="nav-right">
-            <Button href="/me" style="primary-filled-dark" icon="account">{user.username}</Button>
+            <Button href="/me" design="primary-filled-dark" icon="account">{user.username}</Button>
         </div>
         {/if}
         <slot name="nav"/>
@@ -100,11 +100,11 @@
         }
 
         &.left {
-            left: 0px;
+            left: 0;
             transform: scaleX(-1);
         }
         &.right {
-            right: 0px;
+            right: 0;
         }
     }
     main {
