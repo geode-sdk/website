@@ -180,7 +180,7 @@
         font-weight: 600;
         color: var(--text-50);
         font-size: var(--font-size-title);
-        text-shadow: 0px 0px 2rem var(--primary-800);
+        text-shadow: 0 0 2rem var(--primary-800);
     }
     .code-example {
         display: none;
@@ -193,7 +193,7 @@
     }
 
     .shadow {
-        text-shadow: 0px 0px .75rem var(--primary-800);
+        text-shadow: 0 0 .75rem var(--primary-800);
         & :global(.icon) {
             filter: drop-shadow(0px 0px .25rem var(--primary-800));
         }

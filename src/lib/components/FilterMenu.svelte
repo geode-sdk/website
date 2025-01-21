@@ -30,7 +30,7 @@
 </script>
 
 <div class="menu">
-	<header><Icon icon="filter" --icon-size=1.2em/>Search Filters</header>
+	<header><Icon icon="filter" --icon-size="1.2em"/>Search Filters</header>
 	<nav>
 			{#if loggedIn}
 				<Rollover title="Your mods">
