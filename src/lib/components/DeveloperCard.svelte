@@ -7,8 +7,17 @@
 
 <div class="container">
     <Link href="developers/{developer.id}">
-        <p class="display-name">{developer.display_name}</p>
-        <p class="username">{developer.username}</p>
+        <div class="developer-link">
+            <img
+                src={`https://avatars.githubusercontent.com/u/${developer.github_id}`}
+                width="50"
+                height="50"
+                alt="developer {developer.id}" />
+            <div>
+                <p class="display-name">{developer.display_name}</p>
+                <p class="username">{developer.username} ({developer.id})</p>
+            </div>
+        </div>
     </Link>
 </div>
 
@@ -34,6 +43,11 @@
                 transparent
             );
         }
+    }
+
+    .developer-link {
+        display: flex;
+        gap: 0.5rem;
     }
 
     .display-name {
