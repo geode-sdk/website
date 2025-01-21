@@ -36,8 +36,18 @@ export async function getCachedProfile(
         } catch (_) {}
     }
 
-    if ((await client.trySetTokens(cookies)) !== SetTokensResult.UNSET) {
-        return await client.getSelf();
+    await client.trySetTokens(cookies);
+
+    if (client.wasAuthSuccessful()) {
+        const self = await client.getSelf();
+        cookies.set("cached_profile", JSON.stringify(self), {
+            path: "/",
+            maxAge: 31536000,
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+        });
+        return self;
     }
 
     return null;
