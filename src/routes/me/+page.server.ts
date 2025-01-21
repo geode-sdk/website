@@ -1,19 +1,15 @@
 import { fail, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types.js";
-import {
-    IndexClient,
-    IndexError,
-    SetTokensResult,
-} from "$lib/api/index-repository.js";
+import { IndexError } from "$lib/api/index-repository.js";
+import { tryCreateAuthenticatedClient } from "$lib/server";
 
 export const actions: Actions = {
     update_self: async ({ cookies, request, fetch }) => {
-        const token = cookies.get("token");
-        if (!token) {
-            redirect(302, "/login");
-        }
+        const client = await tryCreateAuthenticatedClient(cookies, fetch);
 
-        const client = new IndexClient({ token, fetch });
+        if (!client.wasAuthSuccessful()) {
+            return fail(401, { message: "You are not authenticated" });
+        }
 
         const data = await request.formData();
         const display_name = data.get("display_name");
@@ -34,12 +30,11 @@ export const actions: Actions = {
         return { success: true };
     },
     logout: async ({ cookies, fetch }) => {
-        const token = cookies.get("token");
-        if (!token) {
-            redirect(302, "/login");
-        }
+        const client = await tryCreateAuthenticatedClient(cookies, fetch);
 
-        const client = new IndexClient({ token, fetch });
+        if (!client.wasAuthSuccessful()) {
+            return fail(401, { message: "You are not authenticated" });
+        }
 
         try {
             await client.deleteToken();
@@ -51,18 +46,18 @@ export const actions: Actions = {
             throw e;
         }
 
-        cookies.delete("token", { path: "/" });
+        cookies.delete("authtoken", { path: "/" });
+        cookies.delete("refreshtoken", { path: "/" });
         cookies.delete("cached_profile", { path: "/" });
 
         return { success: true };
     },
     logout_all: async ({ cookies, fetch }) => {
-        const token = cookies.get("token");
-        if (!token) {
-            redirect(302, "/login");
-        }
+        const client = await tryCreateAuthenticatedClient(cookies, fetch);
 
-        const client = new IndexClient({ token, fetch });
+        if (!client.wasAuthSuccessful()) {
+            return fail(401, { message: "You are not authenticated" });
+        }
 
         try {
             await client.deleteAllTokens();
@@ -74,7 +69,8 @@ export const actions: Actions = {
             throw e;
         }
 
-        cookies.delete("token", { path: "/" });
+        cookies.delete("authtoken", { path: "/" });
+        cookies.delete("refreshtoken", { path: "/" });
         cookies.delete("cached_profile", { path: "/" });
 
         return { success: true };
@@ -82,12 +78,9 @@ export const actions: Actions = {
 };
 
 export const load: PageServerLoad = async ({ cookies, fetch }) => {
-    const client = new IndexClient({ fetch });
+    const client = await tryCreateAuthenticatedClient(cookies, fetch);
 
-    const result = await client.trySetTokens(cookies);
-
-    if (result === SetTokensResult.UNSET) {
-        console.log("unset");
+    if (!client.wasAuthSuccessful()) {
         redirect(302, "/login");
     }
 

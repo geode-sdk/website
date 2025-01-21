@@ -118,6 +118,7 @@ type GlobalFetch = typeof fetch;
 export class IndexClient {
     private token: string | null;
     private refreshToken: string | null;
+    private _lastAuthStatus: SetTokensResult | null = null;
     private fetch: typeof fetch;
 
     constructor(options: { token?: string; refreshToken?: string; fetch?: GlobalFetch } = {}) {
@@ -156,6 +157,14 @@ export class IndexClient {
         }
     }
 
+    lastAuthStatus(): SetTokensResult | null {
+        return this._lastAuthStatus;
+    }
+
+    wasAuthSuccessful(): boolean {
+        return this._lastAuthStatus !== null && this._lastAuthStatus !== SetTokensResult.UNSET;
+    }
+
     async trySetTokens(cookies: Cookies): Promise<SetTokensResult> {
         const auth = cookies.get("authtoken");
         const refresh = cookies.get("refreshtoken");
@@ -163,10 +172,12 @@ export class IndexClient {
         if (auth && refresh) {
             this.token = auth;
             this.refreshToken = refresh;
+            this._lastAuthStatus = SetTokensResult.SET_FROM_COOKIE;
             return SetTokensResult.SET_FROM_COOKIE;
         }
 
         if (!auth && !refresh) {
+            this._lastAuthStatus = SetTokensResult.UNSET;
             return SetTokensResult.UNSET;
         }
 
@@ -189,10 +200,12 @@ export class IndexClient {
                     secure: true,
                     sameSite: "strict",
                 });
+                this._lastAuthStatus = SetTokensResult.REFRESHED;
                 return SetTokensResult.REFRESHED;
             }
         }
 
+        this._lastAuthStatus = SetTokensResult.UNSET;
         return SetTokensResult.UNSET;
     }
 

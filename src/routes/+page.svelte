@@ -67,14 +67,14 @@
 <Column>
 	<Row wrap="wrap" --link-color=var(--secondary-300)>
 	    <Link href="https://discord.gg/9e43WMKzhp" icon="discord">Discord</Link>
-	    <Dot --dot-color=var(--background-400)/>
+	    <Dot --dot-color="var(--background-400)"/>
 	    <Link href="https://twitter.com/GeodeSDK" icon="twitter">Twitter</Link>
-	    <Dot --dot-color=var(--background-400)/>
+	    <Dot --dot-color="var(--background-400)"/>
 	    <Link href="https://bsky.app/profile/geode-sdk.org" icon="bluesky">Bluesky</Link>
 	</Row>
 	<Row wrap="wrap" --link-color=var(--secondary-300)>
 	    <Link href="https://docs.geode-sdk.org/" icon="docs">Documentation</Link>
-	    <Dot --dot-color=var(--background-400)/>
+	    <Dot --dot-color="var(--background-400)"/>
 	    <Link href="https://github.com/geode-sdk" icon="github">Source Code</Link>
 	</Row>
 </Column>

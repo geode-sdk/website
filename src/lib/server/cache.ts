@@ -1,6 +1,10 @@
-import type { IndexClient, } from "$lib/api/index-repository.js";
+import {
+    type IndexClient,
+    SetTokensResult,
+} from "$lib/api/index-repository.js";
 import { redis } from "$lib/server/redis.js";
-import type { ServerTag } from "$lib/api/models/base.js";
+import type { ServerDeveloper, ServerTag } from "$lib/api/models/base.js";
+import type { Cookies } from "@sveltejs/kit";
 
 export async function getCachedTags(client: IndexClient): Promise<ServerTag[]> {
     const cache_key = `listing_tags:2`;
@@ -19,4 +23,22 @@ export async function getCachedTags(client: IndexClient): Promise<ServerTag[]> {
     }
 
     return tags;
+}
+
+export async function getCachedProfile(
+    cookies: Cookies,
+    client: IndexClient,
+): Promise<ServerDeveloper | null> {
+    const cached = cookies.get("cached_profile");
+    if (cached) {
+        try {
+            return JSON.parse(cached) as ServerDeveloper;
+        } catch (_) {}
+    }
+
+    if ((await client.trySetTokens(cookies)) !== SetTokensResult.UNSET) {
+        return await client.getSelf();
+    }
+
+    return null;
 }

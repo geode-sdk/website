@@ -7,6 +7,12 @@
     import Dot from "$lib/components/Dot.svelte";
     import Waves from "$lib/components/Waves.svelte";
     import Icon from "$lib/components/Icon.svelte";
+    import PageData = App.PageData;
+    import type { ServerDeveloper } from "$lib/api/models/base";
+
+    export let data: PageData;
+
+    const user: ServerDeveloper | null = data.loggedInUser;
 </script>
 
 <main>
@@ -16,6 +22,10 @@
     <slot/>
     <nav>
         <Button href=".." style="primary-filled-dark" icon="home">Home</Button>
+        <Button href="/mods" style="primary-filled-dark" icon="browse">Mods</Button>
+        {#if user !== null}
+            <Button href="/me" style="primary-filled-dark" icon="account">{user.username}</Button>
+        {/if}
         <slot name="nav"/>
     </nav>
     <div class="waves-bottom">
@@ -32,13 +42,17 @@
                     <Link href="https://docs.geode-sdk.org/" icon="docs">Documentation</Link>
                     <Dot/>
                     <Link href="https://github.com/geode-sdk" icon="github">Source Code</Link>
+                    {#if user === null}
+                        <Dot/>
+                        <Link href="/login" icon="account">Login</Link>
+                    {/if}
                 </Row>
                 <p>
                     Site made by <Link href="https://github.com/hjfod">HJfod</Link>.
                     Thank you to <Link href="https://github.com/nekitdev">Nekit</Link> for the domain!
                 </p>
                 <Row gap=small>
-                    <Icon icon="copyright"/> 
+                    <Icon icon="copyright"/>
                     <p>Geode Team {new Date().getFullYear()}</p>
                 </Row>
             </Column>
@@ -102,6 +116,10 @@
         position: fixed;
         top: 1rem;
         left: 1rem;
+
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
     }
 
     .waves-bottom {

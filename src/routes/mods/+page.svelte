@@ -12,28 +12,32 @@
     import Search from "$lib/components/Search.svelte";
     import SelectOption from "$lib/components/SelectOption.svelte";
     import Waves from "$lib/components/Waves.svelte";
-    import Button from "$lib/components/Button.svelte";
     import Image from "$lib/components/Image.svelte";
     import InfoBox from "$lib/components/InfoBox.svelte";
     import FilterMenu from "$lib/components/FilterMenu.svelte";
     import Pagination from "$lib/components/Pagination.svelte";
     import LoadingOverlay from "$lib/components/LoadingOverlay.svelte";
+    import type { ModSearchParams } from "$lib/api/index-repository";
+    import type { ServerDeveloper } from "$lib/api/models/base";
 
     export let data: PageData;
+    const params = data.params! as ModSearchParams;
+    const profile: ServerDeveloper | null = data.loggedInUser ?? null;
 
     $: url_params = $page.url.searchParams;
-    $: current_page = data.params.page ?? 1;
+    $: current_page = params.page ?? 1;
 
-    let query = data.params.query ?? "";
-    $: platforms = new Set(data.params.platforms ?? []);
-    let sort = data.params.sort ?? "downloads";
-    let tags = new Set(data.params.tags ?? []);
-    let featured = data.params.featured ?? false;
-    let developer = data.params.developer ?? "";
-    let pending = data.params.status != "accepted";
-    let geode = data.params.geode ?? "";
-    let gd = data.params.gd ?? "";
-    let per_page = data.params.per_page ?? 10;
+    let query = params.query ?? "";
+    $: platforms = new Set(params.platforms ?? []);
+    let sort = params.sort ?? "downloads";
+    let tags = new Set(params.tags ?? []);
+    let featured = params.featured ?? false;
+    let developer = params.developer ?? "";
+    let pending = params.status != "accepted";
+    let userMods = false;
+    let geode = params.geode ?? "";
+    let gd = params.gd ?? "";
+    let per_page = params.per_page ?? 10;
     let searching = false;
     let view: 'list' | 'dual-list' | 'grid' = 'dual-list';
     let searchBar: HTMLInputElement;
@@ -95,7 +99,9 @@
         if (per_page) {
             params.set("per_page", per_page.toString());
         }
-        if (developer) {
+        if (userMods && profile !== null) {
+            params.set("developer", profile.username);
+        } else if (developer) {
             params.set("developer", developer);
         }
         if (gd) {
@@ -155,8 +161,10 @@
             bind:platforms={platforms}
             bind:tags={tags}
             tagsListing={data.tags}
+            loggedIn="{profile !== null}"
             bind:featured={featured}
             bind:pending={pending}
+            bind:userMods={userMods}
             on:update={updateSearch} />
     </aside>
 
@@ -192,6 +200,7 @@
                 tagsListing={data.tags}
                 bind:featured={featured}
                 bind:pending={pending}
+                bind:userMods={userMods}
                 on:update={updateSearch} />
         </div>
 
