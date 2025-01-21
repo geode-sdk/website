@@ -16,6 +16,11 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Your profile | Geode</title>
+	<meta name="description" content="See your own profile on Geode">
+</svelte:head>
+
 <fieldset>
 	<legend>it's you!</legend>
 

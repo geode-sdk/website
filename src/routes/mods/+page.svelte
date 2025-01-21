@@ -146,7 +146,7 @@
 </script>
 
 <svelte:head>
-    <title>Browse Geode Mods</title>
+    <title>Mods | Geode</title>
     <meta name="description" content="Browse mods for the Geode mod loader">
 </svelte:head>
 

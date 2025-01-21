@@ -12,6 +12,11 @@
     const can_modify_user = data.user?.admin || false;
 </script>
 
+<svelte:head>
+    <title>{data.developer.display_name}'s profile | Geode</title>
+    <meta name="description" content="{data.developer.display_name}'s developer profile on the Geode index">
+</svelte:head>
+
 {data.developer.display_name} ({data.developer.id})
 
 <a href={`https://github.com/${data.developer.username}`}>github</a>

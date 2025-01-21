@@ -51,6 +51,11 @@
     }
 </script>
 
+<svelte:head>
+    <title>Developers | Geode</title>
+    <meta name="description" content="Browse the active developers for the Geode mod loader">
+</svelte:head>
+
 <h1>Browse Developers</h1>
 
 <div>
