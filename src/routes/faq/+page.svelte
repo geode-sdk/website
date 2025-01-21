@@ -2,9 +2,7 @@
     import Column from "$lib/components/Column.svelte";
     import Gap from "$lib/components/Gap.svelte";
     import Link from "$lib/components/Link.svelte";
-    import Row from "$lib/components/Row.svelte";
     import Waves from "$lib/components/Waves.svelte";
-    import { onMount } from "svelte";
     import SvelteMarkdown from "svelte-markdown";
 
     // TODO: FAQs in other languages
@@ -58,8 +56,7 @@
 
 <style lang="scss">
     h1 {
-        margin: 0;
-        margin-top: 10rem;
+        margin: 10rem 0 0;
         font-family: var(--font-heading);
         font-weight: 600;
         color: var(--text-50);
@@ -123,8 +120,7 @@
         padding: .75rem;
         h3 {
             padding: 0;
-            margin: 0;
-            margin-bottom: .5rem;
+            margin: 0 0 .5rem;
             color: var(--accent-300);
         }
         div {

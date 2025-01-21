@@ -7,10 +7,10 @@
     import Dot from "$lib/components/Dot.svelte";
     import Waves from "$lib/components/Waves.svelte";
     import Icon from "$lib/components/Icon.svelte";
-    import PageData = App.PageData;
     import type { ServerDeveloper } from "$lib/api/models/base";
+    import type { LayoutData } from "../../.svelte-kit/types/src/routes/$types";
 
-    export let data: PageData;
+    export let data: LayoutData;
 
     const user: ServerDeveloper | null = data.loggedInUser;
 </script>
@@ -24,6 +24,7 @@
         <div class="nav-left">
             <Button href=".." style="primary-filled-dark" icon="home">Home</Button>
             <Button href="/mods" style="primary-filled-dark" icon="browse">Mods</Button>
+            <Button href="/faq" style="primary-filled-dark" icon="help">FAQ</Button>
         </div>
         {#if user !== null}
         <div class="nav-right">
