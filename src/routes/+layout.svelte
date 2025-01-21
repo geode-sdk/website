@@ -21,10 +21,14 @@
     <div class="side-art right"/>
     <slot/>
     <nav>
-        <Button href=".." style="primary-filled-dark" icon="home">Home</Button>
-        <Button href="/mods" style="primary-filled-dark" icon="browse">Mods</Button>
+        <div class="nav-left">
+            <Button href=".." style="primary-filled-dark" icon="home">Home</Button>
+            <Button href="/mods" style="primary-filled-dark" icon="browse">Mods</Button>
+        </div>
         {#if user !== null}
+        <div class="nav-right">
             <Button href="/me" style="primary-filled-dark" icon="account">{user.username}</Button>
+        </div>
         {/if}
         <slot name="nav"/>
     </nav>
@@ -113,13 +117,19 @@
         min-height: 100vh;
     }
     nav {
+        --fixed-margin: 1rem;
         position: fixed;
-        top: 1rem;
-        left: 1rem;
+        width: calc(100vw - 2 * var(--fixed-margin));
+        top: var(--fixed-margin);
+        left: var(--fixed-margin);
 
         display: flex;
+        justify-content: space-between;
+    }
+
+    nav > * {
+        display: flex;
         gap: 1rem;
-        flex-wrap: wrap;
     }
 
     .waves-bottom {
