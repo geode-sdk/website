@@ -74,7 +74,6 @@
         });
     }
 
-
     const updateSearch = async (scroll = false) => {
         searching = true;
         const params = new URLSearchParams();
