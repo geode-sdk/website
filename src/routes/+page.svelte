@@ -59,6 +59,7 @@
         <Row>
             <Button href="/install" design="primary-filled-dark" icon="download">Download</Button>
             <Button href="/mods" design="primary-filled-dark" icon="browse">Browse Mods</Button>
+            <Button href="/developers" design="primary-filled-dark" icon="account">Developers</Button>
         </Row>
     </Column>
 </div>
