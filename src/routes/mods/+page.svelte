@@ -12,28 +12,32 @@
     import Search from "$lib/components/Search.svelte";
     import SelectOption from "$lib/components/SelectOption.svelte";
     import Waves from "$lib/components/Waves.svelte";
-    import Button from "$lib/components/Button.svelte";
     import Image from "$lib/components/Image.svelte";
     import InfoBox from "$lib/components/InfoBox.svelte";
     import FilterMenu from "$lib/components/FilterMenu.svelte";
     import Pagination from "$lib/components/Pagination.svelte";
     import LoadingOverlay from "$lib/components/LoadingOverlay.svelte";
+    import type { ModSearchParams } from "$lib/api/index-repository";
+    import type { ServerDeveloper } from "$lib/api/models/base";
 
     export let data: PageData;
+    const params = data.params! as ModSearchParams;
+    const profile: ServerDeveloper | null = data.loggedInUser ?? null;
 
     $: url_params = $page.url.searchParams;
-    $: current_page = data.params.page ?? 1;
+    $: current_page = params.page ?? 1;
 
-    let query = data.params.query ?? "";
-    $: platforms = new Set(data.params.platforms ?? []);
-    let sort = data.params.sort ?? "downloads";
-    let tags = new Set(data.params.tags ?? []);
-    let featured = data.params.featured ?? false;
-    let developer = data.params.developer ?? "";
-    let pending = data.params.status != "accepted";
-    let geode = data.params.geode ?? "";
-    let gd = data.params.gd ?? "";
-    let per_page = data.params.per_page ?? 10;
+    let query = params.query ?? "";
+    $: platforms = new Set(params.platforms ?? []);
+    let sort = params.sort ?? "downloads";
+    let tags = new Set(params.tags ?? []);
+    let featured = params.featured ?? false;
+    let developer = params.developer ?? "";
+    let pending = params.status != "accepted";
+    let userMods = false;
+    let geode = params.geode ?? "";
+    let gd = params.gd ?? "";
+    let per_page = params.per_page ?? 10;
     let searching = false;
     let view: 'list' | 'dual-list' | 'grid' = 'dual-list';
     let searchBar: HTMLInputElement;
@@ -95,7 +99,9 @@
         if (per_page) {
             params.set("per_page", per_page.toString());
         }
-        if (developer) {
+        if (userMods && profile !== null) {
+            params.set("developer", profile.username);
+        } else if (developer) {
             params.set("developer", developer);
         }
         if (gd) {
@@ -110,6 +116,10 @@
         searching = false;
         if (scroll)
             scrollToTop();
+    }
+
+    const onFilterUpdate = (_: CustomEvent) => {
+        updateSearch();
     }
 
     const gotoPage = async (page: number) => {
@@ -140,7 +150,7 @@
 </script>
 
 <svelte:head>
-    <title>Browse Geode Mods</title>
+    <title>Mods | Geode</title>
     <meta name="description" content="Browse mods for the Geode mod loader">
 </svelte:head>
 
@@ -155,9 +165,11 @@
             bind:platforms={platforms}
             bind:tags={tags}
             tagsListing={data.tags}
+            loggedIn="{profile !== null}"
             bind:featured={featured}
             bind:pending={pending}
-            on:update={updateSearch} />
+            bind:userMods={userMods}
+            on:update={onFilterUpdate} />
     </aside>
 
     <Column align="stretch" gap="small">
@@ -165,16 +177,16 @@
             <Search placeholder="Search mods..." bind:query on:search={updateQuery} bind:ref={searchBar}></Search>
             <div class="search-filters">
                 <Select title="Sort by" titleIcon="sort" on:select={ev => {
-                    if (sort != ev.detail.value) {
+                    if (sort !== ev.detail.value) {
                         sort = ev.detail.value;
                         updateSearch();
                     }
                 }}>
-                    <SelectOption icon="download" title="Most Downloaded" value="downloads" isDefault={sort == "downloads" || !valid_sort}/>
-                    <SelectOption icon="time" title="Most Recent" value="recently_published" isDefault={sort == "recently_published"} />
-                    <SelectOption icon="time" title="Recently Updated" value="recently_updated" isDefault={sort == "recently_updated"} />
-                    <SelectOption icon="sort-abc" title="Name (A-Z)" value="name" isDefault={sort == "name"} />
-                    <SelectOption icon="sort-cba" title="Name (Z-A)" value="name_reverse" isDefault={sort == "name_reverse"} />
+                    <SelectOption icon="download" title="Most Downloaded" value="downloads" isDefault={sort === "downloads" || !valid_sort}/>
+                    <SelectOption icon="time" title="Most Recent" value="recently_published" isDefault={sort === "recently_published"} />
+                    <SelectOption icon="time" title="Recently Updated" value="recently_updated" isDefault={sort === "recently_updated"} />
+                    <SelectOption icon="sort-abc" title="Name (A-Z)" value="name" isDefault={sort === "name"} />
+                    <SelectOption icon="sort-cba" title="Name (Z-A)" value="name_reverse" isDefault={sort === "name_reverse"} />
                 </Select>
                 <span class="toggle-filter-button">
                     <SelectButton
@@ -190,9 +202,11 @@
                 bind:platforms={platforms}
                 bind:tags={tags}
                 tagsListing={data.tags}
+                loggedIn="{profile !== null}"
                 bind:featured={featured}
                 bind:pending={pending}
-                on:update={updateSearch} />
+                bind:userMods={userMods}
+                on:update={onFilterUpdate} />
         </div>
 
         <main>
@@ -209,17 +223,17 @@
                 <Row gap="small" justify="bottom">
                     <SelectButton
                         on:select={() => view = 'list'} selected={view === 'list'} outsideState={true}
-                        style="secondary"
+                        design="secondary"
                         icon="view-list"
                     />
                     <SelectButton
                         on:select={() => view = 'dual-list'} selected={view === 'dual-list'} outsideState={true}
-                        style="secondary"
+                        design="secondary"
                         icon="view-dual-list"
                     />
                     <SelectButton
                         on:select={() => view = 'grid'} selected={view === 'grid'} outsideState={true}
-                        style="secondary"
+                        design="secondary"
                         icon="view-grid"
                     />
                 </Row>
@@ -289,14 +303,14 @@
                     >
                         <Select title="Per page" titleIcon="eye" on:select={ev => {
                             const newValue = parseInt(ev.detail.value);
-                            if (per_page != newValue) {
+                            if (per_page !== newValue) {
                                 const scroll = newValue < per_page;
                                 per_page = newValue;
                                 updateSearch(scroll);
                             }
                         }}>
                             {#each perPageOptions as option}
-                                <SelectOption icon="right" title={option.toString()} value={option.toString()} isDefault={option == per_page}/>
+                                <SelectOption icon="right" title={option.toString()} value={option.toString()} isDefault={option === per_page}/>
                             {/each}
                         </Select>
                     </Pagination>

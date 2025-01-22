@@ -57,8 +57,9 @@
         </span>
         <Gap size="0"/>
         <Row>
-            <Button href="/install" style="primary-filled-dark" icon="download">Download</Button>
-            <Button href="/mods" style="primary-filled-dark" icon="browse">Browse Mods</Button>
+            <Button href="/install" design="primary-filled-dark" icon="download">Download</Button>
+            <Button href="/mods" design="primary-filled-dark" icon="browse">Browse Mods</Button>
+            <Button href="/developers" design="primary-filled-dark" icon="account">Developers</Button>
         </Row>
     </Column>
 </div>
@@ -67,14 +68,14 @@
 <Column>
 	<Row wrap="wrap" --link-color=var(--secondary-300)>
 	    <Link href="https://discord.gg/9e43WMKzhp" icon="discord">Discord</Link>
-	    <Dot --dot-color=var(--background-400)/>
+	    <Dot --dot-color="var(--background-400)"/>
 	    <Link href="https://twitter.com/GeodeSDK" icon="twitter">Twitter</Link>
-	    <Dot --dot-color=var(--background-400)/>
+	    <Dot --dot-color="var(--background-400)"/>
 	    <Link href="https://bsky.app/profile/geode-sdk.org" icon="bluesky">Bluesky</Link>
 	</Row>
 	<Row wrap="wrap" --link-color=var(--secondary-300)>
 	    <Link href="https://docs.geode-sdk.org/" icon="docs">Documentation</Link>
-	    <Dot --dot-color=var(--background-400)/>
+	    <Dot --dot-color="var(--background-400)"/>
 	    <Link href="https://github.com/geode-sdk" icon="github">Source Code</Link>
 	</Row>
 </Column>
@@ -126,7 +127,7 @@
                 <em>UI components</em>, <em>utility functions</em>, and everything else needed to make mods.
             </p>
             <Row wrap="wrap">
-                <Button href="https://docs.geode-sdk.org/" style="secondary-filled">
+                <Button href="https://docs.geode-sdk.org/" design="secondary-filled">
                     <Icon icon="docs"/>Documentation
                 </Button>
                 <Button href="https://github.com/geode-sdk/example-mod/">
@@ -166,8 +167,8 @@
                 <em>Mods Browser</em> to view what mods Geode has to offer!
             </p>
             <Row wrap="wrap">
-                <Button href="/install" style="primary-filled" icon="download">Install</Button>
-                <Button href="/mods" style="primary-filled" icon="browse">Browse Mods</Button>
+                <Button href="/install" design="primary-filled" icon="download">Install</Button>
+                <Button href="/mods" design="primary-filled" icon="browse">Browse Mods</Button>
             </Row>
         </Column>
     </FlyIntoView>
@@ -180,7 +181,7 @@
         font-weight: 600;
         color: var(--text-50);
         font-size: var(--font-size-title);
-        text-shadow: 0px 0px 2rem var(--primary-800);
+        text-shadow: 0 0 2rem var(--primary-800);
     }
     .code-example {
         display: none;
@@ -193,7 +194,7 @@
     }
 
     .shadow {
-        text-shadow: 0px 0px .75rem var(--primary-800);
+        text-shadow: 0 0 .75rem var(--primary-800);
         & :global(.icon) {
             filter: drop-shadow(0px 0px .25rem var(--primary-800));
         }

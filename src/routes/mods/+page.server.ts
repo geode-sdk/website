@@ -1,13 +1,14 @@
 import {
     IndexError,
-    ModSort,
-    IndexClient,
     type ModSearchParams,
+    ModSort,
 } from "$lib/api/index-repository.js";
 import { getCachedTags } from "$lib/server/cache.js";
-import { toIntSafe, undefIfEmpty, onlyIfTrue } from "$lib/api/helpers.js";
+import { onlyIfTrue, toIntSafe, undefIfEmpty } from "$lib/api/helpers.js";
 import type { ModStatus } from "$lib/api/models/mod-version.js";
 import type { PageServerLoad } from "./$types.js";
+import { fail } from "@sveltejs/kit";
+import { tryCreateAuthenticatedClient } from "$lib/server";
 
 export const load: PageServerLoad = async ({ url, fetch, cookies }) => {
     const params: ModSearchParams = {
@@ -25,16 +26,18 @@ export const load: PageServerLoad = async ({ url, fetch, cookies }) => {
         per_page: toIntSafe(url.searchParams.get("per_page")) ?? 10,
     };
 
-    const client = new IndexClient({ fetch });
-
+    const client = await tryCreateAuthenticatedClient(cookies, fetch);
     try {
         // we don't need to worry about locks as we're not about to get ratelimited for this
         const tags = getCachedTags(client);
 
         try {
-            const token = cookies.get("token");
-            if (token && params.status == "rejected") {
-                client.setToken(token);
+            if (params.status === "rejected") {
+                if (!client.wasAuthSuccessful()) {
+                    return fail(401, {
+                        message: "You are not authenticated",
+                    });
+                }
             }
 
             const mods = await client.getMods(params);

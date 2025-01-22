@@ -65,6 +65,8 @@ export const icons = {
     image: "mdi:file-image",
     "image-missing": "mdi:file-image-remove",
     eye: "mdi:eye",
+    account: "mdi:account-circle",
+    admin: "mdi:security",
 
     "tag-universal": "mdi:globe",
     "tag-gameplay": "mdi:gamepad-variant",

@@ -1,4 +1,4 @@
-import type { IndexClient, } from "$lib/api/index-repository.js";
+import { type IndexClient } from "$lib/api/index-repository.js";
 import { redis } from "$lib/server/redis.js";
 import type { ServerTag } from "$lib/api/models/base.js";
 

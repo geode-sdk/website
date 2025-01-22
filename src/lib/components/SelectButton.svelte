@@ -6,20 +6,20 @@
     export let selected: boolean = false;
     export let outsideState = false;
     export let icon: KnownIcon;
-    export let style: 'primary' | 'secondary' = 'primary';
+    export let design: 'primary' | 'secondary' = 'primary';
 
     const dispatch = createEventDispatcher<{ 'select': { selected: boolean } }>();
 </script>
 
 <button
-    class="select-button {style}" class:selected
+    class="select-button {design}" class:selected
     on:click={() => {
         if (!outsideState) {
             selected = !selected;
         }
         dispatch('select', { selected });
     }}
-><Icon icon={icon} --icon-size=1.3em/><slot></slot></button>
+><Icon icon={icon} --icon-size="1.3em"/><slot></slot></button>
 
 <style lang="scss">
     button {

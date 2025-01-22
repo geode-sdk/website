@@ -14,6 +14,10 @@ export function toIntSafe(value: string | null) {
     return as_int;
 }
 
+export function clamp(number: number, min: number, max: number): number {
+    return Math.min(Math.max(number, min), max);
+}
+
 export function undefIfEmpty<T>(value: T[]) {
     if (value.length > 0) {
         return value;

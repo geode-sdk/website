@@ -7,6 +7,12 @@
     import Dot from "$lib/components/Dot.svelte";
     import Waves from "$lib/components/Waves.svelte";
     import Icon from "$lib/components/Icon.svelte";
+    import type { ServerDeveloper } from "$lib/api/models/base";
+    import type { LayoutData } from "../../.svelte-kit/types/src/routes/$types";
+
+    export let data: LayoutData;
+
+    const user: ServerDeveloper | null = data.loggedInUser;
 </script>
 
 <main>
@@ -15,7 +21,16 @@
     <div class="side-art right"/>
     <slot/>
     <nav>
-        <Button href=".." style="primary-filled-dark" icon="home">Home</Button>
+        <div class="nav-left">
+            <Button href=".." design="primary-filled-dark" icon="home">Home</Button>
+            <Button href="/mods" design="primary-filled-dark" icon="browse">Mods</Button>
+            <Button href="/faq" design="primary-filled-dark" icon="help">FAQ</Button>
+        </div>
+        {#if user !== null}
+        <div class="nav-right">
+            <Button href="/me" design="primary-filled-dark" icon="account">{user.username}</Button>
+        </div>
+        {/if}
         <slot name="nav"/>
     </nav>
     <div class="waves-bottom">
@@ -32,13 +47,17 @@
                     <Link href="https://docs.geode-sdk.org/" icon="docs">Documentation</Link>
                     <Dot/>
                     <Link href="https://github.com/geode-sdk" icon="github">Source Code</Link>
+                    {#if user === null}
+                        <Dot/>
+                        <Link href="/login" icon="account">Login</Link>
+                    {/if}
                 </Row>
                 <p>
                     Site made by <Link href="https://github.com/hjfod">HJfod</Link>.
                     Thank you to <Link href="https://github.com/nekitdev">Nekit</Link> for the domain!
                 </p>
                 <Row gap=small>
-                    <Icon icon="copyright"/> 
+                    <Icon icon="copyright"/>
                     <p>Geode Team {new Date().getFullYear()}</p>
                 </Row>
             </Column>
@@ -81,11 +100,11 @@
         }
 
         &.left {
-            left: 0px;
+            left: 0;
             transform: scaleX(-1);
         }
         &.right {
-            right: 0px;
+            right: 0;
         }
     }
     main {
@@ -99,9 +118,19 @@
         min-height: 100vh;
     }
     nav {
+        --fixed-margin: 1rem;
         position: fixed;
-        top: 1rem;
-        left: 1rem;
+        width: calc(100vw - 2 * var(--fixed-margin));
+        top: var(--fixed-margin);
+        left: var(--fixed-margin);
+
+        display: flex;
+        justify-content: space-between;
+    }
+
+    nav > * {
+        display: flex;
+        gap: 1rem;
     }
 
     .waves-bottom {

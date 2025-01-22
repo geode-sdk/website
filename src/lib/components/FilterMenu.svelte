@@ -17,8 +17,10 @@
 		export let platforms: Set<string>;
 		export let tags: Set<string>;
 		export let tagsListing: Promise<ServerTag[]> | undefined;
+		export let loggedIn: boolean;
 		export let featured: boolean;
 		export let pending: boolean;
+        export let userMods: boolean;
 
 		const dispatch = createEventDispatcher<{ 'update': {} }>();
 
@@ -28,8 +30,20 @@
 </script>
 
 <div class="menu">
-	<header><Icon icon="filter" --icon-size=1.2em/>Search Filters</header>
+	<header><Icon icon="filter" --icon-size="1.2em"/>Search Filters</header>
 	<nav>
+			{#if loggedIn}
+				<Rollover title="Your mods">
+					<SelectButton
+						icon="account"
+						selected="{userMods}"
+						on:select={() => {
+									userMods = !userMods;
+									updateSearch();
+								}}
+					>Your mods</SelectButton>
+				</Rollover>
+			{/if}
 			<Rollover title="Platform">
 					<SelectButton
 							icon="windows"

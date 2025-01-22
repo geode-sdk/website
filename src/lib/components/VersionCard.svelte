@@ -33,7 +33,7 @@
             </span>
             <span class="card-info">
                 <Icon icon="geode" />
-                Minimum Geode version: <Label icon="geode" style="gray">
+                Minimum Geode version: <Label icon="geode" design="gray">
                     {version.geode}
                 </Label>
             </span>
@@ -45,7 +45,7 @@
             <Button
                 href={version.download_link}
                 icon="download"
-                style="primary-filled">
+                design="primary-filled">
                 Download .geode file
             </Button>
             <Button href="/faq#how-do-i-manually-install-mods" icon="help">

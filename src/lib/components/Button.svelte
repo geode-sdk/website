@@ -8,14 +8,14 @@
         'secondary-filled' |
         'hollow' |
         'dark-small';
-    export let style: Style = 'hollow';
+    export let design: Style = 'hollow';
     export let href: string | undefined = undefined;
     export let icon: KnownIcon | undefined = undefined;
     export let iconOnRight = false;
     export let disabled = false;
 </script>
 
-<a href={href} class={style} class:disabled on:click>
+<a href={href} class={design} class:disabled on:click>
     {#if iconOnRight}
         <slot/>
     {/if}

@@ -117,7 +117,7 @@
             {/if}
             {#if curPlatform === "linux"}
                 <p>Geometry Dash is not available on <em>Linux</em>, but you can run the <em>Windows</em> version through <em>Wine / Proton</em>. <Link href="faq#i-am-installing-geode-on-linux-what-do-i-have-to-do">Click here for more info.</Link> </p>
-                <Button style="primary-filled" href={createVersionString("windows")}>
+                <Button design="primary-filled" href={createVersionString("windows")}>
                     <Icon icon="windows"/>Download for Windows
                 </Button>
             {/if}
@@ -125,18 +125,18 @@
                 <div>Latest Android Launcher version: <em>{latestLauncher}</em></div>
             {/if}
             {#if !showAllPlatforms}
-            {#if curPlatform == "windows"}
-                <Button style="primary-filled" href={createVersionString("windows")}>
+            {#if curPlatform === "windows"}
+                <Button design="primary-filled" href={createVersionString("windows")}>
                     <Icon icon="windows"/>Download for Windows
                 </Button>
             {/if}
-            {#if curPlatform == "mac"}
-                <Button style="primary-filled" href={createVersionString("mac")}>
+            {#if curPlatform === "mac"}
+                <Button design="primary-filled" href={createVersionString("mac")}>
                     <Icon icon="mac"/>Download for macOS
                 </Button>
             {/if}
-            {#if curPlatform == "android"}
-                <Button style="primary-filled" href={createVersionString("android")}>
+            {#if curPlatform === "android"}
+                <Button design="primary-filled" href={createVersionString("android")}>
                     <Icon icon="android"/>Download for Android
                 </Button>
             {/if}
@@ -148,13 +148,13 @@
             {/if}
             <Rollover title="Show All Platforms" bind:open={showAllPlatforms}>
                 <Column align="stretch">
-                    <Button style="primary-filled" href={createVersionString("windows")}>
+                    <Button design="primary-filled" href={createVersionString("windows")}>
                         <Icon icon="windows"/>Download for Windows
                     </Button>
-                    <Button style="primary-filled" href={createVersionString("mac")}>
+                    <Button design="primary-filled" href={createVersionString("mac")}>
                         <Icon icon="mac"/>Download for macOS
                     </Button>
-                    <Button style="primary-filled" href={createVersionString("android")}>
+                    <Button design="primary-filled" href={createVersionString("android")}>
                         <Icon icon="android"/>Download for Android
                     </Button>
                     <!-- <Button style="primary-filled">
@@ -185,7 +185,7 @@
             Clicking this button brings you to the Geode Menu.
         </p>
         <Row wrap="wrap">
-            <Button style="hollow" href="/faq#i-cant-see-the-geode-button">
+            <Button design="hollow" href="/faq#i-cant-see-the-geode-button">
                 <Icon icon="help"/> I can't see the Geode button!
             </Button>
         </Row>
@@ -206,13 +206,13 @@
             or click <em>View</em> for further options like editing mod settings and uninstalling.
         </p>
         <Row wrap="wrap">
-            <Button style="hollow" href="/faq#how-do-i-change-mod-settings">
+            <Button design="hollow" href="/faq#how-do-i-change-mod-settings">
                 <Icon icon="help"/> How do I change mod settings?
             </Button>
-            <Button style="hollow" href="/faq#how-do-i-update-mods">
+            <Button design="hollow" href="/faq#how-do-i-update-mods">
                 <Icon icon="help"/> How do I update mods?
             </Button>
-            <Button style="hollow" href="/faq#how-do-i-uninstall-mods">
+            <Button design="hollow" href="/faq#how-do-i-uninstall-mods">
                 <Icon icon="help"/> How do I uninstall mods?
             </Button>
         </Row>
@@ -234,7 +234,7 @@
             You can use the <em>search button</em> on the left to search for specific mods by name or by <em>tags</em>.
         </p>
         <Row wrap="wrap">
-            <Button style="hollow" href="/faq#why-cant-i-find-certain-mods">
+            <Button design="hollow" href="/faq#why-cant-i-find-certain-mods">
                 <Icon icon="help"/> Why can't I find a certain Mod?
             </Button>
         </Row>

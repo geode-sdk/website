@@ -1,15 +1,18 @@
 import { fail, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types.js";
-import { IndexError, IndexClient } from "$lib/api/index-repository.js";
+import {
+    IndexError,
+    IndexNotAuthenticated,
+} from "$lib/api/index-repository.js";
+import { tryCreateAuthenticatedClient } from "$lib/server";
 
 export const actions: Actions = {
     update_self: async ({ cookies, request, fetch }) => {
-        const token = cookies.get("token");
-        if (!token) {
-            redirect(302, "/login");
-        }
+        const client = await tryCreateAuthenticatedClient(cookies, fetch);
 
-        const client = new IndexClient({ token, fetch });
+        if (!client.wasAuthSuccessful()) {
+            return fail(401, { message: "You are not authenticated" });
+        }
 
         const data = await request.formData();
         const display_name = data.get("display_name");
@@ -21,7 +24,7 @@ export const actions: Actions = {
             await client.updateProfile({ display_name });
         } catch (e) {
             if (e instanceof IndexError) {
-                return fail(400, { cause: e.message });
+                return fail(400, { message: e.message });
             }
 
             throw e;
@@ -29,17 +32,48 @@ export const actions: Actions = {
 
         return { success: true };
     },
-    logout: async ({ cookies, fetch }) => {
-        const token = cookies.get("token");
-        if (!token) {
-            redirect(302, "/login");
+    upload_mod: async ({ cookies, request, fetch }) => {
+        const client = await tryCreateAuthenticatedClient(cookies, fetch);
+
+        if (!client.wasAuthSuccessful()) {
+            return fail(401, { message: "You are not authenticated" });
         }
 
-        const client = new IndexClient({ token, fetch });
+        const data = await request.formData();
+
+        const download_link = data.get("download_link");
+        if (
+            !download_link ||
+            typeof download_link != "string" ||
+            !URL.canParse(download_link)
+        ) {
+            return fail(400, { message: "Download link is invalid" });
+        }
+
+        try {
+            await client.createMod({ download_link });
+        } catch (e) {
+            if (e instanceof IndexError) {
+                return fail(400, { message: e.message });
+            }
+        }
+
+        return { success: true };
+    },
+    logout: async ({ cookies, fetch }) => {
+        const client = await tryCreateAuthenticatedClient(cookies, fetch);
+
+        if (!client.wasAuthSuccessful()) {
+            return fail(401, { message: "You are not authenticated" });
+        }
 
         try {
             await client.deleteToken();
         } catch (e) {
+            if (e instanceof IndexNotAuthenticated) {
+                return redirect(302, "/");
+            }
+
             if (e instanceof IndexError) {
                 return fail(400, { cause: e.message });
             }
@@ -47,18 +81,18 @@ export const actions: Actions = {
             throw e;
         }
 
-        cookies.delete("token", { path: "/" });
+        cookies.delete("authtoken", { path: "/" });
+        cookies.delete("refreshtoken", { path: "/" });
         cookies.delete("cached_profile", { path: "/" });
 
-        return { success: true };
+        return redirect(302, "/");
     },
     logout_all: async ({ cookies, fetch }) => {
-        const token = cookies.get("token");
-        if (!token) {
-            redirect(302, "/login");
-        }
+        const client = await tryCreateAuthenticatedClient(cookies, fetch);
 
-        const client = new IndexClient({ token, fetch });
+        if (!client.wasAuthSuccessful()) {
+            return fail(401, { message: "You are not authenticated" });
+        }
 
         try {
             await client.deleteAllTokens();
@@ -70,47 +104,29 @@ export const actions: Actions = {
             throw e;
         }
 
-        cookies.delete("token", { path: "/" });
+        cookies.delete("authtoken", { path: "/" });
+        cookies.delete("refreshtoken", { path: "/" });
         cookies.delete("cached_profile", { path: "/" });
 
-        return { success: true };
+        return redirect(302, "/");
     },
 };
 
 export const load: PageServerLoad = async ({ cookies, fetch }) => {
-    const token = cookies.get("token");
-    if (!token) {
-        redirect(302, "/login");
+    const client = await tryCreateAuthenticatedClient(cookies, fetch);
+
+    if (!client.wasAuthSuccessful()) {
+        return redirect(302, "/login");
     }
 
-    const client = new IndexClient({ token, fetch });
-
-    // i'm having a js moment, honestly
-    let self = undefined;
     try {
-        self = await client.getSelf();
+        const self = await client.getSelf();
 
-        // refresh cookies
-        cookies.set("token", token, {
-            path: "/",
-            maxAge: 31536000,
-            httpOnly: true,
-            secure: true,
-            sameSite: "strict",
-        });
-        cookies.set("cached_profile", JSON.stringify(self), {
-            path: "/",
-            maxAge: 31536000,
-            httpOnly: true,
-            secure: true,
-            sameSite: "strict",
-        });
-    } catch (_) {
-        cookies.delete("token", { path: "/" });
-        cookies.delete("cached_profile", { path: "/" });
+        const myPending = await client.getSelfMods({ status: "pending" });
+        const myRejected = await client.getSelfMods({ status: "rejected" });
 
-        redirect(302, "/login");
+        return { self, myPendingMods: myPending, myRejectedMods: myRejected };
+    } catch (e) {
+        return redirect(302, "/login");
     }
-
-    return { self };
 };

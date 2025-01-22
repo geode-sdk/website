@@ -4,6 +4,7 @@ export interface ServerDeveloper {
     display_name: string;
     verified: boolean;
     admin: boolean;
+    github_id: number;
 }
 
 export interface ServerTag {

@@ -13,30 +13,30 @@
     Available on:
 {/if}
 
-{#if gd.win}<Label icon="windows" style="gray">{gd.win}</Label>{/if}
+{#if gd.win}<Label icon="windows" design="gray">{gd.win}</Label>{/if}
 
-{#if gd["mac-arm"] && gd["mac-arm"] == gd["mac-intel"]}
-    <Label icon="mac" style="gray">{gd["mac-arm"]}</Label>
+{#if gd["mac-arm"] && gd["mac-arm"] === gd["mac-intel"]}
+    <Label icon="mac" design="gray">{gd["mac-arm"]}</Label>
 {:else}
     {#if gd["mac-arm"]}
-        <Label icon="mac" style="gray">{gd["mac-arm"]} (ARM)</Label>
+        <Label icon="mac" design="gray">{gd["mac-arm"]} (ARM)</Label>
     {/if}
     {#if gd["mac-intel"]}
-        <Label icon="mac" style="gray">{gd["mac-intel"]} (x64)</Label>
+        <Label icon="mac" design="gray">{gd["mac-intel"]} (x64)</Label>
     {/if}
 {/if}
 
 {#if gd.ios}
-    <Label icon="ios" style="gray">{gd.ios}</Label>
+    <Label icon="ios" design="gray">{gd.ios}</Label>
 {/if}
 
-{#if gd.android64 && gd.android64 == gd.android32}
-    <Label icon="android" style="gray">{gd.android64}</Label>
+{#if gd.android64 && gd.android64 === gd.android32}
+    <Label icon="android" design="gray">{gd.android64}</Label>
 {:else}
     {#if gd.android64}
-        <Label icon="android" style="gray">{gd.android64} (64-bit)</Label>
+        <Label icon="android" design="gray">{gd.android64} (64-bit)</Label>
     {/if}
     {#if gd.android32}
-        <Label icon="android" style="gray">{gd.android32} (32-bit)</Label>
+        <Label icon="android" design="gray">{gd.android32} (32-bit)</Label>
     {/if}
 {/if}
