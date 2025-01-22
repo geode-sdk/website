@@ -117,9 +117,10 @@
     nav {
         --fixed-margin: 1rem;
         position: fixed;
-        width: calc(100vw - 2 * var(--fixed-margin));
         top: var(--fixed-margin);
-        left: var(--fixed-margin);
+        left: 0;
+        right: 0;
+        padding-inline: var(--fixed-margin);
 
         display: flex;
         justify-content: space-between;
