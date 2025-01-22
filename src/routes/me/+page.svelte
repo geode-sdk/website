@@ -118,7 +118,7 @@
                 {#each myRejectedMods as mod}
                     <li><MyPendingModCard {mod} /></li>
                 {:else}
-                    <p>You have no pending mods</p>
+                    <p>You have no rejected mods</p>
                 {/each}
             </ul>
         </section>

@@ -212,7 +212,7 @@
             <Pagination
                 total={data.mods?.count ?? 0}
                 perPage={per_page}
-                pageCount={max_page}
+                pageCount={data.mods?.data.length ?? 0}
                 page={current_page}
                 disabled={!data.mods}
                 label="mods"
