@@ -1,4 +1,4 @@
-import type { PageServerLoad } from "../../../../../.svelte-kit/types/src/routes/login/$types";
+import type { PageServerLoad } from "./$types";
 import { IndexClient } from "$lib/api/index-repository";
 import { redirect } from "@sveltejs/kit";
 import { setCookieTokens } from "$lib/server/tokens";

@@ -7,7 +7,7 @@
     import Dot from "$lib/components/Dot.svelte";
     import Waves from "$lib/components/Waves.svelte";
     import Icon from "$lib/components/Icon.svelte";
-    import type { LayoutData } from "../../.svelte-kit/types/src/routes/$types";
+    import type { LayoutData } from "./$types";
 
     export let data: LayoutData;
 </script>

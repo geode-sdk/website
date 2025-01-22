@@ -1,4 +1,4 @@
-import type { LayoutServerLoad } from "../../.svelte-kit/types/src/routes/$types";
+import type { LayoutServerLoad } from "./$types";
 import { tryCreateAuthenticatedClient } from "$lib/server";
 import {
     IndexNotAuthenticated,
