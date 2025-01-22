@@ -19,6 +19,9 @@
     import { onMount } from "svelte";
     import { IndexClient } from "$lib/api/index-repository.js";
     import type { ServerStats } from "$lib/api/models/stats.js";
+    import type { PageData } from "./$types";
+
+    export let data: PageData;
 
     // is this a bad pattern.
     let stats_promise: Promise<ServerStats> = new Promise(() => {});
@@ -59,7 +62,9 @@
         <Row>
             <Button href="/install" design="primary-filled-dark" icon="download">Download</Button>
             <Button href="/mods" design="primary-filled-dark" icon="browse">Browse Mods</Button>
-            <Button href="/developers" design="primary-filled-dark" icon="account">Developers</Button>
+            {#if data.self}
+                <Button href="/developers" design="primary-filled-dark" icon="account">Developers</Button>
+            {/if}
         </Row>
     </Column>
 </div>
