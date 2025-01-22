@@ -80,7 +80,7 @@
             <Pagination
                 total={data.developers?.count ?? 0}
                 perPage={per_page}
-                pageCount={max_page}
+                pageCount={data.developers?.data.length ?? 0}
                 page={current_page}
                 disabled={!data.developers}
                 label="developers"
