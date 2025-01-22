@@ -36,7 +36,6 @@
     .aside {
         --card-base-color: var(--background-500);
         --card-icon-base-color: var(--secondary-300);
-        --card-icon-hover-color: var(--primary-300);
 
         background-color: color-mix(
             in srgb,
@@ -51,10 +50,12 @@
         padding: 1rem;
         border-radius: 0.5rem;
 
+        transition: background-color var(--transition-duration);
+
         &:has(a:hover) {
             background-color: color-mix(
                 in srgb,
-                var(--card-base-hover) 15%,
+                var(--card-base-color) 40%,
                 transparent
             );
         }
