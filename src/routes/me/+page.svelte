@@ -144,26 +144,6 @@
         margin-inline: 1rem;
     }
 
-    .with-sidebar {
-        --sidebar-flex-basis: 10rem;
-
-        display: flex;
-        flex-wrap: wrap;
-        align-items: flex-start;
-        gap: 1rem;
-    }
-
-    .sidebar {
-        flex-basis: var(--sidebar-flex-basis);
-        flex-grow: 1;
-    }
-
-    .not-sidebar {
-        flex-basis: 0;
-        flex-grow: 999;
-        //min-inline-size: 70%;
-    }
-
     label {
         font-size: 0.9rem;
     }

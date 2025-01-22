@@ -9,6 +9,7 @@ import type { ServerDeveloper } from "$lib/api/models/base.js";
 import type { ModStatus } from "$lib/api/models/mod-version.js";
 import type { Actions, PageServerLoad } from "./$types.js";
 import { error, fail } from "@sveltejs/kit";
+import { tryCreateAuthenticatedClient } from "$lib/server";
 
 export const actions: Actions = {
     modify_user: async ({ cookies, params, request, fetch }) => {
@@ -17,10 +18,9 @@ export const actions: Actions = {
             return fail(404, { message: "Developer not found" });
         }
 
-        const client = new IndexClient({ fetch });
+        const client = await tryCreateAuthenticatedClient(cookies, fetch);
 
-        const result = await client.trySetTokens(cookies);
-        if (result === SetTokensResult.UNSET) {
+        if (!client.wasAuthSuccessful()) {
             return fail(401, { message: "You are not authenticated" });
         }
 
@@ -42,18 +42,13 @@ export const actions: Actions = {
     },
 };
 
-export const load: PageServerLoad = async ({ url, params, cookies, fetch }) => {
+export const load: PageServerLoad = async ({ params, fetch }) => {
     const id = toIntSafe(params.id);
     if (!id) {
         error(404, "Developer not found");
     }
 
     const client = new IndexClient({ fetch });
-
-    const user_str = cookies.get("cached_profile");
-    const user = user_str
-        ? (JSON.parse(user_str) as ServerDeveloper)
-        : undefined;
 
     let developer = undefined;
     try {
@@ -66,41 +61,7 @@ export const load: PageServerLoad = async ({ url, params, cookies, fetch }) => {
         throw e;
     }
 
-    // get developer mods if not self, otherwise get self mods
-    let load_error = undefined;
-
-    if (developer.id == user?.id) {
-        const result = await client.trySetTokens(cookies);
-        if (result !== SetTokensResult.UNSET) {
-            let self_mods = undefined;
-
-            const search_params = {
-                status:
-                    (url.searchParams.get("status") as ModStatus) ?? "accepted",
-            };
-
-            try {
-                self_mods = await client.getSelfMods({
-                    status: search_params.status,
-                });
-            } catch (e) {
-                if (e instanceof IndexError) {
-                    load_error = e.message;
-                } else {
-                    throw e;
-                }
-            }
-
-            return {
-                developer,
-                user,
-                self_mods,
-                error: load_error,
-                params: search_params,
-            };
-        }
-    }
-
+    let loadError: IndexError | undefined = undefined;
     let mods = undefined;
 
     try {
@@ -111,7 +72,7 @@ export const load: PageServerLoad = async ({ url, params, cookies, fetch }) => {
         });
     } catch (e) {
         if (e instanceof IndexError) {
-            load_error = e.message;
+            loadError = e;
         } else {
             throw e;
         }
@@ -119,8 +80,7 @@ export const load: PageServerLoad = async ({ url, params, cookies, fetch }) => {
 
     return {
         developer,
-        user,
         mods,
-        error: load_error,
+        error: loadError,
     };
 };

@@ -298,6 +298,7 @@
                                     </label>
                                     <input
                                         type="text"
+                                        required
                                         id="add-developer-name"
                                         name="developer" />
                                 </div>
