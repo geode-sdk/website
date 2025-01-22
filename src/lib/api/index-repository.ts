@@ -195,11 +195,17 @@ export class IndexClient {
     async trySetTokens(cookies: Cookies): Promise<SetTokensResult> {
         const auth = cookies.get("authtoken");
         const refresh = cookies.get("refreshtoken");
+        const oldToken = cookies.get("token");
 
         if (auth && refresh) {
             this.token = auth;
             this.refreshToken = refresh;
             this._lastAuthStatus = SetTokensResult.SET_FROM_COOKIE;
+            return SetTokensResult.SET_FROM_COOKIE;
+        }
+
+        if (oldToken) {
+            this.token = oldToken;
             return SetTokensResult.SET_FROM_COOKIE;
         }
 
