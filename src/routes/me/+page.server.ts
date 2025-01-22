@@ -24,7 +24,6 @@ export const actions: Actions = {
         try {
             await client.updateProfile({ display_name });
         } catch (e) {
-            console.log(e);
             if (e instanceof IndexError) {
                 return fail(400, { cause: e.message });
             }

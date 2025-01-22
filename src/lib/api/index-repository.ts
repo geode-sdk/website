@@ -126,7 +126,7 @@ export class IndexClient {
     private token: string | null;
     private refreshToken: string | null;
     private _lastAuthStatus: SetTokensResult | null = null;
-    private fetch: typeof fetch;
+    private readonly fetch: typeof fetch;
 
     constructor(options: { token?: string; refreshToken?: string; fetch?: GlobalFetch } = {}) {
         this.token = options.token ?? null;
@@ -148,6 +148,7 @@ export class IndexClient {
 
         const firstResponse = await callback();
         if (firstResponse.status === 401) {
+            console.log("got 401");
             this.token = null;
 
             if (await this.tryRefreshTokens()) {
@@ -180,6 +181,10 @@ export class IndexClient {
 
     wasAuthSuccessful(): boolean {
         return this._lastAuthStatus !== null && this._lastAuthStatus !== SetTokensResult.UNSET;
+    }
+
+    getTokens(): { auth: string | null, refresh: string | null } {
+        return { auth: this.token, refresh: this.refreshToken };
     }
 
     wipeTokens(): void {
@@ -304,6 +309,8 @@ export class IndexClient {
             const json: BaseRequest<{ access_token: string, refresh_token: string }> = await res.json();
             this.token = json.payload.access_token;
             this.refreshToken = json.payload.refresh_token;
+
+            this._lastAuthStatus = SetTokensResult.REFRESHED;
             return true;
         }
     }
