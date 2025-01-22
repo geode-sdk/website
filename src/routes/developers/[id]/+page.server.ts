@@ -1,12 +1,5 @@
-import {
-    IndexClient,
-    IndexError,
-    ModSort,
-    SetTokensResult,
-} from "$lib/api/index-repository.js";
+import { IndexClient, IndexError, ModSort } from "$lib/api/index-repository.js";
 import { toIntSafe } from "$lib/api/helpers.js";
-import type { ServerDeveloper } from "$lib/api/models/base.js";
-import type { ModStatus } from "$lib/api/models/mod-version.js";
 import type { Actions, PageServerLoad } from "./$types.js";
 import { error, fail } from "@sveltejs/kit";
 import { tryCreateAuthenticatedClient } from "$lib/server";
