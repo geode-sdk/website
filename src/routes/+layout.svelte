@@ -7,7 +7,6 @@
     import Dot from "$lib/components/Dot.svelte";
     import Waves from "$lib/components/Waves.svelte";
     import Icon from "$lib/components/Icon.svelte";
-    import type { ServerDeveloper } from "$lib/api/models/base";
     import type { LayoutData } from "../../.svelte-kit/types/src/routes/$types";
 
     export let data: LayoutData;
@@ -45,7 +44,7 @@
                     <Link href="https://docs.geode-sdk.org/" icon="docs">Documentation</Link>
                     <Dot/>
                     <Link href="https://github.com/geode-sdk" icon="github">Source Code</Link>
-                    {#if data.loggedInUser.user === null}
+                    {#if data.loggedInUser === null}
                         <Dot/>
                         <Link href="/login" icon="account">Login</Link>
                     {/if}
