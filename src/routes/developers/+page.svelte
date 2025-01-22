@@ -76,7 +76,7 @@
                 on:search={onSearch}
                 bind:ref={searchBar}></Search>
         </div>
-        <section class="container">
+        <section class="aside">
             <Pagination
                 total={data.developers?.count ?? 0}
                 perPage={per_page}
@@ -115,7 +115,7 @@
         font-size: var(--font-size-long-title);
     }
 
-    .container {
+    .aside {
         display: flex;
         flex-direction: column;
         gap: 1rem;

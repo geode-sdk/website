@@ -11,29 +11,6 @@ import type { Actions, PageServerLoad } from "./$types.js";
 import { error, fail } from "@sveltejs/kit";
 
 export const actions: Actions = {
-    upload_mod: async ({ cookies, request, fetch }) => {
-        const client = new IndexClient({ fetch });
-        if ((await client.trySetTokens(cookies)) === SetTokensResult.UNSET) {
-            return fail(401, { message: "You are not authenticated" });
-        }
-
-        const data = await request.formData();
-
-        const download_link = data.get("download_link");
-        if (!download_link || typeof download_link != "string") {
-            return fail(400, { message: "invalid download_link" });
-        }
-
-        try {
-            await client.createMod({ download_link });
-        } catch (e) {
-            if (e instanceof IndexError) {
-                return fail(400, { message: e.message });
-            }
-        }
-
-        return { success: true };
-    },
     modify_user: async ({ cookies, params, request, fetch }) => {
         const id = toIntSafe(params.id);
         if (!id) {

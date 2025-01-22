@@ -700,7 +700,7 @@ export class IndexClient {
             });
         });
 
-        if (r.status != 204) {
+        if (r.status !== 200) {
             const data: BaseRequest<void> = await r.json();
             throw new IndexError(data.error);
         }

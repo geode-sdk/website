@@ -1,46 +1,215 @@
 <script lang="ts">
-	import type { PageData } from "./$types.js";
-	import { goto } from "$app/navigation";
-    import Link from "$lib/components/Link.svelte";
+    import type { PageData } from "./$types.js";
+    import { enhance } from "$app/forms";
+    import Button from "$lib/components/Button.svelte";
+    import MyPendingModCard from "$lib/components/MyPendingModCard.svelte";
 
-	export let data: PageData;
+    $: updatingSelf = false;
+    $: submittingMod = false;
 
-	let status = "accepted";
-
-	const onChangeFilter = async () => {
-		const params = new URLSearchParams();
-
-		params.set("status", status);
-
-		await goto(`/me?${params}`);
-	}
+    export let data: PageData;
+    const self = data.self;
+    const myPendingMods = data.myPendingMods.filter(
+        (mod) => mod.versions.length > 0,
+    );
+    const myRejectedMods = data.myRejectedMods.filter(
+        (mod) => mod.versions.length > 0,
+    );
 </script>
 
 <svelte:head>
-	<title>Your profile | Geode</title>
-	<meta name="description" content="See your own profile on Geode">
+    <title>Your profile | Geode</title>
+    <meta name="description" content="See your own profile on Geode" />
 </svelte:head>
 
-<fieldset>
-	<legend>it's you!</legend>
+<main>
+    <h1>Your profile</h1>
 
-	<Link --link-color="var(--accent-300)" href={`/developers/${data.self.id}`}>{data.self.display_name} ({data.self.username}) ((#{data.self.id}))</Link>
+    <div class="container | with-sidebar">
+        <aside class="card | sidebar">
+            <img
+                src={`https://avatars.githubusercontent.com/u/${self.github_id}`}
+                alt="your profile picture"
+                width="225"
+                height="225" />
+            <form
+                method="POST"
+                action="?/update_self"
+                use:enhance={() => {
+                    return async ({ update }) => {
+                        updatingSelf = true;
+                        await update({ reset: false });
+                        updatingSelf = false;
+                    };
+                }}>
+                <div class="form-control">
+                    <label for="display_name">Display name:</label>
+                    <input
+                        required
+                        minlength="2"
+                        type="text"
+                        value={self.display_name}
+                        name="display_name"
+                        id="display_name" />
+                </div>
+                <div class="form-button">
+                    <button type="submit" disabled={updatingSelf}>
+                        <Button disabled={updatingSelf}>Update</Button>
+                    </button>
+                </div>
+            </form>
+        </aside>
+        <section class="actions | card flow | not-sidebar">
+            <h2>Logout</h2>
+            <form method="POST" class="flow">
+                <button formaction="?/logout" type="submit">
+                    <Button>Logout</Button>
+                </button>
+                <button formaction="?/logout_all" type="submit">
+                    <Button>Logout all devices</Button>
+                </button>
+            </form>
+            <h2>Create / update a mod</h2>
+            <form
+                method="POST"
+                action="?/upload_mod"
+                class="flow"
+                use:enhance={() => {
+                    return async ({ update }) => {
+                        submittingMod = true;
+                        await update();
+                        submittingMod = false;
+                    };
+                }}>
+                <div class="form-control">
+                    <label for="download_link">Download URL:</label>
+                    <input
+                        type="text"
+                        id="download_link"
+                        name="download_link"
+                        required />
+                </div>
+                <button type="submit" disabled={submittingMod}>
+                    <Button disabled={submittingMod}>Upload</Button>
+                </button>
+            </form>
+            <h2>Your pending mods</h2>
+            <ul class="unstyle-list">
+                {#each myPendingMods as mod}
+                    <li><MyPendingModCard {mod} /></li>
+                {:else}
+                    <p>You have no pending mods</p>
+                {/each}
+            </ul>
+            <h2>Your rejected mods</h2>
+            <ul class="unstyle-list">
+                {#each myRejectedMods as mod}
+                    <li><MyPendingModCard {mod} /></li>
+                {:else}
+                    <p>You have no pending mods</p>
+                {/each}
+            </ul>
+        </section>
+    </div>
+</main>
 
-	<p>
-		admin: {data.self.admin} <br />
-		verified: {data.self.verified} <br />
-	</p>
+<style lang="scss">
+    .flow {
+        --flow-size: 0.5em;
+    }
 
-	<form method="post" action="?/update_self">
-		<label for="update_display_name">Display name:</label>
-		<input type="text" value={data.self.display_name} name="display_name" id="update_display_name" />
+    .flow > * + * {
+        margin-block-start: var(--flow-size);
+    }
 
-		<input type="submit" value="Update" />
-	</form>
+    h1 {
+        margin-bottom: 1rem;
+        text-align: center;
+        font-family: var(--font-heading);
+        font-weight: 600;
+        color: var(--text-50);
+        font-size: var(--font-size-long-title);
+    }
 
-	<form method="POST">
-		<button formaction="?/logout">Log out</button>
-		<button formaction="?/logout_all">Revoke all tokens</button>
-	</form>
-</fieldset>
+    h2 {
+        --flow-size: 0.7em;
+        margin: 0;
+    }
 
+    main {
+        margin-inline: 1rem;
+    }
+
+    .with-sidebar {
+        --sidebar-flex-basis: 10rem;
+
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .sidebar {
+        flex-basis: var(--sidebar-flex-basis);
+        flex-grow: 1;
+    }
+
+    .not-sidebar {
+        flex-basis: 0;
+        flex-grow: 999;
+        //min-inline-size: 70%;
+    }
+
+    .card {
+        background-color: var(--background-950);
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+    }
+
+    label {
+        font-size: 0.9rem;
+    }
+
+    .form-control {
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+    }
+
+    input {
+        padding: 0.5rem;
+        border: 1px solid var(--secondary-200);
+        border-radius: 0.2rem;
+        font-size: 1rem;
+    }
+
+    aside {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    img {
+        border-radius: 0.5rem;
+    }
+
+    button[type="submit"] {
+        padding: 0;
+        border: none;
+        background-color: transparent;
+    }
+
+    .form-button {
+        margin-top: 1rem;
+        display: flex;
+        gap: 0.5rem;
+        flex-direction: row-reverse;
+    }
+
+    .unstyle-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+</style>
