@@ -72,10 +72,12 @@
             <h2>Logout</h2>
             <form method="POST" class="flow">
                 <button formaction="?/logout" type="submit">
-                    <Button>Logout</Button>
+                    <Button design="primary-filled">Logout</Button>
                 </button>
                 <button formaction="?/logout_all" type="submit">
-                    <Button>Logout all devices</Button>
+                    <Button design="primary-filled">
+                        Logout all devices
+                    </Button>
                 </button>
             </form>
             <h2>Submit a new mod</h2>
