@@ -11,7 +11,7 @@
     export let data: PageData;
     export let form: ActionData;
 
-    const self = data.self;
+    let self = data.self;
     const myPendingMods = data.myPendingMods.filter(
         (mod) => mod.versions.length > 0,
     );

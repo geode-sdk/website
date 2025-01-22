@@ -11,8 +11,6 @@
     import type { LayoutData } from "../../.svelte-kit/types/src/routes/$types";
 
     export let data: LayoutData;
-
-    const user: ServerDeveloper | null = data.loggedInUser;
 </script>
 
 <main>
@@ -26,9 +24,9 @@
             <Button href="/mods" design="primary-filled-dark" icon="browse">Mods</Button>
             <Button href="/faq" design="primary-filled-dark" icon="help">FAQ</Button>
         </div>
-        {#if user !== null}
+        {#if data.loggedInUser !== null}
         <div class="nav-right">
-            <Button href="/me" design="primary-filled-dark" icon="account">{user.username}</Button>
+            <Button href="/me" design="primary-filled-dark" icon="account">{data.loggedInUser.username}</Button>
         </div>
         {/if}
         <slot name="nav"/>
@@ -47,7 +45,7 @@
                     <Link href="https://docs.geode-sdk.org/" icon="docs">Documentation</Link>
                     <Dot/>
                     <Link href="https://github.com/geode-sdk" icon="github">Source Code</Link>
-                    {#if user === null}
+                    {#if data.loggedInUser.user === null}
                         <Dot/>
                         <Link href="/login" icon="account">Login</Link>
                     {/if}

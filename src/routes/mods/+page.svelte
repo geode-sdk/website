@@ -21,23 +21,22 @@
     import type { ServerDeveloper } from "$lib/api/models/base";
 
     export let data: PageData;
-    const params = data.params! as ModSearchParams;
     const profile: ServerDeveloper | null = data.loggedInUser ?? null;
 
     $: url_params = $page.url.searchParams;
-    $: current_page = params.page ?? 1;
+    $: current_page = data.params.page ?? 1;
 
-    let query = params.query ?? "";
-    $: platforms = new Set(params.platforms ?? []);
-    let sort = params.sort ?? "downloads";
-    let tags = new Set(params.tags ?? []);
-    let featured = params.featured ?? false;
-    let developer = params.developer ?? "";
-    let pending = params.status != "accepted";
+    let query = data.params.query ?? "";
+    $: platforms = new Set(data.params.platforms ?? []);
+    let sort = data.params.sort ?? "downloads";
+    let tags = new Set(data.params.tags ?? []);
+    let featured = data.params.featured ?? false;
+    let developer = data.params.developer ?? "";
+    let pending = data.params.status != "accepted";
     let userMods = false;
-    let geode = params.geode ?? "";
-    let gd = params.gd ?? "";
-    let per_page = params.per_page ?? 10;
+    let geode = data.params.geode ?? "";
+    let gd = data.params.gd ?? "";
+    let per_page = data.params.per_page ?? 10;
     let searching = false;
     let view: 'list' | 'dual-list' | 'grid' = 'dual-list';
     let searchBar: HTMLInputElement;
@@ -213,7 +212,7 @@
             <Pagination
                 total={data.mods?.count ?? 0}
                 perPage={per_page}
-                pageCount={data.mods?.data.length ?? 0}
+                pageCount={max_page}
                 page={current_page}
                 disabled={!data.mods}
                 label="mods"
@@ -240,7 +239,7 @@
             </Pagination>
 
             <LoadingOverlay loading={searching}>
-                <!-- this goofy thing just makes sure the size of the mods list stays 
+                <!-- this goofy thing just makes sure the size of the mods list stays
                     the same even if there are fewer items than needed to fill it -->
                 <div class="mod-listing-size-enforcer">
                     <span/>
@@ -272,8 +271,8 @@
                             <div class="humorous-meme"><Image name="no-mods" alt=""/></div>
                             <p><em>No matching mods found :(</em></p>
                             <p>
-                                It could be that the mod 
-                                you're looking for 
+                                It could be that the mod
+                                you're looking for
                                 {#if platforms.size}
                                     is not available on {
                                         Array.from(platforms)
@@ -396,7 +395,7 @@
             justify-content: center;
         }
 
-        @media screen and (min-width: 400px) {	
+        @media screen and (min-width: 400px) {
             &.dual-list {
                 grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
             }
