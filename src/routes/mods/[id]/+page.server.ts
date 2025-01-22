@@ -6,7 +6,7 @@ import {
 } from "$lib/api/index-repository.js";
 import { getCachedTags } from "$lib/server/cache.js";
 import { toIntSafe } from "$lib/api/helpers.js";
-import type { ServerDeveloper, ServerTag } from "$lib/api/models/base.js";
+import type { ServerTag } from "$lib/api/models/base.js";
 import type {
     ModStatus,
     ServerModVersion,
