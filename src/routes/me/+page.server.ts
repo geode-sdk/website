@@ -1,9 +1,8 @@
 import { fail, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types.js";
 import {
-    IndexClient,
     IndexError,
-    IndexNotAuthenticated, SetTokensResult
+    IndexNotAuthenticated,
 } from "$lib/api/index-repository.js";
 import { tryCreateAuthenticatedClient } from "$lib/server";
 
@@ -25,7 +24,7 @@ export const actions: Actions = {
             await client.updateProfile({ display_name });
         } catch (e) {
             if (e instanceof IndexError) {
-                return fail(400, { cause: e.message });
+                return fail(400, { message: e.message });
             }
 
             throw e;
@@ -34,16 +33,21 @@ export const actions: Actions = {
         return { success: true };
     },
     upload_mod: async ({ cookies, request, fetch }) => {
-        const client = new IndexClient({ fetch });
-        if ((await client.trySetTokens(cookies)) === SetTokensResult.UNSET) {
+        const client = await tryCreateAuthenticatedClient(cookies, fetch);
+
+        if (!client.wasAuthSuccessful()) {
             return fail(401, { message: "You are not authenticated" });
         }
 
         const data = await request.formData();
 
         const download_link = data.get("download_link");
-        if (!download_link || typeof download_link != "string") {
-            return fail(400, { message: "invalid download_link" });
+        if (
+            !download_link ||
+            typeof download_link != "string" ||
+            !URL.canParse(download_link)
+        ) {
+            return fail(400, { message: "Download link is invalid" });
         }
 
         try {

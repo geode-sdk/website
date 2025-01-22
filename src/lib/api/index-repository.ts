@@ -435,9 +435,9 @@ export class IndexClient {
                 method: "POST",
                 body: JSON.stringify(body),
             });
-        })
+        });
 
-        if (r.status != 204) {
+        if (r.status >= 400) {
             const data: BaseRequest<void> = await r.json();
             throw new IndexError(data.error);
         }

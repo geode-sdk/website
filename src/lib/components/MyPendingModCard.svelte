@@ -5,14 +5,11 @@
 </script>
 
 <div class="card">
-    <div class="split">
-        <div>
-            <p class="bigger">
-                {mod.versions[0].name} v{mod.versions[0].version}
-            </p>
-            <p class="smaller">{mod.id}</p>
-        </div>
-        <p>{mod.versions[0].status}</p>
+    <div>
+        <p class="bigger">
+            {mod.versions[0].name} v{mod.versions[0].version}
+        </p>
+        <p class="smaller">{mod.id}</p>
     </div>
 
     {#if mod.versions[0].status !== "pending"}
@@ -29,12 +26,6 @@
     .smaller {
         font-size: 0.8rem;
         color: var(--text-300);
-    }
-
-    .split {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
     }
 
     .card {

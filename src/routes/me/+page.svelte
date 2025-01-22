@@ -1,13 +1,16 @@
 <script lang="ts">
-    import type { PageData } from "./$types.js";
+    import type { ActionData, PageData } from "./$types.js";
     import { enhance } from "$app/forms";
     import Button from "$lib/components/Button.svelte";
     import MyPendingModCard from "$lib/components/MyPendingModCard.svelte";
+    import InfoBox from "$lib/components/InfoBox.svelte";
 
     $: updatingSelf = false;
     $: submittingMod = false;
 
     export let data: PageData;
+    export let form: ActionData;
+
     const self = data.self;
     const myPendingMods = data.myPendingMods.filter(
         (mod) => mod.versions.length > 0,
@@ -37,6 +40,7 @@
                 action="?/update_self"
                 use:enhance={() => {
                     return async ({ update }) => {
+                        form = null;
                         updatingSelf = true;
                         await update({ reset: false });
                         updatingSelf = false;
@@ -60,6 +64,11 @@
             </form>
         </aside>
         <section class="actions | card flow | not-sidebar">
+            {#if form?.success}
+                <InfoBox type="info">Action performed!</InfoBox>
+            {:else if form}
+                <InfoBox type="error">{form?.message}</InfoBox>
+            {/if}
             <h2>Logout</h2>
             <form method="POST" class="flow">
                 <button formaction="?/logout" type="submit">
@@ -69,13 +78,14 @@
                     <Button>Logout all devices</Button>
                 </button>
             </form>
-            <h2>Create / update a mod</h2>
+            <h2>Submit a new mod</h2>
             <form
                 method="POST"
                 action="?/upload_mod"
                 class="flow"
                 use:enhance={() => {
                     return async ({ update }) => {
+                        form = null;
                         submittingMod = true;
                         await update();
                         submittingMod = false;
