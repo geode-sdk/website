@@ -14,6 +14,7 @@ import type {
 import type { Actions, PageServerLoad } from "./$types.js";
 import { error, fail } from "@sveltejs/kit";
 import type { ServerMod } from "$lib/api/models/mod";
+import { tryCreateAuthenticatedClient } from "$lib/server";
 
 export const actions: Actions = {
     update_mod_version: async ({ cookies, request, params, fetch }) => {
@@ -162,13 +163,7 @@ export const load: PageServerLoad = async ({ fetch, url, params, cookies }) => {
     const id = params.id;
     const version_string = url.searchParams.get("version") ?? "latest";
 
-    const user_str = cookies.get("cached_profile");
-    const user = user_str
-        ? (JSON.parse(user_str) as ServerDeveloper)
-        : undefined;
-
-    const client = new IndexClient({ fetch });
-    await client.trySetTokens(cookies);
+    const client = await tryCreateAuthenticatedClient(cookies, fetch);
 
     let mod: ServerMod | undefined = undefined;
     try {
@@ -210,5 +205,5 @@ export const load: PageServerLoad = async ({ fetch, url, params, cookies }) => {
         tags = await getCachedTags(client);
     } catch (e) {}
 
-    return { mod, version, user, versions, tags, version_params };
+    return { mod, version, versions, tags, version_params };
 };

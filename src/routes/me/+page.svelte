@@ -124,14 +124,6 @@
 </main>
 
 <style lang="scss">
-    .flow {
-        --flow-size: 0.5em;
-    }
-
-    .flow > * + * {
-        margin-block-start: var(--flow-size);
-    }
-
     h1 {
         margin-bottom: 1rem;
         text-align: center;
@@ -170,20 +162,8 @@
         //min-inline-size: 70%;
     }
 
-    .card {
-        background-color: var(--background-950);
-        padding: 0.5rem;
-        border-radius: 0.5rem;
-    }
-
     label {
         font-size: 0.9rem;
-    }
-
-    .form-control {
-        display: flex;
-        flex-direction: column;
-        gap: 0.2rem;
     }
 
     input {
@@ -208,6 +188,7 @@
         padding: 0;
         border: none;
         background-color: transparent;
+        font-size: 1rem;
     }
 
     .form-button {
@@ -215,11 +196,5 @@
         display: flex;
         gap: 0.5rem;
         flex-direction: row-reverse;
-    }
-
-    .unstyle-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
     }
 </style>
