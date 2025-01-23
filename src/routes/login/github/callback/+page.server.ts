@@ -9,7 +9,7 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
     const params = url.searchParams;
 
     if (!params.has('state') || !params.has('code')) {
-        redirect(302, "/");
+        return redirect(302, "/");
     }
 
     try {

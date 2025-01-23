@@ -10,14 +10,14 @@ export const setCookieTokens = (
         maxAge: 86400, // = 1 day
         httpOnly: true,
         secure: true,
-        sameSite: "strict",
+        sameSite: "lax",
     });
     cookies.set("refreshtoken", refresh, {
         path: "/",
         maxAge: 2592000, // = 30 days
         httpOnly: true,
         secure: true,
-        sameSite: "strict",
+        sameSite: "lax",
     });
 };
 

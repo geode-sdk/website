@@ -5,6 +5,7 @@ import type { ServerMod, ServerSimpleMod } from "./models/mod.js";
 import type { ModStatus, ServerModVersion } from "./models/mod-version.js";
 import type { ServerStats } from "./models/stats";
 import type { Cookies } from "@sveltejs/kit";
+import { setCookieTokens } from "$lib/server/tokens";
 
 const BASE_URL =
     "PUBLIC_API_ENDPOINT" in publicEnv &&
@@ -219,20 +220,7 @@ export class IndexClient {
             this.refreshToken = refresh;
 
             if (await this.tryRefreshTokens()) {
-                cookies.set("authtoken", this.token!, {
-                    path: "/",
-                    maxAge: 86400, // = 1 day
-                    httpOnly: true,
-                    secure: true,
-                    sameSite: "strict",
-                });
-                cookies.set("refreshtoken", this.refreshToken, {
-                    path: "/",
-                    maxAge: 2592000, // = 30 days
-                    httpOnly: true,
-                    secure: true,
-                    sameSite: "strict",
-                });
+                setCookieTokens(this.token!, this.refreshToken!, cookies);
                 this._lastAuthStatus = SetTokensResult.REFRESHED;
                 return SetTokensResult.REFRESHED;
             }
