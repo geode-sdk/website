@@ -1,7 +1,7 @@
 import type { PageServerLoad } from "./$types";
 import { IndexClient } from "$lib/api/index-repository";
 import { redirect } from "@sveltejs/kit";
-import { setCookieTokens } from "$lib/server/tokens";
+import { setCookieTokens } from "$lib/api/tokens";
 
 export const load: PageServerLoad = async ({ url, cookies }) => {
     const client = new IndexClient({ fetch });

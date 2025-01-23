@@ -4,7 +4,7 @@ import {
     IndexNotAuthenticated,
     SetTokensResult,
 } from "$lib/api/index-repository";
-import { removeCookieTokens, setCookieTokens } from "$lib/server/tokens";
+import { removeCookieTokens, setCookieTokens } from "$lib/api/tokens";
 
 export const load: LayoutServerLoad = async ({ cookies, fetch }) => {
     const client = await tryCreateAuthenticatedClient(cookies, fetch);

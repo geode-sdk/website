@@ -5,7 +5,7 @@ import type { ServerMod, ServerSimpleMod } from "./models/mod.js";
 import type { ModStatus, ServerModVersion } from "./models/mod-version.js";
 import type { ServerStats } from "./models/stats";
 import type { Cookies } from "@sveltejs/kit";
-import { setCookieTokens } from "$lib/server/tokens";
+import { setCookieTokens } from "$lib/api/tokens";
 
 const BASE_URL =
     "PUBLIC_API_ENDPOINT" in publicEnv &&
