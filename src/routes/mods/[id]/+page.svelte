@@ -13,12 +13,7 @@
     import Link from "$lib/components/Link.svelte";
     import Icon from "$lib/components/Icon.svelte";
     import Gap from "$lib/components/Gap.svelte";
-    import {
-        serverTimestampToAgoString,
-        serverTimestampToDateString,
-        formatNumber,
-        iconForTag,
-    } from "$lib";
+    import { serverTimestampToAgoString, serverTimestampToDateString, formatNumber, iconForTag } from "$lib";
     import Waves from "$lib/components/Waves.svelte";
     import Label from "$lib/components/Label.svelte";
     import InfoBox from "$lib/components/InfoBox.svelte";
@@ -40,9 +35,7 @@
     $: invalid_status = !verifyStatus(status);
 
     const verifyStatus = (status: string): status is ModStatus => {
-        return (
-            status == "accepted" || status == "rejected" || status == "pending"
-        );
+        return status == "accepted" || status == "rejected" || status == "pending";
     };
 
     $: per_page = data.version_params.per_page ?? 10;
@@ -53,16 +46,13 @@
 
     $: logoUrl = IndexClient.getModLogo(data.mod.id, {
         version: data.version.version,
-        status:
-            data.version.status != "accepted" ? data.version.status : undefined,
+        status: data.version.status != "accepted" ? data.version.status : undefined,
     }).toString();
 
     const developer_ids = data.mod.developers.map((d) => d.id);
     const can_update_mod = (user && developer_ids.includes(user.id)) || false;
     const is_admin = user?.admin === true;
-    const owns_mod =
-        can_update_mod &&
-        data.mod.developers.some((d) => d.is_owner && d.id == user?.id);
+    const owns_mod = can_update_mod && data.mod.developers.some((d) => d.is_owner && d.id == user?.id);
 
     const paid = data.mod.tags.includes("paid");
 
@@ -99,9 +89,7 @@
 
     const getTagDisplay = (tag: string) => {
         const foundTag = data.tags.find((x) => x.name == tag);
-        return foundTag
-            ? foundTag.display_name
-            : tag.charAt(0).toUpperCase() + tag.slice(1);
+        return foundTag ? foundTag.display_name : tag.charAt(0).toUpperCase() + tag.slice(1);
     };
 
     export let form: ActionData;
@@ -134,9 +122,7 @@
         </div>
         <p>
             {#each data.mod.developers as dev, index}
-                {index > 0 ? ", " : ""}<Link
-                    href={`/mods?developer=${dev.username}`}
-                    --link-color="var(--accent-300)">
+                {index > 0 ? ", " : ""}<Link href={`/mods?developer=${dev.username}`} --link-color="var(--accent-300)">
                     {dev.display_name}
                 </Link>
             {/each}
@@ -158,30 +144,24 @@
                                 .
                                 <br />
                                 <br />
-                                Geode does not handle any payments. The mod handles
-                                all transactions in their own way. The paid content
-                                may not be available in your country.
+                                Geode does not handle any payments. The mod handles all transactions in their own way. The
+                                paid content may not be available in your country.
                             </InfoBox>
                         </Column>
                     {/if}
-                    <GeodeMarkdown
-                        source={data.mod.about ?? "No description provided"} />
+                    <GeodeMarkdown source={data.mod.about ?? "No description provided"} />
                 </div>
             </TabPage>
             <TabPage name="Changelog" id="changelog" icon="changelog">
                 <div class="markdown">
-                    <GeodeMarkdown
-                        source={data.mod.changelog ??
-                            "No changelog provided"} />
+                    <GeodeMarkdown source={data.mod.changelog ?? "No changelog provided"} />
                 </div>
             </TabPage>
             <TabPage name="Versions" id="versions" icon="version">
                 <Column gap="small" align="stretch">
                     <Column align="center">
                         <InfoBox type="warning">
-                            The recommended way to install mods is through the <em>
-                                in-game mod loader
-                            </em>
+                            The recommended way to install mods is through the <em>in-game mod loader</em>
                             . You will have to
                             <em>manually install</em>
                             the
@@ -211,10 +191,7 @@
                                         titleIcon="status"
                                         on:select={(ev) => {
                                             const new_status = ev.detail.value;
-                                            if (
-                                                status !== new_status &&
-                                                verifyStatus(new_status)
-                                            ) {
+                                            if (status !== new_status && verifyStatus(new_status)) {
                                                 status = new_status;
                                                 updateSearch();
                                             }
@@ -223,8 +200,7 @@
                                             icon="verified"
                                             title="Accepted"
                                             value="accepted"
-                                            isDefault={status === "accepted" ||
-                                                invalid_status} />
+                                            isDefault={status === "accepted" || invalid_status} />
                                         <SelectOption
                                             icon="time"
                                             title="Pending"
@@ -262,59 +238,31 @@
                             <InfoBox type="info">Action performed!</InfoBox>
                         {/if}
 
-                        <form
-                            method="POST"
-                            class="flow"
-                            action="?/create_version"
-                            use:enhance>
+                        <form method="POST" class="flow" action="?/create_version" use:enhance>
                             <h2>Submit an update</h2>
                             <div class="form-control">
-                                <label for="create-mod-download">
-                                    Download link:
-                                </label>
-                                <input
-                                    type="url"
-                                    required
-                                    id="create-mod-download"
-                                    name="download_link" />
+                                <label for="create-mod-download">Download link:</label>
+                                <input type="url" required id="create-mod-download" name="download_link" />
                             </div>
 
                             <button type="submit">
-                                <Button design="secondary-filled">
-                                    Submit
-                                </Button>
+                                <Button design="secondary-filled">Submit</Button>
                             </button>
                         </form>
                         {#if owns_mod}
-                            <form
-                                method="POST"
-                                class="flow"
-                                action="?/add_developer"
-                                use:enhance>
+                            <form method="POST" class="flow" action="?/add_developer" use:enhance>
                                 <h2>Manage developers</h2>
                                 <div class="form-control">
-                                    <label for="add-developer-name">
-                                        Username:
-                                    </label>
-                                    <input
-                                        type="text"
-                                        required
-                                        id="add-developer-name"
-                                        name="developer" />
+                                    <label for="add-developer-name">Username:</label>
+                                    <input type="text" required id="add-developer-name" name="developer" />
                                 </div>
 
                                 <div>
                                     <button type="submit">
-                                        <Button design="secondary-filled">
-                                            Add
-                                        </Button>
+                                        <Button design="secondary-filled">Add</Button>
                                     </button>
-                                    <button
-                                        type="submit"
-                                        formaction="?/remove_developer">
-                                        <Button design="primary-filled">
-                                            Remove
-                                        </Button>
+                                    <button type="submit" formaction="?/remove_developer">
+                                        <Button design="primary-filled">Remove</Button>
                                     </button>
                                 </div>
                             </form>
@@ -344,96 +292,62 @@
                                         checked={data.mod.featured}
                                         name="featured"
                                         id="update-mod-featured" />
-                                    <label for="update-mod-featured">
-                                        Featured
-                                    </label>
+                                    <label for="update-mod-featured">Featured</label>
                                 </div>
 
                                 <input type="submit" value="Update" />
                             </fieldset>
                         </form>
-                        <form
-                            method="POST"
-                            action="?/update_mod_version"
-                            use:enhance>
+                        <form method="POST" action="?/update_mod_version" use:enhance>
                             <fieldset>
                                 <legend>
                                     Update version {data.version.version} status
                                 </legend>
 
                                 <div>
-                                    <label for="update-version-status">
-                                        Status:
-                                    </label>
-                                    <select
-                                        name="status"
-                                        id="update-version-status">
-                                        <option
-                                            selected={data.version.status ===
-                                                "accepted"}
-                                            value="accepted">
+                                    <label for="update-version-status">Status:</label>
+                                    <select name="status" id="update-version-status">
+                                        <option selected={data.version.status === "accepted"} value="accepted">
                                             Accepted
                                         </option>
-                                        <option
-                                            selected={data.version.status ===
-                                                "pending"}
-                                            value="pending">
+                                        <option selected={data.version.status === "pending"} value="pending">
                                             Pending
                                         </option>
-                                        <option
-                                            selected={data.version.status ===
-                                                "rejected"}
-                                            value="rejected">
+                                        <option selected={data.version.status === "rejected"} value="rejected">
                                             Rejected
                                         </option>
-                                        <option
-                                            selected={data.version.status ===
-                                                "unlisted"}
-                                            value="unlisted">
+                                        <option selected={data.version.status === "unlisted"} value="unlisted">
                                             Unlisted
                                         </option>
                                     </select>
                                 </div>
 
                                 <div>
-                                    <label for="update-version-info">
-                                        Reason:
-                                    </label>
+                                    <label for="update-version-info">Reason:</label>
                                     <br />
-                                    <textarea
-                                        name="info"
-                                        id="update-version-info"
-                                        rows="6"
-                                        cols="40">
+                                    <textarea name="info" id="update-version-info" rows="6" cols="40">
                                         {data.version.info ?? ""}
                                     </textarea>
                                 </div>
 
-                                <input
-                                    type="hidden"
-                                    name="mod_version"
-                                    value={data.version.version} />
+                                <input type="hidden" name="mod_version" value={data.version.version} />
 
                                 <input type="submit" value="Update" />
                             </fieldset>
                         </form>
                         {#if data.version.direct_download_link}
-                            {@const download_link =
-                                data.version.direct_download_link}
+                            {@const download_link = data.version.direct_download_link}
                             <p class="color-link">
                                 Direct download: <Link href={download_link}>
                                     {new URL(download_link).hostname}
                                 </Link>
                             </p>
-                            {@const match =
-                                /^(https?:\/\/github\.com\/[\w-]+\/[\w-]+).+/.exec(
-                                    data.version.direct_download_link,
-                                )}
+                            {@const match = /^(https?:\/\/github\.com\/[\w-]+\/[\w-]+).+/.exec(
+                                data.version.direct_download_link,
+                            )}
                             {#if match}
                                 <p class="color-link">
-                                    GitHub source: <Link
-                                        href={match[1]}
-                                        newTab={true}>
+                                    GitHub source: <Link href={match[1]} newTab={true}>
                                         {match[1]}
                                     </Link>
                                 </p>
@@ -448,16 +362,10 @@
                         {#if data.version.early_load || data.version.api}
                             <Row align="center" justify="top" gap="small">
                                 {#if data.version.early_load}
-                                    <Label icon="time" design="accent-alt">
-                                        Early Load
-                                    </Label>
+                                    <Label icon="time" design="accent-alt">Early Load</Label>
                                 {/if}
                                 {#if data.version.api}
-                                    <Label
-                                        icon="tag-enhancement"
-                                        design="accent">
-                                        API
-                                    </Label>
+                                    <Label icon="tag-enhancement" design="accent">API</Label>
                                 {/if}
                             </Row>
                         {/if}
@@ -486,8 +394,7 @@
                             {#each data.version.incompatibilities as incompatibility}
                                 <li>
                                     {incompatibility.importance} -
-                                    <Link
-                                        href={`/mods/${incompatibility.mod_id}`}>
+                                    <Link href={`/mods/${incompatibility.mod_id}`}>
                                         {incompatibility.mod_id}
                                     </Link>
                                     ({incompatibility.version})
@@ -508,23 +415,13 @@
                     <Icon icon="version" />{data.version.version}
                 </span>
                 <span class="card-info">
-                    <Icon icon="download" />{formatNumber(
-                        data.mod.download_count,
-                    )}
+                    <Icon icon="download" />{formatNumber(data.mod.download_count)}
                 </span>
-                <span
-                    class="card-info"
-                    title={serverTimestampToDateString(data.mod.created_at)}>
-                    <Icon icon="time" />{serverTimestampToAgoString(
-                        data.mod.created_at,
-                    )}
+                <span class="card-info" title={serverTimestampToDateString(data.mod.created_at)}>
+                    <Icon icon="time" />{serverTimestampToAgoString(data.mod.created_at)}
                 </span>
-                <span
-                    class="card-info"
-                    title={serverTimestampToDateString(data.mod.updated_at)}>
-                    <Icon icon="update" />{serverTimestampToAgoString(
-                        data.mod.updated_at,
-                    )}
+                <span class="card-info" title={serverTimestampToDateString(data.mod.updated_at)}>
+                    <Icon icon="update" />{serverTimestampToAgoString(data.mod.updated_at)}
                 </span>
                 <span class="card-info">
                     <Icon icon="geode" />{data.version.geode}
@@ -535,15 +432,9 @@
 
                 {#if data.mod.tags.length > 0}
                     <div class="mod-tags">
-                        <Row
-                            wrap="wrap"
-                            gap="tiny"
-                            align="center"
-                            justify="top">
+                        <Row wrap="wrap" gap="tiny" align="center" justify="top">
                             {#each data.mod.tags as tag}
-                                <Label
-                                    icon={iconForTag(tag)}
-                                    design="secondary">
+                                <Label icon={iconForTag(tag)} design="secondary">
                                     {getTagDisplay(tag)}
                                 </Label>
                             {/each}
@@ -554,20 +445,13 @@
         </section>
         <section>
             <Column align="stretch" gap="small">
-                <Button
-                    href={data.version.download_link}
-                    icon="download"
-                    design="primary-filled">
-                    Download
-                </Button>
+                <Button href={data.version.download_link} icon="download" design="primary-filled">Download</Button>
                 {#if multiple_links}
                     <div class="link-row">
                         <!-- wrapping in divs so i can apply grow to them -->
                         {#if data.mod.links?.homepage}
                             <div>
-                                <Button
-                                    href={data.mod.links.homepage}
-                                    icon="web" />
+                                <Button href={data.mod.links.homepage} icon="web" />
                             </div>
                         {/if}
                         {#if mod_source}
@@ -577,29 +461,19 @@
                         {/if}
                         {#if data.mod.links?.community}
                             <div>
-                                <Button
-                                    href={data.mod.links.community}
-                                    icon="community" />
+                                <Button href={data.mod.links.community} icon="community" />
                             </div>
                         {/if}
                     </div>
                 {:else}
                     {#if data.mod.links?.homepage}
-                        <Button href={data.mod.links.homepage} icon="web">
-                            Homepage
-                        </Button>
+                        <Button href={data.mod.links.homepage} icon="web">Homepage</Button>
                     {/if}
                     {#if mod_source}
-                        <Button href={mod_source} icon="github">
-                            Source Code
-                        </Button>
+                        <Button href={mod_source} icon="github">Source Code</Button>
                     {/if}
                     {#if data.mod.links?.community}
-                        <Button
-                            href={data.mod.links.community}
-                            icon="community">
-                            Community
-                        </Button>
+                        <Button href={data.mod.links.community} icon="community">Community</Button>
                     {/if}
                 {/if}
             </Column>

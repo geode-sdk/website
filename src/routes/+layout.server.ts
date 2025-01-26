@@ -1,9 +1,6 @@
 import type { LayoutServerLoad } from "./$types";
 import { tryCreateAuthenticatedClient } from "$lib/server";
-import {
-    IndexNotAuthenticated,
-    SetTokensResult,
-} from "$lib/api/index-repository";
+import { IndexNotAuthenticated, SetTokensResult } from "$lib/api/index-repository";
 import { removeCookieTokens, setCookieTokens } from "$lib/api/tokens";
 
 export const load: LayoutServerLoad = async ({ cookies, fetch }) => {

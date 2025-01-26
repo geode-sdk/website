@@ -1,8 +1,8 @@
 <script lang="ts">
     import "../app.scss";
     import Button from "$lib/components/Button.svelte";
-    import Column from "$lib/components/Column.svelte"
-    import Row from "$lib/components/Row.svelte"
+    import Column from "$lib/components/Column.svelte";
+    import Row from "$lib/components/Row.svelte";
     import Link from "$lib/components/Link.svelte";
     import Dot from "$lib/components/Dot.svelte";
     import Waves from "$lib/components/Waves.svelte";
@@ -13,10 +13,10 @@
 </script>
 
 <main>
-    <div class="bg"/>
-    <div class="side-art left"/>
-    <div class="side-art right"/>
-    <slot/>
+    <div class="bg" />
+    <div class="side-art left" />
+    <div class="side-art right" />
+    <slot />
     <nav>
         <div class="nav-left">
             <Button href=".." design="primary-filled-dark" icon="home">Home</Button>
@@ -24,37 +24,39 @@
             <Button href="/faq" design="primary-filled-dark" icon="help">FAQ</Button>
         </div>
         {#if data.loggedInUser !== null}
-        <div class="nav-right">
-            <Button href="/me" design="primary-filled-dark" icon="account">{data.loggedInUser.username}</Button>
-        </div>
+            <div class="nav-right">
+                <Button href="/me" design="primary-filled-dark" icon="account">{data.loggedInUser.username}</Button>
+            </div>
         {/if}
-        <slot name="nav"/>
+        <slot name="nav" />
     </nav>
     <div class="waves-bottom">
-        <Waves type="bottom" --text-color=var(--text-950)>
+        <Waves type="bottom" --text-color="var(--text-950)">
             <Column>
                 <Row wrap="wrap" align="center">
                     <Link href="https://discord.gg/9e43WMKzhp" icon="discord">Discord</Link>
-                    <Dot/>
+                    <Dot />
                     <Link href="https://twitter.com/GeodeSDK" icon="twitter">Twitter</Link>
-                    <Dot/>
+                    <Dot />
                     <Link href="https://bsky.app/profile/geode-sdk.org" icon="bluesky">Bluesky</Link>
                 </Row>
                 <Row wrap="wrap" align="center">
                     <Link href="https://docs.geode-sdk.org/" icon="docs">Documentation</Link>
-                    <Dot/>
+                    <Dot />
                     <Link href="https://github.com/geode-sdk" icon="github">Source Code</Link>
                     {#if data.loggedInUser === null}
-                        <Dot/>
+                        <Dot />
                         <Link href="/login" icon="account">Login</Link>
                     {/if}
                 </Row>
                 <p>
-                    Site made by <Link href="https://github.com/hjfod">HJfod</Link>.
-                    Thank you to <Link href="https://github.com/nekitdev">Nekit</Link> for the domain!
+                    Site made by <Link href="https://github.com/hjfod">HJfod</Link>. Thank you to <Link
+                        href="https://github.com/nekitdev">
+                        Nekit
+                    </Link> for the domain!
                 </p>
-                <Row gap=small>
-                    <Icon icon="copyright"/>
+                <Row gap="small">
+                    <Icon icon="copyright" />
                     <p>Geode Team {new Date().getFullYear()}</p>
                 </Row>
             </Column>
@@ -63,7 +65,7 @@
 </main>
 
 <style lang="scss">
-    @use '$lib/styles/media-queries.scss' as *;
+    @use "$lib/styles/media-queries.scss" as *;
 
     .bg {
         background-image: url("$lib/assets/bgart-blur.png");

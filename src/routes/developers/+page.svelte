@@ -61,20 +61,14 @@
 
 <svelte:head>
     <title>Developers | Geode</title>
-    <meta
-        name="description"
-        content="Browse the active developers for the Geode mod loader" />
+    <meta name="description" content="Browse the active developers for the Geode mod loader" />
 </svelte:head>
 
 <main>
     <Column align="stretch" gap="small">
         <h1>Browse Developers</h1>
         <div>
-            <Search
-                placeholder="Search developers..."
-                bind:query
-                on:search={onSearch}
-                bind:ref={searchBar}></Search>
+            <Search placeholder="Search developers..." bind:query on:search={onSearch} bind:ref={searchBar}></Search>
         </div>
         <section class="aside">
             <Pagination
@@ -136,9 +130,9 @@
     }
 
     .loading {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 700px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 700px;
     }
 </style>

@@ -1,8 +1,8 @@
 <script lang="ts">
-    export let size: Gap | 'flex';
+    export let size: Gap | "flex";
 </script>
 
-<span style="--size: var(--gap-{size})" class:flex={size === 'flex'}></span>
+<span style="--size: var(--gap-{size})" class:flex={size === "flex"}></span>
 
 <style lang="scss">
     span {

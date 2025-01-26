@@ -22,10 +22,7 @@ interface Release {
     assets: Asset[];
 }
 
-async function get_latest_tag(
-    fetch_fn: typeof fetch,
-    repo: string,
-): Promise<string> {
+async function get_latest_tag(fetch_fn: typeof fetch, repo: string): Promise<string> {
     // dynamic fetch function, in case you want to run this on the client
 
     const url = `${GITHUB_BASE_URL}${repo}${RELEASE_PREFIX}`;
@@ -52,9 +49,7 @@ async function get_latest_tag(
         }
     }
 
-    const headers = last_modified
-        ? { headers: { "If-Modified-Since": last_modified } }
-        : undefined;
+    const headers = last_modified ? { headers: { "If-Modified-Since": last_modified } } : undefined;
 
     const resp = await fetch_fn(url, headers);
 

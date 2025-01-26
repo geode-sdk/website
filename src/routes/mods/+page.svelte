@@ -38,16 +38,17 @@
     let gd = data.params.gd ?? "";
     let per_page = data.params.per_page ?? 10;
     let searching = false;
-    let view: 'list' | 'dual-list' | 'grid' = 'dual-list';
+    let view: "list" | "dual-list" | "grid" = "dual-list";
     let searchBar: HTMLInputElement;
     let searchTimeout: number | null = null;
     let filters_enabled = false;
 
-    const valid_sort = sort == "downloads"
-        || sort == "recently_updated"
-        || sort == "recently_uploaded"
-        || sort == "name"
-        || sort == "name_reverse";
+    const valid_sort =
+        sort == "downloads" ||
+        sort == "recently_updated" ||
+        sort == "recently_uploaded" ||
+        sort == "name" ||
+        sort == "name_reverse";
 
     $: max_count = data.mods?.count ?? 0;
     $: max_page = Math.floor((max_count - 1) / per_page) + 1;
@@ -64,14 +65,14 @@
         searchTimeout = setTimeout(() => {
             updateSearch();
         }, 300);
-    }
+    };
 
     const scrollToTop = () => {
         document.body.scrollIntoView({
             behavior: "smooth",
             block: "start",
         });
-    }
+    };
 
     const updateSearch = async (scroll = false) => {
         searching = true;
@@ -113,13 +114,12 @@
 
         await goto(`/mods?${params}`, { noScroll: true, keepFocus: true });
         searching = false;
-        if (scroll)
-            scrollToTop();
-    }
+        if (scroll) scrollToTop();
+    };
 
     const onFilterUpdate = (_: CustomEvent) => {
         updateSearch();
-    }
+    };
 
     const gotoPage = async (page: number) => {
         searching = true;
@@ -136,7 +136,7 @@
         await goto(`/mods?${params}`, { noScroll: true });
         searching = false;
         scrollToTop();
-    }
+    };
 
     const onKeydown = (e: KeyboardEvent) => {
         // avoid stealing focus from another element or modifier keys
@@ -145,12 +145,12 @@
         }
 
         searchBar.focus();
-    }
+    };
 </script>
 
 <svelte:head>
     <title>Mods | Geode</title>
-    <meta name="description" content="Browse mods for the Geode mod loader">
+    <meta name="description" content="Browse mods for the Geode mod loader" />
 </svelte:head>
 
 <Waves type="top" />
@@ -161,13 +161,13 @@
 <div class="content-separator">
     <aside class="filter-column">
         <FilterMenu
-            bind:platforms={platforms}
-            bind:tags={tags}
+            bind:platforms
+            bind:tags
             tagsListing={data.tags}
-            loggedIn="{profile !== null}"
-            bind:featured={featured}
-            bind:pending={pending}
-            bind:userMods={userMods}
+            loggedIn={profile !== null}
+            bind:featured
+            bind:pending
+            bind:userMods
             on:update={onFilterUpdate} />
     </aside>
 
@@ -175,36 +175,55 @@
         <nav class="search">
             <Search placeholder="Search mods..." bind:query on:search={updateQuery} bind:ref={searchBar}></Search>
             <div class="search-filters">
-                <Select title="Sort by" titleIcon="sort" on:select={ev => {
-                    if (sort !== ev.detail.value) {
-                        sort = ev.detail.value;
-                        updateSearch();
-                    }
-                }}>
-                    <SelectOption icon="download" title="Most Downloaded" value="downloads" isDefault={sort === "downloads" || !valid_sort}/>
-                    <SelectOption icon="time" title="Most Recent" value="recently_published" isDefault={sort === "recently_published"} />
-                    <SelectOption icon="time" title="Recently Updated" value="recently_updated" isDefault={sort === "recently_updated"} />
+                <Select
+                    title="Sort by"
+                    titleIcon="sort"
+                    on:select={(ev) => {
+                        if (sort !== ev.detail.value) {
+                            sort = ev.detail.value;
+                            updateSearch();
+                        }
+                    }}>
+                    <SelectOption
+                        icon="download"
+                        title="Most Downloaded"
+                        value="downloads"
+                        isDefault={sort === "downloads" || !valid_sort} />
+                    <SelectOption
+                        icon="time"
+                        title="Most Recent"
+                        value="recently_published"
+                        isDefault={sort === "recently_published"} />
+                    <SelectOption
+                        icon="time"
+                        title="Recently Updated"
+                        value="recently_updated"
+                        isDefault={sort === "recently_updated"} />
                     <SelectOption icon="sort-abc" title="Name (A-Z)" value="name" isDefault={sort === "name"} />
-                    <SelectOption icon="sort-cba" title="Name (Z-A)" value="name_reverse" isDefault={sort === "name_reverse"} />
+                    <SelectOption
+                        icon="sort-cba"
+                        title="Name (Z-A)"
+                        value="name_reverse"
+                        isDefault={sort === "name_reverse"} />
                 </Select>
                 <span class="toggle-filter-button">
                     <SelectButton
                         icon="filter"
                         selected={filters_enabled}
-                        on:select={() => filters_enabled = !filters_enabled} />
+                        on:select={() => (filters_enabled = !filters_enabled)} />
                 </span>
             </div>
         </nav>
 
         <div class="filter-inline" class:collapsed={!filters_enabled}>
             <FilterMenu
-                bind:platforms={platforms}
-                bind:tags={tags}
+                bind:platforms
+                bind:tags
                 tagsListing={data.tags}
-                loggedIn="{profile !== null}"
-                bind:featured={featured}
-                bind:pending={pending}
-                bind:userMods={userMods}
+                loggedIn={profile !== null}
+                bind:featured
+                bind:pending
+                bind:userMods
                 on:update={onFilterUpdate} />
         </div>
 
@@ -217,24 +236,26 @@
                 disabled={!data.mods}
                 label="mods"
                 labelOne="mod"
-                on:select={(e) => gotoPage(e.detail.page)}
-            >
+                on:select={(e) => gotoPage(e.detail.page)}>
                 <Row gap="small" justify="bottom">
                     <SelectButton
-                        on:select={() => view = 'list'} selected={view === 'list'} outsideState={true}
+                        on:select={() => (view = "list")}
+                        selected={view === "list"}
+                        outsideState={true}
                         design="secondary"
-                        icon="view-list"
-                    />
+                        icon="view-list" />
                     <SelectButton
-                        on:select={() => view = 'dual-list'} selected={view === 'dual-list'} outsideState={true}
+                        on:select={() => (view = "dual-list")}
+                        selected={view === "dual-list"}
+                        outsideState={true}
                         design="secondary"
-                        icon="view-dual-list"
-                    />
+                        icon="view-dual-list" />
                     <SelectButton
-                        on:select={() => view = 'grid'} selected={view === 'grid'} outsideState={true}
+                        on:select={() => (view = "grid")}
+                        selected={view === "grid"}
+                        outsideState={true}
                         design="secondary"
-                        icon="view-grid"
-                    />
+                        icon="view-grid" />
                 </Row>
             </Pagination>
 
@@ -242,49 +263,41 @@
                 <!-- this goofy thing just makes sure the size of the mods list stays
                     the same even if there are fewer items than needed to fill it -->
                 <div class="mod-listing-size-enforcer">
-                    <span/>
-                    <span/>
-                    <span/>
-                    <span/>
-                    <span/>
-                    <span/>
-                    <span/>
-                    <span/>
+                    <span />
+                    <span />
+                    <span />
+                    <span />
+                    <span />
+                    <span />
+                    <span />
+                    <span />
                 </div>
                 {#if data.error}
-                    <Gap size="normal"/>
+                    <Gap size="normal" />
                     <InfoBox type="error">{data.error}</InfoBox>
-                    <Gap size="normal"/>
+                    <Gap size="normal" />
+                {:else if data.mods && max_count > 0}
+                    <div class="mod-listing {view}">
+                        {#each data.mods.data as mod (mod.id)}
+                            {@const mod_version = mod.versions[0]}
+                            <ModCard {mod} version={mod_version} style={view === "dual-list" ? "list" : view} />
+                        {/each}
+                    </div>
                 {:else}
-                    {#if data.mods && max_count > 0}
-                        <div class="mod-listing {view}">
-                            {#each data.mods.data as mod (mod.id)}
-                                {@const mod_version = mod.versions[0]}
-                                <ModCard
-                                    mod={mod} version={mod_version}
-                                    style={view === 'dual-list' ? 'list' : view}
-                                />
-                            {/each}
-                        </div>
-                    {:else}
-                        <div class="no-mod-listing">
-                            <div class="humorous-meme"><Image name="no-mods" alt=""/></div>
-                            <p><em>No matching mods found :(</em></p>
-                            <p>
-                                It could be that the mod
-                                you're looking for
-                                {#if platforms.size}
-                                    is not available on {
-                                        Array.from(platforms)
-                                        .map(a => a.charAt(0).toUpperCase() + a.slice(1))
-                                        .join(' / ')
-                                    }!
-                                {:else}
-                                    is not available on Geode, or was made for an older version!
-                                {/if}
-                            </p>
-                        </div>
-                    {/if}
+                    <div class="no-mod-listing">
+                        <div class="humorous-meme"><Image name="no-mods" alt="" /></div>
+                        <p><em>No matching mods found :(</em></p>
+                        <p>
+                            It could be that the mod you're looking for
+                            {#if platforms.size}
+                                is not available on {Array.from(platforms)
+                                    .map((a) => a.charAt(0).toUpperCase() + a.slice(1))
+                                    .join(" / ")}!
+                            {:else}
+                                is not available on Geode, or was made for an older version!
+                            {/if}
+                        </p>
+                    </div>
                 {/if}
             </LoadingOverlay>
 
@@ -298,18 +311,24 @@
                         disabled={!data.mods}
                         label="mods"
                         labelOne="mod"
-                        on:select={(e) => gotoPage(e.detail.page)}
-                    >
-                        <Select title="Per page" titleIcon="eye" on:select={ev => {
-                            const newValue = parseInt(ev.detail.value);
-                            if (per_page !== newValue) {
-                                const scroll = newValue < per_page;
-                                per_page = newValue;
-                                updateSearch(scroll);
-                            }
-                        }}>
+                        on:select={(e) => gotoPage(e.detail.page)}>
+                        <Select
+                            title="Per page"
+                            titleIcon="eye"
+                            on:select={(ev) => {
+                                const newValue = parseInt(ev.detail.value);
+                                if (per_page !== newValue) {
+                                    const scroll = newValue < per_page;
+                                    per_page = newValue;
+                                    updateSearch(scroll);
+                                }
+                            }}>
                             {#each perPageOptions as option}
-                                <SelectOption icon="right" title={option.toString()} value={option.toString()} isDefault={option === per_page}/>
+                                <SelectOption
+                                    icon="right"
+                                    title={option.toString()}
+                                    value={option.toString()}
+                                    isDefault={option === per_page} />
                             {/each}
                         </Select>
                     </Pagination>
@@ -322,7 +341,7 @@
 <svelte:window on:keydown={onKeydown} />
 
 <style lang="scss">
-    @use '$lib/styles/media-queries.scss' as *;
+    @use "$lib/styles/media-queries.scss" as *;
 
     h1 {
         margin: 0;
@@ -341,8 +360,8 @@
             display: grid;
             grid-template-columns: 1fr;
 
-            padding: .5rem;
-            border-radius: .5rem;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
 
             background-color: var(--background-950);
         }
@@ -370,17 +389,16 @@
         }
 
         .filter-inline,
-
         .toggle-filter-button {
             display: none;
         }
     }
 
     .show-more-container {
-        margin-top: .5rem;
+        margin-top: 0.5rem;
     }
     .mod-listing {
-        gap: .5rem;
+        gap: 0.5rem;
 
         &.grid {
             display: grid;
@@ -413,7 +431,7 @@
         justify-content: center;
 
         padding: 5rem;
-        gap: .5rem;
+        gap: 0.5rem;
 
         & > .humorous-meme {
             max-width: min(20rem, 50vw);
@@ -425,12 +443,12 @@
     .mod-listing-size-enforcer {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(14rem, auto));
-        gap: .5rem;
+        gap: 0.5rem;
         max-width: 60vw;
     }
     .search {
         background-color: var(--background-950);
-        border-radius: .5rem;
+        border-radius: 0.5rem;
         display: flex;
         justify-content: center;
         flex-wrap: wrap;

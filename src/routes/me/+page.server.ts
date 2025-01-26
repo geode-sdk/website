@@ -1,9 +1,6 @@
 import { fail, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types.js";
-import {
-    IndexError,
-    IndexNotAuthenticated,
-} from "$lib/api/index-repository.js";
+import { IndexError, IndexNotAuthenticated } from "$lib/api/index-repository.js";
 import { tryCreateAuthenticatedClient } from "$lib/server";
 
 export const actions: Actions = {
@@ -42,11 +39,7 @@ export const actions: Actions = {
         const data = await request.formData();
 
         const download_link = data.get("download_link");
-        if (
-            !download_link ||
-            typeof download_link != "string" ||
-            !URL.canParse(download_link)
-        ) {
+        if (!download_link || typeof download_link != "string" || !URL.canParse(download_link)) {
             return fail(400, { message: "Download link is invalid" });
         }
 

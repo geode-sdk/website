@@ -15,14 +15,8 @@
 
 <svelte:head>
     <title>{data.developer.display_name}'s profile | Geode</title>
-    <meta
-        name="description"
-        content="{data.developer
-            .display_name}'s developer profile on the Geode index" />
-    <meta
-        name="og:image"
-        content="https://avatars.githubusercontent.com/u/{data.developer
-            .github_id}" />
+    <meta name="description" content="{data.developer.display_name}'s developer profile on the Geode index" />
+    <meta name="og:image" content="https://avatars.githubusercontent.com/u/{data.developer.github_id}" />
     <meta name="og:image:width" content="100" />
     <meta name="og:image:height" content="100" />
 </svelte:head>
@@ -53,11 +47,7 @@
                 {/if}
             </div>
             <div class="profile-buttons">
-                <Button
-                    href="https://github.com/{data.developer.username}"
-                    icon="github">
-                    GitHub
-                </Button>
+                <Button href="https://github.com/{data.developer.username}" icon="github">GitHub</Button>
             </div>
         </div>
     </header>
@@ -66,20 +56,12 @@
             <h2>Modify user</h2>
             <form method="POST" class="flow" action="?/modify_user" use:enhance>
                 <div class="form-control">
-                    <input
-                        type="checkbox"
-                        checked={data.developer.verified}
-                        name="verified"
-                        id="modify-verified" />
+                    <input type="checkbox" checked={data.developer.verified} name="verified" id="modify-verified" />
                     <label for="modify-verified">Verified</label>
                 </div>
 
                 <div class="form-control">
-                    <input
-                        type="checkbox"
-                        checked={data.developer.admin}
-                        name="admin"
-                        id="modify-admin" />
+                    <input type="checkbox" checked={data.developer.admin} name="admin" id="modify-admin" />
                     <label for="modify-admin">Admin</label>
                 </div>
 

@@ -31,11 +31,7 @@
     .card {
         --card-base-color: var(--background-500);
 
-        background-color: color-mix(
-            in srgb,
-            var(--card-base-color) 15%,
-            transparent
-        );
+        background-color: color-mix(in srgb, var(--card-base-color) 15%, transparent);
         padding: 0.5rem;
         border-radius: 0.5rem;
     }

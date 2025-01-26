@@ -6,12 +6,7 @@
     import Row from "./Row.svelte";
     import Icon from "./Icon.svelte";
     import Column from "./Column.svelte";
-    import {
-        serverTimestampToAgoString,
-        abbreviateNumber,
-        serverTimestampToDateString,
-        formatNumber,
-    } from "$lib";
+    import { serverTimestampToAgoString, abbreviateNumber, serverTimestampToDateString, formatNumber } from "$lib";
 
     import Label from "./Label.svelte";
     import ModLogo from "./ModLogo.svelte";
@@ -21,25 +16,19 @@
     export let style: "list" | "grid" = "grid";
 
     // add the version for non-accepted mods, as otherwise the endpoint will pick the latest accepted
-    $: mod_url =
-        version.status != "accepted"
-            ? `/mods/${mod.id}?version=${version.version}`
-            : `/mods/${mod.id}`;
+    $: mod_url = version.status != "accepted" ? `/mods/${mod.id}?version=${version.version}` : `/mods/${mod.id}`;
 
     $: owner = mod.developers.filter((d) => d.is_owner)[0];
     $: paid = mod.tags.includes("paid");
 </script>
 
-<div
-    class="mod-background {style}"
-    class:paid={paid && !mod.featured}
-    class:featured={mod.featured}>
+<div class="mod-background {style}" class:paid={paid && !mod.featured} class:featured={mod.featured}>
     {#if style === "list"}
         <div class="left">
             <span class="click-to-go-to-page">
                 <Link href={mod_url} centered={true}>
                     <div class="mod-icon-container">
-                        <ModLogo mod={mod} version={version} />
+                        <ModLogo {mod} {version} />
                     </div>
                 </Link>
             </span>
@@ -52,21 +41,15 @@
                                 {version.name}
                             </h1>
                             {#if mod.featured}
-                                <Label
-                                    icon="featured"
-                                    design="accent-transparent" />
+                                <Label icon="featured" design="accent-transparent" />
                             {/if}
                             {#if paid}
-                                <Label
-                                    icon="tag-paid"
-                                    design="accent-alt-transparent" />
+                                <Label icon="tag-paid" design="accent-alt-transparent" />
                             {/if}
                         </div>
                     </Link>
                 </div>
-                <Link
-                    href={`/mods?developer=${owner.username}`}
-                    --link-color="var(--accent-300)">
+                <Link href={`/mods?developer=${owner.username}`} --link-color="var(--accent-300)">
                     {owner.display_name}
                 </Link>
                 <p class="description" title={version.description || ""}>
@@ -87,19 +70,11 @@
                 <span class="card-info">
                     <Icon icon="version" />{version.version}
                 </span>
-                <span
-                    class="card-info"
-                    title={formatNumber(mod.download_count)}>
-                    <Icon icon="download" />{abbreviateNumber(
-                        mod.download_count,
-                    )}
+                <span class="card-info" title={formatNumber(mod.download_count)}>
+                    <Icon icon="download" />{abbreviateNumber(mod.download_count)}
                 </span>
-                <span
-                    class="card-info"
-                    title={serverTimestampToDateString(mod.updated_at)}>
-                    <Icon icon="time" />{serverTimestampToAgoString(
-                        mod.updated_at,
-                    )}
+                <span class="card-info" title={serverTimestampToDateString(mod.updated_at)}>
+                    <Icon icon="time" />{serverTimestampToAgoString(mod.updated_at)}
                 </span>
             </Column>
         </span>
@@ -112,9 +87,7 @@
                             <Label icon="featured" design="accent-transparent" />
                         {/if}
                         {#if paid}
-                            <Label
-                                icon="tag-paid"
-                                design="accent-alt-transparent" />
+                            <Label icon="tag-paid" design="accent-alt-transparent" />
                         {/if}
                         <h1 class:small={version.name.length > 16}>
                             {version.name}
@@ -123,14 +96,12 @@
                 </Link>
                 <Link href={mod_url} centered={true}>
                     <div class="mod-icon-container">
-                        <ModLogo mod={mod} version={version} size="medium" />
+                        <ModLogo {mod} {version} size="medium" />
                     </div>
                 </Link>
             </Column>
         </span>
-        <Link
-            href={`/mods?developer=${owner.username}`}
-            --link-color="var(--accent-300)">
+        <Link href={`/mods?developer=${owner.username}`} --link-color="var(--accent-300)">
             {owner.display_name}
         </Link>
         <Gap size="small" />
@@ -201,11 +172,7 @@
         --card-icon-base-color: var(--secondary-300);
         --card-icon-hover-color: var(--primary-300);
 
-        background-color: color-mix(
-            in srgb,
-            var(--card-base-color) 15%,
-            transparent
-        );
+        background-color: color-mix(in srgb, var(--card-base-color) 15%, transparent);
 
         display: flex;
         align-items: center;
@@ -262,11 +229,7 @@
             }
         }
         &:has(.click-to-go-to-page a:hover) {
-            background-color: color-mix(
-                in srgb,
-                var(--card-base-color) 40%,
-                transparent
-            );
+            background-color: color-mix(in srgb, var(--card-base-color) 40%, transparent);
 
             & .click-to-go-to-page .mod-icon-container {
                 transform: scale(110%);

@@ -2,15 +2,13 @@ import {
     IndexError,
     IndexClient,
     type Paginated,
-    type GetModVersionsParams, SetTokensResult
+    type GetModVersionsParams,
+    SetTokensResult,
 } from "$lib/api/index-repository.js";
 import { getCachedTags } from "$lib/server/cache.js";
 import { toIntSafe } from "$lib/api/helpers.js";
 import type { ServerTag } from "$lib/api/models/base.js";
-import type {
-    ModStatus,
-    ServerModVersion,
-} from "$lib/api/models/mod-version.js";
+import type { ModStatus, ServerModVersion } from "$lib/api/models/mod-version.js";
 import type { Actions, PageServerLoad } from "./$types.js";
 import { error, fail } from "@sveltejs/kit";
 import type { ServerMod } from "$lib/api/models/mod";

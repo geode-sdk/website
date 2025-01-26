@@ -45,30 +45,18 @@
         }
 
         &.accent-alt-transparent {
-            background-color: color-mix(
-                in srgb,
-                var(--accent-alt-200) 15%,
-                transparent
-            );
+            background-color: color-mix(in srgb, var(--accent-alt-200) 15%, transparent);
             color: var(--accent-alt-100);
         }
 
         &.accent-transparent {
-            background-color: color-mix(
-                in srgb,
-                var(--accent-200) 15%,
-                transparent
-            );
+            background-color: color-mix(in srgb, var(--accent-200) 15%, transparent);
             color: var(--accent-100);
         }
 
         &.gray {
             color: var(--text-50);
-            background-color: color-mix(
-                in srgb,
-                var(--background-500) 50%,
-                transparent
-            );
+            background-color: color-mix(in srgb, var(--background-500) 50%, transparent);
         }
     }
 </style>

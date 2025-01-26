@@ -95,9 +95,7 @@ export function iconForTag(tag: string): KnownIcon {
     }
     return "tags";
 }
-export function serverTimestampToAgoString(
-    timestamp: string,
-): string | undefined {
+export function serverTimestampToAgoString(timestamp: string): string | undefined {
     const stamp = Date.parse(timestamp);
     if (isNaN(stamp)) {
         return undefined;
@@ -111,9 +109,7 @@ export function abbreviateNumber(num: number): string {
         roundingMode: "trunc",
     }).format(num);
 }
-export function serverTimestampToDateString(
-    timestamp: string,
-): string | undefined {
+export function serverTimestampToDateString(timestamp: string): string | undefined {
     const stamp = Date.parse(timestamp);
     if (isNaN(stamp)) {
         return undefined;

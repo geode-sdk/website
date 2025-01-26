@@ -1,10 +1,6 @@
 import type { Cookies } from "@sveltejs/kit";
 
-export const setCookieTokens = (
-    auth: string,
-    refresh: string,
-    cookies: Cookies,
-): void => {
+export const setCookieTokens = (auth: string, refresh: string, cookies: Cookies): void => {
     cookies.set("authtoken", auth, {
         path: "/",
         maxAge: 86400, // = 1 day
@@ -21,11 +17,7 @@ export const setCookieTokens = (
     });
 };
 
-export const removeCookieTokens = (
-    cookies: Cookies,
-    auth: boolean = true,
-    refresh: boolean = true,
-) => {
+export const removeCookieTokens = (cookies: Cookies, auth: boolean = true, refresh: boolean = true) => {
     if (auth) {
         cookies.delete("authtoken", { path: "/" });
     }

@@ -6,36 +6,38 @@
     export let selected: boolean = false;
     export let outsideState = false;
     export let icon: KnownIcon;
-    export let design: 'primary' | 'secondary' = 'primary';
+    export let design: "primary" | "secondary" = "primary";
 
-    const dispatch = createEventDispatcher<{ 'select': { selected: boolean } }>();
+    const dispatch = createEventDispatcher<{ select: { selected: boolean } }>();
 </script>
 
 <button
-    class="select-button {design}" class:selected
+    class="select-button {design}"
+    class:selected
     on:click={() => {
         if (!outsideState) {
             selected = !selected;
         }
-        dispatch('select', { selected });
-    }}
-><Icon icon={icon} --icon-size="1.3em"/><slot></slot></button>
+        dispatch("select", { selected });
+    }}>
+    <Icon {icon} --icon-size="1.3em" /><slot></slot>
+</button>
 
 <style lang="scss">
     button {
         display: flex;
         flex-direction: row;
         align-items: center;
-        gap: .25rem;
+        gap: 0.25rem;
 
         background-color: transparent;
         color: var(--text-50);
         font-family: var(--font-body);
-        
-        border: .15rem color-mix(in srgb, var(--secondary-300) 25%, transparent) solid;
+
+        border: 0.15rem color-mix(in srgb, var(--secondary-300) 25%, transparent) solid;
         outline: none;
-        padding: .25rem;
-        border-radius: .25rem;
+        padding: 0.25rem;
+        border-radius: 0.25rem;
 
         transition-property: color, background-color;
         transition-duration: 25ms;

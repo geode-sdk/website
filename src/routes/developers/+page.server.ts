@@ -1,8 +1,4 @@
-import {
-    IndexError,
-    IndexClient,
-    type DeveloperSearchParams,
-} from "$lib/api/index-repository.js";
+import { IndexError, IndexClient, type DeveloperSearchParams } from "$lib/api/index-repository.js";
 import { toIntSafe } from "$lib/api/helpers.js";
 import type { PageServerLoad } from "./$types.js";
 

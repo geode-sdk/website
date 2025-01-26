@@ -16,21 +16,11 @@ function checkPrivate(obj: unknown): obj is PrivateSchema {
         return false;
     }
 
-    if (
-        !(
-            "PRIVATE_ENDPOINT_ENABLED" in obj &&
-            typeof obj.PRIVATE_ENDPOINT_ENABLED == "string"
-        )
-    ) {
+    if (!("PRIVATE_ENDPOINT_ENABLED" in obj && typeof obj.PRIVATE_ENDPOINT_ENABLED == "string")) {
         return false;
     }
 
-    if (
-        !(
-            "PRIVATE_API_ENDPOINT" in obj &&
-            typeof obj.PRIVATE_API_ENDPOINT == "string"
-        )
-    ) {
+    if (!("PRIVATE_API_ENDPOINT" in obj && typeof obj.PRIVATE_API_ENDPOINT == "string")) {
         return false;
     }
 
@@ -42,12 +32,7 @@ function checkPublic(obj: unknown): obj is PublicSchema {
         return false;
     }
 
-    if (
-        !(
-            "PUBLIC_API_ENDPOINT" in obj &&
-            typeof obj.PUBLIC_API_ENDPOINT == "string"
-        )
-    ) {
+    if (!("PUBLIC_API_ENDPOINT" in obj && typeof obj.PUBLIC_API_ENDPOINT == "string")) {
         return false;
     }
 
@@ -62,15 +47,9 @@ export const handleFetch: HandleFetch = async ({ request, fetch }) => {
         return fetch(request);
     }
 
-    if (
-        validPrivate.PRIVATE_ENDPOINT_ENABLED == "true" &&
-        request.url.startsWith(validPublic.PUBLIC_API_ENDPOINT)
-    ) {
+    if (validPrivate.PRIVATE_ENDPOINT_ENABLED == "true" && request.url.startsWith(validPublic.PUBLIC_API_ENDPOINT)) {
         request = new Request(
-            request.url.replace(
-                validPublic.PUBLIC_API_ENDPOINT,
-                validPrivate.PRIVATE_API_ENDPOINT,
-            ),
+            request.url.replace(validPublic.PUBLIC_API_ENDPOINT, validPrivate.PRIVATE_API_ENDPOINT),
             request,
         );
     }

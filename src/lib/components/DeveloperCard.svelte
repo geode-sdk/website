@@ -37,11 +37,7 @@
         --card-base-color: var(--background-500);
         --card-icon-base-color: var(--secondary-300);
 
-        background-color: color-mix(
-            in srgb,
-            var(--card-base-color) 15%,
-            transparent
-        );
+        background-color: color-mix(in srgb, var(--card-base-color) 15%, transparent);
 
         display: flex;
         align-items: center;
@@ -53,11 +49,7 @@
         transition: background-color var(--transition-duration);
 
         &:has(a:hover) {
-            background-color: color-mix(
-                in srgb,
-                var(--card-base-color) 40%,
-                transparent
-            );
+            background-color: color-mix(in srgb, var(--card-base-color) 40%, transparent);
         }
     }
 

@@ -8,15 +8,12 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
 
     const params = url.searchParams;
 
-    if (!params.has('state') || !params.has('code')) {
+    if (!params.has("state") || !params.has("code")) {
         return redirect(302, "/");
     }
 
     try {
-        const tokens = await client.onGitHubCallback(
-            params.get('code')!,
-            params.get('state')!
-        );
+        const tokens = await client.onGitHubCallback(params.get("code")!, params.get("state")!);
 
         setCookieTokens(tokens.access_token, tokens.refresh_token, cookies);
 
@@ -24,4 +21,4 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
     } catch (e: unknown) {
         return redirect(302, "/");
     }
-}
+};

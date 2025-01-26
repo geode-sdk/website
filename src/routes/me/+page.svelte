@@ -12,12 +12,8 @@
     export let form: ActionData;
 
     let self = data.self;
-    const myPendingMods = data.myPendingMods.filter(
-        (mod) => mod.versions.length > 0,
-    );
-    const myRejectedMods = data.myRejectedMods.filter(
-        (mod) => mod.versions.length > 0,
-    );
+    const myPendingMods = data.myPendingMods.filter((mod) => mod.versions.length > 0);
+    const myRejectedMods = data.myRejectedMods.filter((mod) => mod.versions.length > 0);
 </script>
 
 <svelte:head>
@@ -75,9 +71,7 @@
                     <Button design="primary-filled">Logout</Button>
                 </button>
                 <button formaction="?/logout_all" type="submit">
-                    <Button design="primary-filled">
-                        Logout all devices
-                    </Button>
+                    <Button design="primary-filled">Logout all devices</Button>
                 </button>
             </form>
             <h2>Submit a new mod</h2>
@@ -95,11 +89,7 @@
                 }}>
                 <div class="form-control">
                     <label for="download_link">Download URL:</label>
-                    <input
-                        type="text"
-                        id="download_link"
-                        name="download_link"
-                        required />
+                    <input type="text" id="download_link" name="download_link" required />
                 </div>
                 <button type="submit" disabled={submittingMod}>
                     <Button disabled={submittingMod}>Upload</Button>

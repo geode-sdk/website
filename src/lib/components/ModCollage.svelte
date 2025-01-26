@@ -2,15 +2,17 @@
     import Image from "./Image.svelte";
     import modOutlines from "$lib/assets/mod-outlines.svg?raw";
 </script>
+
 <div>
     {@html modOutlines}
     <Image name="betteredit-logo" alt="" size="10em"></Image>
-    <Image name="mega-hack-logo"  alt="" size="10em"></Image>
-    <Image name="globed-logo"     alt="" size="10em"></Image>
+    <Image name="mega-hack-logo" alt="" size="10em"></Image>
+    <Image name="globed-logo" alt="" size="10em"></Image>
 </div>
+
 <style lang="scss">
     div {
-        padding: .65rem;
+        padding: 0.65rem;
         width: 20rem;
         // width: clamp(10rem, 50vw, 20rem);
         display: flex;
@@ -37,18 +39,15 @@
             animation-name: movey-2;
         }
         & > :global(rect):nth-child(1),
-        & > :global(rect):nth-child(6)
-        {
+        & > :global(rect):nth-child(6) {
             animation-delay: 1s;
         }
         & > :global(rect):nth-child(3),
-        & > :global(rect):nth-child(5)
-        {
+        & > :global(rect):nth-child(5) {
             animation-name: movey-3;
         }
         & > :global(rect):nth-child(3),
-        & > :global(rect):nth-child(4)
-        {
+        & > :global(rect):nth-child(4) {
             animation-delay: 2s;
         }
     }
@@ -62,16 +61,17 @@
             opacity: 80%;
         }
         &:nth-of-type(2) {
-            animation: 7s ease-in-out .5s infinite alternate both running movey-img-2;
+            animation: 7s ease-in-out 0.5s infinite alternate both running movey-img-2;
             z-index: 1;
         }
         &:nth-of-type(3) {
-            animation: 6s ease-in-out .3s infinite alternate both running movey-img-3;
+            animation: 6s ease-in-out 0.3s infinite alternate both running movey-img-3;
             opacity: 80%;
         }
     }
     @keyframes movey {
-        0% {}
+        0% {
+        }
         50% {
             transform: translateY(3em) rotate(45deg) scale(90%);
         }
@@ -102,15 +102,27 @@
         }
     }
     @keyframes movey-img-1 {
-        0% { transform: translateX(.5em) rotate(-20deg) scale(80%); }
-        100% { transform: translateX(.25em) translateY(.25em) rotate(-25deg) scale(70%); }
+        0% {
+            transform: translateX(0.5em) rotate(-20deg) scale(80%);
+        }
+        100% {
+            transform: translateX(0.25em) translateY(0.25em) rotate(-25deg) scale(70%);
+        }
     }
     @keyframes movey-img-2 {
-        0% { transform: translateY(0em); }
-        100% { transform: translateY(-.25em) scale(110%); }
+        0% {
+            transform: translateY(0em);
+        }
+        100% {
+            transform: translateY(-0.25em) scale(110%);
+        }
     }
     @keyframes movey-img-3 {
-        0% { transform: translateX(-.5em) rotate(20deg) scale(80%); }
-        100% { transform: translateX(-.25em) translateY(.25em) rotate(25deg) scale(70%); }
+        0% {
+            transform: translateX(-0.5em) rotate(20deg) scale(80%);
+        }
+        100% {
+            transform: translateX(-0.25em) translateY(0.25em) rotate(25deg) scale(70%);
+        }
     }
 </style>

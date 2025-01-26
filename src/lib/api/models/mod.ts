@@ -1,8 +1,5 @@
 import type { ServerModDeveloper } from "./mod-developer.js";
-import type {
-    ServerModVersion,
-    ServerSimpleModVersion,
-} from "./mod-version.js";
+import type { ServerModVersion, ServerSimpleModVersion } from "./mod-version.js";
 
 export interface ServerSimpleMod {
     id: string;
@@ -16,7 +13,7 @@ export interface ServerModLinks {
     community: string | null;
     homepage: string | null;
     source: string | null;
-};
+}
 
 export interface ServerMod {
     id: string;

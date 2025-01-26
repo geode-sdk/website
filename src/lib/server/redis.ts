@@ -2,8 +2,7 @@ import * as privateEnv from "$env/static/private";
 import { createClient } from "redis";
 
 const redisUrl =
-    "PRIVATE_REDIS_URL" in privateEnv &&
-    typeof privateEnv.PRIVATE_REDIS_URL == "string"
+    "PRIVATE_REDIS_URL" in privateEnv && typeof privateEnv.PRIVATE_REDIS_URL == "string"
         ? privateEnv.PRIVATE_REDIS_URL
         : null;
 
@@ -15,9 +14,7 @@ function formatError(e: Error) {
 
 redis?.on("error", (e: Error) => {
     if (e instanceof AggregateError) {
-        console.error(
-            `Redis threw errors: ${e.errors.map((a) => formatError(a))}`,
-        );
+        console.error(`Redis threw errors: ${e.errors.map((a) => formatError(a))}`);
     } else {
         console.error(`Redis threw error: ${formatError(e)}`);
     }

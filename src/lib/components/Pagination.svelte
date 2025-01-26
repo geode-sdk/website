@@ -41,7 +41,7 @@
             design="dark-small"
             disabled={disabled || total === 0 || page === max_page} />
     </Row>
-    
+
     <div style="justify-self: end;">
         <slot />
     </div>

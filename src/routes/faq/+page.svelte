@@ -18,7 +18,7 @@
 
 <svelte:head>
     <title>Frequently Asked Questions</title>
-    <meta name="description" content="Frequently Asked Questions (FAQ) about Geode and modding Geometry Dash">
+    <meta name="description" content="Frequently Asked Questions (FAQ) about Geode and modding Geometry Dash" />
 </svelte:head>
 
 <Waves type="top" />
@@ -45,7 +45,7 @@
             {#each questions as { question, answer }}
                 <article id={anchorIDForTitle(question)} class="faq scrolled">
                     <h3>{question}</h3>
-                    <div class="markdown"><SvelteMarkdown source={answer}/></div>
+                    <div class="markdown"><SvelteMarkdown source={answer} /></div>
                 </article>
             {/each}
         {/each}
@@ -78,8 +78,8 @@
         position: relative;
 
         background-color: color-mix(in srgb, var(--background-950) 50%, transparent);
-        border-radius: .5rem;
-        padding: .75rem;
+        border-radius: 0.5rem;
+        padding: 0.75rem;
 
         & > span {
             display: flex;
@@ -87,7 +87,7 @@
             gap: var(--gap-small);
             position: sticky;
             top: 5rem;
-            
+
             & > h2 {
                 padding: 0;
                 margin: 0;
@@ -97,8 +97,8 @@
             }
             & > :global(a) {
                 background-color: transparent;
-                padding: .5rem;
-                border-radius: .25rem;
+                padding: 0.5rem;
+                border-radius: 0.25rem;
                 transition: background-color, color;
                 transition-duration: var(--transition-duration);
             }
@@ -116,16 +116,16 @@
     }
     article {
         background-color: color-mix(in srgb, var(--background-950) 50%, transparent);
-        border-radius: .5rem;
-        padding: .75rem;
+        border-radius: 0.5rem;
+        padding: 0.75rem;
         h3 {
             padding: 0;
-            margin: 0 0 .5rem;
+            margin: 0 0 0.5rem;
             color: var(--accent-300);
         }
         div {
-            padding-left: .5rem;
-            border-left: .25rem solid color-mix(in srgb, var(--background-500) 75%, transparent);
+            padding-left: 0.5rem;
+            border-left: 0.25rem solid color-mix(in srgb, var(--background-500) 75%, transparent);
         }
         &:global(.highlight-scrolled) {
             background-color: color-mix(in srgb, var(--secondary-500) 25%, transparent);

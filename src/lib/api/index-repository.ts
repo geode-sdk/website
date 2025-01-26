@@ -8,8 +8,7 @@ import type { Cookies } from "@sveltejs/kit";
 import { setCookieTokens } from "$lib/api/tokens";
 
 const BASE_URL =
-    "PUBLIC_API_ENDPOINT" in publicEnv &&
-    typeof publicEnv.PUBLIC_API_ENDPOINT == "string"
+    "PUBLIC_API_ENDPOINT" in publicEnv && typeof publicEnv.PUBLIC_API_ENDPOINT == "string"
         ? publicEnv.PUBLIC_API_ENDPOINT
         : "https://api.geode-sdk.org";
 
@@ -111,14 +110,14 @@ export interface UpdateProfileBody {
 }
 
 export interface ModLogoCacheParams {
-	version?: string;
-	status?: ModStatus;
+    version?: string;
+    status?: ModStatus;
 }
 
 export enum SetTokensResult {
     SET_FROM_COOKIE,
     REFRESHED,
-    UNSET
+    UNSET,
 }
 
 type GlobalFetch = typeof fetch;
@@ -184,7 +183,7 @@ export class IndexClient {
         return this._lastAuthStatus !== null && this._lastAuthStatus !== SetTokensResult.UNSET;
     }
 
-    getTokens(): { auth: string | null, refresh: string | null } {
+    getTokens(): { auth: string | null; refresh: string | null } {
         return { auth: this.token, refresh: this.refreshToken };
     }
 
@@ -235,7 +234,7 @@ export class IndexClient {
 
         const res = await this.fetch(url, {
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
             },
             method: "POST",
         });
@@ -244,15 +243,15 @@ export class IndexClient {
         return this.validate(json);
     }
 
-    async onGitHubCallback(code: string, state: string): Promise<{ access_token: string, refresh_token: string }> {
+    async onGitHubCallback(code: string, state: string): Promise<{ access_token: string; refresh_token: string }> {
         const url = new URL(`${BASE_URL}/v1/login/github/callback`);
 
         const res = await this.fetch(url, {
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
             },
             method: "POST",
-            body: JSON.stringify({ code, state })
+            body: JSON.stringify({ code, state }),
         });
 
         if (res.status !== 200) {
@@ -260,8 +259,8 @@ export class IndexClient {
 
             throw new IndexError("Couldn't authenticate");
         }
-        
-        const json: BaseRequest<{ access_token: string, refresh_token: string }> = await res.json();
+
+        const json: BaseRequest<{ access_token: string; refresh_token: string }> = await res.json();
         const validated = this.validate(json);
 
         this.token = validated.access_token;
@@ -287,10 +286,10 @@ export class IndexClient {
 
         const res = await this.fetch(url, {
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
             },
             method: "POST",
-            body: JSON.stringify({ refresh_token: refresh })
+            body: JSON.stringify({ refresh_token: refresh }),
         });
 
         if (res.status !== 200) {
@@ -300,7 +299,7 @@ export class IndexClient {
             this.refreshToken = null;
             return false;
         } else {
-            const json: BaseRequest<{ access_token: string, refresh_token: string }> = await res.json();
+            const json: BaseRequest<{ access_token: string; refresh_token: string }> = await res.json();
             this.token = json.payload.access_token;
             this.refreshToken = json.payload.refresh_token;
 
@@ -309,9 +308,7 @@ export class IndexClient {
         }
     }
 
-    async getMods(
-        searchParams?: ModSearchParams,
-    ): Promise<Paginated<ServerMod>> {
+    async getMods(searchParams?: ModSearchParams): Promise<Paginated<ServerMod>> {
         const url = new URL(`${BASE_URL}/v1/mods`);
 
         if (searchParams?.page != null) {
@@ -358,9 +355,7 @@ export class IndexClient {
 
         const r = await this.withRetry(async () => {
             return await this.fetch(url, {
-                headers: this.token
-                    ? {"Authorization": `Bearer ${this.token}`}
-                    : {}
+                headers: this.token ? { Authorization: `Bearer ${this.token}` } : {},
             });
         });
 
@@ -372,11 +367,8 @@ export class IndexClient {
     async getMod(id: string): Promise<ServerMod> {
         const r = await this.withRetry(async () => {
             return await this.fetch(`${BASE_URL}/v1/mods/${id}`, {
-                    headers: this.token
-                        ? { "Authorization": `Bearer ${this.token}` }
-                        : {}
-                }
-            );
+                headers: this.token ? { Authorization: `Bearer ${this.token}` } : {},
+            });
         });
         const data: BaseRequest<ServerMod> = await r.json();
 
@@ -437,10 +429,7 @@ export class IndexClient {
         }
     }
 
-    async getModVersions(
-        id: string,
-        params?: GetModVersionsParams,
-    ): Promise<Paginated<ServerModVersion>> {
+    async getModVersions(id: string, params?: GetModVersionsParams): Promise<Paginated<ServerModVersion>> {
         const url = new URL(`${BASE_URL}/v1/mods/${id}/versions`);
 
         if (params?.page != null) {
@@ -480,10 +469,7 @@ export class IndexClient {
         return this.validate(data);
     }
 
-    async getModVersion(
-        id: string,
-        version: string,
-    ): Promise<ServerModVersion> {
+    async getModVersion(id: string, version: string): Promise<ServerModVersion> {
         const r = await this.fetch(
             `${BASE_URL}/v1/mods/${id}/versions/${version}`,
             this.token
@@ -499,25 +485,18 @@ export class IndexClient {
         return this.validate<ServerModVersion>(data);
     }
 
-    async updateModVersion(
-        id: string,
-        version: string,
-        body: UpdateModVersionBody,
-    ): Promise<void> {
+    async updateModVersion(id: string, version: string, body: UpdateModVersionBody): Promise<void> {
         await this.checkAndTryRefreshAuth();
 
         const r = await this.withRetry(async () => {
-            return await this.fetch(
-                `${BASE_URL}/v1/mods/${id}/versions/${version}`,
-                {
-                    headers: new Headers({
-                        Authorization: `Bearer ${this.token}`,
-                        "Content-Type": "application/json",
-                    }),
-                    method: "PUT",
-                    body: JSON.stringify(body),
-                },
-            );
+            return await this.fetch(`${BASE_URL}/v1/mods/${id}/versions/${version}`, {
+                headers: new Headers({
+                    Authorization: `Bearer ${this.token}`,
+                    "Content-Type": "application/json",
+                }),
+                method: "PUT",
+                body: JSON.stringify(body),
+            });
         });
 
         if (r.status != 204) {
@@ -526,10 +505,7 @@ export class IndexClient {
         }
     }
 
-    async createModVersion(
-        id: string,
-        body: CreateModVersionBody,
-    ): Promise<void> {
+    async createModVersion(id: string, body: CreateModVersionBody): Promise<void> {
         await this.checkAndTryRefreshAuth();
 
         const r = await this.withRetry(async () => {
@@ -573,15 +549,12 @@ export class IndexClient {
         await this.checkAndTryRefreshAuth();
 
         const r = await this.withRetry(async () => {
-            return await this.fetch(
-                `${BASE_URL}/v1/mods/${id}/developers/${username}`,
-                {
-                    headers: new Headers({
-                        Authorization: `Bearer ${this.token}`,
-                    }),
-                    method: "DELETE",
-                },
-            );
+            return await this.fetch(`${BASE_URL}/v1/mods/${id}/developers/${username}`, {
+                headers: new Headers({
+                    Authorization: `Bearer ${this.token}`,
+                }),
+                method: "DELETE",
+            });
         });
 
         if (r.status != 204) {
@@ -597,9 +570,7 @@ export class IndexClient {
         return this.validate<ServerTag[]>(data);
     }
 
-    async getDevelopers(
-        params?: DeveloperSearchParams,
-    ): Promise<Paginated<ServerDeveloper>> {
+    async getDevelopers(params?: DeveloperSearchParams): Promise<Paginated<ServerDeveloper>> {
         const url = new URL(`${BASE_URL}/v1/developers`);
 
         if (params?.page != null) {

@@ -6,27 +6,31 @@
     let section: HTMLElement;
 
     onMount(() => {
-        const observer = new IntersectionObserver(entries => {
-            entries.reverse().forEach(entry => {
-                const shouldShow = entry.isIntersecting || entry.boundingClientRect.top < (entry.rootBounds?.top ?? 0);
-                if (shouldShow) {
-                    entry.target.classList.toggle('show', shouldShow);
-                }
-            });
-        }, {
-            threshold: 0.65
-        });
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.reverse().forEach((entry) => {
+                    const shouldShow =
+                        entry.isIntersecting || entry.boundingClientRect.top < (entry.rootBounds?.top ?? 0);
+                    if (shouldShow) {
+                        entry.target.classList.toggle("show", shouldShow);
+                    }
+                });
+            },
+            {
+                threshold: 0.65,
+            },
+        );
         observer.observe(section);
         return () => observer.unobserve(section);
     });
 </script>
 
 <section bind:this={section} class:reverseOnSmallScreen>
-    <slot/>
+    <slot />
 </section>
 
 <style lang="scss">
-    @use '$lib/styles/media-queries.scss' as *;
+    @use "$lib/styles/media-queries.scss" as *;
 
     section {
         display: flex;
@@ -41,9 +45,9 @@
         @include lt-lg {
             flex-direction: column;
             gap: 1rem;
-            
+
             &.reverseOnSmallScreen {
-                flex-direction: column-reverse;	
+                flex-direction: column-reverse;
             }
         }
     }
@@ -51,7 +55,7 @@
         opacity: 0%;
         transform: translateX(-8rem);
         transition-property: transform, opacity;
-        transition-duration: .6s;
+        transition-duration: 0.6s;
         transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
     }
     section:nth-child(even) {

@@ -24,11 +24,7 @@
         align-items: center;
         justify-content: center;
 
-        background-color: color-mix(
-            in srgb,
-            var(--background-950) 80%,
-            transparent
-        );
+        background-color: color-mix(in srgb, var(--background-950) 80%, transparent);
 
         &.hidden {
             display: none;

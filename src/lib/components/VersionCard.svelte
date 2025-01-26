@@ -22,12 +22,10 @@
             </Link>
             {#if version.created_at}
                 <span class="card-info" title={serverTimestampToDateString(version.created_at)}>
-                    <Icon icon="time"/>{"Released " + serverTimestampToAgoString(version.created_at)}
+                    <Icon icon="time" />{"Released " + serverTimestampToAgoString(version.created_at)}
                 </span>
             {/if}
-            <span
-                class="card-info"
-                title="{formatNumber(version.download_count)} downloads">
+            <span class="card-info" title="{formatNumber(version.download_count)} downloads">
                 <Icon icon="download" />
                 {abbreviateNumber(version.download_count)} downloads
             </span>
@@ -42,15 +40,8 @@
             </span>
         </Column>
         <Column gap="small" align="stretch">
-            <Button
-                href={version.download_link}
-                icon="download"
-                design="primary-filled">
-                Download .geode file
-            </Button>
-            <Button href="/faq#how-do-i-manually-install-mods" icon="help">
-                How to install
-            </Button>
+            <Button href={version.download_link} icon="download" design="primary-filled">Download .geode file</Button>
+            <Button href="/faq#how-do-i-manually-install-mods" icon="help">How to install</Button>
         </Column>
     </Row>
 </article>
@@ -64,11 +55,7 @@
 
         padding: 0.75rem;
         border-radius: 0.5rem;
-        background-color: color-mix(
-            in srgb,
-            var(--background-500) 25%,
-            transparent
-        );
+        background-color: color-mix(in srgb, var(--background-500) 25%, transparent);
 
         h2 {
             margin: 0;

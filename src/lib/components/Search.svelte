@@ -7,13 +7,18 @@
     export let autofocus = false;
     export let ref: HTMLInputElement | null = null;
 
-    const dispatch = createEventDispatcher<{ 'search': { query: string } }>();
+    const dispatch = createEventDispatcher<{ search: { query: string } }>();
 </script>
 
 <div class="search">
-    <Icon icon="search"/>
+    <Icon icon="search" />
     <!-- svelte-ignore a11y-autofocus -->
-    <input {autofocus} placeholder={placeholder} bind:value={query} on:input={() => dispatch('search', { query })} bind:this={ref}>
+    <input
+        {autofocus}
+        {placeholder}
+        bind:value={query}
+        on:input={() => dispatch("search", { query })}
+        bind:this={ref} />
 </div>
 
 <style lang="scss">
@@ -22,7 +27,7 @@
         flex-direction: row;
         align-items: center;
 
-        border-radius: .5rem;
+        border-radius: 0.5rem;
         background-color: var(--background-950);
         color: var(--text-50);
         font-family: var(--font-body);
@@ -38,7 +43,7 @@
             border: none;
             outline: none;
             color: var(--text-50);
-            
+
             &::placeholder {
                 font-family: var(--font-body);
                 color: var(--text-50);
