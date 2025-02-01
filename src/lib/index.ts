@@ -85,6 +85,7 @@ export const icons = {
     "tag-cheat": "mdi:domino-mask",
     "tag-paid": "mdi:attach-money",
     "tag-joke": "mdi:comedy",
+    "tag-api": "mdi:cog-outline",
 };
 export type KnownIcon = keyof typeof icons;
 
