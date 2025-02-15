@@ -90,7 +90,6 @@
         background-size: contain;
         background-repeat: repeat-y;
 
-        filter: drop-shadow(0px 0px 3rem color-mix(in srgb, var(--primary-700) 15%, transparent));
         opacity: 50%;
 
         display: none;
