@@ -26,9 +26,9 @@
     {/if}
 {/if}
 
-{#if gd.ios}
+<!-- {#if gd.ios}
     <Label icon="ios" design="gray">{gd.ios}</Label>
-{/if}
+{/if} -->
 
 {#if gd.android64 && gd.android64 === gd.android32}
     <Label icon="android" design="gray">{gd.android64}</Label>
