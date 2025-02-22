@@ -370,6 +370,9 @@
                                 {#if data.version.api}
                                     <Label icon="tag-enhancement" design="accent">API</Label>
                                 {/if}
+                                {#if data.version.gd.ios}
+                                    <Label icon="ios" design="gray">{data.version.gd.ios}</Label>
+                                {/if}
                             </Row>
                         {/if}
                     </Column>
