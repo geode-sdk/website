@@ -362,7 +362,7 @@
                             </code>
                         </p>
 
-                        {#if data.version.early_load || data.version.api}
+                        {#if data.version.early_load || data.version.api || data.version.gd.ios}
                             <Row align="center" justify="top" gap="small">
                                 {#if data.version.early_load}
                                     <Label icon="time" design="accent-alt">Early Load</Label>
