@@ -21,7 +21,6 @@
         <div class="nav-left">
             <Button href=".." design="primary-filled-dark" icon="home">Home</Button>
             <Button href="/mods" design="primary-filled-dark" icon="browse">Mods</Button>
-            <Button href="/faq" design="primary-filled-dark" icon="help">FAQ</Button>
         </div>
         {#if data.loggedInUser !== null}
             <div class="nav-right">
@@ -130,6 +129,15 @@
     nav > * {
         display: flex;
         gap: 1rem;
+        flex-wrap: wrap;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    @media (min-width: 540px) {
+        nav > * {
+            flex-direction: row;
+        }
     }
 
     .waves-bottom {

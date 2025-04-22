@@ -55,7 +55,7 @@
                 gap="small">
                 <p>
                     Bringing <em>mod support</em>
-                     to
+                    to
                 </p>
                 <Link
                     href="https://store.steampowered.com/app/322170/Geometry_Dash/"
@@ -66,12 +66,13 @@
             </Row>
         </span>
         <Gap size="0" />
-        <Row>
+        <Row wrap="wrap">
             <Button href="/install" design="primary-filled-dark" icon="download">Download</Button>
             <Button href="/mods" design="primary-filled-dark" icon="browse">Browse Mods</Button>
             {#if data.self}
                 <Button href="/developers" design="primary-filled-dark" icon="account">Developers</Button>
             {/if}
+            <Button href="/faq" design="primary-filled-dark" icon="help">FAQ</Button>
         </Row>
     </Column>
 </div>
@@ -125,7 +126,7 @@
                 Geode is the <em>most popular</em>
                 GD mod loader across all platforms. With an
                 <em>active community</em>
-                 of both users and modders, nearly every mod you can imagine has been made or suggested!
+                of both users and modders, nearly every mod you can imagine has been made or suggested!
             </p>
             <Row wrap="wrap">
                 {#await stats_promise}
@@ -194,7 +195,7 @@
                 Interested? Go to the <em>Installation Page</em>
                 to download Geode for your device, or the
                 <em>Mods Browser</em>
-                 to view what mods Geode has to offer!
+                to view what mods Geode has to offer!
             </p>
             <Row wrap="wrap">
                 <Button href="/install" design="primary-filled" icon="download">Install</Button>
