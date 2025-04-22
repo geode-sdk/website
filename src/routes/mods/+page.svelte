@@ -355,6 +355,7 @@
         grid-template-columns: auto;
         align-items: start;
         gap: var(--gap-small);
+        padding: 1rem;
 
         & main {
             display: grid;

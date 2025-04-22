@@ -130,369 +130,371 @@
     </Column>
 </header>
 
-<Row align="top" wrap="wrap-reverse" gap="small">
-    <section>
-        <Tabs>
-            <TabPage name="Description" id="description" icon="description">
-                <div class="markdown">
-                    {#if paid}
+<div class="wrapper">
+    <Row align="top" wrap="wrap-reverse" gap="small">
+        <section>
+            <Tabs>
+                <TabPage name="Description" id="description" icon="description">
+                    <div class="markdown">
+                        {#if paid}
+                            <Column align="center">
+                                <InfoBox type="info">
+                                    This mod contains <em>Paid Content</em>
+                                    . This means that some or all features of the mod
+                                    <em>require money to use</em>
+                                    .
+                                    <br />
+                                    <br />
+                                    Geode does not handle any payments. The mod handles all transactions in their own way.
+                                    The paid content may not be available in your country.
+                                </InfoBox>
+                            </Column>
+                        {/if}
+                        <GeodeMarkdown source={data.mod.about ?? "No description provided"} />
+                    </div>
+                </TabPage>
+                <TabPage name="Changelog" id="changelog" icon="changelog">
+                    <div class="markdown">
+                        <GeodeMarkdown source={data.mod.changelog ?? "No changelog provided"} />
+                    </div>
+                </TabPage>
+                <TabPage name="Versions" id="versions" icon="version">
+                    <Column gap="small" align="stretch">
                         <Column align="center">
-                            <InfoBox type="info">
-                                This mod contains <em>Paid Content</em>
-                                . This means that some or all features of the mod
-                                <em>require money to use</em>
-                                .
+                            <InfoBox type="warning">
+                                The recommended way to install mods is through the <em>in-game mod loader</em>
+                                . You will have to
+                                <em>manually install</em>
+                                the
+                                <code>.geode</code>
+                                files you get from this page.
                                 <br />
                                 <br />
-                                Geode does not handle any payments. The mod handles all transactions in their own way. The
-                                paid content may not be available in your country.
+                                Some mods also require other mods as
+                                <em>dependencies</em>
+                                ; you will need to find and install them yourself.
                             </InfoBox>
                         </Column>
-                    {/if}
-                    <GeodeMarkdown source={data.mod.about ?? "No description provided"} />
-                </div>
-            </TabPage>
-            <TabPage name="Changelog" id="changelog" icon="changelog">
-                <div class="markdown">
-                    <GeodeMarkdown source={data.mod.changelog ?? "No changelog provided"} />
-                </div>
-            </TabPage>
-            <TabPage name="Versions" id="versions" icon="version">
-                <Column gap="small" align="stretch">
-                    <Column align="center">
-                        <InfoBox type="warning">
-                            The recommended way to install mods is through the <em>in-game mod loader</em>
-                            . You will have to
-                            <em>manually install</em>
-                            the
-                            <code>.geode</code>
-                            files you get from this page.
-                            <br />
-                            <br />
-                            Some mods also require other mods as
-                            <em>dependencies</em>
-                            ; you will need to find and install them yourself.
-                        </InfoBox>
-                    </Column>
 
-                    <LoadingOverlay loading={searching}>
-                        <Column gap="small" align="stretch">
-                            <Pagination
-                                label="versions"
-                                labelOne="version"
-                                perPage={per_page}
-                                total={data.versions.count}
-                                pageCount={data.versions.data.length}
-                                page={current_page}
-                                on:select={(e) => onChangePage(e.detail.page)}>
-                                {#if is_admin || can_update_mod}
-                                    <Select
-                                        title="Status"
-                                        titleIcon="status"
-                                        on:select={(ev) => {
-                                            const new_status = ev.detail.value;
-                                            if (status !== new_status && verifyStatus(new_status)) {
-                                                status = new_status;
-                                                updateSearch();
-                                            }
-                                        }}>
-                                        <SelectOption
-                                            icon="verified"
-                                            title="Accepted"
-                                            value="accepted"
-                                            isDefault={status === "accepted" || invalid_status} />
-                                        <SelectOption
-                                            icon="time"
-                                            title="Pending"
-                                            value="pending"
-                                            isDefault={status === "pending"} />
-                                        <SelectOption
-                                            icon="rejected"
-                                            title="Rejected"
-                                            value="rejected"
-                                            isDefault={status === "rejected"} />
-                                    </Select>
+                        <LoadingOverlay loading={searching}>
+                            <Column gap="small" align="stretch">
+                                <Pagination
+                                    label="versions"
+                                    labelOne="version"
+                                    perPage={per_page}
+                                    total={data.versions.count}
+                                    pageCount={data.versions.data.length}
+                                    page={current_page}
+                                    on:select={(e) => onChangePage(e.detail.page)}>
+                                    {#if is_admin || can_update_mod}
+                                        <Select
+                                            title="Status"
+                                            titleIcon="status"
+                                            on:select={(ev) => {
+                                                const new_status = ev.detail.value;
+                                                if (status !== new_status && verifyStatus(new_status)) {
+                                                    status = new_status;
+                                                    updateSearch();
+                                                }
+                                            }}>
+                                            <SelectOption
+                                                icon="verified"
+                                                title="Accepted"
+                                                value="accepted"
+                                                isDefault={status === "accepted" || invalid_status} />
+                                            <SelectOption
+                                                icon="time"
+                                                title="Pending"
+                                                value="pending"
+                                                isDefault={status === "pending"} />
+                                            <SelectOption
+                                                icon="rejected"
+                                                title="Rejected"
+                                                value="rejected"
+                                                isDefault={status === "rejected"} />
+                                        </Select>
+                                    {/if}
+                                </Pagination>
+                                {#if data.versions.count !== 0}
+                                    {#each data.versions.data as version}
+                                        <VersionCard mod={data.mod} {version} />
+                                    {/each}
+                                {:else}
+                                    <p>This mod has no {status} versions.</p>
                                 {/if}
-                            </Pagination>
-                            {#if data.versions.count !== 0}
-                                {#each data.versions.data as version}
-                                    <VersionCard mod={data.mod} {version} />
-                                {/each}
-                            {:else}
-                                <p>This mod has no {status} versions.</p>
-                            {/if}
-                        </Column>
-                    </LoadingOverlay>
-                </Column>
-            </TabPage>
-            {#if can_update_mod}
-                <TabPage name="Modify" id="modify" icon="modify">
-                    <Column align="left" gap="small">
-                        {#if form?.message}
-                            <InfoBox type="error">
-                                Failed to perform action: {form.message}
-                            </InfoBox>
-                        {/if}
-
-                        {#if form?.success}
-                            <InfoBox type="info">Action performed!</InfoBox>
-                        {/if}
-
-                        <form method="POST" class="flow" action="?/create_version" use:enhance>
-                            <h2>Submit an update</h2>
-                            <div class="form-control">
-                                <label for="create-mod-download">Download link:</label>
-                                <input type="url" required id="create-mod-download" name="download_link" />
-                            </div>
-
-                            <button type="submit">
-                                <Button design="secondary-filled">Submit</Button>
-                            </button>
-                        </form>
-                        {#if owns_mod}
-                            <form method="POST" class="flow" action="?/add_developer" use:enhance>
-                                <h2>Manage developers</h2>
-                                <div class="form-control">
-                                    <label for="add-developer-name">Username:</label>
-                                    <input type="text" required id="add-developer-name" name="developer" />
-                                </div>
-
-                                <div>
-                                    <button type="submit">
-                                        <Button design="secondary-filled">Add</Button>
-                                    </button>
-                                    <button type="submit" formaction="?/remove_developer">
-                                        <Button design="primary-filled">Remove</Button>
-                                    </button>
-                                </div>
-                            </form>
-                        {/if}
+                            </Column>
+                        </LoadingOverlay>
                     </Column>
                 </TabPage>
-            {/if}
-            {#if is_admin}
-                <TabPage name="Admin" id="admin" icon="admin">
-                    <Column align="left">
-                        {#if form?.message}
-                            <InfoBox type="error">
-                                Failed to perform action: {form.message}
-                            </InfoBox>
-                        {/if}
+                {#if can_update_mod}
+                    <TabPage name="Modify" id="modify" icon="modify">
+                        <Column align="left" gap="small">
+                            {#if form?.message}
+                                <InfoBox type="error">
+                                    Failed to perform action: {form.message}
+                                </InfoBox>
+                            {/if}
 
-                        {#if form?.success}
-                            <InfoBox type="info">Action performed!</InfoBox>
-                        {/if}
-                        <form method="POST" action="?/update_mod" use:enhance>
-                            <fieldset>
-                                <legend>Update mod info</legend>
+                            {#if form?.success}
+                                <InfoBox type="info">Action performed!</InfoBox>
+                            {/if}
 
-                                <div>
-                                    <input
-                                        type="checkbox"
-                                        checked={data.mod.featured}
-                                        name="featured"
-                                        id="update-mod-featured" />
-                                    <label for="update-mod-featured">Featured</label>
+                            <form method="POST" class="flow" action="?/create_version" use:enhance>
+                                <h2>Submit an update</h2>
+                                <div class="form-control">
+                                    <label for="create-mod-download">Download link:</label>
+                                    <input type="url" required id="create-mod-download" name="download_link" />
                                 </div>
 
-                                <input type="submit" value="Update" />
-                            </fieldset>
-                        </form>
-                        <form method="POST" action="?/update_mod_version" use:enhance>
-                            <fieldset>
-                                <legend>
-                                    Update version {data.version.version} status
-                                </legend>
+                                <button type="submit">
+                                    <Button design="secondary-filled">Submit</Button>
+                                </button>
+                            </form>
+                            {#if owns_mod}
+                                <form method="POST" class="flow" action="?/add_developer" use:enhance>
+                                    <h2>Manage developers</h2>
+                                    <div class="form-control">
+                                        <label for="add-developer-name">Username:</label>
+                                        <input type="text" required id="add-developer-name" name="developer" />
+                                    </div>
 
-                                <div>
-                                    <label for="update-version-status">Status:</label>
-                                    <select name="status" id="update-version-status">
-                                        <option selected={data.version.status === "accepted"} value="accepted">
-                                            Accepted
-                                        </option>
-                                        <option selected={data.version.status === "pending"} value="pending">
-                                            Pending
-                                        </option>
-                                        <option selected={data.version.status === "rejected"} value="rejected">
-                                            Rejected
-                                        </option>
-                                        <option selected={data.version.status === "unlisted"} value="unlisted">
-                                            Unlisted
-                                        </option>
-                                    </select>
-                                </div>
+                                    <div>
+                                        <button type="submit">
+                                            <Button design="secondary-filled">Add</Button>
+                                        </button>
+                                        <button type="submit" formaction="?/remove_developer">
+                                            <Button design="primary-filled">Remove</Button>
+                                        </button>
+                                    </div>
+                                </form>
+                            {/if}
+                        </Column>
+                    </TabPage>
+                {/if}
+                {#if is_admin}
+                    <TabPage name="Admin" id="admin" icon="admin">
+                        <Column align="left">
+                            {#if form?.message}
+                                <InfoBox type="error">
+                                    Failed to perform action: {form.message}
+                                </InfoBox>
+                            {/if}
 
-                                <div>
-                                    <label for="update-version-info">Reason:</label>
-                                    <br />
-                                    <textarea
-                                        name="info"
-                                        id="update-version-info"
-                                        rows="6"
-                                        cols="40"
-                                        value={data.version.info ?? ""} />
-                                </div>
+                            {#if form?.success}
+                                <InfoBox type="info">Action performed!</InfoBox>
+                            {/if}
+                            <form method="POST" action="?/update_mod" use:enhance>
+                                <fieldset>
+                                    <legend>Update mod info</legend>
 
-                                <input type="hidden" name="mod_version" value={data.version.version} />
+                                    <div>
+                                        <input
+                                            type="checkbox"
+                                            checked={data.mod.featured}
+                                            name="featured"
+                                            id="update-mod-featured" />
+                                        <label for="update-mod-featured">Featured</label>
+                                    </div>
 
-                                <input type="submit" value="Update" />
-                            </fieldset>
-                        </form>
-                        {#if data.version.direct_download_link}
-                            {@const download_link = data.version.direct_download_link}
-                            <p class="color-link">
-                                Direct download: <Link href={download_link}>
-                                    {new URL(download_link).hostname}
-                                </Link>
-                            </p>
-                            {@const match = /^(https?:\/\/github\.com\/[\w-]+\/[\w-]+).+/.exec(
-                                data.version.direct_download_link,
-                            )}
-                            {#if match}
+                                    <input type="submit" value="Update" />
+                                </fieldset>
+                            </form>
+                            <form method="POST" action="?/update_mod_version" use:enhance>
+                                <fieldset>
+                                    <legend>
+                                        Update version {data.version.version} status
+                                    </legend>
+
+                                    <div>
+                                        <label for="update-version-status">Status:</label>
+                                        <select name="status" id="update-version-status">
+                                            <option selected={data.version.status === "accepted"} value="accepted">
+                                                Accepted
+                                            </option>
+                                            <option selected={data.version.status === "pending"} value="pending">
+                                                Pending
+                                            </option>
+                                            <option selected={data.version.status === "rejected"} value="rejected">
+                                                Rejected
+                                            </option>
+                                            <option selected={data.version.status === "unlisted"} value="unlisted">
+                                                Unlisted
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label for="update-version-info">Reason:</label>
+                                        <br />
+                                        <textarea
+                                            name="info"
+                                            id="update-version-info"
+                                            rows="6"
+                                            cols="40"
+                                            value={data.version.info ?? ""} />
+                                    </div>
+
+                                    <input type="hidden" name="mod_version" value={data.version.version} />
+
+                                    <input type="submit" value="Update" />
+                                </fieldset>
+                            </form>
+                            {#if data.version.direct_download_link}
+                                {@const download_link = data.version.direct_download_link}
                                 <p class="color-link">
-                                    GitHub source: <Link href={match[1]} newTab={true}>
-                                        {match[1]}
+                                    Direct download: <Link href={download_link}>
+                                        {new URL(download_link).hostname}
                                     </Link>
                                 </p>
+                                {@const match = /^(https?:\/\/github\.com\/[\w-]+\/[\w-]+).+/.exec(
+                                    data.version.direct_download_link,
+                                )}
+                                {#if match}
+                                    <p class="color-link">
+                                        GitHub source: <Link href={match[1]} newTab={true}>
+                                            {match[1]}
+                                        </Link>
+                                    </p>
+                                {/if}
                             {/if}
+                            <p>
+                                Download hash: <code>
+                                    {data.version.hash.substring(0, 7)}
+                                </code>
+                            </p>
+
+                            {#if data.version.early_load || data.version.api || data.version.gd.ios}
+                                <Row align="center" justify="top" gap="small">
+                                    {#if data.version.early_load}
+                                        <Label icon="time" design="accent-alt">Early Load</Label>
+                                    {/if}
+                                    {#if data.version.api}
+                                        <Label icon="tag-enhancement" design="accent">API</Label>
+                                    {/if}
+                                    {#if data.version.gd.ios}
+                                        <Label icon="ios" design="gray">{data.version.gd.ios}</Label>
+                                    {/if}
+                                </Row>
+                            {/if}
+                        </Column>
+
+                        <h2>Dependencies</h2>
+                        {#if data.version.dependencies?.length}
+                            <ul class="color-link">
+                                {#each data.version.dependencies as dependency}
+                                    <li>
+                                        {dependency.importance} -
+                                        <Link href={`/mods/${dependency.mod_id}`}>
+                                            {dependency.mod_id}
+                                        </Link>
+                                        ({dependency.version})
+                                    </li>
+                                {/each}
+                            </ul>
+                        {:else}
+                            <div>Mod has no dependencies.</div>
                         {/if}
-                        <p>
-                            Download hash: <code>
-                                {data.version.hash.substring(0, 7)}
-                            </code>
-                        </p>
 
-                        {#if data.version.early_load || data.version.api || data.version.gd.ios}
-                            <Row align="center" justify="top" gap="small">
-                                {#if data.version.early_load}
-                                    <Label icon="time" design="accent-alt">Early Load</Label>
-                                {/if}
-                                {#if data.version.api}
-                                    <Label icon="tag-enhancement" design="accent">API</Label>
-                                {/if}
-                                {#if data.version.gd.ios}
-                                    <Label icon="ios" design="gray">{data.version.gd.ios}</Label>
-                                {/if}
-                            </Row>
+                        <h2>Incompatibilities</h2>
+                        {#if data.version.incompatibilities?.length}
+                            <ul class="color-link">
+                                {#each data.version.incompatibilities as incompatibility}
+                                    <li>
+                                        {incompatibility.importance} -
+                                        <Link href={`/mods/${incompatibility.mod_id}`}>
+                                            {incompatibility.mod_id}
+                                        </Link>
+                                        ({incompatibility.version})
+                                    </li>
+                                {/each}
+                            </ul>
+                        {:else}
+                            <div>Mod has no incompatibilities.</div>
                         {/if}
-                    </Column>
-
-                    <h2>Dependencies</h2>
-                    {#if data.version.dependencies?.length}
-                        <ul class="color-link">
-                            {#each data.version.dependencies as dependency}
-                                <li>
-                                    {dependency.importance} -
-                                    <Link href={`/mods/${dependency.mod_id}`}>
-                                        {dependency.mod_id}
-                                    </Link>
-                                    ({dependency.version})
-                                </li>
-                            {/each}
-                        </ul>
-                    {:else}
-                        <div>Mod has no dependencies.</div>
-                    {/if}
-
-                    <h2>Incompatibilities</h2>
-                    {#if data.version.incompatibilities?.length}
-                        <ul class="color-link">
-                            {#each data.version.incompatibilities as incompatibility}
-                                <li>
-                                    {incompatibility.importance} -
-                                    <Link href={`/mods/${incompatibility.mod_id}`}>
-                                        {incompatibility.mod_id}
-                                    </Link>
-                                    ({incompatibility.version})
-                                </li>
-                            {/each}
-                        </ul>
-                    {:else}
-                        <div>Mod has no incompatibilities.</div>
-                    {/if}
-                </TabPage>
-            {/if}
-        </Tabs>
-    </section>
-    <aside>
-        <section>
-            <Column align="left" gap="small">
-                <span class="card-info">
-                    <Icon icon="version" />{data.version.version}
-                </span>
-                <span class="card-info">
-                    <Icon icon="download" />{formatNumber(data.mod.download_count)}
-                </span>
-                <span class="card-info" title={serverTimestampToDateString(data.mod.created_at)}>
-                    <Icon icon="time" />{serverTimestampToAgoString(data.mod.created_at)}
-                </span>
-                <span class="card-info" title={serverTimestampToDateString(data.mod.updated_at)}>
-                    <Icon icon="update" />{serverTimestampToAgoString(data.mod.updated_at)}
-                </span>
-                <span class="card-info">
-                    <Icon icon="geode" />{data.version.geode}
-                </span>
-                <span class="card-info">
-                    <VersionCards gd={data.version.gd} />
-                </span>
-
-                {#if data.mod.tags.length > 0}
-                    <div class="mod-tags">
-                        <Row wrap="wrap" gap="tiny" align="center" justify="top">
-                            {#each data.mod.tags as tag}
-                                <Label icon={iconForTag(tag)} design="secondary">
-                                    {getTagDisplay(tag)}
-                                </Label>
-                            {/each}
-                        </Row>
-                    </div>
+                    </TabPage>
                 {/if}
-            </Column>
+            </Tabs>
         </section>
-        <section>
-            <Column align="stretch" gap="small">
-                <Button href={data.version.download_link} icon="download" design="primary-filled">Download</Button>
-                {#if multiple_links}
-                    <div class="link-row">
-                        <!-- wrapping in divs so i can apply grow to them -->
+        <aside>
+            <section>
+                <Column align="left" gap="small">
+                    <span class="card-info">
+                        <Icon icon="version" />{data.version.version}
+                    </span>
+                    <span class="card-info">
+                        <Icon icon="download" />{formatNumber(data.mod.download_count)}
+                    </span>
+                    <span class="card-info" title={serverTimestampToDateString(data.mod.created_at)}>
+                        <Icon icon="time" />{serverTimestampToAgoString(data.mod.created_at)}
+                    </span>
+                    <span class="card-info" title={serverTimestampToDateString(data.mod.updated_at)}>
+                        <Icon icon="update" />{serverTimestampToAgoString(data.mod.updated_at)}
+                    </span>
+                    <span class="card-info">
+                        <Icon icon="geode" />{data.version.geode}
+                    </span>
+                    <span class="card-info">
+                        <VersionCards gd={data.version.gd} />
+                    </span>
+
+                    {#if data.mod.tags.length > 0}
+                        <div class="mod-tags">
+                            <Row wrap="wrap" gap="tiny" align="center" justify="top">
+                                {#each data.mod.tags as tag}
+                                    <Label icon={iconForTag(tag)} design="secondary">
+                                        {getTagDisplay(tag)}
+                                    </Label>
+                                {/each}
+                            </Row>
+                        </div>
+                    {/if}
+                </Column>
+            </section>
+            <section>
+                <Column align="stretch" gap="small">
+                    <Button href={data.version.download_link} icon="download" design="primary-filled">Download</Button>
+                    {#if multiple_links}
+                        <div class="link-row">
+                            <!-- wrapping in divs so i can apply grow to them -->
+                            {#if data.mod.links?.homepage}
+                                <div>
+                                    <Button href={data.mod.links.homepage} icon="web" />
+                                </div>
+                            {/if}
+                            {#if mod_source}
+                                <div>
+                                    <Button href={mod_source} icon="github" />
+                                </div>
+                            {/if}
+                            {#if data.mod.links?.community}
+                                <div>
+                                    <Button href={data.mod.links.community} icon="community" />
+                                </div>
+                            {/if}
+                        </div>
+                    {:else}
                         {#if data.mod.links?.homepage}
-                            <div>
-                                <Button href={data.mod.links.homepage} icon="web" />
-                            </div>
+                            <Button href={data.mod.links.homepage} icon="web">Homepage</Button>
                         {/if}
                         {#if mod_source}
-                            <div>
-                                <Button href={mod_source} icon="github" />
-                            </div>
+                            <Button href={mod_source} icon="github">Source Code</Button>
                         {/if}
                         {#if data.mod.links?.community}
-                            <div>
-                                <Button href={data.mod.links.community} icon="community" />
-                            </div>
+                            <Button href={data.mod.links.community} icon="community">Community</Button>
                         {/if}
-                    </div>
-                {:else}
-                    {#if data.mod.links?.homepage}
-                        <Button href={data.mod.links.homepage} icon="web">Homepage</Button>
                     {/if}
-                    {#if mod_source}
-                        <Button href={mod_source} icon="github">Source Code</Button>
-                    {/if}
-                    {#if data.mod.links?.community}
-                        <Button href={data.mod.links.community} icon="community">Community</Button>
-                    {/if}
-                {/if}
-            </Column>
-        </section>
-        <section>
-            <Column align="left" gap="small">
-                <p>
-                    ID: <code>{data.mod.id}</code>
-                </p>
-            </Column>
-        </section>
-    </aside>
-</Row>
+                </Column>
+            </section>
+            <section>
+                <Column align="left" gap="small">
+                    <p>
+                        ID: <code>{data.mod.id}</code>
+                    </p>
+                </Column>
+            </section>
+        </aside>
+    </Row>
+</div>
 
 <style lang="scss">
     h2 {
@@ -505,6 +507,7 @@
         justify-content: center;
         gap: 1rem;
         font-size: 1.3rem;
+        padding: 1rem;
 
         .title-container {
             display: flex;
@@ -578,5 +581,9 @@
 
     label {
         font-size: 0.9rem;
+    }
+
+    .wrapper {
+        padding: 1rem;
     }
 </style>

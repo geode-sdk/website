@@ -69,140 +69,130 @@
 
 <h1>Install Geode</h1>
 
-<Column>
-    <!-- TODO: MAKE THIS SECTION HIDDEN AND THE OTHER SECTIONS VISIBLE ON RELEASE -->
-    <section class="hidden">
-        <InfoBox type="warning">
-            Geode is not yet out for Geometry Dash 2.206! Geode will be released for 2.206 on June 22nd at 9 PM Swedish
-            time.
-            <br />
-            <br />
-            You can join <Link --link-color="var(--accent-300)" href="https://youtu.be/RKwBBcHk6OA">
-                the Premiere of our announcement video
-            </Link> when the update releases!
-        </InfoBox>
-    </section>
-    <section>
-        <Column>
-            <p><strong>Installation instructions</strong></p>
-            <span style="color: var(--background-300)">
-                <Column align="left">
-                    <Row>
-                        <Icon icon="one" />
-                        <p>
-                            Download the <em>installer</em>
-                             for the platform you want.
-                        </p>
-                    </Row>
-                    <Row>
-                        <Icon icon="two" />
-                        <p>Run the installer.</p>
-                    </Row>
-                </Column>
-            </span>
-            <p>
-                Geode is available for <em>Windows</em>
-                ,
-                <em>MacOS</em>
-                ,
-                <em>Linux</em>
-                (through
-                <em>Wine / Proton</em>
-                ) and
-                <em>Android</em>
-                .
-            </p>
-        </Column>
-    </section>
-    <section class:hidden={!data.error}>
-        <InfoBox type="error">
-            Could not determine the latest Geode release.
-
-            <br />
-            <br />
-
-            You can download Geode <Link
-                --link-color="var(--accent-300)"
-                href="https://github.com/geode-sdk/geode/releases/latest">
-                here
-            </Link>.
-            <br />
-            Android users should install <Link
-                --link-color="var(--accent-300)"
-                href="https://github.com/geode-sdk/android-launcher/releases/latest">
-                the Android launcher
-            </Link> instead.
-        </InfoBox>
-    </section>
-    <section class:hidden={data.error}>
-        <Column>
-            <div>
-                Latest version: <em>{latestVersion}</em>
-            </div>
-            {#if curPlatform === "unknown"}
-                <p>Couldn't auto detect your platform. You can download Geode for your chosen platform below.</p>
-            {/if}
-            {#if curPlatform === "linux"}
+<div class="installation">
+    <Column>
+        <section>
+            <Column>
+                <p><strong>Installation instructions</strong></p>
+                <span style="color: var(--background-300)">
+                    <Column align="left">
+                        <Row>
+                            <Icon icon="one" />
+                            <p>
+                                Download the <em>installer</em>
+                                for the platform you want.
+                            </p>
+                        </Row>
+                        <Row>
+                            <Icon icon="two" />
+                            <p>Run the installer.</p>
+                        </Row>
+                    </Column>
+                </span>
                 <p>
-                    Geometry Dash is not available on <em>Linux</em>
-                    , but you can run the
-                    <em>Windows</em>
-                    version through
+                    Geode is available for <em>Windows</em>
+                    ,
+                    <em>MacOS</em>
+                    ,
+                    <em>Linux</em>
+                    (through
                     <em>Wine / Proton</em>
-                    . <Link href="faq#i-am-installing-geode-on-linux-what-do-i-have-to-do">
-                        Click here for more info.
-                    </Link>
+                    ) and
+                    <em>Android</em>
+                    .
                 </p>
-                <Button design="primary-filled" href={createVersionString("windows")}>
-                    <Icon icon="windows" />Download for Windows
-                </Button>
-            {/if}
-            {#if curPlatform === "android"}
+            </Column>
+        </section>
+        <section class:hidden={!data.error}>
+            <InfoBox type="error">
+                Could not determine the latest Geode release.
+
+                <br />
+                <br />
+
+                You can download Geode <Link
+                    --link-color="var(--accent-300)"
+                    href="https://github.com/geode-sdk/geode/releases/latest">
+                    here
+                </Link>.
+                <br />
+                Android users should install <Link
+                    --link-color="var(--accent-300)"
+                    href="https://github.com/geode-sdk/android-launcher/releases/latest">
+                    the Android launcher
+                </Link> instead.
+            </InfoBox>
+        </section>
+        <section class:hidden={data.error}>
+            <Column>
                 <div>
-                    Latest Android Launcher version: <em>{latestLauncher}</em>
+                    Latest version: <em>{latestVersion}</em>
                 </div>
-            {/if}
-            {#if !showAllPlatforms}
-                {#if curPlatform === "windows"}
+                {#if curPlatform === "unknown"}
+                    <p>Couldn't auto detect your platform. You can download Geode for your chosen platform below.</p>
+                {/if}
+                {#if curPlatform === "linux"}
+                    <p>
+                        Geometry Dash is not available on <em>Linux</em>
+                        , but you can run the
+                        <em>Windows</em>
+                        version through
+                        <em>Wine / Proton</em>
+                        . <Link href="faq#i-am-installing-geode-on-linux-what-do-i-have-to-do">
+                            Click here for more info.
+                        </Link>
+                    </p>
                     <Button design="primary-filled" href={createVersionString("windows")}>
                         <Icon icon="windows" />Download for Windows
                     </Button>
                 {/if}
-                {#if curPlatform === "mac"}
-                    <Button design="primary-filled" href={createVersionString("mac")}>
-                        <Icon icon="mac" />Download for macOS
-                    </Button>
-                {/if}
                 {#if curPlatform === "android"}
-                    <Button design="primary-filled" href={createVersionString("android")}>
-                        <Icon icon="android" />Download for Android
-                    </Button>
+                    <div>
+                        Latest Android Launcher version: <em>{latestLauncher}</em>
+                    </div>
                 {/if}
-                <!-- {#if curPlatform == "android"}
+                {#if !showAllPlatforms}
+                    {#if curPlatform === "windows"}
+                        <Button design="primary-filled" href={createVersionString("windows")}>
+                            <Icon icon="windows" />Download for Windows
+                        </Button>
+                    {/if}
+                    {#if curPlatform === "mac"}
+                        <Button design="primary-filled" href={createVersionString("mac")}>
+                            <Icon icon="mac" />Download for macOS
+                        </Button>
+                    {/if}
+                    {#if curPlatform === "android"}
+                        <Button design="primary-filled" href={createVersionString("android")}>
+                            <Icon icon="android" />Download for Android
+                        </Button>
+                    {/if}
+                    <!-- {#if curPlatform == "android"}
                 <Button style="primary-filled">
                     <Icon icon="android"/>Download for Android (32 bit)
                 </Button>
             {/if} -->
-            {/if}
-            <Rollover title="Show All Platforms" bind:open={showAllPlatforms}>
-                <Column align="stretch">
-                    <Button design="primary-filled" href={createVersionString("windows")}>
-                        <Icon icon="windows" />Download for Windows
-                    </Button>
-                    <Button design="primary-filled" href={createVersionString("mac")}>
-                        <Icon icon="mac" />Download for macOS
-                    </Button>
-                    <Button design="primary-filled" href={createVersionString("android")}>
-                        <Icon icon="android" />Download for Android
-                    </Button>
-                    <!-- <Button style="primary-filled">
+                {/if}
+                <Rollover title="Show All Platforms" bind:open={showAllPlatforms}>
+                    <Column align="stretch">
+                        <Button design="primary-filled" href={createVersionString("windows")}>
+                            <Icon icon="windows" />Download for Windows
+                        </Button>
+                        <Button design="primary-filled" href={createVersionString("mac")}>
+                            <Icon icon="mac" />Download for macOS
+                        </Button>
+                        <Button design="primary-filled" href={createVersionString("android")}>
+                            <Icon icon="android" />Download for Android
+                        </Button>
+                        <!-- <Button style="primary-filled">
                         <Icon icon="android"/>Download for Android (32 bit)
                     </Button> -->
-                </Column>
-            </Rollover>
-        </Column>
-    </section>
-</Column>
+                    </Column>
+                </Rollover>
+            </Column>
+        </section>
+    </Column>
+</div>
 
 <Gap size="large" />
 
@@ -239,7 +229,7 @@
             <em>enable/disable</em>
             any mods, or click
             <em>View</em>
-             for further options like editing mod settings and uninstalling.
+            for further options like editing mod settings and uninstalling.
         </p>
         <Row wrap="wrap">
             <Button design="hollow" href="/faq#how-do-i-change-mod-settings">
@@ -317,5 +307,9 @@
     }
     em {
         font-weight: unset;
+    }
+
+    .installation {
+        padding: 1rem;
     }
 </style>
