@@ -166,6 +166,15 @@ export const load: PageServerLoad = async ({ fetch, url, params, cookies }) => {
     let mod: ServerMod | undefined = undefined;
     try {
         mod = await client.getMod(id);
+        mod.developers = mod.developers.sort((a, b) => {
+            if (a.is_owner) {
+                return -1;
+            } else if (b.is_owner) {
+                return 1;
+            }
+
+            return a.id - b.id;
+        });
     } catch (e) {
         return error(404, {
             message: "Mod not found.",
