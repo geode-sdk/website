@@ -24,7 +24,7 @@
 <Waves type="top" />
 <Gap size="large" />
 
-<main class="flow">
+<article class="flow">
     <header class="card | with-sidebar">
         <div class="sidebar | profile-pic-container">
             <img
@@ -40,7 +40,7 @@
             </p>
             <div class="chips">
                 {#if data.developer.verified}
-                    <DevRoleChip type="verified" />
+                    <DevRoleChip iconOnly={false} type="verified" />
                 {/if}
                 {#if data.developer.admin}
                     <DevRoleChip type="admin" />
@@ -86,7 +86,7 @@
             <div class="mod-row">
                 {#each data.mods.data as mod (mod.id)}
                     {@const version = mod.versions[0]}
-                    <ModCard {mod} {version} />
+                    <ModCard style="list" {mod} {version} />
                 {/each}
             </div>
         {:else}
@@ -97,11 +97,14 @@
             See more by {data.developer.display_name}
         </Button>
     </section>
-</main>
+</article>
 
 <style>
-    main {
+    article {
         margin-inline: 1rem;
+        box-sizing: border-box;
+        padding: min(3rem, 3vw);
+        width: 100%;
     }
 
     h1,
@@ -153,8 +156,8 @@
 
     .mod-row {
         display: flex;
+        flex-direction: column;
         justify-content: center;
-        align-items: center;
         flex-wrap: wrap;
         gap: 0.5rem;
     }

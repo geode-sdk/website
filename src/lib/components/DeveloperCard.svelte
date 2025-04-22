@@ -7,27 +7,29 @@
 </script>
 
 <div class="aside">
-    <Link href="developers/{developer.id}">
-        <div class="link-container">
-            <img
-                src={`https://avatars.githubusercontent.com/u/${developer.github_id}`}
-                width="50"
-                height="50"
-                alt="developer {developer.id}" />
-            <div>
-                <p class="display-name">{developer.display_name}</p>
-                <p class="username">
-                    {developer.username} ({developer.id})
-                </p>
+    <div class="left-side">
+        <Link href="developers/{developer.id}">
+            <div class="link-container">
+                <img
+                    src={`https://avatars.githubusercontent.com/u/${developer.github_id}`}
+                    width="50"
+                    height="50"
+                    alt="developer {developer.id}" />
+                <div>
+                    <p class="display-name">{developer.display_name}</p>
+                    <p class="username">
+                        {developer.username} ({developer.id})
+                    </p>
+                </div>
             </div>
-        </div>
-    </Link>
+        </Link>
+    </div>
     <div class="right-side">
         {#if developer.verified}
-            <DevRoleChip type="verified" />
+            <DevRoleChip iconOnly={true} type="verified" />
         {/if}
         {#if developer.admin}
-            <DevRoleChip type="admin" />
+            <DevRoleChip iconOnly={true} type="admin" />
         {/if}
     </div>
 </div>
@@ -40,6 +42,7 @@
         background-color: color-mix(in srgb, var(--card-base-color) 15%, transparent);
 
         display: flex;
+        gap: 0.5rem;
         align-items: center;
         justify-content: space-between;
 
@@ -57,9 +60,16 @@
         border-radius: 0.5rem;
     }
 
+    .left-side {
+        flex-grow: 0;
+        flex-shrink: 5;
+    }
+
     .right-side {
         display: flex;
+        justify-content: flex-end;
         gap: 0.5rem;
+        flex-grow: 5;
     }
 
     .link-container {

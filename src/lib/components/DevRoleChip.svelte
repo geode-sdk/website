@@ -2,11 +2,14 @@
     import Icon from "./Icon.svelte";
 
     export let type: "verified" | "admin";
+    export let iconOnly: boolean = false;
 </script>
 
 <span class="dev-tag {type}">
     <Icon icon={type} --icon-size="0.9rem" />
-    {type}
+    {#if iconOnly !== true}
+        {type}
+    {/if}
 </span>
 
 <style lang="scss">

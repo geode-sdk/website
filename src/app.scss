@@ -100,6 +100,10 @@
     --accent-alt-950: #061407;
 }
 
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 html {
     overflow-x: hidden;
 }

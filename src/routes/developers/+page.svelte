@@ -64,42 +64,49 @@
     <meta name="description" content="Browse the active developers for the Geode mod loader" />
 </svelte:head>
 
-<main>
-    <Column align="stretch" gap="small">
-        <h1>Browse Developers</h1>
-        <div>
-            <Search placeholder="Search developers..." bind:query on:search={onSearch} bind:ref={searchBar}></Search>
-        </div>
-        <section class="aside">
-            <Pagination
-                total={data.developers?.count ?? 0}
-                perPage={per_page}
-                pageCount={data.developers?.data.length ?? 0}
-                page={current_page}
-                disabled={!data.developers}
-                label="developers"
-                labelOne="developer"
-                on:select={(e) => gotoPage(e.detail.page)} />
-            <ul class="developer-list">
-                {#if searching}
-                    <div class="loading">
-                        <LoadingCircle />
-                    </div>
-                {:else if data.developers}
-                    {#each data.developers.data as developer}
-                        <li>
-                            <DeveloperCard {developer} />
-                        </li>
-                    {/each}
-                {:else}
-                    <div>Error loading developers: {data.error}</div>
-                {/if}
-            </ul>
-        </section>
-    </Column>
-</main>
+<article>
+    <h1>Browse Developers</h1>
+    <div>
+        <Search placeholder="Search developers..." bind:query on:search={onSearch} bind:ref={searchBar}></Search>
+    </div>
+    <section class="aside">
+        <Pagination
+            total={data.developers?.count ?? 0}
+            perPage={per_page}
+            pageCount={data.developers?.data.length ?? 0}
+            page={current_page}
+            disabled={!data.developers}
+            label="developers"
+            labelOne="developer"
+            on:select={(e) => gotoPage(e.detail.page)} />
+        <ul class="developer-list">
+            {#if searching}
+                <div class="loading">
+                    <LoadingCircle />
+                </div>
+            {:else if data.developers}
+                {#each data.developers.data as developer}
+                    <li>
+                        <DeveloperCard {developer} />
+                    </li>
+                {/each}
+            {:else}
+                <div>Error loading developers: {data.error}</div>
+            {/if}
+        </ul>
+    </section>
+</article>
 
 <style lang="scss">
+    article {
+        padding: min(3rem, 3vw);
+        width: 100%;
+    }
+
+    article > * + * {
+        margin-block-start: 0.5rem;
+    }
+
     h1 {
         margin-bottom: 1rem;
         text-align: center;
