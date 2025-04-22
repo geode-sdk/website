@@ -90,16 +90,8 @@
                     </Column>
                 </span>
                 <p>
-                    Geode is available for <em>Windows</em>
-                    ,
-                    <em>MacOS</em>
-                    ,
-                    <em>Linux</em>
-                    (through
-                    <em>Wine / Proton</em>
-                    ) and
-                    <em>Android</em>
-                    .
+                    Geode is available for
+                    <em>Windows, MacOS, Android and Linux (through Wine).</em>
                 </p>
             </Column>
         </section>
@@ -133,18 +125,20 @@
                 {/if}
                 {#if curPlatform === "linux"}
                     <p>
-                        Geometry Dash is not available on <em>Linux</em>
-                        , but you can run the
+                        Geometry Dash is not available on <em>Linux.</em>
+                        However, you can run the
                         <em>Windows</em>
-                        version through
-                        <em>Wine / Proton</em>
-                        . <Link href="faq#i-am-installing-geode-on-linux-what-do-i-have-to-do">
-                            Click here for more info.
-                        </Link>
+                        version, using
+                        <em>Wine.</em>
                     </p>
                     <Button design="primary-filled" href={createVersionString("windows")}>
-                        <Icon icon="windows" />Download for Windows
+                        <Icon icon="linux" />Download for Linux (Wine)
                     </Button>
+                    <p>
+                        <Link bold href="faq#i-am-installing-geode-on-linux-what-do-i-have-to-do">
+                            <em>Click here for an FAQ about installing Geode on Linux.</em>
+                        </Link>
+                    </p>
                 {/if}
                 {#if curPlatform === "android"}
                     <div>
