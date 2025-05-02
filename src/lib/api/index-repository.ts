@@ -134,6 +134,10 @@ export class IndexClient {
         this.fetch = options.fetch ?? fetch;
     }
 
+    private isSuccess(status: number): boolean {
+        return status >= 200 && status < 300;
+    }
+
     private validate<T>(data: BaseRequest<T>) {
         if (data.error) {
             throw new IndexError(data.error);
@@ -254,7 +258,7 @@ export class IndexClient {
             body: JSON.stringify({ code, state }),
         });
 
-        if (res.status !== 200) {
+        if (!this.isSuccess(res.status)) {
             // invalid code / state
 
             throw new IndexError("Couldn't authenticate");
@@ -292,7 +296,7 @@ export class IndexClient {
             body: JSON.stringify({ refresh_token: refresh }),
         });
 
-        if (res.status !== 200) {
+        if (!this.isSuccess(res.status)) {
             // Bad refresh token
 
             this.token = null;
@@ -403,7 +407,7 @@ export class IndexClient {
             });
         });
 
-        if (r.status != 204) {
+        if (!this.isSuccess(r.status)) {
             const data: BaseRequest<void> = await r.json();
             throw new IndexError(data.error);
         }
@@ -499,7 +503,7 @@ export class IndexClient {
             });
         });
 
-        if (r.status != 204) {
+        if (!this.isSuccess(r.status)) {
             const data: BaseRequest<void> = await r.json();
             throw new IndexError(data.error);
         }
@@ -519,7 +523,7 @@ export class IndexClient {
             });
         });
 
-        if (r.status != 204) {
+        if (!this.isSuccess(r.status)) {
             const data: BaseRequest<void> = await r.json();
             throw new IndexError(data.error);
         }
@@ -539,7 +543,7 @@ export class IndexClient {
             });
         });
 
-        if (r.status != 204) {
+        if (!this.isSuccess(r.status)) {
             const data: BaseRequest<void> = await r.json();
             throw new IndexError(data.error);
         }
@@ -557,7 +561,7 @@ export class IndexClient {
             });
         });
 
-        if (r.status != 204) {
+        if (!this.isSuccess(r.status)) {
             const data: BaseRequest<void> = await r.json();
             throw new IndexError(data.error);
         }
@@ -614,7 +618,7 @@ export class IndexClient {
             });
         });
 
-        if (r.status != 204) {
+        if (!this.isSuccess(r.status)) {
             const data: BaseRequest<void> = await r.json();
             throw new IndexError(data.error);
         }
@@ -672,7 +676,7 @@ export class IndexClient {
             });
         });
 
-        if (r.status !== 200) {
+        if (!this.isSuccess(r.status)) {
             const data: BaseRequest<void> = await r.json();
             throw new IndexError(data.error);
         }
@@ -690,7 +694,7 @@ export class IndexClient {
             });
         });
 
-        if (r.status != 204) {
+        if (!this.isSuccess(r.status)) {
             const data: BaseRequest<void> = await r.json();
             throw new IndexError(data.error);
         }
@@ -710,7 +714,7 @@ export class IndexClient {
             });
         });
 
-        if (r.status != 204) {
+        if (!this.isSuccess(r.status)) {
             const data: BaseRequest<void> = await r.json();
             throw new IndexError(data.error);
         }
