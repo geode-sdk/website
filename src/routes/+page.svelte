@@ -112,8 +112,7 @@
                 <Icon icon="windows" --icon-size="2.5em" />
                 <Icon icon="mac" --icon-size="2.5em" />
                 <Icon icon="android" --icon-size="2.5em" />
-                <!--No iOS yet ;)-->
-                <!-- <Icon icon="ios" --icon-size=2.5em /> -->
+                <Icon icon="ios" --icon-size="2.5em" />
             </span>
         </Column>
         <ShowcaseCollage />
