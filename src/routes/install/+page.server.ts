@@ -6,6 +6,7 @@ const RELEASE_PREFIX = "/releases/latest";
 
 const LAUNCHER_REPO = "geode-sdk/android-launcher";
 const LOADER_REPO = "geode-sdk/geode";
+const IOS_REPO = "geode-sdk/ios-launcher";
 
 // most of these properties aren't useful to us
 interface Asset {
@@ -112,6 +113,8 @@ export const load: PageServerLoad = async () => {
         // otherwise i'd just Promise.all it for maximum performance
         const loader_data = await get_latest_tag(fetch, LOADER_REPO);
         const launcher_data = await get_latest_tag(fetch, LAUNCHER_REPO);
+        // iOS launcher doesn't have releases yet, waiting for that
+        // const ios_launcher_data = await get_latest_tag(fetch, IOS_REPO);
 
         return {
             error: false,

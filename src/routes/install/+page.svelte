@@ -18,8 +18,9 @@
     // Until server returns this, we're doing it manually
     let latestVersion = data.loader_tag;
     let latestLauncher = `v${data.launcher_tag}`;
+    let latestIOSLauncher = `v0.5.0`;
     let showAllPlatforms = false;
-    let curPlatform: "windows" | "mac" | "android" | "linux" | "unknown" | undefined = undefined;
+    let curPlatform: "windows" | "mac" | "android" | "linux" | "ios" | "unknown" | undefined = undefined;
 
     const createVersionString = (platform: "windows" | "mac" | "android" | "linux"): string => {
         let filename = "";
@@ -52,6 +53,8 @@
             curPlatform = "android";
         } else if (window.navigator.userAgent.includes("Linux")) {
             curPlatform = "linux";
+        } else if (window.navigator.userAgent.includes("iPhone") || window.navigator.userAgent.includes("iPad")) {
+            curPlatform = "ios";
         } else {
             curPlatform = "unknown";
             showAllPlatforms = true;
@@ -64,7 +67,7 @@
 
 <svelte:head>
     <title>Install Geode</title>
-    <meta name="description" content="Install Geode on Windows, Android and MacOS" />
+    <meta name="description" content="Install Geode on Windows, MacOS, Android and iOS" />
 </svelte:head>
 
 <h1>Install Geode</h1>
@@ -91,7 +94,7 @@
                 </span>
                 <p>
                     Geode is available for
-                    <em>Windows, MacOS, Android and Linux (through Wine).</em>
+                    <em>Windows, MacOS, Android, iOS (experimental) and Linux (through Wine).</em>
                 </p>
             </Column>
         </section>
@@ -113,6 +116,12 @@
                     href="https://github.com/geode-sdk/android-launcher/releases/latest">
                     the Android launcher
                 </Link> instead.
+                <br />
+                iOS users should check out <Link
+                    --link-color="var(--accent-300)"
+                    href="https://github.com/geode-sdk/ios-launcher/blob/main/INSTALL.md">
+                    the iOS installation guide
+                </Link>
             </InfoBox>
         </section>
         <section class:hidden={data.error}>
@@ -145,6 +154,16 @@
                         Latest Android Launcher version: <em>{latestLauncher}</em>
                     </div>
                 {/if}
+                {#if curPlatform === "ios"}
+                    <p>
+                        Installing Geode on iOS is a bit more complicated than other platforms, and requires the use of
+                        a
+                        <em>computer.</em>
+                    </p>
+                    <div>
+                        Latest iOS launcher version: <em>{latestIOSLauncher}</em>
+                    </div>
+                {/if}
                 {#if !showAllPlatforms}
                     {#if curPlatform === "windows"}
                         <Button design="primary-filled" href={createVersionString("windows")}>
@@ -159,6 +178,13 @@
                     {#if curPlatform === "android"}
                         <Button design="primary-filled" href={createVersionString("android")}>
                             <Icon icon="android" />Download for Android
+                        </Button>
+                    {/if}
+                    {#if curPlatform === "ios"}
+                        <Button
+                            design="primary-filled"
+                            href="https://github.com/geode-sdk/ios-launcher/blob/main/INSTALL.md">
+                            <Icon icon="ios" />iOS installation guide (experimental)
                         </Button>
                     {/if}
                     <!-- {#if curPlatform == "android"}
@@ -178,9 +204,11 @@
                         <Button design="primary-filled" href={createVersionString("android")}>
                             <Icon icon="android" />Download for Android
                         </Button>
-                        <!-- <Button style="primary-filled">
-                        <Icon icon="android"/>Download for Android (32 bit)
-                    </Button> -->
+                        <Button
+                            design="primary-filled"
+                            href="https://github.com/geode-sdk/ios-launcher/blob/main/INSTALL.md">
+                            <Icon icon="ios" />iOS installation guide (experimental)
+                        </Button>
                     </Column>
                 </Rollover>
             </Column>
