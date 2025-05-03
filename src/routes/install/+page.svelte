@@ -184,14 +184,9 @@
                         <Button
                             design="primary-filled"
                             href="https://github.com/geode-sdk/ios-launcher/blob/main/INSTALL.md">
-                            <Icon icon="ios" />iOS installation guide (experimental)
+                            <Icon icon="ios" />Download for iOS (experimental)
                         </Button>
                     {/if}
-                    <!-- {#if curPlatform == "android"}
-                <Button style="primary-filled">
-                    <Icon icon="android"/>Download for Android (32 bit)
-                </Button>
-            {/if} -->
                 {/if}
                 <Rollover title="Show All Platforms" bind:open={showAllPlatforms}>
                     <Column align="stretch">
@@ -207,7 +202,7 @@
                         <Button
                             design="primary-filled"
                             href="https://github.com/geode-sdk/ios-launcher/blob/main/INSTALL.md">
-                            <Icon icon="ios" />iOS installation guide (experimental)
+                            <Icon icon="ios" />Downlaod for iOS (experimental)
                         </Button>
                     </Column>
                 </Rollover>
