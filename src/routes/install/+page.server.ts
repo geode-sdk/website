@@ -113,13 +113,17 @@ export const load: PageServerLoad = async () => {
         // otherwise i'd just Promise.all it for maximum performance
         const loader_data = await get_latest_tag(fetch, LOADER_REPO);
         const launcher_data = await get_latest_tag(fetch, LAUNCHER_REPO);
-        // iOS launcher doesn't have releases yet, waiting for that
-        // const ios_launcher_data = await get_latest_tag(fetch, IOS_REPO);
+        let ios_launcher_data = await get_latest_tag(fetch, IOS_REPO);
+
+        if (ios_launcher_data.startsWith("v")) {
+            ios_launcher_data = ios_launcher_data.substring(1);
+        }
 
         return {
             error: false,
             loader_tag: loader_data,
             launcher_tag: launcher_data,
+            ios_launcher_tag: ios_launcher_data,
         };
     } catch (e) {
         return {

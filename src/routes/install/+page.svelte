@@ -18,7 +18,7 @@
     // Until server returns this, we're doing it manually
     let latestVersion = data.loader_tag;
     let latestLauncher = `v${data.launcher_tag}`;
-    let latestIOSLauncher = `v0.5.0`;
+    let latestIOSLauncher = `v${data.ios_launcher_tag}`;
     let showAllPlatforms = false;
     let curPlatform: "windows" | "mac" | "android" | "linux" | "ios" | "unknown" | undefined = undefined;
 
