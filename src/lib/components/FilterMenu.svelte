@@ -92,13 +92,13 @@
                 Android (32-bit)
             </SelectButton>
             <SelectButton
-                icon="android"
+                icon="ios"
                 selected={platforms.has("ios")}
                 on:select={() => {
                     toggleSet(platforms, "ios");
                     updateSearch();
                 }}>
-                Android (32-bit)
+                iOS
             </SelectButton>
         </Rollover>
 
