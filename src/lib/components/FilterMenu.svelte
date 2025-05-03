@@ -91,6 +91,15 @@
                 }}>
                 Android (32-bit)
             </SelectButton>
+            <SelectButton
+                icon="android"
+                selected={platforms.has("ios")}
+                on:select={() => {
+                    toggleSet(platforms, "ios");
+                    updateSearch();
+                }}>
+                Android (32-bit)
+            </SelectButton>
         </Rollover>
 
         <Rollover title="Tags">
