@@ -202,7 +202,7 @@
                         <Button
                             design="primary-filled"
                             href="https://github.com/geode-sdk/ios-launcher/blob/main/INSTALL.md">
-                            <Icon icon="ios" />Downlaod for iOS (experimental)
+                            <Icon icon="ios" />Download for iOS (experimental)
                         </Button>
                     </Column>
                 </Rollover>
