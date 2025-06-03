@@ -12,6 +12,8 @@
     import Waves from "$lib/components/Waves.svelte";
     import { onMount } from "svelte";
     import type { PageData } from "./$types.js";
+    import CodeExample from "$lib/components/CodeExample.svelte";
+    import { bash } from "svelte-highlight/languages";
 
     export let data: PageData;
 
@@ -21,6 +23,10 @@
     let latestIOSLauncher = `v${data.ios_launcher_tag}`;
     let showAllPlatforms = false;
     let curPlatform: "windows" | "mac" | "android" | "linux" | "ios" | "unknown" | undefined = undefined;
+
+    const copyLinuxScript = () => {
+        navigator.clipboard.writeText("curl -o- 'https://geode-sdk.org/install/linux.sh' | bash");
+    };
 
     const createVersionString = (platform: "windows" | "mac" | "android" | "linux"): string => {
         let filename = "";
@@ -133,16 +139,24 @@
                     <p>Couldn't auto detect your platform. You can download Geode for your chosen platform below.</p>
                 {/if}
                 {#if curPlatform === "linux"}
+                    <div class="alternative-install">
+                        You can install Geode using the command below:
+                        <div class="linux-install-container">
+                            <CodeExample
+                                code={`curl -o- 'https://geode-sdk.org/install/linux.sh' | bash`}
+                                language={bash} />
+                            <Button icon={"clipboard"} on:click={copyLinuxScript} />
+                        </div>
+                    </div>
                     <p>
-                        Geometry Dash is not available on <em>Linux.</em>
-                        However, you can run the
-                        <em>Windows</em>
-                        version, using
-                        <em>Wine.</em>
+                        Or by using the Windows installer
+                        <strong>(requires Wine)</strong>
                     </p>
-                    <Button design="primary-filled" href={createVersionString("windows")}>
-                        <Icon icon="linux" />Download for Linux (Wine)
-                    </Button>
+                    <div>
+                        <Button design="primary-filled" href={createVersionString("windows")}>
+                            <Icon icon="linux" />Download for Linux
+                        </Button>
+                    </div>
                     <p>
                         <Link bold href="faq#i-am-installing-geode-on-linux-what-do-i-have-to-do">
                             <em>Click here for an FAQ about installing Geode on Linux.</em>
@@ -328,5 +342,15 @@
 
     .installation {
         padding: 1rem;
+    }
+
+    .alternative-install {
+        text-align: center;
+    }
+
+    .linux-install-container {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
     }
 </style>

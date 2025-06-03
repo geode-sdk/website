@@ -67,6 +67,7 @@ export const icons = {
     eye: "mdi:eye",
     account: "mdi:account-circle",
     admin: "mdi:security",
+    clipboard: "mdi:content-copy",
 
     "tag-universal": "mdi:globe",
     "tag-gameplay": "mdi:gamepad-variant",
