@@ -51,7 +51,7 @@
                 <p>
                     Site made by <Link href="https://github.com/hjfod">HJfod</Link>. Thank you to <Link
                         href="https://github.com/nekitdev">
-                        Nekit
+                        nekit
                     </Link> for the domain!
                 </p>
                 <Row gap="small">
