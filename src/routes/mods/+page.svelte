@@ -199,6 +199,11 @@
                         title="Recently Updated"
                         value="recently_updated"
                         isDefault={sort === "recently_updated"} />
+                    <SelectOption
+                        icon="time"
+                        title="Oldest"
+                        value="oldest"
+                        isDefault={sort === "oldest"} />
                     <SelectOption icon="sort-abc" title="Name (A-Z)" value="name" isDefault={sort === "name"} />
                     <SelectOption
                         icon="sort-cba"

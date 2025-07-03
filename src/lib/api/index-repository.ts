@@ -36,6 +36,7 @@ export enum ModSort {
     Downloads = "downloads",
     RecentlyUpdated = "recently_updated",
     RecentlyPublished = "recently_published",
+    Oldest = "oldest",
     Name = "name",
     NameReverse = "name_reverse",
 }
