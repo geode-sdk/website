@@ -20,7 +20,7 @@
 </script>
 
 <button on:click={() => setValue(title, value)}>
-    <Row gap="small"><Icon {icon} --icon-size="1.3em" />{title}</Row>
+    <Row gap="small"><Icon {icon} --icon-size="1.3em" /><span class="option-text">{title}</span></Row>
 </button>
 
 <style lang="scss">
@@ -41,5 +41,9 @@
             background-color: color-mix(in srgb, var(--text-50) 10%, transparent);
             cursor: pointer;
         }
+    }
+
+    .option-text {
+        text-align: left;
     }
 </style>
