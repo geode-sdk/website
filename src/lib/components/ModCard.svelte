@@ -10,6 +10,7 @@
 
     import Label from "./Label.svelte";
     import ModLogo from "./ModLogo.svelte";
+    import ModDevelopersList from "./ModDevelopersList.svelte";
 
     export let mod: ServerMod;
     export let version: ServerModVersion;
@@ -18,7 +19,6 @@
     // add the version for non-accepted mods, as otherwise the endpoint will pick the latest accepted
     $: mod_url = version.status != "accepted" ? `/mods/${mod.id}?version=${version.version}` : `/mods/${mod.id}`;
 
-    $: owner = mod.developers.filter((d) => d.is_owner)[0];
     $: paid = mod.tags.includes("paid");
 </script>
 
@@ -49,9 +49,7 @@
                         </div>
                     </Link>
                 </div>
-                <Link href={`/mods?developer=${owner.username}`} --link-color="var(--accent-300)">
-                    {owner.display_name}
-                </Link>
+                <ModDevelopersList developers={mod.developers} full={false} />
                 <p class="description" title={version.description || ""}>
                     {#if version.description}
                         {#if version.description?.length < 110}
@@ -101,9 +99,7 @@
                 </Link>
             </Column>
         </span>
-        <Link href={`/mods?developer=${owner.username}`} --link-color="var(--accent-300)">
-            {owner.display_name}
-        </Link>
+        <ModDevelopersList developers={mod.developers} full={false} />
         <Gap size="small" />
         <Row>
             <span class="card-info">

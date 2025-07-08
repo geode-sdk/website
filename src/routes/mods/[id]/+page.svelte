@@ -26,6 +26,7 @@
     import type { ModStatus } from "$lib/api/models/mod-version.js";
     import GeodeMarkdown from "$lib/components/GeodeMarkdown.svelte";
     import ModLogo from "$lib/components/ModLogo.svelte";
+    import ModDevelopersList from "$lib/components/ModDevelopersList.svelte";
 
     export let data: PageData;
 
@@ -121,11 +122,7 @@
             </h1>
         </div>
         <p>
-            {#each data.mod.developers as dev, index}
-                {index > 0 ? ", " : ""}<Link href={`/mods?developer=${dev.username}`} --link-color="var(--accent-300)">
-                    {dev.display_name}
-                </Link>
-            {/each}
+            <ModDevelopersList developers={data.mod.developers} full={true} />
         </p>
     </Column>
 </header>
