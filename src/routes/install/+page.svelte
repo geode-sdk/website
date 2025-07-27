@@ -282,7 +282,7 @@
     </div>
     <Column align="left">
         <p>
-            The other pages - <em>Recommended</em>
+            The other pages - <em>Featured</em>
             ,
             <em>Download</em>
             , and
