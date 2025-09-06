@@ -489,6 +489,23 @@
                     </p>
                 </Column>
             </section>
+            <section>
+                {#if data.version.dependencies?.length}
+                    <p>Dependencies:</p>
+                        <ul>
+                            {#each data.version.dependencies as dependency}
+                                <li>
+                                    <Link href={`/mods/${dependency.mod_id}`}>
+                                        {dependency.mod_id}
+                                    </Link>
+                                    ({dependency.version})
+                                </li>
+                            {/each}
+                        </ul>
+                {:else}
+                    <div>Mod has no dependencies.</div>
+                {/if}
+            </section>
         </aside>
     </Row>
 </div>
