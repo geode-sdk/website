@@ -430,9 +430,11 @@
                     <span class="card-info">
                         <Icon icon="geode" />{data.version.geode}
                     </span>
+                    {#if data.version}
                     <span class="card-info">
                         <VersionCards gd={data.version.gd} />
                     </span>
+                    {/if}
 
                     {#if data.mod.tags.length > 0}
                         <div class="mod-tags">
