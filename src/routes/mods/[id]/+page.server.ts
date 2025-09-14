@@ -190,7 +190,7 @@ export const load: PageServerLoad = async ({ fetch, url, params, cookies }) => {
         });
     }
 
-    if (!version && version_string == "latest") {
+    if (!version && version_string == "latest" && mod.versions.length) {
         // version info is probably just stuck in pending
         // this doesn't run all the time, as it may produce undesirable results
         version = await client.getModVersion(id, mod.versions[0].version);
