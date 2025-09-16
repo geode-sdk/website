@@ -30,9 +30,11 @@ export const load: PageServerLoad = async ({ url, fetch, cookies }) => {
         try {
             if (params.status === "rejected") {
                 if (!client.wasAuthSuccessful()) {
-                    return fail(401, {
-                        message: "You are not authenticated",
-                    });
+                    return {
+                        error: "This search type requires authentication.",
+                        params,
+                        tags,
+                    }
                 }
             }
 
