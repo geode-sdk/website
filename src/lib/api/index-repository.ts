@@ -211,6 +211,7 @@ export class IndexClient {
 
         if (oldToken) {
             this.token = oldToken;
+            this._lastAuthStatus = SetTokensResult.SET_FROM_COOKIE;
             return SetTokensResult.SET_FROM_COOKIE;
         }
 
