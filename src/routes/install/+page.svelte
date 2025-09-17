@@ -170,7 +170,7 @@
                 {/if}
                 {#if curPlatform === "ios"}
                     <p>
-                        Installing Geode on iOS is a bit more complicated than other platforms due to the restrictions on the OS, and may require the use of
+                        Installing Geode on iOS is a bit more complicated than other platforms due to the restrictions in the OS, and may require the use of
                         a
                         <em>computer,</em>
                         depending on the device and iOS version.
