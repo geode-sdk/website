@@ -6,7 +6,7 @@
 
 <span class="overlay-container">
     <div class="overlay" class:hidden={!loading}>
-        <span><LoadingCircle {size} /></span>
+        <span class="circle-span"><LoadingCircle {size} /></span>
     </div>
     <slot />
 </span>
@@ -33,7 +33,7 @@
         }
     }
 
-    span {
+    .circle-span {
         display: flex;
     }
 </style>
