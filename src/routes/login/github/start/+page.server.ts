@@ -11,6 +11,6 @@ export const load: PageServerLoad = async ({ cookies }) => {
         const url = await client.startGitHubAuth();
         return redirect(302, url);
     } else {
-        return redirect(302, "/");
+        return redirect(302, "/me");
     }
 };

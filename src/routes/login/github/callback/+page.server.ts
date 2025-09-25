@@ -17,7 +17,7 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
 
         setCookieTokens(tokens.access_token, tokens.refresh_token, cookies);
 
-        return redirect(302, "/");
+        return redirect(302, "/me");
     } catch (e: unknown) {
         return redirect(302, "/");
     }

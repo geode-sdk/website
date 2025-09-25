@@ -1,11 +1,12 @@
 <script lang="ts">
     import LoadingCircle from "./LoadingCircle.svelte";
     export let loading: boolean;
+    export let size: "small" | "normal" = "normal";
 </script>
 
 <span class="overlay-container">
     <div class="overlay" class:hidden={!loading}>
-        <span><LoadingCircle /></span>
+        <span><LoadingCircle {size} /></span>
     </div>
     <slot />
 </span>
@@ -30,5 +31,9 @@
             display: none;
             pointer-events: none;
         }
+    }
+
+    span {
+        display: flex;
     }
 </style>
