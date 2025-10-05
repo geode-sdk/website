@@ -498,7 +498,7 @@
                                     <Link href={`/mods/${dependency.mod_id}`}>
                                         {dependency.mod_id}
                                     </Link>
-                                    ({dependency.version})
+                                    ({dependency.version}) ({dependency.importance})
                                 </li>
                             {/each}
                         </ul>
