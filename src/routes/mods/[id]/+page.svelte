@@ -494,12 +494,14 @@
                     <p>Dependencies:</p>
                         <ul>
                             {#each data.version.dependencies as dependency}
-                                <li>
-                                    <Link href={`/mods/${dependency.mod_id}`}>
-                                        {dependency.mod_id}
-                                    </Link>
-                                    ({dependency.version}) ({dependency.importance})
-                                </li>
+                                <div class="color-link">
+                                    <li>
+                                        <Link href={`/mods/${dependency.mod_id}`}>
+                                            {dependency.mod_id}
+                                        </Link>
+                                        ({dependency.version}) ({dependency.importance})
+                                    </li>
+                                </div>
                             {/each}
                         </ul>
                 {:else}
