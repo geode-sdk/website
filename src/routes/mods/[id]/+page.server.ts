@@ -185,15 +185,23 @@ export const load: PageServerLoad = async ({ fetch, url, params, cookies }) => {
     try {
         version = await client.getModVersion(id, version_string);
     } catch (e) {
-        return error(404, {
-            message: "Version not found.",
-        });
+        // fallback happens a little later
     }
 
     if (!version && version_string == "latest" && mod.versions.length) {
         // version info is probably just stuck in pending
         // this doesn't run all the time, as it may produce undesirable results
-        version = await client.getModVersion(id, mod.versions[0].version);
+        try {
+            version = await client.getModVersion(id, mod.versions[0].version);
+        } catch (e) {
+            // this really shouldn't fail, but whatever!
+        }
+    }
+
+    if (!version) {
+        return error(404, {
+            message: "Version not found.",
+        });
     }
 
     // override pending-only mods to be pending by default to show at least a version
