@@ -34,7 +34,7 @@
         <aside class="card | sidebar">
             <img
                 src={`https://avatars.githubusercontent.com/u/${self.github_id}`}
-                alt="your profile picture"
+                alt="your profile avatar"
                 width="225"
                 height="225" />
             <form
