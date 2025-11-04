@@ -3,10 +3,21 @@
     import { createEventDispatcher } from "svelte";
     import Icon from "./Icon.svelte";
 
-    export let selected: boolean = false;
-    export let outsideState = false;
-    export let icon: KnownIcon;
-    export let design: "primary" | "secondary" = "primary";
+    interface Props {
+        selected?: boolean;
+        outsideState?: boolean;
+        icon: KnownIcon;
+        design?: "primary" | "secondary";
+        children?: import('svelte').Snippet;
+    }
+
+    let {
+        selected = $bindable(false),
+        outsideState = false,
+        icon,
+        design = "primary",
+        children
+    }: Props = $props();
 
     const dispatch = createEventDispatcher<{ select: { selected: boolean } }>();
 </script>
@@ -14,13 +25,13 @@
 <button
     class="select-button {design}"
     class:selected
-    on:click={() => {
+    onclick={() => {
         if (!outsideState) {
             selected = !selected;
         }
         dispatch("select", { selected });
     }}>
-    <Icon {icon} --icon-size="1.3em" /><slot></slot>
+    <Icon {icon} --icon-size="1.3em" />{@render children?.()}
 </button>
 
 <style lang="scss">

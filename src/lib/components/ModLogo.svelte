@@ -1,3 +1,5 @@
+<!-- @migration-task Error while migrating Svelte code: Event attribute must be a JavaScript expression, not a string
+https://svelte.dev/e/attribute_invalid_event_handler -->
 <script lang="ts">
     import { IndexClient } from "$lib/api/index-repository.js";
     import type { ServerMod } from "$lib/api/models/mod.js";

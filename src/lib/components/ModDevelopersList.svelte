@@ -3,8 +3,12 @@
     import Link from "./Link.svelte";
     import ModDeveloperLink from "./ModDeveloperLink.svelte";
 
-    export let developers: ServerModDeveloper[];
-    export let full: boolean;
+    interface Props {
+        developers: ServerModDeveloper[];
+        full: boolean;
+    }
+
+    let { developers, full }: Props = $props();
 </script>
 
 {#if full}

@@ -1,24 +1,39 @@
 <script lang="ts">
+    import { createBubbler } from 'svelte/legacy';
+
+    const bubble = createBubbler();
     import type { KnownIcon } from "$lib";
     import Icon from "./Icon.svelte";
 
     type Style = "primary-filled-dark" | "primary-filled" | "secondary-filled" | "hollow" | "dark-small";
-    export let design: Style = "hollow";
-    export let href: string | undefined = undefined;
-    export let icon: KnownIcon | undefined = undefined;
-    export let iconOnRight = false;
-    export let disabled = false;
+    interface Props {
+        design?: Style;
+        href?: string | undefined;
+        icon?: KnownIcon | undefined;
+        iconOnRight?: boolean;
+        disabled?: boolean;
+        children?: import('svelte').Snippet;
+    }
+
+    let {
+        design = "hollow",
+        href = undefined,
+        icon = undefined,
+        iconOnRight = false,
+        disabled = false,
+        children
+    }: Props = $props();
 </script>
 
-<a {href} class={design} class:disabled on:click>
+<a {href} class={design} class:disabled onclick={bubble('click')}>
     {#if iconOnRight}
-        <slot />
+        {@render children?.()}
     {/if}
     {#if icon}
         <Icon {icon} --icon-size="1.5em" />
     {/if}
     {#if !iconOnRight}
-        <slot />
+        {@render children?.()}
     {/if}
 </a>
 

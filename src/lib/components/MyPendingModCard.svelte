@@ -1,7 +1,11 @@
 <script lang="ts">
     import type { ServerSimpleMod } from "$lib/api/models/mod";
 
-    export let mod: ServerSimpleMod;
+    interface Props {
+        mod: ServerSimpleMod;
+    }
+
+    let { mod }: Props = $props();
 </script>
 
 <div class="card">

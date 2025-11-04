@@ -1,9 +1,14 @@
 <script lang="ts">
     import { onMount } from "svelte";
 
-    export let reverseOnSmallScreen = false;
+    interface Props {
+        reverseOnSmallScreen?: boolean;
+        children?: import('svelte').Snippet;
+    }
 
-    let section: HTMLElement;
+    let { reverseOnSmallScreen = false, children }: Props = $props();
+
+    let section: HTMLElement = $state();
 
     onMount(() => {
         const observer = new IntersectionObserver(
@@ -26,7 +31,7 @@
 </script>
 
 <section bind:this={section} class:reverseOnSmallScreen>
-    <slot />
+    {@render children?.()}
 </section>
 
 <style lang="scss">

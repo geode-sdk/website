@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
     export type SelectContext = {
         setValue: (title: string, value: string) => void;
     };
@@ -11,8 +11,13 @@
     import Row from "./Row.svelte";
     import { clickoutside } from "@svelte-put/clickoutside";
 
-    export let title: string;
-    export let titleIcon: KnownIcon;
+    interface Props {
+        title: string;
+        titleIcon: KnownIcon;
+        children?: import('svelte').Snippet;
+    }
+
+    let { title, titleIcon, children }: Props = $props();
 
     const dispatch = createEventDispatcher<{ select: { value: string } }>();
 
@@ -24,25 +29,25 @@
         },
     });
 
-    let open: boolean = false;
-    let popup: HTMLDivElement;
-    let selectedItem: HTMLElement;
+    let open: boolean = $state(false);
+    let popup: HTMLDivElement = $state();
+    let selectedItem: HTMLElement = $state();
 </script>
 
-<div bind:this={popup} class="select-popup" class:open use:clickoutside on:clickoutside={() => (open = false)}>
+<div bind:this={popup} class="select-popup" class:open use:clickoutside onclickoutside={() => (open = false)}>
     <button
-        on:click={() => {
+        onclick={() => {
             open = true;
             popup.style.setProperty("--popup-width", `${popup.getBoundingClientRect().width}px`);
         }}>
         <Row gap="small">
             <Icon icon={titleIcon} />
             {title}:
-            <span bind:this={selectedItem} />
+            <span bind:this={selectedItem}></span>
         </Row>
     </button>
     <div class="content">
-        <div><slot /></div>
+        <div>{@render children?.()}</div>
     </div>
 </div>
 

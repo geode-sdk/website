@@ -3,8 +3,12 @@
     import Icon from "./Icon.svelte";
     import Label from "./Label.svelte";
 
-    export let gd: ServerGDVersion;
-    export let longForm = false;
+    interface Props {
+        gd: ServerGDVersion;
+        longForm?: boolean;
+    }
+
+    let { gd, longForm = false }: Props = $props();
 </script>
 
 <Icon icon="gd" />

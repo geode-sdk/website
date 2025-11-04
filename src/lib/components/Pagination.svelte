@@ -4,16 +4,30 @@
     import Button from "./Button.svelte";
     import Row from "./Row.svelte";
 
-    export let perPage: number;
-    export let total: number;
-    export let page: number;
-    export let pageCount: number;
-    export let label: string;
-    export let labelOne: string = label;
-    export let disabled = false;
+    interface Props {
+        perPage: number;
+        total: number;
+        page: number;
+        pageCount: number;
+        label: string;
+        labelOne?: string;
+        disabled?: boolean;
+        children?: import('svelte').Snippet;
+    }
 
-    $: max_page = Math.max(Math.ceil(total / perPage), 1);
-    $: title = pageCount == 1 ? labelOne : label;
+    let {
+        perPage,
+        total,
+        page,
+        pageCount,
+        label,
+        labelOne = label,
+        disabled = false,
+        children
+    }: Props = $props();
+
+    let max_page = $derived(Math.max(Math.ceil(total / perPage), 1));
+    let title = $derived(pageCount == 1 ? labelOne : label);
 
     const dispatch = createEventDispatcher<{ select: { page: number } }>();
 
@@ -43,7 +57,7 @@
     </Row>
 
     <div style="justify-self: end;">
-        <slot />
+        {@render children?.()}
     </div>
 </nav>
 

@@ -14,13 +14,25 @@
         set.has(value) ? set.delete(value) : set.add(value);
     }
 
-    export let platforms: Set<string>;
-    export let tags: Set<string>;
-    export let tagsListing: Promise<ServerTag[]> | undefined;
-    export let loggedIn: boolean;
-    export let featured: boolean;
-    export let pending: boolean;
-    export let userMods: boolean;
+    interface Props {
+        platforms: Set<string>;
+        tags: Set<string>;
+        tagsListing: Promise<ServerTag[]> | undefined;
+        loggedIn: boolean;
+        featured: boolean;
+        pending: boolean;
+        userMods: boolean;
+    }
+
+    let {
+        platforms,
+        tags,
+        tagsListing,
+        loggedIn,
+        featured = $bindable(),
+        pending = $bindable(),
+        userMods = $bindable()
+    }: Props = $props();
 
     const dispatch = createEventDispatcher<{ update: {} }>();
 

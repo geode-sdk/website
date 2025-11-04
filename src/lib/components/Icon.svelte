@@ -2,8 +2,12 @@
     import { icons, type KnownIcon } from "$lib";
     import Icon from "@iconify/svelte";
 
-    export let icon: KnownIcon;
-    export let inline = false;
+    interface Props {
+        icon: KnownIcon;
+        inline?: boolean;
+    }
+
+    let { icon, inline = false }: Props = $props();
 </script>
 
 <span class="icon">

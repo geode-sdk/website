@@ -2,13 +2,18 @@
     import Column from "./Column.svelte";
     import Icon from "./Icon.svelte";
 
-    export let title: string;
-    export let open: boolean = true;
+    interface Props {
+        title: string;
+        open?: boolean;
+        children?: import('svelte').Snippet;
+    }
+
+    let { title, open = $bindable(true), children }: Props = $props();
 </script>
 
 <details bind:open class:open>
     <summary><Icon icon="down" /> {title}</summary>
-    <article><Column align="left" gap="tiny"><slot /></Column></article>
+    <article><Column align="left" gap="tiny">{@render children?.()}</Column></article>
 </details>
 
 <style lang="scss">

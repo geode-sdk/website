@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { run } from 'svelte/legacy';
+
     import SvelteMarkdown from "svelte-markdown";
     import { marked } from "marked";
     import MarkdownImage from "./MarkdownImage.svelte";
@@ -72,12 +74,16 @@
         }
     };
 
-    export let source: string;
+    interface Props {
+        source: string;
+    }
 
-    $: tokens = marked.lexer(source);
+    let { source }: Props = $props();
+
+    let tokens = $derived(marked.lexer(source));
 
     const colorExp = /^<\/?c[- a-zA-Z0-9]*?>$/;
-    $: {
+    run(() => {
         const colors: string[] = [];
 
         // this is incredibly bad. i'm sorry
@@ -104,7 +110,7 @@
                 (token as any).color = colors[colors.length - 1];
             }
         });
-    }
+    });
 </script>
 
 <SvelteMarkdown

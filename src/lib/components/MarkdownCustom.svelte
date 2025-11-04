@@ -1,7 +1,11 @@
 <script lang="ts">
-    export let text: string | undefined = undefined;
-    export let color: string | undefined = undefined;
-    export let raw: string;
+    interface Props {
+        text?: string | undefined;
+        color?: string | undefined;
+        raw: string;
+    }
+
+    let { text = undefined, color = undefined, raw }: Props = $props();
 </script>
 
 {#if text}

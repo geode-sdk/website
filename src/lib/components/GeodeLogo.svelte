@@ -1,8 +1,12 @@
 <script lang="ts">
     type Type = "circle" | "plain" | "plain-mono";
-    export let type: Type;
+    interface Props {
+        type: Type;
+    }
 
-    let svgFileName;
+    let { type }: Props = $props();
+
+    let svgFileName = $state();
     switch (type) {
         case "circle":
             svgFileName = "geode-logo";

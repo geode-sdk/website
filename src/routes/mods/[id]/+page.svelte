@@ -28,27 +28,17 @@
     import ModLogo from "$lib/components/ModLogo.svelte";
     import ModDevelopersList from "$lib/components/ModDevelopersList.svelte";
 
-    export let data: PageData;
 
-    $: url_params = $page.url.searchParams;
 
-    $: status = data.version_params.status ?? "accepted";
-    $: invalid_status = !verifyStatus(status);
 
     const verifyStatus = (status: string): status is ModStatus => {
         return status == "accepted" || status == "rejected" || status == "pending";
     };
 
-    $: per_page = data.version_params.per_page ?? 10;
-    $: current_page = data.version_params.page ?? 1;
-    let searching = false;
+    let searching = $state(false);
 
     const user = data.loggedInUser;
 
-    $: logoUrl = IndexClient.getModLogo(data.mod.id, {
-        version: data.version.version,
-        status: data.version.status != "accepted" ? data.version.status : undefined,
-    }).toString();
 
     const developer_ids = data.mod.developers.map((d) => d.id);
     const can_update_mod = (user && developer_ids.includes(user.id)) || false;
@@ -57,10 +47,6 @@
 
     const paid = data.mod.tags.includes("paid");
 
-    $: mod_source = data.mod.repository ?? data.mod.links?.source;
-    $: multiple_links = mod_source
-        ? !!data.mod.links?.homepage || !!data.mod.links?.community
-        : !!data.mod.links?.homepage && !!data.mod.links?.community;
 
     const updateSearch = async () => {
         searching = true;
@@ -93,7 +79,25 @@
         return foundTag ? foundTag.display_name : tag.charAt(0).toUpperCase() + tag.slice(1);
     };
 
-    export let form: ActionData;
+    interface Props {
+        data: PageData;
+        form: ActionData;
+    }
+
+    let { data, form }: Props = $props();
+    let url_params = $derived($page.url.searchParams);
+    let status = $derived(data.version_params.status ?? "accepted");
+    let invalid_status = $derived(!verifyStatus(status));
+    let per_page = $derived(data.version_params.per_page ?? 10);
+    let current_page = $derived(data.version_params.page ?? 1);
+    let logoUrl = $derived(IndexClient.getModLogo(data.mod.id, {
+        version: data.version.version,
+        status: data.version.status != "accepted" ? data.version.status : undefined,
+    }).toString());
+    let mod_source = $derived(data.mod.repository ?? data.mod.links?.source);
+    let multiple_links = $derived(mod_source
+        ? !!data.mod.links?.homepage || !!data.mod.links?.community
+        : !!data.mod.links?.homepage && !!data.mod.links?.community);
 </script>
 
 <svelte:head>
@@ -328,7 +332,7 @@
                                             id="update-version-info"
                                             rows="6"
                                             cols="40"
-                                            value={data.version.info ?? ""} />
+                                            value={data.version.info ?? ""}></textarea>
                                     </div>
 
                                     <input type="hidden" name="mod_version" value={data.version.version} />

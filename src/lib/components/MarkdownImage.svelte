@@ -1,12 +1,18 @@
 <script lang="ts">
+    import { run } from 'svelte/legacy';
+
     import Icon from "./Icon.svelte";
 
-    export let href = "";
-    export let title = undefined;
-    export let text = "";
+    interface Props {
+        href?: string;
+        title?: any;
+        text?: string;
+    }
 
-    let valid_url = true;
-    $: {
+    let { href = "", title = undefined, text = "" }: Props = $props();
+
+    let valid_url = $state(true);
+    run(() => {
         try {
             const url = new URL(href);
             if (url.protocol == "frame:") {
@@ -18,7 +24,7 @@
         } catch (_) {
             valid_url = false;
         }
-    }
+    });
 </script>
 
 {#if valid_url}

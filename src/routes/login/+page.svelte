@@ -2,7 +2,7 @@
     import Button from "$lib/components/Button.svelte";
     import LoadingOverlay from "$lib/components/LoadingOverlay.svelte";
 
-    let githubLoading = false;
+    let githubLoading = $state(false);
 </script>
 
 <svelte:head>

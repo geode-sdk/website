@@ -7,10 +7,19 @@
 
     const { setValue } = getContext<SelectContext>("select");
 
-    export let icon: KnownIcon;
-    export let title: string;
-    export let value: string;
-    export let isDefault: boolean = false;
+    interface Props {
+        icon: KnownIcon;
+        title: string;
+        value: string;
+        isDefault?: boolean;
+    }
+
+    let {
+        icon,
+        title,
+        value,
+        isDefault = false
+    }: Props = $props();
 
     onMount(() => {
         if (isDefault) {
@@ -19,7 +28,7 @@
     });
 </script>
 
-<button on:click={() => setValue(title, value)}>
+<button onclick={() => setValue(title, value)}>
     <Row gap="small"><Icon {icon} --icon-size="1.3em" /><span class="option-text">{title}</span></Row>
 </button>
 

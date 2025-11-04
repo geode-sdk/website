@@ -8,18 +8,23 @@
     import DeveloperCard from "$lib/components/DeveloperCard.svelte";
     import LoadingCircle from "$lib/components/LoadingCircle.svelte";
 
-    export let data: PageData;
+    interface Props {
+        data: PageData;
+    }
 
-    $: current_page = data.params.page ?? 1;
+    let { data }: Props = $props();
 
-    let searchBar: HTMLInputElement | undefined = undefined;
-    let query = data.params.query ?? "";
+    let current_page = $derived(data.params.page ?? 1);
+
+    let searchBar: HTMLInputElement | undefined = $state(undefined);
+    let query = $state(data.params.query ?? "");
     let per_page = data.params.per_page ?? 10;
     let timeout: number | undefined = undefined;
 
-    $: max_count = data.developers?.count ?? 0;
-    $: max_page = Math.floor(max_count / per_page) + 1;
-    $: searching = false;
+    let max_count = $derived(data.developers?.count ?? 0);
+    let max_page = $derived(Math.floor(max_count / per_page) + 1);
+    let searching = $state(false);
+    
 
     const updateParams = async () => {
         const params = new URLSearchParams();

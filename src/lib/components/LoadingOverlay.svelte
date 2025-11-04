@@ -1,14 +1,19 @@
 <script lang="ts">
     import LoadingCircle from "./LoadingCircle.svelte";
-    export let loading: boolean;
-    export let size: "small" | "normal" = "normal";
+    interface Props {
+        loading: boolean;
+        size?: "small" | "normal";
+        children?: import('svelte').Snippet;
+    }
+
+    let { loading, size = "normal", children }: Props = $props();
 </script>
 
 <span class="overlay-container">
     <div class="overlay" class:hidden={!loading}>
         <span class="circle-span"><LoadingCircle {size} /></span>
     </div>
-    <slot />
+    {@render children?.()}
 </span>
 
 <style lang="scss">

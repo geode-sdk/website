@@ -7,8 +7,12 @@
     import DevRoleChip from "$lib/components/DevRoleChip.svelte";
     import Button from "$lib/components/Button.svelte";
 
-    export let data: PageData;
-    export let form: ActionData;
+    interface Props {
+        data: PageData;
+        form: ActionData;
+    }
+
+    let { data, form }: Props = $props();
 
     const isAdmin = data.loggedInUser?.admin || false;
 </script>

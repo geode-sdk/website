@@ -1,8 +1,12 @@
 <script lang="ts">
     import Icon from "./Icon.svelte";
 
-    export let type: "verified" | "admin";
-    export let iconOnly: boolean = false;
+    interface Props {
+        type: "verified" | "admin";
+        iconOnly?: boolean;
+    }
+
+    let { type, iconOnly = false }: Props = $props();
 </script>
 
 <span class="dev-tag {type}">

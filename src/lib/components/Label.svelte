@@ -2,19 +2,24 @@
     import type { KnownIcon } from "$lib";
     import Icon from "./Icon.svelte";
 
-    export let icon: KnownIcon | undefined = undefined;
-    export let design:
+    interface Props {
+        icon?: KnownIcon | undefined;
+        design?: 
         | "primary"
         | "secondary"
         | "gray"
         | "accent"
         | "accent-alt"
         | "accent-transparent"
-        | "accent-alt-transparent" = "primary";
+        | "accent-alt-transparent";
+        children?: import('svelte').Snippet;
+    }
+
+    let { icon = undefined, design = "primary", children }: Props = $props();
 </script>
 
 <span class={design}>
-    {#if icon}<Icon {icon} />{/if}<slot />
+    {#if icon}<Icon {icon} />{/if}{@render children?.()}
 </span>
 
 <style lang="scss">

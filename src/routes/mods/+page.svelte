@@ -20,28 +20,32 @@
     import type { ModSearchParams } from "$lib/api/index-repository";
     import type { ServerDeveloper } from "$lib/api/models/base";
 
-    export let data: PageData;
+    interface Props {
+        data: PageData;
+    }
+
+    let { data }: Props = $props();
     const profile: ServerDeveloper | null = data.loggedInUser ?? null;
 
-    $: url_params = $page.url.searchParams;
-    $: current_page = data.params.page ?? 1;
+    let url_params = $derived($page.url.searchParams);
+    let current_page = $derived(data.params.page ?? 1);
 
-    let query = data.params.query ?? "";
-    $: platforms = new Set(data.params.platforms ?? []);
-    let sort = data.params.sort ?? "downloads";
-    let tags = new Set(data.params.tags ?? []);
-    let featured = data.params.featured ?? false;
+    let query = $state(data.params.query ?? "");
+    let platforms = $derived(new Set(data.params.platforms ?? []));
+    let sort = $state(data.params.sort ?? "downloads");
+    let tags = $state(new Set(data.params.tags ?? []));
+    let featured = $state(data.params.featured ?? false);
     let developer = data.params.developer ?? "";
-    let pending = data.params.status != "accepted";
-    let userMods = false;
+    let pending = $state(data.params.status != "accepted");
+    let userMods = $state(false);
     let geode = data.params.geode ?? "";
     let gd = data.params.gd ?? "";
-    let per_page = data.params.per_page ?? 10;
-    let searching = false;
-    let view: "list" | "dual-list" | "grid" = "dual-list";
-    let searchBar: HTMLInputElement;
+    let per_page = $state(data.params.per_page ?? 10);
+    let searching = $state(false);
+    let view: "list" | "dual-list" | "grid" = $state("dual-list");
+    let searchBar: HTMLInputElement = $state();
     let searchTimeout: number | null = null;
-    let filters_enabled = false;
+    let filters_enabled = $state(false);
 
     const valid_sort =
         sort == "downloads" ||
@@ -50,8 +54,8 @@
         sort == "name" ||
         sort == "name_reverse";
 
-    $: max_count = data.mods?.count ?? 0;
-    $: max_page = Math.floor((max_count - 1) / per_page) + 1;
+    let max_count = $derived(data.mods?.count ?? 0);
+    let max_page = $derived(Math.floor((max_count - 1) / per_page) + 1);
 
     const perPageOptions = [10, 15, 20];
 
@@ -268,14 +272,14 @@
                 <!-- this goofy thing just makes sure the size of the mods list stays
                     the same even if there are fewer items than needed to fill it -->
                 <div class="mod-listing-size-enforcer">
-                    <span />
-                    <span />
-                    <span />
-                    <span />
-                    <span />
-                    <span />
-                    <span />
-                    <span />
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </div>
                 {#if data.error}
                     <Gap size="normal" />
@@ -343,7 +347,7 @@
     </Column>
 </div>
 
-<svelte:window on:keydown={onKeydown} />
+<svelte:window onkeydown={onKeydown} />
 
 <style lang="scss">
     @use "$lib/styles/media-queries.scss" as *;

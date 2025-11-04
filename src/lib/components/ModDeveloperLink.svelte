@@ -2,7 +2,11 @@
     import type { ServerModDeveloper } from "$lib/api/models/mod-developer";
     import Link from "./Link.svelte";
 
-    export let developer: ServerModDeveloper;
+    interface Props {
+        developer: ServerModDeveloper;
+    }
+
+    let { developer }: Props = $props();
 </script>
 
 <Link href={`/mods?developer=${developer.username}`} --link-color="var(--accent-300)">

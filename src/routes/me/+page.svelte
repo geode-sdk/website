@@ -5,11 +5,17 @@
     import MyPendingModCard from "$lib/components/MyPendingModCard.svelte";
     import InfoBox from "$lib/components/InfoBox.svelte";
 
-    $: updatingSelf = false;
-    $: submittingMod = false;
+    let updatingSelf = $state(false);
+    
+    let submittingMod = $state(false);
+    
 
-    export let data: PageData;
-    export let form: ActionData;
+    interface Props {
+        data: PageData;
+        form: ActionData;
+    }
+
+    let { data, form = $bindable() }: Props = $props();
 
     let self = data.self;
     const myPendingMods = data.myPendingMods.filter((mod) => mod.versions.length > 0);

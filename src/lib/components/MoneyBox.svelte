@@ -7,14 +7,18 @@
     import { quintOut } from "svelte/easing";
     import { derived } from "svelte/store";
 
-    export let icon: KnownIcon;
-    export let text: string;
-    export let num: number;
+    interface Props {
+        icon: KnownIcon;
+        text: string;
+        num: number;
+    }
+
+    let { icon, text, num }: Props = $props();
 
     let countup = tweened(0, { duration: 1500, easing: quintOut });
     let formatted = derived(countup, ($countup) => $countup.toLocaleString(undefined, { maximumFractionDigits: 0 }));
 
-    let number: HTMLSpanElement;
+    let number: HTMLSpanElement = $state();
 
     onMount(() => {
         const observer = new IntersectionObserver(

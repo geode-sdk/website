@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
     import type { KnownIcon } from "$lib";
     export type TabsContext = {
         tabs: Writable<{ id: string; name: string; icon: KnownIcon }[]>;
@@ -10,6 +10,11 @@
     import { onDestroy, setContext } from "svelte";
     import { writable, type Writable } from "svelte/store";
     import Icon from "./Icon.svelte";
+    interface Props {
+        children?: import('svelte').Snippet;
+    }
+
+    let { children }: Props = $props();
 
     const tabs = writable<{ id: string; name: string; icon: KnownIcon }[]>([]);
     const selectedTab = writable("");
@@ -23,12 +28,12 @@
 <div class="tabs-container">
     <div class="tabs">
         {#each $tabs as tab}
-            <button on:click={() => ($selectedTab = tab.id)} class:selected={$selectedTab === tab.id}>
+            <button onclick={() => ($selectedTab = tab.id)} class:selected={$selectedTab === tab.id}>
                 <Icon icon={tab.icon} />{tab.name}
             </button>
         {/each}
     </div>
-    <div class="pages"><slot /></div>
+    <div class="pages">{@render children?.()}</div>
 </div>
 
 <style lang="scss">
