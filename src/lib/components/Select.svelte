@@ -5,6 +5,8 @@
 </script>
 
 <script lang="ts">
+    import type { Snippet } from "svelte";
+
     import type { KnownIcon } from "$lib";
     import { setContext } from "svelte";
     import Icon from "./Icon.svelte";
@@ -15,7 +17,7 @@
         title: string;
         titleIcon: KnownIcon;
         select: (value: string) => void;
-        children?: import('svelte').Snippet;
+        children?: Snippet;
     }
 
     let { title, titleIcon, select, children }: Props = $props();

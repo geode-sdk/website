@@ -1,4 +1,5 @@
 <script lang="ts">
+    import type { Snippet } from "svelte";
     import type { KnownIcon } from "$lib";
     import { pushState } from "$app/navigation";
     import Icon from "./Icon.svelte";
@@ -9,17 +10,10 @@
         bold?: boolean;
         centered?: boolean;
         newTab?: boolean;
-        children?: import('svelte').Snippet;
+        children?: Snippet;
     }
 
-    let {
-        icon = undefined,
-        href,
-        bold = false,
-        centered = false,
-        newTab = false,
-        children
-    }: Props = $props();
+    let { icon = undefined, href, bold = false, centered = false, newTab = false, children }: Props = $props();
 
     function scrollToElement(id: string) {
         // Remove any existing scroll highlights

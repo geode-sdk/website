@@ -7,11 +7,12 @@
 </script>
 
 <script lang="ts">
+    import type { Snippet } from "svelte";
     import { onDestroy, setContext } from "svelte";
     import { writable, type Writable } from "svelte/store";
     import Icon from "./Icon.svelte";
     interface Props {
-        children?: import('svelte').Snippet;
+        children?: Snippet;
     }
 
     let { children }: Props = $props();

@@ -9,24 +9,13 @@
         search: (query: string) => void;
     }
 
-    let {
-        placeholder,
-        query = $bindable(),
-        autofocus = false,
-        ref = $bindable(),
-        search,
-    }: Props = $props();
+    let { placeholder, query = $bindable(), autofocus = false, ref = $bindable(), search }: Props = $props();
 </script>
 
 <div class="search">
     <Icon icon="search" />
     <!-- svelte-ignore a11y_autofocus -->
-    <input
-        {autofocus}
-        {placeholder}
-        bind:value={query}
-        oninput={() => search(query)}
-        bind:this={ref} />
+    <input {autofocus} {placeholder} bind:value={query} oninput={() => search(query)} bind:this={ref} />
 </div>
 
 <style lang="scss">

@@ -49,10 +49,10 @@
 
     const valid_sort = $derived(
         sort == "downloads" ||
-        sort == "recently_updated" ||
-        sort == "recently_uploaded" ||
-        sort == "name" ||
-        sort == "name_reverse"
+            sort == "recently_updated" ||
+            sort == "recently_uploaded" ||
+            sort == "name" ||
+            sort == "name_reverse",
     );
 
     let max_count = $derived(data.mods?.count ?? 0);
@@ -204,11 +204,7 @@
                         title="Recently Updated"
                         value="recently_updated"
                         isDefault={sort === "recently_updated"} />
-                    <SelectOption
-                        icon="time"
-                        title="Oldest"
-                        value="oldest"
-                        isDefault={sort === "oldest"} />
+                    <SelectOption icon="time" title="Oldest" value="oldest" isDefault={sort === "oldest"} />
                     <SelectOption icon="sort-abc" title="Name (A-Z)" value="name" isDefault={sort === "name"} />
                     <SelectOption
                         icon="sort-cba"

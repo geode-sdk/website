@@ -34,7 +34,7 @@ export const load: PageServerLoad = async ({ url, fetch, cookies }) => {
                         error: "This search type requires authentication.",
                         params,
                         tags,
-                    }
+                    };
                 }
             }
 

@@ -14,12 +14,7 @@
         isDefault?: boolean;
     }
 
-    let {
-        icon,
-        title,
-        value,
-        isDefault = false
-    }: Props = $props();
+    let { icon, title, value, isDefault = false }: Props = $props();
 
     onMount(() => {
         if (isDefault) {
@@ -29,7 +24,10 @@
 </script>
 
 <button onclick={() => setValue(title, value)}>
-    <Row gap="small"><Icon {icon} --icon-size="1.3em" /><span class="option-text">{title}</span></Row>
+    <Row gap="small">
+        <Icon {icon} --icon-size="1.3em" />
+        <span class="option-text">{title}</span>
+    </Row>
 </button>
 
 <style lang="scss">

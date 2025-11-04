@@ -24,7 +24,6 @@
     let max_count = $derived(data.developers?.count ?? 0);
     let max_page = $derived(Math.floor(max_count / per_page) + 1);
     let searching = $state(false);
-    
 
     const updateParams = async () => {
         const params = new URLSearchParams();

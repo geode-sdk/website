@@ -1,4 +1,6 @@
 <script lang="ts">
+    import type { Snippet } from "svelte";
+
     const alignment = {
         left: "start",
         center: "center",
@@ -10,16 +12,10 @@
         gap?: Gap;
         wrap?: boolean;
         reverse?: boolean;
-        children?: import('svelte').Snippet;
+        children?: Snippet;
     }
 
-    let {
-        align = "center",
-        gap = "normal",
-        wrap = false,
-        reverse = false,
-        children
-    }: Props = $props();
+    let { align = "center", gap = "normal", wrap = false, reverse = false, children }: Props = $props();
 </script>
 
 <div style="--wrap: {wrap ? 'wrap' : 'nowrap'}; --gap: var(--gap-{gap}); --align: {alignment[align]}" class:reverse>

@@ -6,9 +6,8 @@
     import InfoBox from "$lib/components/InfoBox.svelte";
 
     let updatingSelf = $state(false);
-    
+
     let submittingMod = $state(false);
-    
 
     interface Props {
         data: PageData;

@@ -21,7 +21,9 @@
     let { mod, version, style = "grid" }: Props = $props();
 
     // add the version for non-accepted mods, as otherwise the endpoint will pick the latest accepted
-    let mod_url = $derived(version.status != "accepted" ? `/mods/${mod.id}?version=${version.version}` : `/mods/${mod.id}`);
+    let mod_url = $derived(
+        version.status != "accepted" ? `/mods/${mod.id}?version=${version.version}` : `/mods/${mod.id}`,
+    );
 
     let paid = $derived(mod.tags.includes("paid"));
 </script>

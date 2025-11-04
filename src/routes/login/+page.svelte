@@ -13,7 +13,9 @@
 <div class="card">
     <h2>Developer login</h2>
     <LoadingOverlay size="small" loading={githubLoading}>
-        <Button icon="github" href="/login/github/start" onclick={() => (githubLoading = true)}>Sign in with GitHub</Button>
+        <Button icon="github" href="/login/github/start" onclick={() => (githubLoading = true)}>
+            Sign in with GitHub
+        </Button>
     </LoadingOverlay>
 </div>
 

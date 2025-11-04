@@ -1,5 +1,7 @@
 <script lang="ts">
     import type { KnownIcon } from "$lib";
+    import type { Snippet } from "svelte";
+
     import Icon from "./Icon.svelte";
 
     type Style = "primary-filled-dark" | "primary-filled" | "secondary-filled" | "hollow" | "dark-small";
@@ -10,7 +12,7 @@
         iconOnRight?: boolean;
         disabled?: boolean;
         onclick?: () => void;
-        children?: import('svelte').Snippet;
+        children?: Snippet;
     }
 
     let {
@@ -20,7 +22,7 @@
         iconOnRight = false,
         disabled = false,
         onclick,
-        children
+        children,
     }: Props = $props();
 </script>
 

@@ -1,4 +1,6 @@
 <script lang="ts">
+    import type { Snippet } from "svelte";
+
     import { getContext, onDestroy } from "svelte";
     import type { TabsContext } from "./Tabs.svelte";
     import type { KnownIcon } from "$lib";
@@ -7,15 +9,10 @@
         name: string;
         id: string;
         icon: KnownIcon;
-        children?: import('svelte').Snippet;
+        children?: Snippet;
     }
 
-    let {
-        name,
-        id,
-        icon,
-        children
-    }: Props = $props();
+    let { name, id, icon, children }: Props = $props();
 
     const { selectedTab, tabs } = getContext<TabsContext>("tabs");
     $tabs = [...$tabs, { id, name, icon }];

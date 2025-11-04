@@ -1,4 +1,6 @@
 <script lang="ts">
+    import type { Snippet } from "svelte";
+
     import type { KnownIcon } from "$lib";
     import Icon from "./Icon.svelte";
 
@@ -8,17 +10,10 @@
         icon: KnownIcon;
         design?: "primary" | "secondary";
         select: (selected: boolean) => void;
-        children?: import('svelte').Snippet;
+        children?: Snippet;
     }
 
-    let {
-        selected = $bindable(),
-        outsideState = false,
-        icon,
-        design = "primary",
-        select,
-        children
-    }: Props = $props();
+    let { selected = $bindable(), outsideState = false, icon, design = "primary", select, children }: Props = $props();
 
     if (selected == undefined) {
         selected = false;

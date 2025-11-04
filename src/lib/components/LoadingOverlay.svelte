@@ -1,9 +1,11 @@
 <script lang="ts">
+    import type { Snippet } from "svelte";
+
     import LoadingCircle from "./LoadingCircle.svelte";
     interface Props {
         loading: boolean;
         size?: "small" | "normal";
-        children?: import('svelte').Snippet;
+        children?: Snippet;
     }
 
     let { loading, size = "normal", children }: Props = $props();

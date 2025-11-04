@@ -1,18 +1,19 @@
 <script lang="ts">
+    import type { Snippet } from "svelte";
     import type { KnownIcon } from "$lib";
     import Icon from "./Icon.svelte";
 
     interface Props {
         icon?: KnownIcon | undefined;
-        design?: 
-        | "primary"
-        | "secondary"
-        | "gray"
-        | "accent"
-        | "accent-alt"
-        | "accent-transparent"
-        | "accent-alt-transparent";
-        children?: import('svelte').Snippet;
+        design?:
+            | "primary"
+            | "secondary"
+            | "gray"
+            | "accent"
+            | "accent-alt"
+            | "accent-transparent"
+            | "accent-alt-transparent";
+        children?: Snippet;
     }
 
     let { icon = undefined, design = "primary", children }: Props = $props();

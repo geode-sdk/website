@@ -43,14 +43,12 @@
 
     const user = data.loggedInUser;
 
-
     const developer_ids = data.mod.developers.map((d) => d.id);
     const can_update_mod = (user && developer_ids.includes(user.id)) || false;
     const is_admin = user?.admin === true;
     const owns_mod = can_update_mod && data.mod.developers.some((d) => d.is_owner && d.id == user?.id);
 
     const paid = data.mod.tags.includes("paid");
-
 
     const updateSearch = async () => {
         searching = true;
@@ -88,14 +86,18 @@
     let invalid_status = $derived(!verifyStatus(status));
     let per_page = $derived(data.version_params.per_page ?? 10);
     let current_page = $derived(data.version_params.page ?? 1);
-    let logoUrl = $derived(IndexClient.getModLogo(data.mod.id, {
-        version: data.version.version,
-        status: data.version.status != "accepted" ? data.version.status : undefined,
-    }).toString());
+    let logoUrl = $derived(
+        IndexClient.getModLogo(data.mod.id, {
+            version: data.version.version,
+            status: data.version.status != "accepted" ? data.version.status : undefined,
+        }).toString(),
+    );
     let mod_source = $derived(data.mod.repository ?? data.mod.links?.source);
-    let multiple_links = $derived(mod_source
-        ? !!data.mod.links?.homepage || !!data.mod.links?.community
-        : !!data.mod.links?.homepage && !!data.mod.links?.community);
+    let multiple_links = $derived(
+        mod_source
+            ? !!data.mod.links?.homepage || !!data.mod.links?.community
+            : !!data.mod.links?.homepage && !!data.mod.links?.community,
+    );
 </script>
 
 <svelte:head>
@@ -325,6 +327,7 @@
                                     <div>
                                         <label for="update-version-info">Reason:</label>
                                         <br />
+                                        <!-- prettier-ignore -->
                                         <textarea
                                             name="info"
                                             id="update-version-info"
@@ -433,9 +436,9 @@
                         <Icon icon="geode" />{data.version.geode}
                     </span>
                     {#if data.version}
-                    <span class="card-info">
-                        <VersionCards gd={data.version.gd} />
-                    </span>
+                        <span class="card-info">
+                            <VersionCards gd={data.version.gd} />
+                        </span>
                     {/if}
 
                     {#if data.mod.tags.length > 0}
@@ -496,18 +499,18 @@
             <section>
                 {#if data.version.dependencies?.length}
                     <p>Dependencies:</p>
-                        <ul>
-                            {#each data.version.dependencies as dependency}
-                                <div class="color-link">
-                                    <li>
-                                        <Link href={`/mods/${dependency.mod_id}`}>
-                                            {dependency.mod_id}
-                                        </Link>
-                                        ({dependency.version}) ({dependency.importance})
-                                    </li>
-                                </div>
-                            {/each}
-                        </ul>
+                    <ul>
+                        {#each data.version.dependencies as dependency}
+                            <div class="color-link">
+                                <li>
+                                    <Link href={`/mods/${dependency.mod_id}`}>
+                                        {dependency.mod_id}
+                                    </Link>
+                                    ({dependency.version}) ({dependency.importance})
+                                </li>
+                            </div>
+                        {/each}
+                    </ul>
                 {:else}
                     <div>Mod has no dependencies.</div>
                 {/if}

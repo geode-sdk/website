@@ -1,5 +1,6 @@
 <script lang="ts">
     import "../app.scss";
+    import type { Snippet } from "svelte";
     import Button from "$lib/components/Button.svelte";
     import Column from "$lib/components/Column.svelte";
     import Row from "$lib/components/Row.svelte";
@@ -11,8 +12,8 @@
 
     interface Props {
         data: LayoutData;
-        children?: import('svelte').Snippet;
-        nav?: import('svelte').Snippet;
+        children?: Snippet;
+        nav?: Snippet;
     }
 
     let { data, children, nav }: Props = $props();

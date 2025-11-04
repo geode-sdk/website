@@ -1,7 +1,9 @@
 <script lang="ts">
+    import type { Snippet } from "svelte";
+
     interface Props {
         reverseOnSmallScreen?: boolean;
-        children?: import('svelte').Snippet;
+        children?: Snippet;
     }
 
     let { reverseOnSmallScreen = false, children }: Props = $props();
@@ -25,7 +27,7 @@
             observer.observe(node);
             return () => observer.unobserve(node);
         });
-    }
+    };
 </script>
 
 <section class:reverseOnSmallScreen use:elementFlyIn>

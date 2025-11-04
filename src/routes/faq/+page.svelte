@@ -3,7 +3,7 @@
     import Gap from "$lib/components/Gap.svelte";
     import Link from "$lib/components/Link.svelte";
     import Waves from "$lib/components/Waves.svelte";
-    import Markdown from 'svelte-exmarkdown';
+    import Markdown from "svelte-exmarkdown";
 
     // TODO: FAQs in other languages
     import faqs from "$lib/data/faqs-en.json";

@@ -1,4 +1,5 @@
 <script lang="ts">
+    import type { Snippet } from "svelte";
     import Button from "./Button.svelte";
     import Row from "./Row.svelte";
 
@@ -11,7 +12,7 @@
         labelOne?: string;
         disabled?: boolean;
         select: (page: number) => void;
-        children?: import('svelte').Snippet;
+        children?: Snippet;
     }
 
     let {
@@ -23,7 +24,7 @@
         labelOne = label,
         disabled = false,
         select,
-        children
+        children,
     }: Props = $props();
 
     let max_page = $derived(Math.max(Math.ceil(total / perPage), 1));

@@ -31,7 +31,7 @@
         featured = $bindable(),
         pending = $bindable(),
         userMods = $bindable(),
-        update
+        update,
     }: Props = $props();
 
     const updateSearch = () => {
@@ -138,9 +138,7 @@
 
         <Rollover title="Other">
             <SelectButton icon="featured" bind:selected={featured} select={updateSearch}>Featured only</SelectButton>
-            <SelectButton icon="unverified" bind:selected={pending} select={updateSearch}>
-                Unverified only
-            </SelectButton>
+            <SelectButton icon="unverified" bind:selected={pending} select={updateSearch}>Unverified only</SelectButton>
         </Rollover>
     </nav>
 </div>

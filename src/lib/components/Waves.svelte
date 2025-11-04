@@ -1,8 +1,10 @@
 <script lang="ts">
+    import type { Snippet } from "svelte";
+
     type Type = "top-full" | "top" | "bottom";
     interface Props {
         type: Type;
-        children?: import('svelte').Snippet;
+        children?: Snippet;
     }
 
     let { type, children }: Props = $props();

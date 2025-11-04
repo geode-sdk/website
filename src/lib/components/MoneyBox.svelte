@@ -16,7 +16,7 @@
     const tween = new Tween(0, { duration: 1500, easing: quintOut });
 
     const beginCount = (node: HTMLElement) => {
-        $effect(()=> {
+        $effect(() => {
             const observer = new IntersectionObserver(
                 (entries) => {
                     entries.reverse().forEach((entry) => {
@@ -32,7 +32,7 @@
             observer.observe(node);
             return () => observer.unobserve(node);
         });
-    }
+    };
 </script>
 
 <div>

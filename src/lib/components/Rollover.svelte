@@ -1,11 +1,12 @@
 <script lang="ts">
+    import type { Snippet } from "svelte";
     import Column from "./Column.svelte";
     import Icon from "./Icon.svelte";
 
     interface Props {
         title: string;
         open?: boolean;
-        children?: import('svelte').Snippet;
+        children?: Snippet;
     }
 
     let { title, open = $bindable(), children }: Props = $props();

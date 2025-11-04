@@ -1,10 +1,5 @@
 <script lang="ts">
-    import type {
-        HastBase,
-        HastElement,
-        HastRoot,
-        Plugin,
-    } from 'svelte-exmarkdown';
+    import type { HastBase, HastElement, HastRoot, Plugin } from "svelte-exmarkdown";
     import Markdown from "svelte-exmarkdown";
     import MarkdownImage from "./MarkdownImage.svelte";
     import MarkdownLink from "./MarkdownLink.svelte";
@@ -88,7 +83,7 @@
 
         const traverse = (n: HastBase) => {
             if (n.type == "raw") {
-                const tag = n.value ?? '';
+                const tag = n.value ?? "";
                 if (colorExp.test(tag)) {
                     const isClosing = tag[1] == "/";
 
@@ -118,12 +113,14 @@
                 n.properties.style = `--custom-color: ${selColor};`;
                 n.properties.class = "md-colored";
 
-                n.children = [{
-                    type: "text",
-                    value: n.value ?? '',
-                    position: n.position,
-                    children: n.children,
-                }];
+                n.children = [
+                    {
+                        type: "text",
+                        value: n.value ?? "",
+                        position: n.position,
+                        children: n.children,
+                    },
+                ];
 
                 return;
             }
@@ -133,12 +130,12 @@
                     traverse(c);
                 }
             }
-        }
+        };
 
         return (tree: HastRoot) => {
             traverse(tree);
-        }
-    }
+        };
+    };
 
     const plugins: Plugin[] = [{ rehypePlugin: [rehypeColorize] }];
 </script>
