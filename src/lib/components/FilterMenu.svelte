@@ -25,8 +25,8 @@
     }
 
     let {
-        platforms,
-        tags,
+        platforms = $bindable(),
+        tags = $bindable(),
         tagsListing,
         loggedIn,
         featured = $bindable(),

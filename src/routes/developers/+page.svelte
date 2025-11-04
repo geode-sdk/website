@@ -19,7 +19,7 @@
     let searchBar: HTMLInputElement | undefined = $state(undefined);
     let query = $state(data.params.query ?? "");
     let per_page = data.params.per_page ?? 10;
-    let timeout: number | undefined = undefined;
+    let timeout: NodeJS.Timeout | number | undefined = undefined;
 
     let max_count = $derived(data.developers?.count ?? 0);
     let max_page = $derived(Math.floor(max_count / per_page) + 1);

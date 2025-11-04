@@ -43,16 +43,17 @@
     let per_page = $state(data.params.per_page ?? 10);
     let searching = $state(false);
     let view: "list" | "dual-list" | "grid" = $state("dual-list");
-    let searchBar: HTMLInputElement = $state();
-    let searchTimeout: number | null = null;
+    let searchBar: HTMLInputElement | undefined = $state();
+    let searchTimeout: NodeJS.Timeout | number | null = null;
     let filters_enabled = $state(false);
 
-    const valid_sort =
+    const valid_sort = $derived(
         sort == "downloads" ||
         sort == "recently_updated" ||
         sort == "recently_uploaded" ||
         sort == "name" ||
-        sort == "name_reverse";
+        sort == "name_reverse"
+    );
 
     let max_count = $derived(data.mods?.count ?? 0);
     let max_page = $derived(Math.floor((max_count - 1) / per_page) + 1);
@@ -148,7 +149,7 @@
             return;
         }
 
-        searchBar.focus();
+        searchBar?.focus();
     };
 </script>
 

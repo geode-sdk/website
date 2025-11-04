@@ -6,14 +6,14 @@
         placeholder: string;
         query: string;
         autofocus?: boolean;
-        ref?: HTMLInputElement | null;
+        ref?: HTMLInputElement | null | undefined;
     }
 
     let {
         placeholder,
         query = $bindable(),
         autofocus = false,
-        ref = $bindable(null)
+        ref = $bindable()
     }: Props = $props();
 
     const dispatch = createEventDispatcher<{ search: { query: string } }>();

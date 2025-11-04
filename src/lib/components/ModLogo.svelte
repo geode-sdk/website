@@ -34,13 +34,17 @@ https://svelte.dev/e/attribute_invalid_event_handler -->
         }
     };
 
+
+
     let imageLoaded = false;
 </script>
 
 <!-- on:error doesn't run early enough, but the language server complains, lol -->
 <img
-    onerror={`this.src="${placeholderIcon}";`}
-    onload="this.style.removeProperty('visibility');"
+    onerror={function() { this.src=placeholderIcon; }}
+    onload={
+        (e) => (e.target as HTMLImageElement | null)?.style.removeProperty('visibility')
+    }
     src={logoUrl}
     use:checkPlaceholder
     alt={`Logo for the mod ${version.name}`}

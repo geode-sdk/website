@@ -1,6 +1,6 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
-    import { page } from "$app/stores";
+    import { page } from "$app/state";
     import { enhance } from "$app/forms";
 
     import type { PageData, ActionData } from "./$types.js";
@@ -28,8 +28,12 @@
     import ModLogo from "$lib/components/ModLogo.svelte";
     import ModDevelopersList from "$lib/components/ModDevelopersList.svelte";
 
+    interface Props {
+        data: PageData;
+        form: ActionData;
+    }
 
-
+    let { data, form }: Props = $props();
 
     const verifyStatus = (status: string): status is ModStatus => {
         return status == "accepted" || status == "rejected" || status == "pending";
@@ -79,13 +83,7 @@
         return foundTag ? foundTag.display_name : tag.charAt(0).toUpperCase() + tag.slice(1);
     };
 
-    interface Props {
-        data: PageData;
-        form: ActionData;
-    }
-
-    let { data, form }: Props = $props();
-    let url_params = $derived($page.url.searchParams);
+    let url_params = $derived(page.url.searchParams);
     let status = $derived(data.version_params.status ?? "accepted");
     let invalid_status = $derived(!verifyStatus(status));
     let per_page = $derived(data.version_params.per_page ?? 10);
