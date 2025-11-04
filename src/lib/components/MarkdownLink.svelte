@@ -1,14 +1,18 @@
 <script lang="ts">
-    import { run } from 'svelte/legacy';
+    import type { Snippet } from 'svelte';
 
     interface Props {
-        href: string;
-        text: string;
+        href: string | null | undefined;
+        children: Snippet;
     }
 
-    let { href, text }: Props = $props();
+    let { href, children }: Props = $props();
 
     let specialLink = $derived.by(() => {
+        if (!href) {
+            return href;
+        }
+
         if (href.startsWith("user:")) {
             const [, userId] = href.split(":");
             return `https://gdbrowser.com/u/${userId}`;
@@ -24,4 +28,4 @@
     });
 </script>
 
-<a href={specialLink}>{text}</a>
+<a href={specialLink}>{@render children()}</a>

@@ -35,11 +35,6 @@
         "dayjs": "^1.11.11",
         "marked": "^15.0.4",
         "redis": "^4.7.0",
-        "svelte-markdown": "^0.4.1"
-    },
-    "overrides": {
-        "svelte-markdown": {
-            "svelte": "^5.0.0"
-        }
+        "svelte-exmarkdown": "^5.0.2"
     }
 }

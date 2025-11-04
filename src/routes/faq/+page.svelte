@@ -3,7 +3,7 @@
     import Gap from "$lib/components/Gap.svelte";
     import Link from "$lib/components/Link.svelte";
     import Waves from "$lib/components/Waves.svelte";
-    import SvelteMarkdown from "svelte-markdown";
+    import Markdown from 'svelte-exmarkdown';
 
     // TODO: FAQs in other languages
     import faqs from "$lib/data/faqs-en.json";
@@ -45,7 +45,7 @@
             {#each questions as { question, answer }}
                 <article id={anchorIDForTitle(question)} class="faq scrolled">
                     <h3>{question}</h3>
-                    <div class="markdown"><SvelteMarkdown source={answer} /></div>
+                    <div class="markdown"><Markdown md={answer} /></div>
                 </article>
             {/each}
         {/each}

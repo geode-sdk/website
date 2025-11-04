@@ -2,14 +2,18 @@
     import Icon from "./Icon.svelte";
 
     interface Props {
-        href?: string;
-        title?: any;
-        text?: string;
+        href?: string | null;
+        title?: string | null;
+        alt?: string | null;
     }
 
-    let { href = "", title = undefined, text = "" }: Props = $props();
+    let { href = "", title = undefined, alt }: Props = $props();
 
     let valid_url = $derived.by(() => {
+        if (!href) {
+            return false;
+        }
+
         try {
             const url = new URL(href);
             if (url.protocol == "frame:") {
@@ -25,13 +29,13 @@
 </script>
 
 {#if valid_url}
-    <img src={href} {title} alt={text} />
-{:else if text.length > 0}
+    <img src={href} {title} {alt} />
+{:else if alt && alt.length > 0}
     <div class="image-alt">
         <div class="alt-icon">
             <Icon icon="image" inline />
         </div>
-        {text}
+        {alt}
     </div>
 {:else}
     <div class="image-alt">
