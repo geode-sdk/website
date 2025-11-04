@@ -12,13 +12,17 @@
     }
 
     let {
-        selected = $bindable(false),
+        selected = $bindable(),
         outsideState = false,
         icon,
         design = "primary",
         select,
         children
     }: Props = $props();
+
+    if (selected == undefined) {
+        selected = false;
+    }
 </script>
 
 <button
@@ -28,7 +32,7 @@
         if (!outsideState) {
             selected = !selected;
         }
-        select(selected);
+        select(selected ?? false);
     }}>
     <Icon {icon} --icon-size="1.3em" />{@render children?.()}
 </button>

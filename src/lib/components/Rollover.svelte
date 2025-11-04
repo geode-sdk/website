@@ -8,7 +8,11 @@
         children?: import('svelte').Snippet;
     }
 
-    let { title, open = $bindable(true), children }: Props = $props();
+    let { title, open = $bindable(), children }: Props = $props();
+
+    if (open == undefined) {
+        open = true;
+    }
 </script>
 
 <details bind:open class:open>
