@@ -3,7 +3,6 @@ import { getCachedTags } from "$lib/server/cache.js";
 import { onlyIfTrue, toIntSafe, undefIfEmpty } from "$lib/api/helpers.js";
 import type { ModStatus } from "$lib/api/models/mod-version.js";
 import type { PageServerLoad } from "./$types.js";
-import { fail } from "@sveltejs/kit";
 import { tryCreateAuthenticatedClient } from "$lib/server";
 
 export const load: PageServerLoad = async ({ url, fetch, cookies }) => {

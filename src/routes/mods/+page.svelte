@@ -17,7 +17,6 @@
     import FilterMenu from "$lib/components/FilterMenu.svelte";
     import Pagination from "$lib/components/Pagination.svelte";
     import LoadingOverlay from "$lib/components/LoadingOverlay.svelte";
-    import type { ModSearchParams } from "$lib/api/index-repository";
     import type { ServerDeveloper } from "$lib/api/models/base";
 
     interface Props {
@@ -30,17 +29,17 @@
     let url_params = $derived($page.url.searchParams);
     let current_page = $derived(data.params.page ?? 1);
 
-    let query = $state(data.params.query ?? "");
+    let query = $derived(data.params.query ?? "");
     let platforms = $derived(new Set(data.params.platforms ?? []));
-    let sort = $state(data.params.sort ?? "downloads");
-    let tags = $state(new Set(data.params.tags ?? []));
-    let featured = $state(data.params.featured ?? false);
-    let developer = data.params.developer ?? "";
-    let pending = $state(data.params.status != "accepted");
+    let sort = $derived(data.params.sort ?? "downloads");
+    let tags = $derived(new Set(data.params.tags ?? []));
+    let featured = $derived(data.params.featured ?? false);
+    let developer = $derived(data.params.developer ?? "");
+    let pending = $derived(data.params.status != "accepted");
     let userMods = $state(false);
-    let geode = data.params.geode ?? "";
-    let gd = data.params.gd ?? "";
-    let per_page = $state(data.params.per_page ?? 10);
+    let geode = $derived(data.params.geode ?? "");
+    let gd = $derived(data.params.gd ?? "");
+    let per_page = $derived(data.params.per_page ?? 10);
     let searching = $state(false);
     let view: "list" | "dual-list" | "grid" = $state("dual-list");
     let searchBar: HTMLInputElement | undefined = $state();
