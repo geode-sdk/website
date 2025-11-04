@@ -1,11 +1,9 @@
 <script lang="ts">
     import type { KnownIcon } from "$lib";
     import Icon from "./Icon.svelte";
-    import { onMount } from "svelte";
 
-    import { tweened } from "svelte/motion";
+    import { Tween } from "svelte/motion";
     import { quintOut } from "svelte/easing";
-    import { derived } from "svelte/store";
 
     interface Props {
         icon: KnownIcon;
@@ -15,32 +13,31 @@
 
     let { icon, text, num }: Props = $props();
 
-    let countup = tweened(0, { duration: 1500, easing: quintOut });
-    let formatted = derived(countup, ($countup) => $countup.toLocaleString(undefined, { maximumFractionDigits: 0 }));
+    const tween = new Tween(0, { duration: 1500, easing: quintOut });
 
-    let number: HTMLSpanElement = $state();
-
-    onMount(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.reverse().forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        countup.set(num);
-                    }
-                });
-            },
-            {
-                threshold: 0.65,
-            },
-        );
-        observer.observe(number);
-        return () => observer.unobserve(number);
-    });
+    const beginCount = (node: HTMLElement) => {
+        $effect(()=> {
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.reverse().forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            tween.target = num;
+                        }
+                    });
+                },
+                {
+                    threshold: 0.65,
+                },
+            );
+            observer.observe(node);
+            return () => observer.unobserve(node);
+        });
+    }
 </script>
 
 <div>
     <Icon {icon} />
-    <span class="countup" bind:this={number}>{$formatted}</span>
+    <span class="countup" use:beginCount>{tween.current.toLocaleString(undefined, { maximumFractionDigits: 0 })}</span>
     {text}
 </div>
 

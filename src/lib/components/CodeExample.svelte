@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Highlight, { LineNumbers } from "svelte-highlight";
+    import Highlight from "svelte-highlight";
     import githubDark from "svelte-highlight/styles/github-dark";
     import stripIndent from "strip-indent";
     import { cpp, type LanguageType } from "svelte-highlight/languages";
@@ -16,8 +16,4 @@
     {@html githubDark}
 </svelte:head>
 
-<Highlight {language} code={stripIndent(code).trim()} >
-    {#snippet children({ highlighted })}
-        <!-- <LineNumbers {highlighted} hideBorder --line-number-color="var(--secondary-500)" /> -->
-    {/snippet}
-</Highlight>
+<Highlight {language} code={stripIndent(code).trim()} />

@@ -1,6 +1,4 @@
 <script lang="ts">
-    import { onMount } from "svelte";
-
     interface Props {
         reverseOnSmallScreen?: boolean;
         children?: import('svelte').Snippet;
@@ -8,29 +6,29 @@
 
     let { reverseOnSmallScreen = false, children }: Props = $props();
 
-    let section: HTMLElement = $state();
-
-    onMount(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.reverse().forEach((entry) => {
-                    const shouldShow =
-                        entry.isIntersecting || entry.boundingClientRect.top < (entry.rootBounds?.top ?? 0);
-                    if (shouldShow) {
-                        entry.target.classList.toggle("show", shouldShow);
-                    }
-                });
-            },
-            {
-                threshold: 0.65,
-            },
-        );
-        observer.observe(section);
-        return () => observer.unobserve(section);
-    });
+    const elementFlyIn = (node: HTMLElement) => {
+        $effect(() => {
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.reverse().forEach((entry) => {
+                        const shouldShow =
+                            entry.isIntersecting || entry.boundingClientRect.top < (entry.rootBounds?.top ?? 0);
+                        if (shouldShow) {
+                            entry.target.classList.toggle("show", shouldShow);
+                        }
+                    });
+                },
+                {
+                    threshold: 0.65,
+                },
+            );
+            observer.observe(node);
+            return () => observer.unobserve(node);
+        });
+    }
 </script>
 
-<section bind:this={section} class:reverseOnSmallScreen>
+<section class:reverseOnSmallScreen use:elementFlyIn>
     {@render children?.()}
 </section>
 
