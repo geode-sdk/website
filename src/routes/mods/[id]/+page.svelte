@@ -184,13 +184,13 @@
                                     total={data.versions.count}
                                     pageCount={data.versions.data.length}
                                     page={current_page}
-                                    on:select={(e) => onChangePage(e.detail.page)}>
+                                    select={(page) => onChangePage(page)}>
                                     {#if is_admin || can_update_mod}
                                         <Select
                                             title="Status"
                                             titleIcon="status"
-                                            on:select={(ev) => {
-                                                const new_status = ev.detail.value;
+                                            select={(value) => {
+                                                const new_status = value;
                                                 if (status !== new_status && verifyStatus(new_status)) {
                                                     status = new_status;
                                                     updateSearch();

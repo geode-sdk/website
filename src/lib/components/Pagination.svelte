@@ -1,6 +1,4 @@
 <script lang="ts">
-    import { createEventDispatcher } from "svelte";
-
     import Button from "./Button.svelte";
     import Row from "./Row.svelte";
 
@@ -12,6 +10,7 @@
         label: string;
         labelOne?: string;
         disabled?: boolean;
+        select: (page: number) => void;
         children?: import('svelte').Snippet;
     }
 
@@ -23,16 +22,15 @@
         label,
         labelOne = label,
         disabled = false,
+        select,
         children
     }: Props = $props();
 
     let max_page = $derived(Math.max(Math.ceil(total / perPage), 1));
     let title = $derived(pageCount == 1 ? labelOne : label);
 
-    const dispatch = createEventDispatcher<{ select: { page: number } }>();
-
     const gotoPage = (page: number) => {
-        dispatch("select", { page });
+        select(page);
     };
 </script>
 
@@ -44,13 +42,13 @@
     {/if}
     <Row>
         <Button
-            on:click={async () => gotoPage(Math.max(page - 1, 1))}
+            onclick={async () => gotoPage(Math.max(page - 1, 1))}
             icon="left"
             design="dark-small"
             disabled={disabled || total === 0 || page === 1} />
         <span>Page {page} of {max_page}</span>
         <Button
-            on:click={async () => gotoPage(Math.min(page + 1, max_page))}
+            onclick={async () => gotoPage(Math.min(page + 1, max_page))}
             icon="right"
             design="dark-small"
             disabled={disabled || total === 0 || page === max_page} />

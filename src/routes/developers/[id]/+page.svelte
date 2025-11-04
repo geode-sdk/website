@@ -33,7 +33,7 @@
         <div class="sidebar | profile-pic-container">
             <img
                 src={`https://avatars.githubusercontent.com/u/${data.developer.github_id}`}
-                alt="your profile picture"
+                alt="your profile avatar"
                 width="225"
                 height="225" />
         </div>

@@ -1,6 +1,5 @@
 <script lang="ts">
     import type { KnownIcon } from "$lib";
-    import { createEventDispatcher } from "svelte";
     import Icon from "./Icon.svelte";
 
     interface Props {
@@ -8,6 +7,7 @@
         outsideState?: boolean;
         icon: KnownIcon;
         design?: "primary" | "secondary";
+        select: (selected: boolean) => void;
         children?: import('svelte').Snippet;
     }
 
@@ -16,10 +16,9 @@
         outsideState = false,
         icon,
         design = "primary",
+        select,
         children
     }: Props = $props();
-
-    const dispatch = createEventDispatcher<{ select: { selected: boolean } }>();
 </script>
 
 <button
@@ -29,7 +28,7 @@
         if (!outsideState) {
             selected = !selected;
         }
-        dispatch("select", { selected });
+        select(selected);
     }}>
     <Icon {icon} --icon-size="1.3em" />{@render children?.()}
 </button>

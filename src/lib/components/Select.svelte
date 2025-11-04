@@ -6,7 +6,7 @@
 
 <script lang="ts">
     import type { KnownIcon } from "$lib";
-    import { createEventDispatcher, setContext } from "svelte";
+    import { setContext } from "svelte";
     import Icon from "./Icon.svelte";
     import Row from "./Row.svelte";
     import { clickoutside } from "@svelte-put/clickoutside";
@@ -14,31 +14,33 @@
     interface Props {
         title: string;
         titleIcon: KnownIcon;
+        select: (value: string) => void;
         children?: import('svelte').Snippet;
     }
 
-    let { title, titleIcon, children }: Props = $props();
+    let { title, titleIcon, select, children }: Props = $props();
 
-    const dispatch = createEventDispatcher<{ select: { value: string } }>();
+    let open: boolean = $state(false);
+    let popup: HTMLDivElement | undefined = $state();
+    let selectedItem: HTMLElement | undefined = $state();
 
     setContext<SelectContext>("select", {
         setValue: (title: string, value: string) => {
             open = false;
-            selectedItem.innerHTML = title;
-            dispatch("select", { value });
+
+            if (selectedItem) {
+                selectedItem.innerHTML = title;
+            }
+            select(value);
         },
     });
-
-    let open: boolean = $state(false);
-    let popup: HTMLDivElement = $state();
-    let selectedItem: HTMLElement = $state();
 </script>
 
 <div bind:this={popup} class="select-popup" class:open use:clickoutside onclickoutside={() => (open = false)}>
     <button
         onclick={() => {
             open = true;
-            popup.style.setProperty("--popup-width", `${popup.getBoundingClientRect().width}px`);
+            popup?.style.setProperty("--popup-width", `${popup.getBoundingClientRect().width}px`);
         }}>
         <Row gap="small">
             <Icon icon={titleIcon} />

@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { createEventDispatcher } from "svelte";
     import Icon from "./Icon.svelte";
 
     interface Props {
@@ -7,16 +6,16 @@
         query: string;
         autofocus?: boolean;
         ref?: HTMLInputElement | null | undefined;
+        search: (query: string) => void;
     }
 
     let {
         placeholder,
         query = $bindable(),
         autofocus = false,
-        ref = $bindable()
+        ref = $bindable(),
+        search,
     }: Props = $props();
-
-    const dispatch = createEventDispatcher<{ search: { query: string } }>();
 </script>
 
 <div class="search">
@@ -26,7 +25,7 @@
         {autofocus}
         {placeholder}
         bind:value={query}
-        oninput={() => dispatch("search", { query })}
+        oninput={() => search(query)}
         bind:this={ref} />
 </div>
 

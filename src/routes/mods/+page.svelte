@@ -122,7 +122,7 @@
         if (scroll) scrollToTop();
     };
 
-    const onFilterUpdate = (_: CustomEvent) => {
+    const onFilterUpdate = () => {
         updateSearch();
     };
 
@@ -173,19 +173,19 @@
             bind:featured
             bind:pending
             bind:userMods
-            on:update={onFilterUpdate} />
+            update={onFilterUpdate} />
     </aside>
 
     <Column align="stretch" gap="small">
         <nav class="search">
-            <Search placeholder="Search mods..." bind:query on:search={updateQuery} bind:ref={searchBar}></Search>
+            <Search placeholder="Search mods..." bind:query search={updateQuery} bind:ref={searchBar}></Search>
             <div class="search-filters">
                 <Select
                     title="Sort by"
                     titleIcon="sort"
-                    on:select={(ev) => {
-                        if (sort !== ev.detail.value) {
-                            sort = ev.detail.value;
+                    select={(value) => {
+                        if (sort !== value) {
+                            sort = value;
                             updateSearch();
                         }
                     }}>
@@ -220,7 +220,7 @@
                     <SelectButton
                         icon="filter"
                         selected={filters_enabled}
-                        on:select={() => (filters_enabled = !filters_enabled)} />
+                        select={() => (filters_enabled = !filters_enabled)} />
                 </span>
             </div>
         </nav>
@@ -234,7 +234,7 @@
                 bind:featured
                 bind:pending
                 bind:userMods
-                on:update={onFilterUpdate} />
+                update={onFilterUpdate} />
         </div>
 
         <main>
@@ -246,22 +246,22 @@
                 disabled={!data.mods}
                 label="mods"
                 labelOne="mod"
-                on:select={(e) => gotoPage(e.detail.page)}>
+                select={(page) => gotoPage(page)}>
                 <Row gap="small" justify="bottom">
                     <SelectButton
-                        on:select={() => (view = "list")}
+                        select={() => (view = "list")}
                         selected={view === "list"}
                         outsideState={true}
                         design="secondary"
                         icon="view-list" />
                     <SelectButton
-                        on:select={() => (view = "dual-list")}
+                        select={() => (view = "dual-list")}
                         selected={view === "dual-list"}
                         outsideState={true}
                         design="secondary"
                         icon="view-dual-list" />
                     <SelectButton
-                        on:select={() => (view = "grid")}
+                        select={() => (view = "grid")}
                         selected={view === "grid"}
                         outsideState={true}
                         design="secondary"
@@ -321,12 +321,12 @@
                         disabled={!data.mods}
                         label="mods"
                         labelOne="mod"
-                        on:select={(e) => gotoPage(e.detail.page)}>
+                        select={(page) => gotoPage(page)}>
                         <Select
                             title="Per page"
                             titleIcon="eye"
-                            on:select={(ev) => {
-                                const newValue = parseInt(ev.detail.value);
+                            select={(value) => {
+                                const newValue = parseInt(value);
                                 if (per_page !== newValue) {
                                     const scroll = newValue < per_page;
                                     per_page = newValue;

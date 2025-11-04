@@ -1,7 +1,4 @@
 <script lang="ts">
-    import { createBubbler } from 'svelte/legacy';
-
-    const bubble = createBubbler();
     import type { KnownIcon } from "$lib";
     import Icon from "./Icon.svelte";
 
@@ -12,6 +9,7 @@
         icon?: KnownIcon | undefined;
         iconOnRight?: boolean;
         disabled?: boolean;
+        onclick?: () => void;
         children?: import('svelte').Snippet;
     }
 
@@ -21,11 +19,12 @@
         icon = undefined,
         iconOnRight = false,
         disabled = false,
+        onclick,
         children
     }: Props = $props();
 </script>
 
-<a {href} class={design} class:disabled onclick={bubble('click')}>
+<a {href} class={design} class:disabled {onclick}>
     {#if iconOnRight}
         {@render children?.()}
     {/if}

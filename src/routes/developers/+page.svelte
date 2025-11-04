@@ -72,7 +72,7 @@
 <article>
     <h1>Browse Developers</h1>
     <div>
-        <Search placeholder="Search developers..." bind:query on:search={onSearch} bind:ref={searchBar}></Search>
+        <Search placeholder="Search developers..." bind:query search={onSearch} bind:ref={searchBar}></Search>
     </div>
     <section class="aside">
         <Pagination
@@ -83,7 +83,7 @@
             disabled={!data.developers}
             label="developers"
             labelOne="developer"
-            on:select={(e) => gotoPage(e.detail.page)} />
+            select={(page) => gotoPage(page)} />
         <ul class="developer-list">
             {#if searching}
                 <div class="loading">

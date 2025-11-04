@@ -149,7 +149,7 @@
                             <CodeExample
                                 code={`curl -o- 'https://geode-sdk.org/install/linux.sh' | bash`}
                                 language={bash} />
-                            <Button icon={"clipboard"} on:click={copyLinuxScript} />
+                            <Button icon={"clipboard"} onclick={copyLinuxScript} />
                         </div>
                     </div>
                     <p>
