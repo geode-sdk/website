@@ -4,22 +4,25 @@
     import Search from "$lib/components/Search.svelte";
     import { clamp } from "$lib/api/helpers";
     import Pagination from "$lib/components/Pagination.svelte";
-    import Column from "$lib/components/Column.svelte";
     import DeveloperCard from "$lib/components/DeveloperCard.svelte";
     import LoadingCircle from "$lib/components/LoadingCircle.svelte";
 
-    export let data: PageData;
+    interface Props {
+        data: PageData;
+    }
 
-    $: current_page = data.params.page ?? 1;
+    let { data }: Props = $props();
 
-    let searchBar: HTMLInputElement | undefined = undefined;
-    let query = data.params.query ?? "";
-    let per_page = data.params.per_page ?? 10;
-    let timeout: number | undefined = undefined;
+    let current_page = $derived(data.params.page ?? 1);
 
-    $: max_count = data.developers?.count ?? 0;
-    $: max_page = Math.floor(max_count / per_page) + 1;
-    $: searching = false;
+    let searchBar: HTMLInputElement | undefined = $state(undefined);
+    let query = $derived(data.params.query ?? "");
+    let per_page = $derived(data.params.per_page ?? 10);
+    let timeout: NodeJS.Timeout | number | undefined = undefined;
+
+    let max_count = $derived(data.developers?.count ?? 0);
+    let max_page = $derived(Math.floor(max_count / per_page) + 1);
+    let searching = $state(false);
 
     const updateParams = async () => {
         const params = new URLSearchParams();
@@ -67,7 +70,7 @@
 <article>
     <h1>Browse Developers</h1>
     <div>
-        <Search placeholder="Search developers..." bind:query on:search={onSearch} bind:ref={searchBar}></Search>
+        <Search placeholder="Search developers..." bind:query search={onSearch} bind:ref={searchBar}></Search>
     </div>
     <section class="aside">
         <Pagination
@@ -78,7 +81,7 @@
             disabled={!data.developers}
             label="developers"
             labelOne="developer"
-            on:select={(e) => gotoPage(e.detail.page)} />
+            select={(page) => gotoPage(page)} />
         <ul class="developer-list">
             {#if searching}
                 <div class="loading">

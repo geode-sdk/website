@@ -100,7 +100,9 @@
     --accent-alt-950: #061407;
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
     box-sizing: border-box;
 }
 

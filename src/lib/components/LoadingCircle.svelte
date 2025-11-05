@@ -1,5 +1,9 @@
 <script lang="ts">
-    export let size: "small" | "normal" = "normal";
+    interface Props {
+        size?: "small" | "normal";
+    }
+
+    let { size = "normal" }: Props = $props();
 </script>
 
 <span class={size}></span>

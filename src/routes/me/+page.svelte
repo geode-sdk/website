@@ -5,11 +5,16 @@
     import MyPendingModCard from "$lib/components/MyPendingModCard.svelte";
     import InfoBox from "$lib/components/InfoBox.svelte";
 
-    $: updatingSelf = false;
-    $: submittingMod = false;
+    let updatingSelf = $state(false);
 
-    export let data: PageData;
-    export let form: ActionData;
+    let submittingMod = $state(false);
+
+    interface Props {
+        data: PageData;
+        form: ActionData;
+    }
+
+    let { data, form = $bindable() }: Props = $props();
 
     let self = data.self;
     const myPendingMods = data.myPendingMods.filter((mod) => mod.versions.length > 0);
@@ -28,7 +33,7 @@
         <aside class="card | sidebar">
             <img
                 src={`https://avatars.githubusercontent.com/u/${self.github_id}`}
-                alt="your profile picture"
+                alt="your profile avatar"
                 width="225"
                 height="225" />
             <form

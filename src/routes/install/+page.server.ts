@@ -29,7 +29,7 @@ async function get_latest_tag(fetch_fn: typeof fetch, repo: string): Promise<str
     const url = `${GITHUB_BASE_URL}${repo}${RELEASE_PREFIX}`;
     const cache_key = `install:2:${repo}`;
 
-    let last_modified: string | undefined = undefined;
+    let last_modified: string | null = null;
     if (redis) {
         const cached_at = await redis.hGet(cache_key, "cached");
 
@@ -82,7 +82,7 @@ async function get_latest_tag(fetch_fn: typeof fetch, repo: string): Promise<str
     const release: Release = await resp.json();
 
     const tag = release.tag_name;
-    last_modified = resp.headers.get("last-modified") ?? undefined;
+    last_modified = resp.headers.get("last-modified") ?? null;
 
     if (redis) {
         const cached = Date.now();

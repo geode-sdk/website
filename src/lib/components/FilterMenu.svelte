@@ -1,6 +1,4 @@
 <script lang="ts">
-    import { createEventDispatcher } from "svelte";
-
     import Icon from "$lib/components/Icon.svelte";
     import Rollover from "$lib/components/Rollover.svelte";
     import SelectButton from "$lib/components/SelectButton.svelte";
@@ -14,18 +12,30 @@
         set.has(value) ? set.delete(value) : set.add(value);
     }
 
-    export let platforms: Set<string>;
-    export let tags: Set<string>;
-    export let tagsListing: Promise<ServerTag[]> | undefined;
-    export let loggedIn: boolean;
-    export let featured: boolean;
-    export let pending: boolean;
-    export let userMods: boolean;
+    interface Props {
+        platforms: Set<string>;
+        tags: Set<string>;
+        tagsListing: Promise<ServerTag[]> | undefined;
+        loggedIn: boolean;
+        featured: boolean;
+        pending: boolean;
+        userMods: boolean;
+        update: () => void;
+    }
 
-    const dispatch = createEventDispatcher<{ update: {} }>();
+    let {
+        platforms = $bindable(),
+        tags = $bindable(),
+        tagsListing,
+        loggedIn,
+        featured = $bindable(),
+        pending = $bindable(),
+        userMods = $bindable(),
+        update,
+    }: Props = $props();
 
     const updateSearch = () => {
-        dispatch("update", {});
+        update();
     };
 </script>
 
@@ -37,7 +47,7 @@
                 <SelectButton
                     icon="account"
                     selected={userMods}
-                    on:select={() => {
+                    select={() => {
                         userMods = !userMods;
                         updateSearch();
                     }}>
@@ -49,7 +59,7 @@
             <SelectButton
                 icon="windows"
                 selected={platforms.has("windows")}
-                on:select={() => {
+                select={() => {
                     toggleSet(platforms, "windows");
                     updateSearch();
                 }}>
@@ -58,7 +68,7 @@
             <SelectButton
                 icon="mac"
                 selected={platforms.has("mac-arm")}
-                on:select={() => {
+                select={() => {
                     toggleSet(platforms, "mac-arm");
                     updateSearch();
                 }}>
@@ -67,7 +77,7 @@
             <SelectButton
                 icon="mac"
                 selected={platforms.has("mac-intel")}
-                on:select={() => {
+                select={() => {
                     toggleSet(platforms, "mac-intel");
                     updateSearch();
                 }}>
@@ -76,7 +86,7 @@
             <SelectButton
                 icon="android"
                 selected={platforms.has("android64")}
-                on:select={() => {
+                select={() => {
                     toggleSet(platforms, "android64");
                     updateSearch();
                 }}>
@@ -85,7 +95,7 @@
             <SelectButton
                 icon="android"
                 selected={platforms.has("android32")}
-                on:select={() => {
+                select={() => {
                     toggleSet(platforms, "android32");
                     updateSearch();
                 }}>
@@ -94,7 +104,7 @@
             <SelectButton
                 icon="ios"
                 selected={platforms.has("ios")}
-                on:select={() => {
+                select={() => {
                     toggleSet(platforms, "ios");
                     updateSearch();
                 }}>
@@ -111,7 +121,7 @@
                         <SelectButton
                             icon={iconForTag(tag.name)}
                             selected={tags.has(tag.name)}
-                            on:select={() => {
+                            select={() => {
                                 toggleSet(tags, tag.name);
                                 updateSearch();
                             }}>
@@ -127,10 +137,8 @@
         </Rollover>
 
         <Rollover title="Other">
-            <SelectButton icon="featured" bind:selected={featured} on:select={updateSearch}>Featured only</SelectButton>
-            <SelectButton icon="unverified" bind:selected={pending} on:select={updateSearch}>
-                Unverified only
-            </SelectButton>
+            <SelectButton icon="featured" bind:selected={featured} select={updateSearch}>Featured only</SelectButton>
+            <SelectButton icon="unverified" bind:selected={pending} select={updateSearch}>Unverified only</SelectButton>
         </Rollover>
     </nav>
 </div>

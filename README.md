@@ -27,12 +27,12 @@ You can preview the production build with `npm run preview`.
 
 The site uses the following (optional) static environment variables:
 
--   `PUBLIC_API_ENDPOINT`: Base API endpoint for all requests. Current default is "https://api.geode-sdk.org".
+- `PUBLIC_API_ENDPOINT`: Base API endpoint for all requests. Current default is "https://api.geode-sdk.org".
 
--   `PRIVATE_API_ENDPOINT`: API endpoint for requests made from the server, if enabled. This replaces the `PUBLIC_API_ENDPOINT`, so it should follow the same format.
+- `PRIVATE_API_ENDPOINT`: API endpoint for requests made from the server, if enabled. This replaces the `PUBLIC_API_ENDPOINT`, so it should follow the same format.
 
--   `PRIVATE_ENDPOINT_ENABLED`: Enables the `PRIVATE_API_ENDPOINT` option if set to "true". Disabled by default.
+- `PRIVATE_ENDPOINT_ENABLED`: Enables the `PRIVATE_API_ENDPOINT` option if set to "true". Disabled by default.
 
--   `PRIVATE_REDIS_URL`: Allows for caching of some data (such as GitHub API requests) through Redis. Disabled by default.
+- `PRIVATE_REDIS_URL`: Allows for caching of some data (such as GitHub API requests) through Redis. Disabled by default.
 
 nsfm (not safe for mat)

@@ -1,13 +1,19 @@
 <script lang="ts">
+    import type { Snippet } from "svelte";
     import type { KnownIcon } from "$lib";
     import { pushState } from "$app/navigation";
     import Icon from "./Icon.svelte";
 
-    export let icon: KnownIcon | undefined = undefined;
-    export let href: string;
-    export let bold = false;
-    export let centered = false;
-    export let newTab = false;
+    interface Props {
+        icon?: KnownIcon | undefined;
+        href: string;
+        bold?: boolean;
+        centered?: boolean;
+        newTab?: boolean;
+        children?: Snippet;
+    }
+
+    let { icon = undefined, href, bold = false, centered = false, newTab = false, children }: Props = $props();
 
     function scrollToElement(id: string) {
         // Remove any existing scroll highlights
@@ -30,18 +36,18 @@
     }
 </script>
 
-<svelte:window on:hashchange={() => scrollToElement(window.location.hash)} />
+<svelte:window onhashchange={() => scrollToElement(window.location.hash)} />
 
 <a
     {href}
     style={bold ? "--link-weight: 600" : undefined}
-    on:click={href.startsWith("#") ? smoothScrollToAnchor : undefined}
+    onclick={href.startsWith("#") ? smoothScrollToAnchor : undefined}
     target={newTab ? "_blank" : undefined}
     rel={newTab ? "noopener noreferrer" : undefined}>
     {#if icon}
         <Icon {icon} --icon-size="1.15em" />
     {/if}
-    <span class:centered><slot /></span>
+    <span class:centered>{@render children?.()}</span>
 </a>
 
 <style lang="scss">

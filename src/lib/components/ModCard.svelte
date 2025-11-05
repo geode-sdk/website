@@ -12,14 +12,20 @@
     import ModLogo from "./ModLogo.svelte";
     import ModDevelopersList from "./ModDevelopersList.svelte";
 
-    export let mod: ServerMod;
-    export let version: ServerModVersion;
-    export let style: "list" | "grid" = "grid";
+    interface Props {
+        mod: ServerMod;
+        version: ServerModVersion;
+        style?: "list" | "grid";
+    }
+
+    let { mod, version, style = "grid" }: Props = $props();
 
     // add the version for non-accepted mods, as otherwise the endpoint will pick the latest accepted
-    $: mod_url = version.status != "accepted" ? `/mods/${mod.id}?version=${version.version}` : `/mods/${mod.id}`;
+    let mod_url = $derived(
+        version.status != "accepted" ? `/mods/${mod.id}?version=${version.version}` : `/mods/${mod.id}`,
+    );
 
-    $: paid = mod.tags.includes("paid");
+    let paid = $derived(mod.tags.includes("paid"));
 </script>
 
 <div class="mod-background {style}" class:paid={paid && !mod.featured} class:featured={mod.featured}>
@@ -224,7 +230,7 @@
                 pointer-events: none;
             }
         }
-        &:has(.click-to-go-to-page a:hover) {
+        &:has(:global(.click-to-go-to-page a:hover)) {
             background-color: color-mix(in srgb, var(--card-base-color) 40%, transparent);
 
             & .click-to-go-to-page .mod-icon-container {

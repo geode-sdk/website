@@ -10,8 +10,12 @@
     import VersionCards from "./VersionCards.svelte";
     import Button from "./Button.svelte";
 
-    export let mod: ServerMod;
-    export let version: ServerModVersion;
+    interface Props {
+        mod: ServerMod;
+        version: ServerModVersion;
+    }
+
+    let { mod, version }: Props = $props();
 </script>
 
 <article class="version">

@@ -1,48 +1,57 @@
-<script context="module" lang="ts">
+<script module lang="ts">
     export type SelectContext = {
         setValue: (title: string, value: string) => void;
     };
 </script>
 
 <script lang="ts">
+    import type { Snippet } from "svelte";
+
     import type { KnownIcon } from "$lib";
-    import { createEventDispatcher, setContext } from "svelte";
+    import { setContext } from "svelte";
     import Icon from "./Icon.svelte";
     import Row from "./Row.svelte";
     import { clickoutside } from "@svelte-put/clickoutside";
 
-    export let title: string;
-    export let titleIcon: KnownIcon;
+    interface Props {
+        title: string;
+        titleIcon: KnownIcon;
+        select: (value: string) => void;
+        children?: Snippet;
+    }
 
-    const dispatch = createEventDispatcher<{ select: { value: string } }>();
+    let { title, titleIcon, select, children }: Props = $props();
+
+    let open: boolean = $state(false);
+    let popup: HTMLDivElement | undefined = $state();
+    let selectedItem: HTMLElement | undefined = $state();
 
     setContext<SelectContext>("select", {
         setValue: (title: string, value: string) => {
             open = false;
-            selectedItem.innerHTML = title;
-            dispatch("select", { value });
+
+            if (selectedItem) {
+                selectedItem.innerHTML = title;
+            }
+            select(value);
         },
     });
-
-    let open: boolean = false;
-    let popup: HTMLDivElement;
-    let selectedItem: HTMLElement;
 </script>
 
-<div bind:this={popup} class="select-popup" class:open use:clickoutside on:clickoutside={() => (open = false)}>
+<div bind:this={popup} class="select-popup" class:open use:clickoutside onclickoutside={() => (open = false)}>
     <button
-        on:click={() => {
+        onclick={() => {
             open = true;
-            popup.style.setProperty("--popup-width", `${popup.getBoundingClientRect().width}px`);
+            popup?.style.setProperty("--popup-width", `${popup.getBoundingClientRect().width}px`);
         }}>
         <Row gap="small">
             <Icon icon={titleIcon} />
             {title}:
-            <span bind:this={selectedItem} />
+            <span bind:this={selectedItem}></span>
         </Row>
     </button>
     <div class="content">
-        <div><slot /></div>
+        <div>{@render children?.()}</div>
     </div>
 </div>
 

@@ -21,10 +21,14 @@
     import type { ServerStats } from "$lib/api/models/stats.js";
     import type { PageData } from "./$types";
 
-    export let data: PageData;
+    interface Props {
+        data: PageData;
+    }
+
+    let { data }: Props = $props();
 
     // is this a bad pattern.
-    let stats_promise: Promise<ServerStats> = new Promise(() => {});
+    let stats_promise: Promise<ServerStats> = $state(new Promise(() => {}));
 
     onMount(async () => {
         const client = new IndexClient();

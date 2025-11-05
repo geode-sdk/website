@@ -1,5 +1,6 @@
 <script lang="ts">
     import "../app.scss";
+    import type { Snippet } from "svelte";
     import Button from "$lib/components/Button.svelte";
     import Column from "$lib/components/Column.svelte";
     import Row from "$lib/components/Row.svelte";
@@ -9,14 +10,20 @@
     import Icon from "$lib/components/Icon.svelte";
     import type { LayoutData } from "./$types";
 
-    export let data: LayoutData;
+    interface Props {
+        data: LayoutData;
+        children?: Snippet;
+        nav?: Snippet;
+    }
+
+    let { data, children, nav }: Props = $props();
 </script>
 
 <main>
-    <div class="bg" />
-    <div class="side-art left" />
-    <div class="side-art right" />
-    <slot />
+    <div class="bg"></div>
+    <div class="side-art left"></div>
+    <div class="side-art right"></div>
+    {@render children?.()}
     <nav>
         <div class="nav-left">
             <Button href=".." design="primary-filled-dark" icon="home">Home</Button>
@@ -27,7 +34,7 @@
                 <Button href="/me" design="primary-filled-dark" icon="account">{data.loggedInUser.username}</Button>
             </div>
         {/if}
-        <slot name="nav" />
+        {@render nav?.()}
     </nav>
     <div class="waves-bottom">
         <Waves type="bottom" --text-color="var(--text-950)">

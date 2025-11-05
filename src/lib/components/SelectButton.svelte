@@ -1,26 +1,35 @@
 <script lang="ts">
+    import type { Snippet } from "svelte";
+
     import type { KnownIcon } from "$lib";
-    import { createEventDispatcher } from "svelte";
     import Icon from "./Icon.svelte";
 
-    export let selected: boolean = false;
-    export let outsideState = false;
-    export let icon: KnownIcon;
-    export let design: "primary" | "secondary" = "primary";
+    interface Props {
+        selected?: boolean;
+        outsideState?: boolean;
+        icon: KnownIcon;
+        design?: "primary" | "secondary";
+        select: (selected: boolean) => void;
+        children?: Snippet;
+    }
 
-    const dispatch = createEventDispatcher<{ select: { selected: boolean } }>();
+    let { selected = $bindable(), outsideState = false, icon, design = "primary", select, children }: Props = $props();
+
+    if (selected == undefined) {
+        selected = false;
+    }
 </script>
 
 <button
     class="select-button {design}"
     class:selected
-    on:click={() => {
+    onclick={() => {
         if (!outsideState) {
             selected = !selected;
         }
-        dispatch("select", { selected });
+        select(selected ?? false);
     }}>
-    <Icon {icon} --icon-size="1.3em" /><slot></slot>
+    <Icon {icon} --icon-size="1.3em" />{@render children?.()}
 </button>
 
 <style lang="scss">

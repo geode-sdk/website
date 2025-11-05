@@ -7,8 +7,12 @@
     import DevRoleChip from "$lib/components/DevRoleChip.svelte";
     import Button from "$lib/components/Button.svelte";
 
-    export let data: PageData;
-    export let form: ActionData;
+    interface Props {
+        data: PageData;
+        form: ActionData;
+    }
+
+    let { data, form }: Props = $props();
 
     const isAdmin = data.loggedInUser?.admin || false;
 </script>
@@ -29,7 +33,7 @@
         <div class="sidebar | profile-pic-container">
             <img
                 src={`https://avatars.githubusercontent.com/u/${data.developer.github_id}`}
-                alt="your profile picture"
+                alt="your profile avatar"
                 width="225"
                 height="225" />
         </div>

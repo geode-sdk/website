@@ -1,6 +1,6 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
-    import { page } from "$app/stores";
+    import { page } from "$app/state";
     import { enhance } from "$app/forms";
 
     import type { PageData, ActionData } from "./$types.js";
@@ -28,27 +28,20 @@
     import ModLogo from "$lib/components/ModLogo.svelte";
     import ModDevelopersList from "$lib/components/ModDevelopersList.svelte";
 
-    export let data: PageData;
+    interface Props {
+        data: PageData;
+        form: ActionData;
+    }
 
-    $: url_params = $page.url.searchParams;
-
-    $: status = data.version_params.status ?? "accepted";
-    $: invalid_status = !verifyStatus(status);
+    let { data, form }: Props = $props();
 
     const verifyStatus = (status: string): status is ModStatus => {
         return status == "accepted" || status == "rejected" || status == "pending";
     };
 
-    $: per_page = data.version_params.per_page ?? 10;
-    $: current_page = data.version_params.page ?? 1;
-    let searching = false;
+    let searching = $state(false);
 
     const user = data.loggedInUser;
-
-    $: logoUrl = IndexClient.getModLogo(data.mod.id, {
-        version: data.version.version,
-        status: data.version.status != "accepted" ? data.version.status : undefined,
-    }).toString();
 
     const developer_ids = data.mod.developers.map((d) => d.id);
     const can_update_mod = (user && developer_ids.includes(user.id)) || false;
@@ -56,11 +49,6 @@
     const owns_mod = can_update_mod && data.mod.developers.some((d) => d.is_owner && d.id == user?.id);
 
     const paid = data.mod.tags.includes("paid");
-
-    $: mod_source = data.mod.repository ?? data.mod.links?.source;
-    $: multiple_links = mod_source
-        ? !!data.mod.links?.homepage || !!data.mod.links?.community
-        : !!data.mod.links?.homepage && !!data.mod.links?.community;
 
     const updateSearch = async () => {
         searching = true;
@@ -93,7 +81,23 @@
         return foundTag ? foundTag.display_name : tag.charAt(0).toUpperCase() + tag.slice(1);
     };
 
-    export let form: ActionData;
+    let url_params = $derived(page.url.searchParams);
+    let status = $derived(data.version_params.status ?? "accepted");
+    let invalid_status = $derived(!verifyStatus(status));
+    let per_page = $derived(data.version_params.per_page ?? 10);
+    let current_page = $derived(data.version_params.page ?? 1);
+    let logoUrl = $derived(
+        IndexClient.getModLogo(data.mod.id, {
+            version: data.version.version,
+            status: data.version.status != "accepted" ? data.version.status : undefined,
+        }).toString(),
+    );
+    let mod_source = $derived(data.mod.repository ?? data.mod.links?.source);
+    let multiple_links = $derived(
+        mod_source
+            ? !!data.mod.links?.homepage || !!data.mod.links?.community
+            : !!data.mod.links?.homepage && !!data.mod.links?.community,
+    );
 </script>
 
 <svelte:head>
@@ -182,13 +186,13 @@
                                     total={data.versions.count}
                                     pageCount={data.versions.data.length}
                                     page={current_page}
-                                    on:select={(e) => onChangePage(e.detail.page)}>
+                                    select={(page) => onChangePage(page)}>
                                     {#if is_admin || can_update_mod}
                                         <Select
                                             title="Status"
                                             titleIcon="status"
-                                            on:select={(ev) => {
-                                                const new_status = ev.detail.value;
+                                            select={(value) => {
+                                                const new_status = value;
                                                 if (status !== new_status && verifyStatus(new_status)) {
                                                     status = new_status;
                                                     updateSearch();
@@ -323,12 +327,13 @@
                                     <div>
                                         <label for="update-version-info">Reason:</label>
                                         <br />
+                                        <!-- prettier-ignore -->
                                         <textarea
                                             name="info"
                                             id="update-version-info"
                                             rows="6"
                                             cols="40"
-                                            value={data.version.info ?? ""} />
+                                            value={data.version.info ?? ""}></textarea>
                                     </div>
 
                                     <input type="hidden" name="mod_version" value={data.version.version} />
@@ -431,9 +436,9 @@
                         <Icon icon="geode" />{data.version.geode}
                     </span>
                     {#if data.version}
-                    <span class="card-info">
-                        <VersionCards gd={data.version.gd} />
-                    </span>
+                        <span class="card-info">
+                            <VersionCards gd={data.version.gd} />
+                        </span>
                     {/if}
 
                     {#if data.mod.tags.length > 0}
@@ -494,18 +499,18 @@
             <section>
                 {#if data.version.dependencies?.length}
                     <p>Dependencies:</p>
-                        <ul>
-                            {#each data.version.dependencies as dependency}
-                                <div class="color-link">
-                                    <li>
-                                        <Link href={`/mods/${dependency.mod_id}`}>
-                                            {dependency.mod_id}
-                                        </Link>
-                                        ({dependency.version}) ({dependency.importance})
-                                    </li>
-                                </div>
-                            {/each}
-                        </ul>
+                    <ul>
+                        {#each data.version.dependencies as dependency}
+                            <div class="color-link">
+                                <li>
+                                    <Link href={`/mods/${dependency.mod_id}`}>
+                                        {dependency.mod_id}
+                                    </Link>
+                                    ({dependency.version}) ({dependency.importance})
+                                </li>
+                            </div>
+                        {/each}
+                    </ul>
                 {:else}
                     <div>Mod has no dependencies.</div>
                 {/if}

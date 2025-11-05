@@ -1,11 +1,18 @@
 <script lang="ts">
+    import type { Snippet } from "svelte";
+
     import { getContext, onDestroy } from "svelte";
     import type { TabsContext } from "./Tabs.svelte";
     import type { KnownIcon } from "$lib";
 
-    export let name: string;
-    export let id: string;
-    export let icon: KnownIcon;
+    interface Props {
+        name: string;
+        id: string;
+        icon: KnownIcon;
+        children?: Snippet;
+    }
+
+    let { name, id, icon, children }: Props = $props();
 
     const { selectedTab, tabs } = getContext<TabsContext>("tabs");
     $tabs = [...$tabs, { id, name, icon }];
@@ -15,7 +22,7 @@
     });
 </script>
 
-<article {id} class:selected={$selectedTab === id}><slot /></article>
+<article {id} class:selected={$selectedTab === id}>{@render children?.()}</article>
 
 <style lang="scss">
     article {

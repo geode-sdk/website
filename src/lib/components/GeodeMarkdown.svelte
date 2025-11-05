@@ -1,9 +1,8 @@
 <script lang="ts">
-    import SvelteMarkdown from "svelte-markdown";
-    import { marked } from "marked";
+    import type { HastBase, HastElement, HastRoot, Plugin } from "svelte-exmarkdown";
+    import Markdown from "svelte-exmarkdown";
     import MarkdownImage from "./MarkdownImage.svelte";
     import MarkdownLink from "./MarkdownLink.svelte";
-    import MarkdownCustom from "./MarkdownCustom.svelte";
 
     const parseColorString = (color: string) => {
         if (!color) {
@@ -72,45 +71,92 @@
         }
     };
 
-    export let source: string;
+    interface Props {
+        source: string;
+    }
 
-    $: tokens = marked.lexer(source);
+    let { source: md }: Props = $props();
 
     const colorExp = /^<\/?c[- a-zA-Z0-9]*?>$/;
-    $: {
+    const rehypeColorize = () => {
         const colors: string[] = [];
 
-        // this is incredibly bad. i'm sorry
-        marked.walkTokens(tokens, (token) => {
-            if (colorExp.test(token.raw)) {
-                const isClosing = token.raw[1] == "/";
+        const traverse = (n: HastBase) => {
+            if (n.type == "raw") {
+                const tag = n.value ?? "";
+                if (colorExp.test(tag)) {
+                    const isClosing = tag[1] == "/";
 
-                if (!isClosing) {
-                    const color = parseColorTag(token.raw);
-                    if (color) {
-                        colors.push(color);
+                    if (!isClosing) {
+                        const color = parseColorTag(tag);
+                        if (color) {
+                            colors.push(color);
+                        }
+                    } else {
+                        colors.pop();
                     }
-                } else {
-                    colors.pop();
+
+                    n.value = "";
+                }
+            }
+
+            if (colors.length > 0 && n.type == "text") {
+                const selColor = colors[colors.length - 1];
+
+                n.type = "element";
+                (n as HastElement).tagName = "span";
+
+                if (!n.properties) {
+                    n.properties = {};
                 }
 
-                token.type = "text";
-                token.raw = "";
+                n.properties.style = `--custom-color: ${selColor};`;
+                n.properties.class = "md-colored";
+
+                n.children = [
+                    {
+                        type: "text",
+                        value: n.value ?? "",
+                        position: n.position,
+                        children: n.children,
+                    },
+                ];
+
                 return;
             }
 
-            if (colors.length > 0 && token.type == "text") {
-                token.type = "html";
-                (token as any).color = colors[colors.length - 1];
+            if ("children" in n && n.children) {
+                for (const c of n.children) {
+                    traverse(c);
+                }
             }
-        });
-    }
+        };
+
+        return (tree: HastRoot) => {
+            traverse(tree);
+        };
+    };
+
+    const plugins: Plugin[] = [{ rehypePlugin: [rehypeColorize] }];
 </script>
 
-<SvelteMarkdown
-    renderers={{
-        html: MarkdownCustom,
-        image: MarkdownImage,
-        link: MarkdownLink,
-    }}
-    source={tokens} />
+<Markdown {md} {plugins}>
+    {#snippet img(props)}
+        <MarkdownImage href={props.src} alt={props.alt} title={props.title} />
+    {/snippet}
+    {#snippet link(props)}
+        <MarkdownLink href={props.href}>{props.children}</MarkdownLink>
+    {/snippet}
+</Markdown>
+
+<style>
+    :global(.md-colored) {
+        color: var(--custom-color);
+    }
+
+    @media (prefers-contrast: more) {
+        :global(.md-colored) {
+            color: var(--text-color);
+        }
+    }
+</style>

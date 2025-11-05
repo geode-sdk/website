@@ -1,34 +1,41 @@
 <script lang="ts">
     import Icon from "./Icon.svelte";
 
-    export let href = "";
-    export let title = undefined;
-    export let text = "";
+    interface Props {
+        href?: string | null;
+        title?: string | null;
+        alt?: string | null;
+    }
 
-    let valid_url = true;
-    $: {
+    let { href = "", title = undefined, alt }: Props = $props();
+
+    let valid_url = $derived.by(() => {
+        if (!href) {
+            return false;
+        }
+
         try {
             const url = new URL(href);
             if (url.protocol == "frame:") {
                 // amazing
-                valid_url = false;
+                return false;
             } else {
-                valid_url = true;
+                return true;
             }
         } catch (_) {
-            valid_url = false;
+            return false;
         }
-    }
+    });
 </script>
 
 {#if valid_url}
-    <img src={href} {title} alt={text} />
-{:else if text.length > 0}
+    <img src={href} {title} {alt} />
+{:else if alt && alt.length > 0}
     <div class="image-alt">
         <div class="alt-icon">
             <Icon icon="image" inline />
         </div>
-        {text}
+        {alt}
     </div>
 {:else}
     <div class="image-alt">

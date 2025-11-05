@@ -1,8 +1,15 @@
 <script lang="ts">
-    type Type = "top-full" | "top" | "bottom";
-    export let type: Type;
+    import type { Snippet } from "svelte";
 
-    let svgFileName;
+    type Type = "top-full" | "top" | "bottom";
+    interface Props {
+        type: Type;
+        children?: Snippet;
+    }
+
+    let { type, children }: Props = $props();
+
+    let svgFileName = $state();
     switch (type) {
         case "top-full":
             svgFileName = "waves-full";
@@ -20,7 +27,7 @@
     {#await import(`../assets/${svgFileName}.svg?raw`) then svg}
         {@html svg.default}
     {/await}
-    <div><slot /></div>
+    <div>{@render children?.()}</div>
 </span>
 
 <style lang="scss">

@@ -1,24 +1,40 @@
 <script lang="ts">
     import type { KnownIcon } from "$lib";
+    import type { Snippet } from "svelte";
+
     import Icon from "./Icon.svelte";
 
     type Style = "primary-filled-dark" | "primary-filled" | "secondary-filled" | "hollow" | "dark-small";
-    export let design: Style = "hollow";
-    export let href: string | undefined = undefined;
-    export let icon: KnownIcon | undefined = undefined;
-    export let iconOnRight = false;
-    export let disabled = false;
+    interface Props {
+        design?: Style;
+        href?: string | undefined;
+        icon?: KnownIcon | undefined;
+        iconOnRight?: boolean;
+        disabled?: boolean;
+        onclick?: () => void;
+        children?: Snippet;
+    }
+
+    let {
+        design = "hollow",
+        href = undefined,
+        icon = undefined,
+        iconOnRight = false,
+        disabled = false,
+        onclick,
+        children,
+    }: Props = $props();
 </script>
 
-<a {href} class={design} class:disabled on:click>
+<a {href} class={design} class:disabled {onclick}>
     {#if iconOnRight}
-        <slot />
+        {@render children?.()}
     {/if}
     {#if icon}
         <Icon {icon} --icon-size="1.5em" />
     {/if}
     {#if !iconOnRight}
-        <slot />
+        {@render children?.()}
     {/if}
 </a>
 

@@ -1,14 +1,20 @@
 <script lang="ts">
+    import type { Snippet } from "svelte";
     import Icon from "./Icon.svelte";
 
-    export let type: "info" | "warning" | "error";
+    interface Props {
+        type: "info" | "warning" | "error";
+        children?: Snippet;
+    }
+
+    let { type, children }: Props = $props();
 </script>
 
 <section class={type}>
     <span class="icon-container">
         <Icon icon={type} />
     </span>
-    <span class="content-container"><slot /></span>
+    <span class="content-container">{@render children?.()}</span>
 </section>
 
 <style lang="scss">

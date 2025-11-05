@@ -1,8 +1,12 @@
 <script lang="ts">
-    export let name: string;
-    export let alt: string;
-    export let style: "glow" | "shadow" | undefined = undefined;
-    export let size: string = "min(90ch, 90vw)";
+    interface Props {
+        name: string;
+        alt: string;
+        style?: "glow" | "shadow" | undefined;
+        size?: string;
+    }
+
+    let { name, alt, style = undefined, size = "min(90ch, 90vw)" }: Props = $props();
 
     // thank you to https://github.com/newsroomdev/portfolio/blob/27c0602049dfe0c5a5a2afa2a830dd92218f7370/src/lib/Img.svelte#L5
     // for being an actual example on how to do this

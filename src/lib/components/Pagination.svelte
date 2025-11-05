@@ -1,24 +1,37 @@
 <script lang="ts">
-    import { createEventDispatcher } from "svelte";
-
+    import type { Snippet } from "svelte";
     import Button from "./Button.svelte";
     import Row from "./Row.svelte";
 
-    export let perPage: number;
-    export let total: number;
-    export let page: number;
-    export let pageCount: number;
-    export let label: string;
-    export let labelOne: string = label;
-    export let disabled = false;
+    interface Props {
+        perPage: number;
+        total: number;
+        page: number;
+        pageCount: number;
+        label: string;
+        labelOne?: string;
+        disabled?: boolean;
+        select: (page: number) => void;
+        children?: Snippet;
+    }
 
-    $: max_page = Math.max(Math.ceil(total / perPage), 1);
-    $: title = pageCount == 1 ? labelOne : label;
+    let {
+        perPage,
+        total,
+        page,
+        pageCount,
+        label,
+        labelOne = label,
+        disabled = false,
+        select,
+        children,
+    }: Props = $props();
 
-    const dispatch = createEventDispatcher<{ select: { page: number } }>();
+    let max_page = $derived(Math.max(Math.ceil(total / perPage), 1));
+    let title = $derived(pageCount == 1 ? labelOne : label);
 
     const gotoPage = (page: number) => {
-        dispatch("select", { page });
+        select(page);
     };
 </script>
 
@@ -30,20 +43,20 @@
     {/if}
     <Row>
         <Button
-            on:click={async () => gotoPage(Math.max(page - 1, 1))}
+            onclick={async () => gotoPage(Math.max(page - 1, 1))}
             icon="left"
             design="dark-small"
             disabled={disabled || total === 0 || page === 1} />
         <span>Page {page} of {max_page}</span>
         <Button
-            on:click={async () => gotoPage(Math.min(page + 1, max_page))}
+            onclick={async () => gotoPage(Math.min(page + 1, max_page))}
             icon="right"
             design="dark-small"
             disabled={disabled || total === 0 || page === max_page} />
     </Row>
 
     <div style="justify-self: end;">
-        <slot />
+        {@render children?.()}
     </div>
 </nav>
 

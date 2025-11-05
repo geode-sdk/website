@@ -17,41 +17,45 @@
     import FilterMenu from "$lib/components/FilterMenu.svelte";
     import Pagination from "$lib/components/Pagination.svelte";
     import LoadingOverlay from "$lib/components/LoadingOverlay.svelte";
-    import type { ModSearchParams } from "$lib/api/index-repository";
     import type { ServerDeveloper } from "$lib/api/models/base";
 
-    export let data: PageData;
+    interface Props {
+        data: PageData;
+    }
+
+    let { data }: Props = $props();
     const profile: ServerDeveloper | null = data.loggedInUser ?? null;
 
-    $: url_params = $page.url.searchParams;
-    $: current_page = data.params.page ?? 1;
+    let url_params = $derived($page.url.searchParams);
+    let current_page = $derived(data.params.page ?? 1);
 
-    let query = data.params.query ?? "";
-    $: platforms = new Set(data.params.platforms ?? []);
-    let sort = data.params.sort ?? "downloads";
-    let tags = new Set(data.params.tags ?? []);
-    let featured = data.params.featured ?? false;
-    let developer = data.params.developer ?? "";
-    let pending = data.params.status != "accepted";
-    let userMods = false;
-    let geode = data.params.geode ?? "";
-    let gd = data.params.gd ?? "";
-    let per_page = data.params.per_page ?? 10;
-    let searching = false;
-    let view: "list" | "dual-list" | "grid" = "dual-list";
-    let searchBar: HTMLInputElement;
-    let searchTimeout: number | null = null;
-    let filters_enabled = false;
+    let query = $derived(data.params.query ?? "");
+    let platforms = $derived(new Set(data.params.platforms ?? []));
+    let sort = $derived(data.params.sort ?? "downloads");
+    let tags = $derived(new Set(data.params.tags ?? []));
+    let featured = $derived(data.params.featured ?? false);
+    let developer = $derived(data.params.developer ?? "");
+    let pending = $derived(data.params.status != "accepted");
+    let userMods = $state(false);
+    let geode = $derived(data.params.geode ?? "");
+    let gd = $derived(data.params.gd ?? "");
+    let per_page = $derived(data.params.per_page ?? 10);
+    let searching = $state(false);
+    let view: "list" | "dual-list" | "grid" = $state("dual-list");
+    let searchBar: HTMLInputElement | undefined = $state();
+    let searchTimeout: NodeJS.Timeout | number | null = null;
+    let filters_enabled = $state(false);
 
-    const valid_sort =
+    const valid_sort = $derived(
         sort == "downloads" ||
-        sort == "recently_updated" ||
-        sort == "recently_uploaded" ||
-        sort == "name" ||
-        sort == "name_reverse";
+            sort == "recently_updated" ||
+            sort == "recently_uploaded" ||
+            sort == "name" ||
+            sort == "name_reverse",
+    );
 
-    $: max_count = data.mods?.count ?? 0;
-    $: max_page = Math.floor((max_count - 1) / per_page) + 1;
+    let max_count = $derived(data.mods?.count ?? 0);
+    let max_page = $derived(Math.floor((max_count - 1) / per_page) + 1);
 
     const perPageOptions = [10, 15, 20];
 
@@ -117,7 +121,7 @@
         if (scroll) scrollToTop();
     };
 
-    const onFilterUpdate = (_: CustomEvent) => {
+    const onFilterUpdate = () => {
         updateSearch();
     };
 
@@ -144,7 +148,7 @@
             return;
         }
 
-        searchBar.focus();
+        searchBar?.focus();
     };
 </script>
 
@@ -168,19 +172,19 @@
             bind:featured
             bind:pending
             bind:userMods
-            on:update={onFilterUpdate} />
+            update={onFilterUpdate} />
     </aside>
 
     <Column align="stretch" gap="small">
         <nav class="search">
-            <Search placeholder="Search mods..." bind:query on:search={updateQuery} bind:ref={searchBar}></Search>
+            <Search placeholder="Search mods..." bind:query search={updateQuery} bind:ref={searchBar}></Search>
             <div class="search-filters">
                 <Select
                     title="Sort by"
                     titleIcon="sort"
-                    on:select={(ev) => {
-                        if (sort !== ev.detail.value) {
-                            sort = ev.detail.value;
+                    select={(value) => {
+                        if (sort !== value) {
+                            sort = value;
                             updateSearch();
                         }
                     }}>
@@ -199,11 +203,7 @@
                         title="Recently Updated"
                         value="recently_updated"
                         isDefault={sort === "recently_updated"} />
-                    <SelectOption
-                        icon="time"
-                        title="Oldest"
-                        value="oldest"
-                        isDefault={sort === "oldest"} />
+                    <SelectOption icon="time" title="Oldest" value="oldest" isDefault={sort === "oldest"} />
                     <SelectOption icon="sort-abc" title="Name (A-Z)" value="name" isDefault={sort === "name"} />
                     <SelectOption
                         icon="sort-cba"
@@ -215,7 +215,7 @@
                     <SelectButton
                         icon="filter"
                         selected={filters_enabled}
-                        on:select={() => (filters_enabled = !filters_enabled)} />
+                        select={() => (filters_enabled = !filters_enabled)} />
                 </span>
             </div>
         </nav>
@@ -229,7 +229,7 @@
                 bind:featured
                 bind:pending
                 bind:userMods
-                on:update={onFilterUpdate} />
+                update={onFilterUpdate} />
         </div>
 
         <main>
@@ -241,22 +241,22 @@
                 disabled={!data.mods}
                 label="mods"
                 labelOne="mod"
-                on:select={(e) => gotoPage(e.detail.page)}>
+                select={(page) => gotoPage(page)}>
                 <Row gap="small" justify="bottom">
                     <SelectButton
-                        on:select={() => (view = "list")}
+                        select={() => (view = "list")}
                         selected={view === "list"}
                         outsideState={true}
                         design="secondary"
                         icon="view-list" />
                     <SelectButton
-                        on:select={() => (view = "dual-list")}
+                        select={() => (view = "dual-list")}
                         selected={view === "dual-list"}
                         outsideState={true}
                         design="secondary"
                         icon="view-dual-list" />
                     <SelectButton
-                        on:select={() => (view = "grid")}
+                        select={() => (view = "grid")}
                         selected={view === "grid"}
                         outsideState={true}
                         design="secondary"
@@ -268,14 +268,14 @@
                 <!-- this goofy thing just makes sure the size of the mods list stays
                     the same even if there are fewer items than needed to fill it -->
                 <div class="mod-listing-size-enforcer">
-                    <span />
-                    <span />
-                    <span />
-                    <span />
-                    <span />
-                    <span />
-                    <span />
-                    <span />
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </div>
                 {#if data.error}
                     <Gap size="normal" />
@@ -316,12 +316,12 @@
                         disabled={!data.mods}
                         label="mods"
                         labelOne="mod"
-                        on:select={(e) => gotoPage(e.detail.page)}>
+                        select={(page) => gotoPage(page)}>
                         <Select
                             title="Per page"
                             titleIcon="eye"
-                            on:select={(ev) => {
-                                const newValue = parseInt(ev.detail.value);
+                            select={(value) => {
+                                const newValue = parseInt(value);
                                 if (per_page !== newValue) {
                                     const scroll = newValue < per_page;
                                     per_page = newValue;
@@ -343,7 +343,7 @@
     </Column>
 </div>
 
-<svelte:window on:keydown={onKeydown} />
+<svelte:window onkeydown={onKeydown} />
 
 <style lang="scss">
     @use "$lib/styles/media-queries.scss" as *;

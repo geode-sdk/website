@@ -1,18 +1,25 @@
 <script lang="ts">
+    import type { Snippet } from "svelte";
+
     const alignment = {
         top: "start",
         center: "center",
         bottom: "end",
         stretch: "stretch",
     };
-    export let align: keyof typeof alignment = "center";
-    export let justify: keyof typeof alignment = "center";
-    export let gap: Gap = "normal";
-    export let wrap: "wrap" | "nowrap" | "wrap-reverse" = "nowrap";
+    interface Props {
+        align?: keyof typeof alignment;
+        justify?: keyof typeof alignment;
+        gap?: Gap;
+        wrap?: "wrap" | "nowrap" | "wrap-reverse";
+        children?: Snippet;
+    }
+
+    let { align = "center", justify = "center", gap = "normal", wrap = "nowrap", children }: Props = $props();
 </script>
 
 <div style="--wrap: {wrap}; --gap: var(--gap-{gap}); --align: {alignment[align]}; --justify: {alignment[justify]}">
-    <slot />
+    {@render children?.()}
 </div>
 
 <style lang="scss">

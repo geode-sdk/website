@@ -15,14 +15,18 @@
     import CodeExample from "$lib/components/CodeExample.svelte";
     import { bash } from "svelte-highlight/languages";
 
-    export let data: PageData;
+    interface Props {
+        data: PageData;
+    }
+
+    let { data }: Props = $props();
 
     // Until server returns this, we're doing it manually
     let latestVersion = data.loader_tag;
     let latestLauncher = `v${data.launcher_tag}`;
     let latestIOSLauncher = `v${data.ios_launcher_tag}`;
-    let showAllPlatforms = false;
-    let curPlatform: "windows" | "mac" | "android" | "linux" | "ios" | "unknown" | undefined = undefined;
+    let showAllPlatforms = $state(false);
+    let curPlatform: "windows" | "mac" | "android" | "linux" | "ios" | "unknown" | undefined = $state(undefined);
 
     const copyLinuxScript = () => {
         navigator.clipboard.writeText("curl -o- 'https://geode-sdk.org/install/linux.sh' | bash");
@@ -145,7 +149,7 @@
                             <CodeExample
                                 code={`curl -o- 'https://geode-sdk.org/install/linux.sh' | bash`}
                                 language={bash} />
-                            <Button icon={"clipboard"} on:click={copyLinuxScript} />
+                            <Button icon={"clipboard"} onclick={copyLinuxScript} />
                         </div>
                     </div>
                     <p>

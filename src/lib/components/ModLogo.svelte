@@ -6,22 +6,28 @@
     import iconPlaceholder from "$lib/assets/icon-placeholder.png";
     import iconPending from "$lib/assets/icon-pending.png";
 
-    export let mod: ServerMod;
-    export let version: ServerModVersion;
-    export let size: "large" | "medium" | "small" = "small";
+    interface Props {
+        mod: ServerMod;
+        version: ServerModVersion;
+        size: "large" | "medium" | "small";
+    }
 
-    $: iconSize = size == "large" ? "8rem" : size == "medium" ? "6rem" : "5rem";
+    const { mod, version, size = "small" } = $props();
 
-    $: accepted = version.status == "accepted";
+    const iconSize = $derived(size == "large" ? "8rem" : size == "medium" ? "6rem" : "5rem");
+
+    const accepted = $derived(version.status == "accepted");
 
     // put both the version and status into the cache to prevent stale icons from being cached
     // (pending icons show the old accepted icon for that version until that version is accepted)
-    $: logoUrl = IndexClient.getModLogo(mod.id, {
-        version: version.version,
-        status: version.status != "accepted" ? version.status : undefined,
-    }).toString();
+    let logoUrl = $derived(
+        IndexClient.getModLogo(mod.id, {
+            version: version.version,
+            status: version.status != "accepted" ? version.status : undefined,
+        }).toString(),
+    );
 
-    $: placeholderIcon = accepted ? iconPlaceholder : iconPending;
+    const placeholderIcon = $derived(accepted ? iconPlaceholder : iconPending);
 
     const checkPlaceholder = (node: HTMLImageElement) => {
         if (node.complete) {
@@ -32,13 +38,15 @@
         }
     };
 
-    let imageLoaded = false;
+    let imageLoaded = $state(false);
 </script>
 
 <!-- on:error doesn't run early enough, but the language server complains, lol -->
 <img
-    onerror={`this.src="${placeholderIcon}";`}
-    onload="this.style.removeProperty('visibility');"
+    onerror={function () {
+        this.src = placeholderIcon;
+    }}
+    onload={(e) => (e.target as HTMLImageElement | null)?.style.removeProperty("visibility")}
     src={logoUrl}
     use:checkPlaceholder
     alt={`Logo for the mod ${version.name}`}

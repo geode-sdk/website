@@ -3,7 +3,11 @@
     import Link from "$lib/components/Link.svelte";
     import DevRoleChip from "$lib/components/DevRoleChip.svelte";
 
-    export let developer: ServerDeveloper;
+    interface Props {
+        developer: ServerDeveloper;
+    }
+
+    let { developer }: Props = $props();
 </script>
 
 <div class="aside">
@@ -51,7 +55,7 @@
 
         transition: background-color var(--transition-duration);
 
-        &:has(a:hover) {
+        &:has(:global(a:hover)) {
             background-color: color-mix(in srgb, var(--card-base-color) 40%, transparent);
         }
     }

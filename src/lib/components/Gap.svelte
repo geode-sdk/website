@@ -1,5 +1,9 @@
 <script lang="ts">
-    export let size: Gap | "flex";
+    interface Props {
+        size: Gap | "flex";
+    }
+
+    let { size }: Props = $props();
 </script>
 
 <span style="--size: var(--gap-{size})" class:flex={size === "flex"}></span>
