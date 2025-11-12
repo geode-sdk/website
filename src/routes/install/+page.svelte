@@ -104,7 +104,7 @@
                 </span>
                 <p>
                     Geode is available for
-                    <em>Windows, MacOS, Android, iOS (experimental) and Linux (through Wine).</em>
+                    <em>Windows, macOS, Android, iOS (experimental) and Linux (through Wine).</em>
                 </p>
             </Column>
         </section>
@@ -189,6 +189,24 @@
                         </Button>
                     {/if}
                     {#if curPlatform === "mac"}
+                        <InfoBox type="warning">
+                            The <em>Geode macOS installer</em>
+                            is only supported on the <Link
+                                href="https://store.steampowered.com/app/322170/Geometry_Dash/"
+                                bold
+                                newTab>
+                                Steam
+                            </Link> release of Geometry Dash.
+                            <br />
+                            For the
+                            <em>App Store</em>
+                            release, see the <Link
+                                href="https://github.com/geode-sdk/ios-launcher/blob/main/INSTALL.md"
+                                bold>
+                                iOS install instructions
+                            </Link>.
+                        </InfoBox>
+
                         <Button design="primary-filled" href={createVersionString("mac")}>
                             <Icon icon="mac" />Download for macOS
                         </Button>
@@ -212,7 +230,7 @@
                             <Icon icon="windows" />Download for Windows
                         </Button>
                         <Button design="primary-filled" href={createVersionString("mac")}>
-                            <Icon icon="mac" />Download for macOS
+                            <Icon icon="mac" />Download for macOS (Steam)
                         </Button>
                         <Button design="primary-filled" href={createVersionString("android")}>
                             <Icon icon="android" />Download for Android
