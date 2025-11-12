@@ -197,14 +197,6 @@
                                 newTab>
                                 Steam
                             </Link> release of Geometry Dash.
-                            <br />
-                            For the
-                            <em>App Store</em>
-                            release, see the <Link
-                                href="https://github.com/geode-sdk/ios-launcher/blob/main/INSTALL.md"
-                                bold>
-                                iOS install instructions
-                            </Link>.
                         </InfoBox>
 
                         <Button design="primary-filled" href={createVersionString("mac")}>
