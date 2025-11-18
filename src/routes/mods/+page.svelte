@@ -49,9 +49,10 @@
     const valid_sort = $derived(
         sort == "downloads" ||
             sort == "recently_updated" ||
-            sort == "recently_uploaded" ||
+            sort == "recently_published" ||
             sort == "name" ||
-            sort == "name_reverse",
+            sort == "name_reverse" ||
+            sort == "oldest",
     );
 
     let max_count = $derived(data.mods?.count ?? 0);
