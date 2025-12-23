@@ -11,15 +11,15 @@ export const icons = {
     docs: "mdi:file-document",
     github: "mdi:github",
     download: "mdi:download",
-    browse: "mdi:database-search",
+    browse: "mdi:card-search-outline",
     gd: "@:gd-icon",
     geode: "@:geode-icon",
     examples: "mdi:text-search",
     graph: "mdi:graph-line",
     windows: "mdi:microsoft-windows",
-    mac: "mdi:apple",
+    mac: "mdi:apple-finder",
     android: "mdi:android",
-    ios: "ic:baseline-phone-iphone",
+    ios: "mdi:apple-ios",
     linux: "mdi:linux",
     copyright: "mdi:copyright",
     help: "mdi:help-circle",
@@ -86,6 +86,9 @@ export const icons = {
     "tag-cheat": "mdi:domino-mask",
     "tag-paid": "mdi:attach-money",
     "tag-joke": "mdi:comedy",
+    "tag-api": "mdi:api",
+    "tag-modtober24": "mdi:clouds",
+    "tag-modtober25": "mdi:emoticon-lol-outline",
 };
 export type KnownIcon = keyof typeof icons;
 
