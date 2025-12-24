@@ -19,7 +19,7 @@ export const icons = {
     windows: "mdi:microsoft-windows",
     mac: "mdi:apple-finder", // note: this used to be "mdi:apple". ios will use "mdi:apple" eventually
     android: "mdi:android",
-    ios: "mdi:cellphone", // note: change to "mdi:apple" after some time
+    ios: "mdi:ipod", // note: change to "mdi:apple" after some time
     linux: "mdi:linux",
     copyright: "mdi:copyright",
     help: "mdi:help-circle",
