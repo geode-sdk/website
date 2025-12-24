@@ -22,9 +22,9 @@
     let { data }: Props = $props();
 
     // Until server returns this, we're doing it manually
-    let latestVersion = data.loader_tag;
-    let latestLauncher = `v${data.launcher_tag}`;
-    let latestIOSLauncher = `v${data.ios_launcher_tag}`;
+    let latestVersion = $derived(data.loader_tag);
+    let latestLauncher = $derived(`v${data.launcher_tag}`);
+    let latestIOSLauncher = $derived(`v${data.ios_launcher_tag}`);
     let showAllPlatforms = $state(false);
     let curPlatform: "windows" | "mac" | "android" | "linux" | "ios" | "unknown" | undefined = $state(undefined);
 

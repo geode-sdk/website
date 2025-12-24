@@ -41,14 +41,14 @@
 
     let searching = $state(false);
 
-    const user = data.loggedInUser;
+    const user = $derived(data.loggedInUser);
 
-    const developer_ids = data.mod.developers.map((d) => d.id);
-    const can_update_mod = (user && developer_ids.includes(user.id)) || false;
-    const is_admin = user?.admin === true;
-    const owns_mod = can_update_mod && data.mod.developers.some((d) => d.is_owner && d.id == user?.id);
+    const developer_ids = $derived(data.mod.developers.map((d) => d.id));
+    const can_update_mod = $derived((user && developer_ids.includes(user.id)) || false);
+    const is_admin = $derived(user?.admin === true);
+    const owns_mod = $derived(can_update_mod && data.mod.developers.some((d) => d.is_owner && d.id == user?.id));
 
-    const paid = data.mod.tags.includes("paid");
+    const paid = $derived(data.mod.tags.includes("paid"));
 
     const updateSearch = async () => {
         searching = true;

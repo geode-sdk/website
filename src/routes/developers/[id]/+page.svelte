@@ -14,7 +14,7 @@
 
     let { data, form }: Props = $props();
 
-    const isAdmin = data.loggedInUser?.admin || false;
+    const isAdmin = $derived(data.loggedInUser?.admin || false);
 </script>
 
 <svelte:head>

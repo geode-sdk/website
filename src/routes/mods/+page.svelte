@@ -24,7 +24,7 @@
     }
 
     let { data }: Props = $props();
-    const profile: ServerDeveloper | null = data.loggedInUser ?? null;
+    const profile: ServerDeveloper | null = $derived(data.loggedInUser ?? null);
 
     let url_params = $derived($page.url.searchParams);
     let current_page = $derived(data.params.page ?? 1);

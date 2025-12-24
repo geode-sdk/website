@@ -6,18 +6,16 @@
 
     let { type }: Props = $props();
 
-    let svgFileName = $state();
-    switch (type) {
-        case "circle":
-            svgFileName = "geode-logo";
-            break;
-        case "plain":
-            svgFileName = "geode-logo-plain";
-            break;
-        case "plain-mono":
-            svgFileName = "geode-logo-plain-mono";
-            break;
-    }
+    const svgFileName = $derived.by(() => {
+        switch (type) {
+            case "circle":
+                return "geode-logo";
+            case "plain":
+                return "geode-logo-plain";
+            case "plain-mono":
+                return "geode-logo-plain-mono";
+        }
+    });
 </script>
 
 <div class="geode-logo">

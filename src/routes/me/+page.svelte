@@ -16,9 +16,9 @@
 
     let { data, form = $bindable() }: Props = $props();
 
-    let self = data.self;
-    const myPendingMods = data.myPendingMods.filter((mod) => mod.versions.length > 0);
-    const myRejectedMods = data.myRejectedMods.filter((mod) => mod.versions.length > 0);
+    const self = $derived(data.self);
+    const myPendingMods = $derived(data.myPendingMods.filter((mod) => mod.versions.length > 0));
+    const myRejectedMods = $derived(data.myRejectedMods.filter((mod) => mod.versions.length > 0));
 </script>
 
 <svelte:head>

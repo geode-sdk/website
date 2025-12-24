@@ -9,18 +9,16 @@
 
     let { type, children }: Props = $props();
 
-    let svgFileName = $state();
-    switch (type) {
-        case "top-full":
-            svgFileName = "waves-full";
-            break;
-        case "top":
-            svgFileName = "waves-full";
-            break;
-        case "bottom":
-            svgFileName = "waves-few";
-            break;
-    }
+    const svgFileName = $derived.by(() => {
+        switch (type) {
+            case "top-full":
+                return "waves-full";
+            case "top":
+                return "waves-full";
+            case "bottom":
+                return "waves-few";
+        }
+    });
 </script>
 
 <span class={type}>

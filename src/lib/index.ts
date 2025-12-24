@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
-dayjs.extend(relativeTime);    
+dayjs.extend(relativeTime);
 
 export const icons = {
     error: "mdi:error",
@@ -88,9 +88,9 @@ export const icons = {
     "tag-joke": "mdi:comedy",
     "tag-api": "mdi:api",
     "tag-modtober24": "mdi:clouds",
-    "tag-modtober24winner": "trophy-variant-outline",
+    "tag-modtober24winner": "mdi:trophy-variant-outline",
     "tag-modtober25": "mdi:exclamation-thick",
-    "tag-modtober25winner": "trophy-variant-outline"
+    "tag-modtober25winner": "mdi:trophy-variant-outline",
 };
 export type KnownIcon = keyof typeof icons;
 
