@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
-dayjs.extend(relativeTime);
+dayjs.extend(relativeTime);    
 
 export const icons = {
     error: "mdi:error",
@@ -17,9 +17,9 @@ export const icons = {
     examples: "mdi:text-search",
     graph: "mdi:graph-line",
     windows: "mdi:microsoft-windows",
-    mac: "mdi:apple",
+    mac: "mdi:apple-finder", // note: this used to be "mdi:apple". ios will use "mdi:apple" eventually
     android: "mdi:android",
-    ios: "ic:baseline-phone-iphone",
+    ios: "mdi:cellphone", // note: change to "mdi:apple" after some time
     linux: "mdi:linux",
     copyright: "mdi:copyright",
     help: "mdi:help-circle",
@@ -86,6 +86,11 @@ export const icons = {
     "tag-cheat": "mdi:domino-mask",
     "tag-paid": "mdi:attach-money",
     "tag-joke": "mdi:comedy",
+    "tag-api": "mdi:api",
+    "tag-modtober24": "mdi:clouds",
+    "tag-modtober24winner": "trophy-variant-outline",
+    "tag-modtober25": "mdi:exclamation-thick",
+    "tag-modtober25winner": "trophy-variant-outline"
 };
 export type KnownIcon = keyof typeof icons;
 
