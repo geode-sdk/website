@@ -17,9 +17,9 @@ export const icons = {
     examples: "mdi:text-search",
     graph: "mdi:graph-line",
     windows: "mdi:microsoft-windows",
-    mac: "mdi:apple-finder",
+    mac: "mdi:apple-finder", // note: this used to be "mdi:apple". ios will use "mdi:apple" eventually
     android: "mdi:android",
-    ios: "mdi:apple-ios",
+    ios: "mdi:cellphone", // note: change to "mdi:apple" after some time
     linux: "mdi:linux",
     copyright: "mdi:copyright",
     help: "mdi:help-circle",
