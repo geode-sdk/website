@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { goto } from "$app/navigation";
-    import { page } from "$app/stores";
+    import { afterNavigate, goto } from "$app/navigation";
+    import { page } from "$app/state";
     import type { PageData } from "./$types.js";
 
     import ModCard from "$lib/components/ModCard.svelte";
@@ -26,10 +26,10 @@
     let { data }: Props = $props();
     const profile: ServerDeveloper | null = $derived(data.loggedInUser ?? null);
 
-    let url_params = $derived($page.url.searchParams);
+    let url_params = $derived(page.url.searchParams);
     let current_page = $derived(data.params.page ?? 1);
 
-    let query = $derived(data.params.query ?? "");
+    let query = $state("");
     let platforms = $derived(new Set(data.params.platforms ?? []));
     let sort = $derived(data.params.sort ?? "downloads");
     let tags = $derived(new Set(data.params.tags ?? []));
@@ -60,9 +60,8 @@
 
     const perPageOptions = [10, 15, 20];
 
-    const updateQuery = () => {
+    const updateQuery = async () => {
         // debouce search bar so we're not making a ton of useless requests
-
         if (searchTimeout) {
             clearTimeout(searchTimeout);
         }
@@ -117,7 +116,11 @@
         }
         params.set("sort", sort);
 
-        await goto(`/mods?${params}`, { noScroll: true, keepFocus: true });
+        await goto(`/mods?${params}`, {
+            noScroll: true,
+            keepFocus: true,
+            replaceState: true,
+        });
         searching = false;
         if (scroll) scrollToTop();
     };
@@ -138,7 +141,10 @@
         const params = new URLSearchParams(url_params);
         params.set("page", page.toString());
 
-        await goto(`/mods?${params}`, { noScroll: true });
+        await goto(`/mods?${params}`, {
+            noScroll: true,
+            replaceState: true,
+        });
         searching = false;
         scrollToTop();
     };
@@ -151,6 +157,14 @@
 
         searchBar?.focus();
     };
+
+    // might be hacky, we only want the search bar to change if the user explicitly does so within navigation
+    // gotos should only happen when we are searching, in which case the search bar shouldn't be overwritten with updated params
+    afterNavigate((navigation) => {
+        if (navigation.type != "goto") {
+            query = data.params.query ?? "";
+        }
+    });
 </script>
 
 <svelte:head>
