@@ -137,7 +137,43 @@
         };
     };
 
-    const plugins: Plugin[] = [{ rehypePlugin: [rehypeColorize] }];
+    const rehypeSpecialLinks = () => {
+        const traverse = (n: HastBase) => {
+            if (n.type === "element" && (n as HastElement).tagName === "a") {
+                const element = n as HastElement;
+                const href = element.properties?.href as string;
+                
+                if (href) {
+                    const userMatch = href.match(/^user:(.+)$/);
+                    const levelMatch = href.match(/^level:(.+)$/);
+                    const modMatch = href.match(/^mod:(.+)$/);
+                    
+                    if (userMatch) {
+                        element.properties.href = `https://gdbrowser.com/u/${userMatch[1]}`;
+                    } else if (levelMatch) {
+                        element.properties.href = `https://gdbrowser.com/${levelMatch[1]}`;
+                    } else if (modMatch) {
+                        element.properties.href = `/mods/${modMatch[1]}`;
+                    }
+                }
+            }
+
+            if ("children" in n && n.children) {
+                for (const c of n.children) {
+                    traverse(c);
+                }
+            }
+        };
+
+        return (tree: HastRoot) => {
+            traverse(tree);
+        };
+    };
+
+    const plugins: Plugin[] = [
+        { rehypePlugin: [rehypeColorize] },
+        { rehypePlugin: [rehypeSpecialLinks] }
+    ];
 </script>
 
 <Markdown {md} {plugins}>
