@@ -20,6 +20,7 @@
     import { IndexClient } from "$lib/api/index-repository.js";
     import type { ServerStats } from "$lib/api/models/stats.js";
     import type { PageData } from "./$types";
+    import { getNewGDUpdateWasReleased } from "$lib";
 
     interface Props {
         data: PageData;
@@ -29,6 +30,8 @@
 
     // is this a bad pattern.
     let stats_promise: Promise<ServerStats> = $state(new Promise(() => {}));
+
+    let recentGDUpdate = getNewGDUpdateWasReleased();
 
     onMount(async () => {
         const client = new IndexClient();
@@ -70,6 +73,13 @@
             </Row>
         </span>
         <Gap size="0" />
+        {#if recentGDUpdate}
+            <InfoBox type="error" solid={true}>
+                A new update for Geometry Dash (version {recentGDUpdate.newGDVersion}) 
+                was recently released, and because of that <em>Geode is currently broken</em>.
+                We're working on fixing it, but please be patient!
+            </InfoBox>
+        {/if}
         <Row wrap="wrap">
             <Button href="/install" design="primary-filled-dark" icon="download">Download</Button>
             <Button href="/mods" design="primary-filled-dark" icon="browse">Browse Mods</Button>
