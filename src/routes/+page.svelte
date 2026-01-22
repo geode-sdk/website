@@ -138,7 +138,7 @@
                     <LoadingCircle size="small" />
                     <p>Loading stats...</p>
                 {:then stats}
-                    <MoneyBox num={stats.total_geode_downloads} icon="download" text="downloads" />
+                    <MoneyBox num={stats.total_geode_downloads} icon="download" text="total downloads" />
                     <MoneyBox num={stats.total_mod_count} icon="graph" text="mods published" />
                 {:catch error}
                     <InfoBox type="error">Unable to load stats!</InfoBox>
