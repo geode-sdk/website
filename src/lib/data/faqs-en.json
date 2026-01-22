@@ -32,6 +32,11 @@
                 "id": "where-can-i-find-news",
                 "question": "Where can I find out about progress on the Geode update?",
                 "answer": "We post news and updates on our [Discord server](https://discord.gg/9e43WMKzhp) and [Twitter account](https://twitter.com/GeodeSDK)."
+            },
+            {
+                "id": "can-i-use-an-older-version",
+                "question": "Can I still play on the previous GD version?",
+                "answer": "Yes, you can still use the previous version of GD, at least until Geode has been updated. Be aware though that the previous version of Geode may break at any time for any reason as well due to technical limitations."
             }
         ]
     },
