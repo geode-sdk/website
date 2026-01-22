@@ -20,7 +20,7 @@
 
 <article class="version">
     <Row wrap="wrap">
-        <Column gap="small" align="left">
+        <Column gap="small" align="start">
             <Link href={`/mods/${mod.id}?version=${version.version}`}>
                 <h2>{version.version}</h2>
             </Link>

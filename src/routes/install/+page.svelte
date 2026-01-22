@@ -15,6 +15,7 @@
     import CodeExample from "$lib/components/CodeExample.svelte";
     import { bash } from "svelte-highlight/languages";
     import { getNewGDUpdateWasReleased } from "$lib";
+    import NewGDUpdateAlert from "$lib/components/NewGDUpdateAlert.svelte";
 
     interface Props {
         data: PageData;
@@ -86,11 +87,7 @@
 <h1>Install Geode</h1>
 
 {#if recentGDUpdate?.geodeStatus === "fully-broken"}
-    <InfoBox type="error">
-        A new update for Geometry Dash (version {recentGDUpdate.newGDVersion}) 
-        was recently released, and because of that <em>Geode is currently broken</em>.
-        We're working on fixing it, but please be patient!
-    </InfoBox>
+    <NewGDUpdateAlert/>
     <h2>What? Why?</h2>
     <p>
         <em>Every new update to GD breaks Geode.</em> This is inevitable and due 
@@ -118,7 +115,7 @@
                 <Column>
                     <p><strong>Installation instructions</strong></p>
                     <span style="color: var(--background-300)">
-                        <Column align="left">
+                        <Column align="start">
                             <Row>
                                 <Icon icon="one" />
                                 <p>
@@ -277,7 +274,7 @@
         <div class="img-with-width">
             <Image name="main-menu" alt="The main menu, showing the Geode button" style="shadow" />
         </div>
-        <Column align="left">
+        <Column align="start">
             <p>
                 Once you have <em>installed Geode</em>
                 , you should see a new button in the bottom row of the main menu.
@@ -297,7 +294,7 @@
         <div class="img-with-width">
             <Image name="main-page" alt="The Geode menu" style="shadow" />
         </div>
-        <Column align="left">
+        <Column align="start">
             <p>
                 The first page you see is the <em>list of mods you currently have installed</em>
                 . Use the toggles to quickly
@@ -324,7 +321,7 @@
         <div class="img-with-width">
             <Image name="download-page" alt="The download tab of the Geode menu" style="shadow" />
         </div>
-        <Column align="left">
+        <Column align="start">
             <p>
                 The other pages - <em>Recommended</em>
                 ,

@@ -39,7 +39,7 @@
                 </Link>
             </span>
             <Gap size="normal" />
-            <Column align="left" gap="tiny">
+            <Column align="start" gap="tiny">
                 <div class="click-to-go-to-page">
                     <Link href={mod_url}>
                         <div class="title-container">
@@ -70,7 +70,7 @@
             </Column>
         </div>
         <span class="do-not-shrink right">
-            <Column align="right" gap="tiny">
+            <Column align="end" gap="tiny">
                 <span class="card-info">
                     <Icon icon="version" />{version.version}
                 </span>

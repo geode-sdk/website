@@ -18,7 +18,7 @@
 
 <details bind:open class:open>
     <summary><Icon icon="down" /> {title}</summary>
-    <article><Column align="left" gap="tiny">{@render children?.()}</Column></article>
+    <article><Column align="start" gap="tiny">{@render children?.()}</Column></article>
 </details>
 
 <style lang="scss">

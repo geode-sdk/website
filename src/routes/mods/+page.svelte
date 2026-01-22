@@ -18,6 +18,7 @@
     import Pagination from "$lib/components/Pagination.svelte";
     import LoadingOverlay from "$lib/components/LoadingOverlay.svelte";
     import type { ServerDeveloper } from "$lib/api/models/base";
+    import NewGDUpdateAlert from "$lib/components/NewGDUpdateAlert.svelte";
 
     interface Props {
         data: PageData;
@@ -177,6 +178,8 @@
 
 <h1>Browse Mods</h1>
 
+<NewGDUpdateAlert/>
+
 <div class="content-separator">
     <aside class="filter-column">
         <FilterMenu
@@ -257,7 +260,7 @@
                 label="mods"
                 labelOne="mod"
                 select={(page) => gotoPage(page)}>
-                <Row gap="small" justify="bottom">
+                <Row gap="small" justify="end">
                     <SelectButton
                         select={() => (view = "list")}
                         selected={view === "list"}

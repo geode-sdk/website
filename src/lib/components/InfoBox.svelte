@@ -49,14 +49,31 @@
             .icon-container {
                 color: var(--accent-alt-300);
             }
+            &.solid {
+                --mix-color: var(--secondary-500);
+                color: var(--text-100);
+                .icon-container {
+                    color: var(--text-100);
+                }
+                & :global(em) {
+                    color: var(--accent-alt-200);
+                }
+            }
         }
         &.warning {
             --mix-color: var(--primary-300);
-            &.solid {
-                --mix-color: var(--accent-700);
-            }
             .icon-container {
                 color: var(--accent-300);
+            }
+            &.solid {
+                --mix-color: var(--accent-200);
+                color: var(--accent-900);
+                .icon-container {
+                    color: var(--accent-900);
+                }
+                & :global(em) {
+                    color: var(--primary-500);
+                }
             }
         }
         &.error {
@@ -64,7 +81,7 @@
             .icon-container {
                 color: var(--primary-300);
             }
-            & :global(em) {
+            &.solid :global(em) {
                 color: var(--accent-300);
             }
         }

@@ -116,7 +116,7 @@
 <header>
     <ModLogo mod={data.mod} version={data.version} size="large" />
 
-    <Column align="left" gap="tiny">
+    <Column align="start" gap="tiny">
         <div class="title-container">
             {#if data.mod.featured}
                 <Label design="accent-transparent" icon="featured" />
@@ -132,7 +132,7 @@
 </header>
 
 <div class="wrapper">
-    <Row align="top" wrap="wrap-reverse" gap="small">
+    <Row align="start" wrap="wrap-reverse" gap="small">
         <section>
             <Tabs>
                 <TabPage name="Description" id="description" icon="description">
@@ -229,7 +229,7 @@
                 </TabPage>
                 {#if can_update_mod}
                     <TabPage name="Modify" id="modify" icon="modify">
-                        <Column align="left" gap="small">
+                        <Column align="start" gap="small">
                             {#if form?.message}
                                 <InfoBox type="error">
                                     Failed to perform action: {form.message}
@@ -274,7 +274,7 @@
                 {/if}
                 {#if is_admin}
                     <TabPage name="Admin" id="admin" icon="admin">
-                        <Column align="left">
+                        <Column align="start">
                             {#if form?.message}
                                 <InfoBox type="error">
                                     Failed to perform action: {form.message}
@@ -419,7 +419,7 @@
         </section>
         <aside>
             <section>
-                <Column align="left" gap="small">
+                <Column align="start" gap="small">
                     <span class="card-info">
                         <Icon icon="version" />{data.version.version}
                     </span>
@@ -490,7 +490,7 @@
                 </Column>
             </section>
             <section>
-                <Column align="left" gap="small">
+                <Column align="start" gap="small">
                     <p>
                         ID: <code>{data.mod.id}</code>
                     </p>
