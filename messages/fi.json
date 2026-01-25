@@ -1,0 +1,76 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  
+  "meta_homepage_title": "Geode - Modeja Geometry Dashiin",
+  "meta_homepage_desc": "Main page for Geode, the most popular mod loader for Geometry Dash",
+  
+  "subtitle_tagline": "*Modeja* {gd_link} -peliin",
+
+  "main_button_download": "Lataa Geode",
+  "main_button_browse_mods": "Löydä modeja",
+  "main_button_developers": "Kehittäjät",
+  "main_button_faq": "UKK",
+
+  "nav_home": "Etusivu",
+  "nav_mods": "Modit",
+  "nav_language": "Kieli",
+
+  "links_discord": "Discord",
+  "links_twitter": "Twitter",
+  "links_bluesky": "Bluesky",
+  "links_docs": "Dokumentaatio",
+  "links_source_code": "Lähdekoodi",
+  "links_examples": "Selaa esimerkkejä",
+  "links_login": "Kirjaudu sisään",
+
+  "showcase_introduction": "Geode on *epävirallinen lisäosa* Geometry Dash -peliin, jonka avulla peliin voi *asentaa modeja*. Pelissä olevan listan kautta voi löytää ja asentaa modeja *Windows-*, *MacOS-*, *Android-* ja *iOS-käyttöjärjestelmille*!",
+  "showcase_popular": "Geode on *suosituin modilataaja* Geometry Dashille. Sen yhteisö on aktiivinen ja aika lailla mikä vain modi, jonka voit kuvitella, on jo tehty tai ainakin keksitty!",
+  "showcase_popular_download_count": "{download_count} latauskertaa",
+  "showcase_popular_mods_published": "{mod_count} julkaistua modia",
+  "showcase_code": "Geoden *lähdekoodi on avoin* ja se on suunniteltu tekemään modaamisesta tuhannesti helpompaa. Geode tarjoaa *kutsujen muokkaussyntaksin* sekä lukuisia *käyttöliittymäkomponentteja*, *apufunktioita*, ja kaikkea muuta mitä modien luomiseen tarvitaan.",
+  "showcase_code_comment_include": "Sisällytä Geoden otsikkotiedostot",
+  "showcase_code_comment_modify": "Muokkaa päävalikon funktiokutsuja",
+  "showcase_code_comment_hook_init": "Korvaa päävalikon luonti",
+  "showcase_code_comment_init_orig": "Aloitetaan luomalla alkuperäinen päävalikko uudelleen",
+  "showcase_code_comment_log": "Nyt voimme alkaa modaamaan!",
+  "showcase_code_log_message": "Hei modistani!",
+  "showcase_get_started": "Kiinnostuitko? Mene *asennussivulle* lataaksesi Geoden laitteellesi, taikka *modisivulle* katsomaan mitä modeja Geodessa on tarjolla!",
+
+  "meta_install_title": "Lataa Geode",
+  "meta_install_desc": "",
+
+  "install_title": "Geoden asentaminen",
+
+  "new_update_emergency_broken_info": "Geometry Dashiin on vastikään julkaistu uusi päivitus (versio {new_gd_version}), ja tämän vuoksi *Geode ei tällä hetkellä toimi*. Korjaamme asiaa parhaillaan, mutta odotathan kärsivällisesti!",
+  "new_update_emergency_info_button": "Mitä? Mitä tapahtui?",
+  "new_update_emergency_info_title": "Geode ei väliaikaisesti ole saatavilla",
+  "new_update_emergency_info_text": "*Jokainen uusi GD-päivitys hajottaa Geoden.* Tämä on vääjäämätöntä ja johtuu teknisistä syistä. Hyvät uutiset ovat että olemme vuosien varrella saaneet Geoden korjaamisprosessista paljon nopeampaa ja helpompaa, mutta se vaatii silti yhä muutaman päivän manuaalista työtä.\n\n*Pyydämme kärsivällisyyttä* odotellessasi Geoden korjaantumista. Me Geoden kehittäjät olemme vain joukko opiskelijoita, jotka työstävät sitä vapaa-ajallaan. Voin vakuuttaa, ettemme ole laiskoja; se vain vie aikaa.\n\n*Jos Geode kaatuilee sinulle tällä hetkellä, voit poistaa sen.* Tiedotamme kanavillamme, kun Geode toimii taas.\n\nJos haluat asentaa Geoden vanhemmalle GD-versiolle, voit löytää näitä [GitHub-repositoriostamme](https://github.com/geode-sdk/geode/releases).",
+
+  "meta_faq_title": "Usein kysytyt kysymykset – Geode",
+  "meta_faq_desc": "Frequently Asked Questions (FAQ) about Geode and modding Geometry Dash",
+  
+  "faq_title": "Usein kysytyt kysymykset",
+
+  "meta_browse_mods_title": "Modit – Geode",
+  "meta_browse_mods_desc": "Löydä modeja Geode-modilaatajaa varten",
+  
+  "browse_mods_title": "Selaa modeja",
+  
+  "browse_mods_search_placeholder": "Hae modeja...",
+  "browse_mods_sort_text": "Järjestys",
+  "browse_mods_sort_option_most_downloaded": "Ladatuimmat",
+  "browse_mods_sort_option_recently_published": "Uusimmat",
+  "browse_mods_sort_option_recently_updated": "Vastikään päivitetyt",
+  "browse_mods_sort_option_oldest": "Vanhimmat",
+  "browse_mods_sort_option_name_a_z": "Nimi (A-Ö)",
+  "browse_mods_sort_option_name_z_a": "Nimi (Ö-A)",
+
+  "pagination_current_page": "Sivu {page} of {total}",
+  "pagination_items_per_page": "Näytä",
+  "pagination_showing_mods": "Näytetään {count} modia",
+  "pagination_showing_mods_total": [{
+    "declarations": ""
+  }],
+
+  "footer_credits": "Sivuston tehnyt [HJfod](https://github.com/hjfod). Kiitos [nekitille](https://github.com/nekitdev) sivuston osoitteesta! Käännökset suomeksi: [HJfod](https://github.com/hjfod)."
+}

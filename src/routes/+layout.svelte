@@ -9,6 +9,11 @@
     import Waves from "$lib/components/Waves.svelte";
     import Icon from "$lib/components/Icon.svelte";
     import type { LayoutData } from "./$types";
+    import Select from "$lib/components/Select.svelte";
+    import { getLocale, locales, setLocale } from "$lib/paraglide/runtime";
+    import SelectOption from "$lib/components/SelectOption.svelte";
+    import { m } from "$lib/paraglide/messages";
+    import Markdown from "svelte-exmarkdown";
 
     interface Props {
         data: LayoutData;
@@ -26,8 +31,26 @@
     {@render children?.()}
     <nav>
         <div class="nav-left">
-            <Button href=".." design="primary-filled-dark" icon="home">Home</Button>
-            <Button href="/mods" design="primary-filled-dark" icon="browse">Mods</Button>
+            <Button href=".." design="primary-filled-dark" icon="home">
+                {m.nav_home()}
+            </Button>
+            <Button href="/mods" design="primary-filled-dark" icon="browse">
+                {m.nav_mods()}
+            </Button>
+            <Select
+                titleIcon="lang"
+                select={opt => setLocale(opt as any)}
+            >
+                {#each locales as lang}
+                    {@const getLanguageName = new Intl.DisplayNames([lang], { type: "language" })}
+                    <SelectOption
+                        icon="lang"
+                        title={getLanguageName.of(lang) ?? lang}
+                        value={lang}
+                        isDefault={lang === getLocale()}
+                    />
+                {/each}
+            </Select>
         </div>
         {#if data.loggedInUser !== null}
             <div class="nav-right">
@@ -40,27 +63,36 @@
         <Waves type="bottom" --text-color="var(--text-950)">
             <Column>
                 <Row wrap="wrap" align="center">
-                    <Link href="https://discord.gg/9e43WMKzhp" icon="discord">Discord</Link>
+                    <Link href="https://discord.gg/9e43WMKzhp" icon="discord">
+                        {m.links_discord()}
+                    </Link>
                     <Dot />
-                    <Link href="https://twitter.com/GeodeSDK" icon="twitter">Twitter</Link>
+                    <Link href="https://twitter.com/GeodeSDK" icon="twitter">
+                        {m.links_twitter()}
+                    </Link>
                     <Dot />
-                    <Link href="https://bsky.app/profile/geode-sdk.org" icon="bluesky">Bluesky</Link>
+                    <Link href="https://bsky.app/profile/geode-sdk.org" icon="bluesky">
+                        {m.links_bluesky()}
+                    </Link>
                 </Row>
                 <Row wrap="wrap" align="center">
-                    <Link href="https://docs.geode-sdk.org/" icon="docs">Documentation</Link>
+                    <Link href="https://docs.geode-sdk.org/" icon="docs">
+                        {m.links_docs()}
+                    </Link>
                     <Dot />
-                    <Link href="https://github.com/geode-sdk" icon="github">Source Code</Link>
+                    <Link href="https://github.com/geode-sdk" icon="github">
+                        {m.links_source_code()}
+                    </Link>
                     {#if data.loggedInUser === null}
                         <Dot />
-                        <Link href="/login" icon="account">Login</Link>
+                        <Link href="/login" icon="account">{m.links_login()}</Link>
                     {/if}
                 </Row>
-                <p>
-                    Site made by <Link href="https://github.com/hjfod">HJfod</Link>. Thank you to <Link
-                        href="https://github.com/nekitdev">
-                        nekit
-                    </Link> for the domain!
-                </p>
+                <Markdown md={m.footer_credits()}>
+                    {#snippet a(props)}
+                        <Link href={props.href!}>{@render props.children?.()}</Link>
+                    {/snippet}
+                </Markdown>
                 <Row gap="small">
                     <Icon icon="copyright" />
                     <p>Geode Team {new Date().getFullYear()}</p>

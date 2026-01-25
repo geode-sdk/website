@@ -8,11 +8,23 @@
     interface Props {
         icon: KnownIcon;
         text: string;
-        num: number;
     }
 
-    let { icon, text, num }: Props = $props();
-
+    let { icon, text }: Props = $props();
+    const [textPreNum, num, textPostNum] = $derived.by(() => {
+        const e = /\d+/.exec(text);
+        try {
+            if (!e) throw 0;
+            return [
+                text.substring(0, e.index),
+                parseInt(e[0]),
+                text.substring(e.index + e[0].length)
+            ];
+        }
+        catch {
+            return [text, 0, ""];
+        }
+    });
     const tween = new Tween(0, { duration: 1500, easing: quintOut });
 
     const beginCount = (node: HTMLElement) => {
@@ -37,8 +49,9 @@
 
 <div>
     <Icon {icon} />
+    {textPreNum}
     <span class="countup" use:beginCount>{tween.current.toLocaleString(undefined, { maximumFractionDigits: 0 })}</span>
-    {text}
+    {textPostNum}
 </div>
 
 <style lang="scss">

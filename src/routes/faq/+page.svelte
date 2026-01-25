@@ -8,6 +8,7 @@
     // TODO: FAQs in other languages
     import allFaqs from "$lib/data/faqs-en.json";
     import { getNewGDUpdateWasReleased } from "$lib";
+    import { m } from "$lib/paraglide/messages";
     
     const newGDUpdate = getNewGDUpdateWasReleased();
     // The update categories are only shown if we're in emergency mode
@@ -21,13 +22,13 @@
 </script>
 
 <svelte:head>
-    <title>Frequently Asked Questions</title>
-    <meta name="description" content="Frequently Asked Questions (FAQ) about Geode and modding Geometry Dash" />
+    <title>{m.meta_faq_title()}</title>
+    <meta name="description" content={m.meta_faq_desc()} />
 </svelte:head>
 
 <Waves type="top" />
 
-<h1>Frequently Asked Questions</h1>
+<h1>{m.faq_title()}</h1>
 
 <div class="main-flow">
     <nav>

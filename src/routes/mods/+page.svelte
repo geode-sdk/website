@@ -19,6 +19,7 @@
     import LoadingOverlay from "$lib/components/LoadingOverlay.svelte";
     import type { ServerDeveloper } from "$lib/api/models/base";
     import NewGDUpdateAlert from "$lib/components/NewGDUpdateAlert.svelte";
+    import { m } from "$lib/paraglide/messages.js";
 
     interface Props {
         data: PageData;
@@ -169,14 +170,14 @@
 </script>
 
 <svelte:head>
-    <title>Mods | Geode</title>
-    <meta name="description" content="Browse mods for the Geode mod loader" />
+    <title>{m.meta_browse_mods_title()}</title>
+    <meta name="description" content={m.meta_browse_mods_desc()} />
 </svelte:head>
 
 <Waves type="top" />
 <Gap size="large" />
 
-<h1>Browse Mods</h1>
+<h1>{m.browse_mods_title()}</h1>
 
 <NewGDUpdateAlert/>
 
@@ -195,10 +196,15 @@
 
     <Column align="stretch" gap="small">
         <nav class="search">
-            <Search placeholder="Search mods..." bind:query search={updateQuery} bind:ref={searchBar}></Search>
+            <Search
+                placeholder={m.browse_mods_search_placeholder()}
+                bind:query
+                search={updateQuery}
+                bind:ref={searchBar}
+            />
             <div class="search-filters">
                 <Select
-                    title="Sort by"
+                    title={m.browse_mods_sort_text()}
                     titleIcon="sort"
                     select={(value) => {
                         if (sort !== value) {
@@ -208,24 +214,34 @@
                     }}>
                     <SelectOption
                         icon="download"
-                        title="Most Downloaded"
+                        title={m.browse_mods_sort_option_most_downloaded()}
                         value="downloads"
                         isDefault={sort === "downloads" || !valid_sort} />
                     <SelectOption
                         icon="time"
-                        title="Most Recent"
+                        title={m.browse_mods_sort_option_recently_published()}
                         value="recently_published"
                         isDefault={sort === "recently_published"} />
                     <SelectOption
                         icon="time"
-                        title="Recently Updated"
+                        title={m.browse_mods_sort_option_recently_updated()}
                         value="recently_updated"
                         isDefault={sort === "recently_updated"} />
-                    <SelectOption icon="time" title="Oldest" value="oldest" isDefault={sort === "oldest"} />
-                    <SelectOption icon="sort-abc" title="Name (A-Z)" value="name" isDefault={sort === "name"} />
+                    <SelectOption
+                        icon="time"
+                        title={m.browse_mods_sort_option_oldest()}
+                        value="oldest"
+                        isDefault={sort === "oldest"}
+                    />
+                    <SelectOption
+                        icon="sort-abc"
+                        title={m.browse_mods_sort_option_name_a_z()}
+                        value="name"
+                        isDefault={sort === "name"}
+                    />
                     <SelectOption
                         icon="sort-cba"
-                        title="Name (Z-A)"
+                        title={m.browse_mods_sort_option_name_z_a()}
                         value="name_reverse"
                         isDefault={sort === "name_reverse"} />
                 </Select>
@@ -257,8 +273,8 @@
                 pageCount={data.mods?.data.length ?? 0}
                 page={current_page}
                 disabled={!data.mods}
-                label="mods"
-                labelOne="mod"
+                formatText={m.pagination_showing_mods}
+                formatTextWithTotal={m.pagination_showing_mods_total}
                 select={(page) => gotoPage(page)}>
                 <Row gap="small" justify="end">
                     <SelectButton
@@ -332,8 +348,8 @@
                         pageCount={data.mods?.data.length ?? 0}
                         page={current_page}
                         disabled={!data.mods}
-                        label="mods"
-                        labelOne="mod"
+                        formatText={m.pagination_showing_mods}
+                        formatTextWithTotal={m.pagination_showing_mods_total}
                         select={(page) => gotoPage(page)}>
                         <Select
                             title="Per page"

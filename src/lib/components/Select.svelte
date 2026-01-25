@@ -14,7 +14,7 @@
     import { clickoutside } from "@svelte-put/clickoutside";
 
     interface Props {
-        title: string;
+        title?: string;
         titleIcon: KnownIcon;
         select: (value: string) => void;
         children?: Snippet;
@@ -46,7 +46,7 @@
         }}>
         <Row gap="small">
             <Icon icon={titleIcon} />
-            {title}:
+            {title ? `${title}:` : ""}
             <span bind:this={selectedItem}></span>
         </Row>
     </button>

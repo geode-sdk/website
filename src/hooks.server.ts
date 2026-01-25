@@ -1,6 +1,7 @@
-import type { HandleFetch } from "@sveltejs/kit";
+import type { HandleFetch, Handle } from "@sveltejs/kit";
 import * as publicEnv from "$env/static/public";
 import * as privateEnv from "$env/static/private";
+import { paraglideMiddleware } from "$lib/paraglide/server";
 
 interface PrivateSchema {
     PRIVATE_ENDPOINT_ENABLED: string;
@@ -56,3 +57,16 @@ export const handleFetch: HandleFetch = async ({ request, fetch }) => {
 
     return fetch(request);
 };
+
+// Copied straight from https://inlang.com/m/gerre34r/library-inlang-paraglideJs/sveltekit
+const paraglideHandle: Handle = ({ event, resolve }) =>
+	paraglideMiddleware(event.request, ({ request: localizedRequest, locale }) => {
+		event.request = localizedRequest;
+		return resolve(event, {
+			transformPageChunk: ({ html }) => {
+				return html.replace('%lang%', locale);
+			}
+		});
+	});
+
+export const handle: Handle = paraglideHandle;

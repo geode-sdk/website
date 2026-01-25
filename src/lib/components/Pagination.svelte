@@ -8,8 +8,8 @@
         total: number;
         page: number;
         pageCount: number;
-        label: string;
-        labelOne?: string;
+        formatText: (args: { count: number }) => string;
+        formatTextWithTotal: (args: { count: number, total: number }) => string;
         disabled?: boolean;
         select: (page: number) => void;
         children?: Snippet;
@@ -20,15 +20,14 @@
         total,
         page,
         pageCount,
-        label,
-        labelOne = label,
+        formatText,
+        formatTextWithTotal,
         disabled = false,
         select,
         children,
     }: Props = $props();
 
     let max_page = $derived(Math.max(Math.ceil(total / perPage), 1));
-    let title = $derived(pageCount == 1 ? labelOne : label);
 
     const gotoPage = (page: number) => {
         select(page);
@@ -37,9 +36,9 @@
 
 <nav>
     {#if pageCount === total}
-        <p>Showing {pageCount} {title}</p>
+        <p>{formatText({ count: pageCount })}</p>
     {:else}
-        <p>Showing {pageCount} of {total} {title}</p>
+        <p>{formatTextWithTotal({ count: pageCount, total })}</p>
     {/if}
     <Row>
         <Button

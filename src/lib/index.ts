@@ -68,6 +68,7 @@ export const icons = {
     account: "mdi:account-circle",
     admin: "mdi:security",
     clipboard: "mdi:content-copy",
+    lang: "mdi:globe",
 
     "tag-universal": "mdi:globe",
     "tag-gameplay": "mdi:gamepad-variant",
