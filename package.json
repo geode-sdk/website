@@ -11,8 +11,9 @@
         "format": "prettier --write ."
     },
     "devDependencies": {
+        "@fluent/bundle": "^0.19.1",
+        "@fluent/langneg": "^0.7.0",
         "@iconify/svelte": "^5.1.0",
-        "@inlang/paraglide-js": "^2.9.1",
         "@svelte-put/clickoutside": "^4.0.0",
         "@sveltejs/adapter-auto": "^7.0.0",
         "@sveltejs/adapter-node": "^5.4.0",

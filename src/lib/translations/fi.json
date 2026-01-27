@@ -69,7 +69,10 @@
   "pagination_items_per_page": "Näytä",
   "pagination_showing_mods": "Näytetään {count} modia",
   "pagination_showing_mods_total": [{
-    "declarations": ""
+    "match": {
+      "total=count": "Näytetään {count} modia {total} modista",
+      ""
+    }
   }],
 
   "footer_credits": "Sivuston tehnyt [HJfod](https://github.com/hjfod). Kiitos [nekitille](https://github.com/nekitdev) sivuston osoitteesta! Käännökset suomeksi: [HJfod](https://github.com/hjfod)."

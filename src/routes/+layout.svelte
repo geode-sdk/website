@@ -10,16 +10,17 @@
     import Icon from "$lib/components/Icon.svelte";
     import type { LayoutData } from "./$types";
     import Select from "$lib/components/Select.svelte";
-    import { getLocale, locales, setLocale } from "$lib/paraglide/runtime";
     import SelectOption from "$lib/components/SelectOption.svelte";
-    import { m } from "$lib/paraglide/messages";
     import Markdown from "svelte-exmarkdown";
+    import { getTranslations } from "$lib/translations/l10n";
 
     interface Props {
         data: LayoutData;
         children?: Snippet;
         nav?: Snippet;
     }
+
+    const trans = getTranslations([]);
 
     let { data, children, nav }: Props = $props();
 </script>
@@ -32,10 +33,10 @@
     <nav>
         <div class="nav-left">
             <Button href=".." design="primary-filled-dark" icon="home">
-                {m.nav_home()}
+                {#await trans then t}{t.get("nav-home")}{/await}
             </Button>
             <Button href="/mods" design="primary-filled-dark" icon="browse">
-                {m.nav_mods()}
+                <Localized id="nav-mods"/>
             </Button>
             <Select
                 titleIcon="lang"
