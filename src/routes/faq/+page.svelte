@@ -89,6 +89,7 @@
     nav {
         display: none;
         flex-direction: column;
+        align-self: flex-start;
         gap: var(--gap-small);
         position: sticky;
         top: 5rem;
