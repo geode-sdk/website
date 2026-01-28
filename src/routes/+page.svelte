@@ -92,18 +92,18 @@
         {/if}
         <Row wrap="wrap">
             <Button href="/install" design="primary-filled-dark" icon="download">
-                <Localized id="main-button-download"/>
+                <Localized id="home-button-download"/>
             </Button>
             <Button href="/mods" design="primary-filled-dark" icon="browse">
-                <Localized id="main-button-browse-mods"/>
+                <Localized id="home-button-browse-mods"/>
             </Button>
             {#if data.self}
                 <Button href="/developers" design="primary-filled-dark" icon="account">
-                    <Localized id="main-button-developers"/>
+                    <Localized id="home-button-developers"/>
                 </Button>
             {/if}
             <Button href="/faq" design="primary-filled-dark" icon="help">
-                <Localized id="main-button-faq"/>
+                <Localized id="home-button-faq"/>
             </Button>
         </Row>
     </Column>
@@ -164,7 +164,7 @@
                             download_count: "<num>"
                         })}
                         number={stats.total_geode_downloads}
-                        locale={data.locale}
+                        locale={data.locales[0]}
                     />
                     <MoneyBox
                         icon="graph"
@@ -172,7 +172,7 @@
                             mod_count: "<num>"
                         })}
                         number={stats.total_mod_count}
-                        locale={data.locale}
+                        locale={data.locales[0]}
                     />
                 {:catch error}
                     <InfoBox type="error">Unable to load stats!</InfoBox>
@@ -224,10 +224,10 @@
             <Markdown md={localize("home-showcase-get-started")}/>
             <Row wrap="wrap">
                 <Button href="/install" design="primary-filled" icon="download">
-                    <Localized id="main-button-download"/>
+                    <Localized id="home-button-download"/>
                 </Button>
                 <Button href="/mods" design="primary-filled" icon="browse">
-                    <Localized id="main-button-browse-mods"/>
+                    <Localized id="home-button-browse-mods"/>
                 </Button>
             </Row>
         </Column>

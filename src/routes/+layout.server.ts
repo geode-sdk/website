@@ -17,7 +17,7 @@ export const load: LayoutServerLoad = async ({ locals, cookies, fetch }) => {
 
         return {
             loggedInUser: profile,
-            locale: locals.locale,
+            locales: locals.locales,
         };
     }
     catch (e) {
@@ -28,7 +28,7 @@ export const load: LayoutServerLoad = async ({ locals, cookies, fetch }) => {
 
         return {
             loggedInUser: null,
-            locale: locals.locale,
+            locales: locals.locales,
         };
     }
 };

@@ -15,27 +15,28 @@ export function getAvailableLocales(): string[] {
 	return Object.keys(resources);
 }
 
-export function generateBundles(locale: string): FluentBundle[] {
-	const bundle = new FluentBundle(locale);
-	bundle.addResource(resources[locale]);
+export function generateBundles(locales: string[]): FluentBundle[] {
+	const bundle = new FluentBundle(locales);
+	locales.forEach(locale => bundle.addResource(resources[locale]));
 	return [bundle];
 }
 
-export function negotiateLocale(ev: RequestEvent): string {
+export function negotiateLocale(ev: RequestEvent): string[] {
 	const override = ev.url.searchParams.get("lang");
 	if (override && override in resources) {
 		ev.cookies.set("geode-selected-language", override, { path: "/" });
-		return override;
+		return [override, defaultLocale];
 	}
 	const selected = ev.cookies.get("geode-selected-language");
 	if (selected) {
-		return selected;
+		return [selected, defaultLocale];
 	}
 	const accepted = acceptedLanguages(ev.request.headers.get("accept-language") ?? "");
 	const negotiated = negotiateLanguages(accepted, Object.keys(resources), {
 		defaultLocale,
 		strategy: "lookup"
-	}).at(0) ?? defaultLocale;
-	ev.cookies.set("geode-selected-language", negotiated, { path: "/" });
+	}) ?? [];
+	negotiated.push(defaultLocale);
+	ev.cookies.set("geode-selected-language", negotiated[0], { path: "/" });
 	return negotiated;
 }

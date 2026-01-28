@@ -55,7 +55,7 @@
                         icon="lang"
                         title={getLanguageName.of(lang) ?? lang}
                         value={lang}
-                        isDefault={lang === data.locale}
+                        isDefault={lang === data.locales[0]}
                     />
                 {/each}
             </Select>

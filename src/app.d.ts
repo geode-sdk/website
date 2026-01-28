@@ -7,7 +7,7 @@ declare global {
     namespace App {
         // interface Error {}
         interface Locals {
-            locale: string;
+            locales: string[];
             fluent: SvelteFluent;
         }
         // interface PageData {}

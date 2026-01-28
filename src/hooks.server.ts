@@ -60,7 +60,7 @@ export const handleFetch: HandleFetch = async ({ request, fetch }) => {
 };
 
 export const handle: Handle = async ({ event, resolve }) => {
-	event.locals.locale = negotiateLocale(event);
-	event.locals.fluent = createSvelteFluent(generateBundles(event.locals.locale));
+	event.locals.locales = negotiateLocale(event);
+	event.locals.fluent = createSvelteFluent(generateBundles(event.locals.locales));
 	return resolve(event);
 };
