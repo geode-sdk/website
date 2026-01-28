@@ -22,14 +22,16 @@
     import type { PageData } from "./$types";
     import { getNewGDUpdateWasReleased } from "$lib";
     import NewGDUpdateAlert from "$lib/components/NewGDUpdateAlert.svelte";
-    import { m, main_button_download } from "$lib/paraglide/messages";
     import Markdown from "svelte-exmarkdown";
+    import { Localized, useLocalize } from "@nubolab-ffwd/svelte-fluent";
 
     interface Props {
         data: PageData;
     }
 
     let { data }: Props = $props();
+
+    const localize = useLocalize();
 
     // is this a bad pattern.
     let stats_promise: Promise<ServerStats> = $state(new Promise(() => {}));
@@ -43,8 +45,8 @@
 </script>
 
 <svelte:head>
-    <title>{m.meta_homepage_title()}</title>
-    <meta name="description" content={m.meta_homepage_desc()}/>
+    <title>{localize("home-meta-title")}</title>
+    <meta name="description" content={localize("home-meta-desc")}/>
 </svelte:head>
 
 <Waves type="top-full" />
@@ -52,12 +54,12 @@
     <Column>
         <Row wrap="wrap">
             <GeodeLogo type="plain-mono" />
-            <h1>{m.main_title()}</h1>
+            <h1><Localized id="home-title"/></h1>
         </Row>
         <span class="shadow">
             <Markdown
-                md={m.subtitle_tagline({
-                    gd_link: "[Geometry Dash](https://store.steampowered.com/app/322170/Geometry_Dash/)"
+                md={localize("home-subtitle-tagline", {
+                    gd: "[Geometry Dash](https://store.steampowered.com/app/322170/Geometry_Dash/)"
                 })}
                 --em-color="var(--accent-alt-300)"
                 --text-color="var(--text-50)"
@@ -90,18 +92,18 @@
         {/if}
         <Row wrap="wrap">
             <Button href="/install" design="primary-filled-dark" icon="download">
-                {m.main_button_download()}
+                <Localized id="main-button-download"/>
             </Button>
             <Button href="/mods" design="primary-filled-dark" icon="browse">
-                {m.main_button_browse_mods()}
+                <Localized id="main-button-browse-mods"/>
             </Button>
             {#if data.self}
                 <Button href="/developers" design="primary-filled-dark" icon="account">
-                    {m.main_button_developers()}
+                    <Localized id="main-button-developers"/>
                 </Button>
             {/if}
             <Button href="/faq" design="primary-filled-dark" icon="help">
-                {m.main_button_faq()}
+                <Localized id="main-button-faq"/>
             </Button>
         </Row>
     </Column>
@@ -111,24 +113,24 @@
 <Column>
     <Row wrap="wrap" --link-color="var(--secondary-300)">
         <Link href="https://discord.gg/9e43WMKzhp" icon="discord">
-            {m.links_discord()}
+            <Localized id="links-discord"/>
         </Link>
         <Dot --dot-color="var(--background-400)" />
         <Link href="https://twitter.com/GeodeSDK" icon="twitter">
-            {m.links_twitter()}
+            <Localized id="links-twitter"/>
         </Link>
         <Dot --dot-color="var(--background-400)" />
         <Link href="https://bsky.app/profile/geode-sdk.org" icon="bluesky">
-            {m.links_bluesky()}
+            <Localized id="links-bluesky"/>
         </Link>
     </Row>
     <Row wrap="wrap" --link-color="var(--secondary-300)">
         <Link href="https://docs.geode-sdk.org/" icon="docs">
-            {m.links_docs()}
+            <Localized id="links-docs"/>
         </Link>
         <Dot --dot-color="var(--background-400)" />
         <Link href="https://github.com/geode-sdk" icon="github">
-            {m.links_source_code()}
+            <Localized id="links-source-code"/>
         </Link>
     </Row>
 </Column>
@@ -136,7 +138,7 @@
 <Column align="center">
     <FlyIntoView reverseOnSmallScreen={true}>
         <Column>
-            <Markdown md={m.showcase_introduction()}/>
+            <Markdown md={localize("home-showcase-introduction")}/>
             <span class="platform-icons">
                 <Icon icon="windows" --icon-size="2.5em" />
                 <Icon icon="mac" --icon-size="2.5em" />
@@ -150,7 +152,7 @@
     <FlyIntoView>
         <ModCollage />
         <Column>
-            <Markdown md={m.showcase_popular()}/>
+            <Markdown md={localize("home-showcase-community")}/>
             <Row wrap="wrap">
                 {#await stats_promise}
                     <LoadingCircle size="small" />
@@ -158,13 +160,13 @@
                 {:then stats}
                     <MoneyBox
                         icon="download"
-                        text={m.showcase_popular_download_count({
+                        text={localize("home-showcase-community.geode-download-count", {
                             download_count: stats.total_geode_downloads
                         })}
                     />
                     <MoneyBox
                         icon="graph"
-                        text={m.showcase_popular_mods_published({
+                        text={localize("home-showcase-community.mods-published", {
                             mod_count: stats.total_mod_count
                         })}
                     />
@@ -177,34 +179,34 @@
 
     <FlyIntoView reverseOnSmallScreen={true}>
         <Column>
-            <Markdown md={m.showcase_code()}/>
+            <Markdown md={localize("home-showcase-code")}/>
             <Row wrap="wrap">
                 <Button href="https://docs.geode-sdk.org/" design="secondary-filled">
-                    <Icon icon="docs" />{m.links_docs()}
+                    <Icon icon="docs" /><Localized id="links-docs"/>
                 </Button>
                 <Button href="https://github.com/geode-sdk/example-mod/">
-                    <Icon icon="examples" />{m.links_examples()}
+                    <Icon icon="examples" /><Localized id="links-examples"/>
                 </Button>
             </Row>
         </Column>
         <div class="code-example">
             <CodeExample
                 code={`
-                // ${m.showcase_code_comment_include()}
+                // ${localize("home-showcase-code.comment-include")}
                 #include <Geode/modify/MenuLayer.hpp>
                 
                 using namespace geode::prelude;
                 
-                // ${m.showcase_code_comment_modify()}
+                // ${localize("home-showcase-code.comment-modify")}
                 class $modify(MenuLayer) {
-                    // ${m.showcase_code_comment_hook_init()}
+                    // ${localize("home-showcase-code.comment-hook-init")}
                     bool init() {
-                        // ${m.showcase_code_comment_init_orig()}
+                        // ${localize("home-showcase-code.comment-init-original")}
                         if (!MenuLayer::init())
                             return false;
                         
-                        // ${m.showcase_code_comment_log()}
-                        log::info("${m.showcase_code_log_message()}");
+                        // ${localize("home-showcase-code.comment-comment-log")}
+                        log::info("${localize("home-showcase-code.log-message")}");
                 
                         return true;
                     }
@@ -215,13 +217,13 @@
 
     <FlyIntoView>
         <Column>
-            <Markdown md={m.showcase_get_started()}/>
+            <Markdown md={localize("home-showcase-get-started")}/>
             <Row wrap="wrap">
                 <Button href="/install" design="primary-filled" icon="download">
-                    {m.main_button_download()}
+                    <Localized id="main-button-download"/>
                 </Button>
                 <Button href="/mods" design="primary-filled" icon="browse">
-                    {m.main_button_browse_mods()}
+                    <Localized id="main-button-browse-mods"/>
                 </Button>
             </Row>
         </Column>

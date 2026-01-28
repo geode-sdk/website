@@ -1,6 +1,6 @@
 <script module lang="ts">
     export type SelectContext = {
-        setValue: (title: string, value: string) => void;
+        setValue: (title: string, value: string, isFromDefault: boolean) => void;
     };
 </script>
 
@@ -18,22 +18,24 @@
         titleIcon: KnownIcon;
         select: (value: string) => void;
         children?: Snippet;
+        runSelectOnDefault?: boolean;
     }
 
-    let { title, titleIcon, select, children }: Props = $props();
+    let { title, titleIcon, select, children, runSelectOnDefault = true }: Props = $props();
 
     let open: boolean = $state(false);
     let popup: HTMLDivElement | undefined = $state();
     let selectedItem: HTMLElement | undefined = $state();
 
     setContext<SelectContext>("select", {
-        setValue: (title: string, value: string) => {
+        setValue: (title: string, value: string, isFromDefault: boolean) => {
             open = false;
-
             if (selectedItem) {
                 selectedItem.innerHTML = title;
             }
-            select(value);
+            if (runSelectOnDefault || !isFromDefault) {
+                select(value);
+            }
         },
     });
 </script>

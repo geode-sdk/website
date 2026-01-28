@@ -9,20 +9,22 @@
     import Waves from "$lib/components/Waves.svelte";
     import Icon from "$lib/components/Icon.svelte";
     import type { LayoutData } from "./$types";
-    import Select from "$lib/components/Select.svelte";
-    import SelectOption from "$lib/components/SelectOption.svelte";
     import Markdown from "svelte-exmarkdown";
-    import { getTranslations } from "$lib/translations/l10n";
+	import { setSvelteFluent, Localized, useLocalize } from '@nubolab-ffwd/svelte-fluent';
+    import Select from "$lib/components/Select.svelte";
+    import { getAvailableLocales } from "$lib/translations/fluent";
+    import SelectOption from "$lib/components/SelectOption.svelte";
+    import { page } from "$app/state";
+    import { goto } from "$app/navigation";
 
-    interface Props {
+    const { data, children, nav }: {
         data: LayoutData;
         children?: Snippet;
         nav?: Snippet;
-    }
+    } = $props();
 
-    const trans = getTranslations([]);
-
-    let { data, children, nav }: Props = $props();
+    setSvelteFluent(() => data.fluent);
+    const localize = useLocalize();
 </script>
 
 <main>
@@ -33,22 +35,27 @@
     <nav>
         <div class="nav-left">
             <Button href=".." design="primary-filled-dark" icon="home">
-                {#await trans then t}{t.get("nav-home")}{/await}
+                <Localized id="nav-home"/>
             </Button>
             <Button href="/mods" design="primary-filled-dark" icon="browse">
                 <Localized id="nav-mods"/>
             </Button>
             <Select
                 titleIcon="lang"
-                select={opt => setLocale(opt as any)}
+                select={opt => {
+                    let query = new URLSearchParams(page.url.searchParams)
+                    query.set("lang", opt);
+                    goto(`?${query}`, { invalidateAll: true });
+                }}
+                runSelectOnDefault={false}
             >
-                {#each locales as lang}
+                {#each getAvailableLocales() as lang}
                     {@const getLanguageName = new Intl.DisplayNames([lang], { type: "language" })}
                     <SelectOption
                         icon="lang"
                         title={getLanguageName.of(lang) ?? lang}
                         value={lang}
-                        isDefault={lang === getLocale()}
+                        isDefault={lang === data.locale}
                     />
                 {/each}
             </Select>
@@ -65,35 +72,39 @@
             <Column>
                 <Row wrap="wrap" align="center">
                     <Link href="https://discord.gg/9e43WMKzhp" icon="discord">
-                        {m.links_discord()}
+                        <Localized id="links-discord"/>
                     </Link>
                     <Dot />
                     <Link href="https://twitter.com/GeodeSDK" icon="twitter">
-                        {m.links_twitter()}
+                        <Localized id="links-twitter"/>
                     </Link>
                     <Dot />
                     <Link href="https://bsky.app/profile/geode-sdk.org" icon="bluesky">
-                        {m.links_bluesky()}
+                        <Localized id="links-bluesky"/>
                     </Link>
                 </Row>
                 <Row wrap="wrap" align="center">
                     <Link href="https://docs.geode-sdk.org/" icon="docs">
-                        {m.links_docs()}
+                        <Localized id="links-docs"/>
                     </Link>
                     <Dot />
                     <Link href="https://github.com/geode-sdk" icon="github">
-                        {m.links_source_code()}
+                        <Localized id="links-source-code"/>
                     </Link>
                     {#if data.loggedInUser === null}
                         <Dot />
-                        <Link href="/login" icon="account">{m.links_login()}</Link>
+                        <Link href="/login" icon="account">
+                            <Localized id="links-login"/>
+                        </Link>
                     {/if}
                 </Row>
-                <Markdown md={m.footer_credits()}>
-                    {#snippet a(props)}
-                        <Link href={props.href!}>{@render props.children?.()}</Link>
-                    {/snippet}
-                </Markdown>
+                <Localized id="footer-credits">
+                    <Markdown md={localize("footer-credits")}>
+                        {#snippet a(props)}
+                            <Link href={props.href!}>{@render props.children?.()}</Link>
+                        {/snippet}
+                    </Markdown>
+                </Localized>
                 <Row gap="small">
                     <Icon icon="copyright" />
                     <p>Geode Team {new Date().getFullYear()}</p>

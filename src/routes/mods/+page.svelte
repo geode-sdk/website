@@ -19,7 +19,6 @@
     import LoadingOverlay from "$lib/components/LoadingOverlay.svelte";
     import type { ServerDeveloper } from "$lib/api/models/base";
     import NewGDUpdateAlert from "$lib/components/NewGDUpdateAlert.svelte";
-    import { m } from "$lib/paraglide/messages.js";
 
     interface Props {
         data: PageData;
@@ -170,14 +169,14 @@
 </script>
 
 <svelte:head>
-    <title>{m.meta_browse_mods_title()}</title>
-    <meta name="description" content={m.meta_browse_mods_desc()} />
+    <title>{"TODO_TRANSLATE"}</title>
+    <meta name="description" content={"TODO_TRANSLATE"} />
 </svelte:head>
 
 <Waves type="top" />
 <Gap size="large" />
 
-<h1>{m.browse_mods_title()}</h1>
+<h1>{"TODO_TRANSLATE"}</h1>
 
 <NewGDUpdateAlert/>
 
@@ -197,14 +196,14 @@
     <Column align="stretch" gap="small">
         <nav class="search">
             <Search
-                placeholder={m.browse_mods_search_placeholder()}
+                placeholder={"TODO_TRANSLATE"}
                 bind:query
                 search={updateQuery}
                 bind:ref={searchBar}
             />
             <div class="search-filters">
                 <Select
-                    title={m.browse_mods_sort_text()}
+                    title={"TODO_TRANSLATE"}
                     titleIcon="sort"
                     select={(value) => {
                         if (sort !== value) {
@@ -214,34 +213,34 @@
                     }}>
                     <SelectOption
                         icon="download"
-                        title={m.browse_mods_sort_option_most_downloaded()}
+                        title={"TODO_TRANSLATE"}
                         value="downloads"
                         isDefault={sort === "downloads" || !valid_sort} />
                     <SelectOption
                         icon="time"
-                        title={m.browse_mods_sort_option_recently_published()}
+                        title={"TODO_TRANSLATE"}
                         value="recently_published"
                         isDefault={sort === "recently_published"} />
                     <SelectOption
                         icon="time"
-                        title={m.browse_mods_sort_option_recently_updated()}
+                        title={"TODO_TRANSLATE"}
                         value="recently_updated"
                         isDefault={sort === "recently_updated"} />
                     <SelectOption
                         icon="time"
-                        title={m.browse_mods_sort_option_oldest()}
+                        title={"TODO_TRANSLATE"}
                         value="oldest"
                         isDefault={sort === "oldest"}
                     />
                     <SelectOption
                         icon="sort-abc"
-                        title={m.browse_mods_sort_option_name_a_z()}
+                        title={"TODO_TRANSLATE"}
                         value="name"
                         isDefault={sort === "name"}
                     />
                     <SelectOption
                         icon="sort-cba"
-                        title={m.browse_mods_sort_option_name_z_a()}
+                        title={"TODO_TRANSLATE"}
                         value="name_reverse"
                         isDefault={sort === "name_reverse"} />
                 </Select>
@@ -273,8 +272,8 @@
                 pageCount={data.mods?.data.length ?? 0}
                 page={current_page}
                 disabled={!data.mods}
-                formatText={m.pagination_showing_mods}
-                formatTextWithTotal={m.pagination_showing_mods_total}
+                formatText={() => "TODO_TRANSLATE"}
+                formatTextWithTotal={() => "TODO_TRANSLATE"}
                 select={(page) => gotoPage(page)}>
                 <Row gap="small" justify="end">
                     <SelectButton
@@ -348,8 +347,8 @@
                         pageCount={data.mods?.data.length ?? 0}
                         page={current_page}
                         disabled={!data.mods}
-                        formatText={m.pagination_showing_mods}
-                        formatTextWithTotal={m.pagination_showing_mods_total}
+                        formatText={() => "TODO_TRANSLATE"}
+                        formatTextWithTotal={() => "TODO_TRANSLATE"}
                         select={(page) => gotoPage(page)}>
                         <Select
                             title="Per page"

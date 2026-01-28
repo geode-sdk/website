@@ -1,6 +1,8 @@
 import type { HandleFetch, Handle } from "@sveltejs/kit";
 import * as publicEnv from "$env/static/public";
 import * as privateEnv from "$env/static/private";
+import { generateBundles, negotiateLocale } from '$lib/translations/fluent';
+import { createSvelteFluent } from '@nubolab-ffwd/svelte-fluent';
 
 interface PrivateSchema {
     PRIVATE_ENDPOINT_ENABLED: string;
@@ -55,4 +57,10 @@ export const handleFetch: HandleFetch = async ({ request, fetch }) => {
     }
 
     return fetch(request);
+};
+
+export const handle: Handle = async ({ event, resolve }) => {
+	event.locals.locale = negotiateLocale(event);
+	event.locals.fluent = createSvelteFluent(generateBundles(event.locals.locale));
+	return resolve(event);
 };

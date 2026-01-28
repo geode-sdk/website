@@ -3,7 +3,7 @@ import { tryCreateAuthenticatedClient } from "$lib/server";
 import { IndexNotAuthenticated, SetTokensResult } from "$lib/api/index-repository";
 import { removeCookieTokens, setCookieTokens } from "$lib/api/tokens";
 
-export const load: LayoutServerLoad = async ({ cookies, fetch }) => {
+export const load: LayoutServerLoad = async ({ locals, cookies, fetch }) => {
     const client = await tryCreateAuthenticatedClient(cookies, fetch);
 
     try {
@@ -15,13 +15,20 @@ export const load: LayoutServerLoad = async ({ cookies, fetch }) => {
             setCookieTokens(tokens.auth!, tokens.refresh!, cookies);
         }
 
-        return { loggedInUser: profile };
-    } catch (e) {
+        return {
+            loggedInUser: profile,
+            locale: locals.locale,
+        };
+    }
+    catch (e) {
         if (e instanceof IndexNotAuthenticated) {
             client.wipeTokens();
             removeCookieTokens(cookies);
         }
 
-        return { loggedInUser: null };
+        return {
+            loggedInUser: null,
+            locale: locals.locale,
+        };
     }
 };

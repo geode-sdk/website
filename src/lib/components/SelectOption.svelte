@@ -18,12 +18,12 @@
 
     $effect(() => {
         if (isDefault) {
-            setValue(title, value);
+            setValue(title, value, true);
         }
     });
 </script>
 
-<button onclick={() => setValue(title, value)}>
+<button onclick={() => setValue(title, value, false)}>
     <Row gap="small">
         <Icon {icon} --icon-size="1.3em" />
         <span class="option-text">{title}</span>

@@ -16,7 +16,6 @@
     import { bash } from "svelte-highlight/languages";
     import { getNewGDUpdateWasReleased } from "$lib";
     import NewGDUpdateAlert from "$lib/components/NewGDUpdateAlert.svelte";
-    import { m } from "$lib/paraglide/messages.js";
     import Markdown from "svelte-exmarkdown";
 
     interface Props {
@@ -82,16 +81,16 @@
 <Gap size="large" />
 
 <svelte:head>
-    <title>{m.meta_install_title()}</title>
-    <meta name="description" content={m.meta_install_desc()} />
+    <title>{"TODO_TRANSLATE"}</title>
+    <meta name="description" content={"TODO_TRANSLATE"} />
 </svelte:head>
 
-<h1>{m.install_title()}</h1>
+<h1>{"TODO_TRANSLATE"}</h1>
 
 {#if recentGDUpdate?.geodeStatus === "fully-broken"}
     <NewGDUpdateAlert includeButton={false}/>
-    <h2>{m.new_update_emergency_info_title()}</h2>
-    <Markdown md={m.new_update_emergency_info_text()}/>
+    <h2>{"TODO_TRANSLATE"}</h2>
+    <Markdown md={"TODO_TRANSLATE"}/>
 {:else}
     <div class="installation">
         <Column>
@@ -151,7 +150,7 @@
                         Latest version: <em>{latestVersion}</em>
                     </div>
                     {#if curPlatform === "unknown"}
-                        <p>Couldn't auto detect your platform. You can download Geode for your chosen platform below.</p>
+                        <p>Couldn't auto detect your platfo{"TODO_TRANSLATE"}n download Geode for your chosen platform below.</p>
                     {/if}
                     {#if curPlatform === "linux"}
                         <div class="alternative-install">

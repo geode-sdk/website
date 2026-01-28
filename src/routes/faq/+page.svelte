@@ -8,7 +8,6 @@
     // TODO: FAQs in other languages
     import allFaqs from "$lib/data/faqs-en.json";
     import { getNewGDUpdateWasReleased } from "$lib";
-    import { m } from "$lib/paraglide/messages";
     
     const newGDUpdate = getNewGDUpdateWasReleased();
     // The update categories are only shown if we're in emergency mode
@@ -22,13 +21,13 @@
 </script>
 
 <svelte:head>
-    <title>{m.meta_faq_title()}</title>
-    <meta name="description" content={m.meta_faq_desc()} />
+    <title>{"TODO_TRANSLATE"}</title>
+    <meta name="description" content={"TODO_TRANSLATE"} />
 </svelte:head>
 
 <Waves type="top" />
 
-<h1>{m.faq_title()}</h1>
+<h1>{"TODO_TRANSLATE"}</h1>
 
 <div class="main-flow">
     <nav>

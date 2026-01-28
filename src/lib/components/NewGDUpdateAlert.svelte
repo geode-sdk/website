@@ -1,27 +1,27 @@
 <script lang="ts">
     import { getNewGDUpdateWasReleased } from "$lib";
-    import { m } from "$lib/paraglide/messages";
     import Markdown from "svelte-exmarkdown";
     import Button from "./Button.svelte";
     import Gap from "./Gap.svelte";
     import InfoBox from "./InfoBox.svelte";
     import Link from "./Link.svelte";
     import Row from "./Row.svelte";
+    import { useLocalize } from "@nubolab-ffwd/svelte-fluent";
 
     const newGDUpdate = getNewGDUpdateWasReleased();
     const { includeButton = true }: { includeButton?: boolean } = $props();
+
+    const localize = useLocalize();
 </script>
 
 {#if newGDUpdate?.geodeStatus === "fully-broken"}
     <InfoBox type="error" solid={true}>
-        <Markdown md={m.new_update_emergency_broken_info({
-            new_gd_version: newGDUpdate.newGDVersion
-        })}/>
+        <Markdown md={"TODO_TRANSLATE"}/>
         {#if includeButton}
             <Gap size="small" blocking={true}/>
             <Row justify="start">
                 <Button design="primary-filled" href="/faq">
-                    {m.new_update_emergency_info_button()}
+                    {"TODO_TRANSLATE"}
                 </Button>
             </Row>
         {/if}
@@ -36,7 +36,7 @@
             <Gap size="small" blocking={true}/>
             <Row justify="start">
                 <Button design="secondary-filled" href="/faq">
-                    {m.new_update_emergency_info_button()}
+                    {"TODO_TRANSLATE"}
                 </Button>
             </Row>
         {/if}
