@@ -27,8 +27,8 @@
 <style is:global>
     .geode-logo {
         display: flex;
-        width: var(--font-size-title);
-        height: var(--font-size-title);
+        width: var(--font-size-geode);
+        height: var(--font-size-geode);
         fill: var(--text-50);
     }
     .geode-logo > :global(svg) {
