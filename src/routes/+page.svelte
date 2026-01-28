@@ -91,7 +91,7 @@
             <NewGDUpdateAlert/>
         {/if}
         <Row wrap="wrap">
-            <Button href="/install" design="primary-filled-dark" icon="download">
+            <Button href="/download" design="primary-filled-dark" icon="download">
                 <Localized id="home-button-download"/>
             </Button>
             <Button href="/mods" design="primary-filled-dark" icon="browse">
@@ -223,7 +223,7 @@
         <Column>
             <Markdown md={localize("home-showcase-get-started")}/>
             <Row wrap="wrap">
-                <Button href="/install" design="primary-filled" icon="download">
+                <Button href="/download" design="primary-filled" icon="download">
                     <Localized id="home-button-download"/>
                 </Button>
                 <Button href="/mods" design="primary-filled" icon="browse">
@@ -240,7 +240,7 @@
         font-family: var(--font-heading);
         font-weight: 600;
         color: var(--text-50);
-        font-size: var(--font-size-title);
+        font-size: var(--font-size-geode);
         text-shadow: 0 0 2rem var(--primary-800);
     }
     .code-example {

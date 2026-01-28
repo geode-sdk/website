@@ -5,60 +5,126 @@
     import Waves from "$lib/components/Waves.svelte";
     import Markdown from "svelte-exmarkdown";
 
-    // TODO: FAQs in other languages
-    import allFaqs from "$lib/data/faqs-en.json";
     import { getNewGDUpdateWasReleased } from "$lib";
-    
+    import { Localized, useLocalize } from "@nubolab-ffwd/svelte-fluent";
+
     const newGDUpdate = getNewGDUpdateWasReleased();
-    // The update categories are only shown if we're in emergency mode
-    const faqs = allFaqs.filter(faq => {
-        switch (faq.id) {
-            case "new-gd-update-geode-broken": return newGDUpdate?.geodeStatus === "fully-broken";
-            case "new-gd-update-geode-released": return newGDUpdate?.geodeStatus === "just-updated";
-            default: return true;
-        }
-    });
+
+    // How to add new FAQs:
+    // Step 1. Add a translation in en.ftl 
+    //         (remember to start the ID with `faq-q-`!)
+    // Step 2. Add it in the massive array below where it belongs
+    // If you want to add a category, make sure the ID starts with `faq-category-`
+
+    const faqs: {
+        category: string,
+        questions: (string | [string, any])[],
+    }[] = [
+        // The update categories are only shown if we're in emergency mode
+        newGDUpdate?.geodeStatus === "fully-broken" ? {
+            category: "emergency-update-broken",
+            questions: [
+                ["why-is-geode-not-working", { new_gd_version: newGDUpdate.newGDVersion }] as [string, any],
+                "when-will-geode-update",
+                "why-does-this-happen",
+                "why-is-it-taking-so-long",
+                "will-i-have-to-reinstall-mods",
+                "where-can-i-find-news",
+            ]
+        } : undefined,
+        newGDUpdate?.geodeStatus === "just-updated" ? {
+            category: "emergency-update-fixed",
+            questions: [
+                "does-geode-work-now",
+                "when-will-mods-be-updated",
+                "why-did-geode-break",
+            ]
+        } : undefined,
+        {
+            category: "about-geode",
+            questions: [
+                "is-geode-official",
+                "who-made-geode",
+                "is-geode-free",
+            ]
+        },
+        {
+            category: "common-issues",
+            questions: [
+                "i-cant-see-geode-button",
+                "how-do-i-install-geode-on-linux",
+            ]
+        },
+        {
+            category: "using-geode",
+            questions: [
+                "how-do-i-install-mods",
+                "why-cant-i-find-mods",
+                "how-do-i-update-mods",
+                "how-do-i-uninstall-mods",
+                "how-do-i-change-mod-settings",
+            ]
+        },
+        {
+            category: "safe-mode",
+            questions: [
+                "what-is-safe-mode",
+                "how-do-i-enable-safe-mode-win-mac",
+                "how-do-i-enable-safe-mode-android",
+            ]
+        },
+        {
+            category: "advanced",
+            questions: [
+                "how-do-i-manually-install-mods",
+            ]
+        },
+    ].filter(f => !!f);
+    
+    const localize = useLocalize();
 </script>
 
 <svelte:head>
-    <title>{"TODO_TRANSLATE"}</title>
-    <meta name="description" content={"TODO_TRANSLATE"} />
+    <title>{localize("faq-meta-title")}</title>
+    <meta name="description" content={localize("faq-meta-desc")} />
 </svelte:head>
 
 <Waves type="top" />
 
-<h1>{"TODO_TRANSLATE"}</h1>
+<h1><Localized id="faq-title"/></h1>
 
 <div class="main-flow">
     <nav>
         <span>
             {#each faqs as { category, questions }}
-                <h2>{category}</h2>
-                {#each questions as { id, question }}
-                    <Link href={"#" + id}>{question}</Link>
+                <h2><Localized id={`faq-category-${category}`}/></h2>
+                {#each questions as question}
+                    {@const id = typeof question === "string" ? question : question[0]}
+                    <Link href={"#" + id}><Localized id={`faq-q-${id}.question`}/></Link>
                 {/each}
             {/each}
         </span>
     </nav>
     <Column align="stretch">
-        {#each faqs as { category, questions, id: categoryID }, i}
+        {#each faqs as { category, questions }, i}
             {#if i > 0}
                 <Gap size="normal" />
             {/if}
-            <h2>{category}</h2>
-            {#each questions as { id, question, answer }}
+            <h2><Localized id={`faq-category-${category}`}/></h2>
+            {#each questions as question}
+                {@const id = typeof question === "string" ? question : question[0]}
                 <article
                     {id}
                     class={[
                         "faq", "scrolled", (
-                            categoryID === "new-gd-update-geode-broken" ||
-                            categoryID === "new-gd-update-geode-released"
+                            category === "emergency-update-broken" ||
+                            category === "emergency-update-fixed"
                         ) ? "alert" : null
                     ]}
                 >
-                    <h3>{question}</h3>
-                    <div class="markdown"><Markdown md={answer.replace(
-                        /{RECENT_GD_UPDATE_VERSION}/g, newGDUpdate?.newGDVersion ?? "(N/A)"
+                    <h3><Localized id={`faq-q-${id}.question`}/></h3>
+                    <div class="markdown"><Markdown md={localize(
+                        `faq-q-${id}.answer`, typeof question === "string" ? undefined : question[1]
                     )} /></div>
                 </article>
             {/each}
@@ -74,7 +140,7 @@
         font-family: var(--font-heading);
         font-weight: 600;
         color: var(--text-50);
-        font-size: var(--font-size-long-title);
+        font-size: var(--font-size-title);
     }
     h2 {
         margin: 0;

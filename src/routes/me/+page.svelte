@@ -127,7 +127,7 @@
         font-family: var(--font-heading);
         font-weight: 600;
         color: var(--text-50);
-        font-size: var(--font-size-long-title);
+        font-size: var(--font-size-title);
     }
 
     h2 {

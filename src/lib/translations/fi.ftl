@@ -43,10 +43,10 @@ home-meta-desc =
 home-title = {-geode-brand-name}
 home-subtitle-tagline = *Modeja* {$gd}-peliin
 
-main-button-download = Asenna
-main-button-browse-mods = Löydä modeja
-main-button-developers = Kehittäjät
-main-button-faq = UKK
+home-button-download = Asenna
+home-button-browse-mods = Löydä modeja
+home-button-developers = Kehittäjät
+home-button-faq = UKK
 
 home-showcase-introduction = 
     {-geode-brand-name} on *epävirallinen lisäosa* {-gd-brand-name-full} 

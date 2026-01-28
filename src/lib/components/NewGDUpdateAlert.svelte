@@ -16,27 +16,24 @@
 
 {#if newGDUpdate?.geodeStatus === "fully-broken"}
     <InfoBox type="error" solid={true}>
-        <Markdown md={"TODO_TRANSLATE"}/>
+        <Markdown md={localize("update-emergency-notification-info-broken", { new_gd_version: newGDUpdate.newGDVersion })}/>
         {#if includeButton}
             <Gap size="small" blocking={true}/>
             <Row justify="start">
                 <Button design="primary-filled" href="/faq">
-                    {"TODO_TRANSLATE"}
+                    {localize("update-emergency-notification-info-broken.faq-button")}
                 </Button>
             </Row>
         {/if}
     </InfoBox>
 {:else if newGDUpdate?.geodeStatus === "just-updated"}
     <InfoBox type="info" solid={true}>
-        A new update for Geometry Dash (version {newGDUpdate.newGDVersion}) 
-        was recently released. <em>Geode now supports that version</em>, but 
-        most mods haven't been updated yet. Please wait for mod developers to 
-        update their mods.
+        <Markdown md={localize("update-emergency-notification-info-fixed", { new_gd_version: newGDUpdate.newGDVersion })}/>
         {#if includeButton}
             <Gap size="small" blocking={true}/>
             <Row justify="start">
                 <Button design="secondary-filled" href="/faq">
-                    {"TODO_TRANSLATE"}
+                    {localize("update-emergency-notification-info-fixed.faq-button")}
                 </Button>
             </Row>
         {/if}

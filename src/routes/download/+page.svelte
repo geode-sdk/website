@@ -17,6 +17,7 @@
     import { getNewGDUpdateWasReleased } from "$lib";
     import NewGDUpdateAlert from "$lib/components/NewGDUpdateAlert.svelte";
     import Markdown from "svelte-exmarkdown";
+    import { Localized, useLocalize } from "@nubolab-ffwd/svelte-fluent";
 
     interface Props {
         data: PageData;
@@ -32,6 +33,8 @@
     let curPlatform: "windows" | "mac" | "android" | "linux" | "ios" | "unknown" | undefined = $state(undefined);
 
     let recentGDUpdate = getNewGDUpdateWasReleased();
+
+    const localize = useLocalize();
 
     const copyLinuxScript = () => {
         navigator.clipboard.writeText("curl -o- 'https://geode-sdk.org/install/linux.sh' | bash");
@@ -62,18 +65,24 @@
     onMount(() => {
         if (window.navigator.userAgent.includes("Windows")) {
             curPlatform = "windows";
-        } else if (window.navigator.userAgent.includes("Macintosh")) {
+        }
+        else if (window.navigator.userAgent.includes("Macintosh")) {
             curPlatform = "mac";
-        } else if (window.navigator.userAgent.includes("Android")) {
+        }
+        else if (window.navigator.userAgent.includes("Android")) {
             curPlatform = "android";
-        } else if (window.navigator.userAgent.includes("Linux")) {
+        }
+        else if (window.navigator.userAgent.includes("Linux")) {
             curPlatform = "linux";
-        } else if (window.navigator.userAgent.includes("iPhone") || window.navigator.userAgent.includes("iPad")) {
+        }
+        else if (window.navigator.userAgent.includes("iPhone") || window.navigator.userAgent.includes("iPad")) {
             curPlatform = "ios";
-        } else {
+        }
+        else {
             curPlatform = "unknown";
             showAllPlatforms = true;
         }
+        curPlatform = "linux";
     });
 </script>
 
@@ -81,98 +90,73 @@
 <Gap size="large" />
 
 <svelte:head>
-    <title>{"TODO_TRANSLATE"}</title>
-    <meta name="description" content={"TODO_TRANSLATE"} />
+    <title>{localize("download-meta-title")}</title>
+    <meta name="description" content={localize("download-meta-desc")} />
 </svelte:head>
 
-<h1>{"TODO_TRANSLATE"}</h1>
+<h1><Localized id="download-title"/></h1>
 
 {#if recentGDUpdate?.geodeStatus === "fully-broken"}
     <NewGDUpdateAlert includeButton={false}/>
-    <h2>{"TODO_TRANSLATE"}</h2>
-    <Markdown md={"TODO_TRANSLATE"}/>
+    <h2><Localized id="update-emergency-download-title"/></h2>
+    <Markdown md={localize("update-emergency-download-text")}/>
 {:else}
     <div class="installation">
         <Column>
             <section>
                 <Column>
-                    <p><strong>Installation instructions</strong></p>
+                    <p><strong><Localized id="download-instructions"/></strong></p>
                     <span style="color: var(--background-300)">
                         <Column align="start">
                             <Row>
                                 <Icon icon="one" />
-                                <p>
-                                    Download the <em>installer</em>
-                                    for the platform you want.
-                                </p>
+                                <Markdown md={localize("download-instructions.step-1")}/>
                             </Row>
                             <Row>
                                 <Icon icon="two" />
-                                <p>Run the installer.</p>
+                                <Markdown md={localize("download-instructions.step-2")}/>
                             </Row>
                         </Column>
                     </span>
-                    <p>
-                        Geode is available for
-                        <em>Windows, macOS, Android, iOS (experimental) and Linux (through Wine).</em>
-                    </p>
+                    <Markdown md={localize("download-instructions.platform-info")}/>
                 </Column>
             </section>
             <section class:hidden={!data.error}>
                 <InfoBox type="error">
-                    Could not determine the latest Geode release.
-
-                    <br />
-                    <br />
-
-                    You can download Geode <Link
-                        --link-color="var(--accent-300)"
-                        href="https://github.com/geode-sdk/geode/releases/latest">
-                        here
-                    </Link>.
-                    <br />
-                    Android users should install <Link
-                        --link-color="var(--accent-300)"
-                        href="https://github.com/geode-sdk/android-launcher/releases/latest">
-                        the Android launcher
-                    </Link> instead.
-                    <br />
-                    iOS users should check out <Link
-                        --link-color="var(--accent-300)"
-                        href="https://github.com/geode-sdk/ios-launcher/blob/main/INSTALL.md">
-                        the iOS installation guide
-                    </Link>
+                    <Markdown md={localize("download-fetch-failed")}/>
                 </InfoBox>
             </section>
             <section class:hidden={data.error}>
                 <Column>
                     <div>
-                        Latest version: <em>{latestVersion}</em>
+                        <Markdown md={localize("download-latest-version", { version: `*${latestVersion ?? "(N/A)"}*` })}/>
                     </div>
                     {#if curPlatform === "unknown"}
-                        <p>Couldn't auto detect your platfo{"TODO_TRANSLATE"}n download Geode for your chosen platform below.</p>
+                        <Markdown md={localize("download-auto-detect-failed")}/>
                     {/if}
                     {#if curPlatform === "linux"}
+                        <!-- epic hack to render the install container in the right place -->
                         <div class="alternative-install">
-                            You can install Geode using the command below:
-                            <div class="linux-install-container">
-                                <CodeExample
-                                    code={`curl -o- 'https://geode-sdk.org/install/linux.sh' | bash`}
-                                    language={bash} />
-                                <Button icon={"clipboard"} onclick={copyLinuxScript} />
-                            </div>
+                            <Markdown md={localize("download-linux-info", {
+                                linux_install_command: "`it-goes-here`"
+                            })}>
+                                {#snippet code()}
+                                    <div class="linux-download-container">
+                                        <CodeExample
+                                            code={"curl -o- 'https://geode-sdk.org/install/linux.sh' | bash"}
+                                            language={bash} />
+                                        <Button icon={"clipboard"} onclick={copyLinuxScript} />
+                                    </div>
+                                {/snippet}
+                            </Markdown>
                         </div>
-                        <p>
-                            Or by using the Windows installer
-                            <strong>(requires Wine)</strong>
-                        </p>
                         <div>
                             <Button design="primary-filled" href={createVersionString("windows")}>
-                                <Icon icon="linux" />Download for Linux
+                                <Icon icon="linux" /><Localized id="download-for-linux"/>
                             </Button>
                         </div>
                         <p>
-                            <Link bold href="faq#i-am-installing-geode-on-linux-what-do-i-have-to-do">
+                            <Link bold href="faq#how-do-i-install-geode-on-linux">
                                 <em>Click here for an FAQ about installing Geode on Linux.</em>
                             </Link>
                         </p>
@@ -293,7 +277,7 @@
                 <Button design="hollow" href="/faq#how-do-i-update-mods">
                     <Icon icon="help" /> How do I update mods?
                 </Button>
-                <Button design="hollow" href="/faq#how-do-i-uninstall-mods">
+                <Button design="hollow" href="/faq#how-do-i-undownload-mods">
                     <Icon icon="help" /> How do I uninstall mods?
                 </Button>
             </Row>
@@ -373,7 +357,7 @@
         text-align: center;
     }
 
-    .linux-install-container {
+    .linux-download-container {
         display: flex;
         align-items: center;
         gap: 0.5rem;
