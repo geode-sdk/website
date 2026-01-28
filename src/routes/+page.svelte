@@ -161,14 +161,18 @@
                     <MoneyBox
                         icon="download"
                         text={localize("home-showcase-community.geode-download-count", {
-                            download_count: stats.total_geode_downloads
+                            download_count: "<num>"
                         })}
+                        number={stats.total_geode_downloads}
+                        locale={data.locale}
                     />
                     <MoneyBox
                         icon="graph"
                         text={localize("home-showcase-community.mods-published", {
-                            mod_count: stats.total_mod_count
+                            mod_count: "<num>"
                         })}
+                        number={stats.total_mod_count}
+                        locale={data.locale}
                     />
                 {:catch error}
                     <InfoBox type="error">Unable to load stats!</InfoBox>

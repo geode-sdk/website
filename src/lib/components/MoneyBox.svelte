@@ -4,26 +4,25 @@
 
     import { Tween } from "svelte/motion";
     import { quintOut } from "svelte/easing";
+    import { error } from "@sveltejs/kit";
 
-    interface Props {
+    let { icon, text, number, locale }: {
         icon: KnownIcon;
         text: string;
-    }
+        number: number;
+        locale: string;
+    } = $props();
 
-    let { icon, text }: Props = $props();
-    const [textPreNum, num, textPostNum] = $derived.by(() => {
-        const e = /\d+/.exec(text);
-        try {
-            if (!e) throw 0;
-            return [
-                text.substring(0, e.index),
-                parseInt(e[0]),
-                text.substring(e.index + e[0].length)
-            ];
+    const INSERT_NUM_HERE = "<num>";
+    const [textPreNum, textPostNum] = $derived.by(() => {
+        const start = text.indexOf(INSERT_NUM_HERE);
+        if (start === -1) {
+            error(500, `Missing <num> in MoneyBox with text ${text}`);
         }
-        catch {
-            return [text, 0, ""];
-        }
+        return [
+            text.substring(0, start),
+            text.substring(start + INSERT_NUM_HERE.length)
+        ];
     });
     const tween = new Tween(0, { duration: 1500, easing: quintOut });
 
@@ -33,7 +32,7 @@
                 (entries) => {
                     entries.reverse().forEach((entry) => {
                         if (entry.isIntersecting) {
-                            tween.target = num;
+                            tween.target = number;
                         }
                     });
                 },
@@ -50,7 +49,7 @@
 <div>
     <Icon {icon} />
     {textPreNum}
-    <span class="countup" use:beginCount>{tween.current.toLocaleString(undefined, { maximumFractionDigits: 0 })}</span>
+    <span class="countup" use:beginCount>{new Intl.NumberFormat(locale).format(Math.round(tween.current))}</span>
     {textPostNum}
 </div>
 
