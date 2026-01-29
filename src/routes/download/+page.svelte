@@ -82,7 +82,6 @@
             curPlatform = "unknown";
             showAllPlatforms = true;
         }
-        curPlatform = "linux";
     });
 </script>
 
@@ -128,8 +127,13 @@
             </section>
             <section class:hidden={data.error}>
                 <Column>
+                    {#if data.locales[0] !== "en"}
+                        <InfoBox type="warning">
+                            <Markdown md={localize("download-language-warning")}/>
+                        </InfoBox>
+                    {/if}
                     <div>
-                        <Markdown md={localize("download-latest-version", { version: `*${latestVersion ?? "(N/A)"}*` })}/>
+                        <Markdown md={localize("download-latest-version", { version: `*${latestVersion ?? "N/A"}*` })}/>
                     </div>
                     {#if curPlatform === "unknown"}
                         <Markdown md={localize("download-auto-detect-failed")}/>
@@ -157,74 +161,62 @@
                         </div>
                         <p>
                             <Link bold href="faq#how-do-i-install-geode-on-linux">
-                                <em>Click here for an FAQ about installing Geode on Linux.</em>
+                                <em><Localized id="download-linux-faq-link"/></em>
                             </Link>
                         </p>
                     {/if}
                     {#if curPlatform === "android"}
-                        <div>
-                            Latest Android Launcher version: <em>{latestLauncher}</em>
-                        </div>
+                        <Markdown md={localize("download-latest-android-version", { version: `*${latestLauncher ?? "N/A"}*` })}/>
                     {/if}
                     {#if curPlatform === "ios"}
-                        <p>
-                            Installing Geode on iOS is a bit more complicated than other platforms, and requires the use of
-                            a
-                            <em>computer.</em>
-                        </p>
-                        <div>
-                            Latest iOS launcher version: <em>{latestIOSLauncher}</em>
-                        </div>
+                        <Markdown md={localize("download-ios-info")}/>
+                        <Markdown md={localize("download-latest-ios-version", { version: `*${latestIOSLauncher ?? "N/A"}*` })}/>
                     {/if}
                     {#if !showAllPlatforms}
                         {#if curPlatform === "windows"}
                             <Button design="primary-filled" href={createVersionString("windows")}>
-                                <Icon icon="windows" />Download for Windows
+                                <Icon icon="windows"/><Localized id="download-for-windows"/>
                             </Button>
                         {/if}
                         {#if curPlatform === "mac"}
                             <InfoBox type="warning">
-                                The <em>Geode macOS installer</em>
-                                is only supported on the <Link
-                                    href="https://store.steampowered.com/app/322170/Geometry_Dash/"
-                                    bold
-                                    newTab>
-                                    Steam
-                                </Link> release of Geometry Dash.
+                                <Markdown md={localize("download-macos-info", {
+                                    steam_link: "https://store.steampowered.com/app/322170/Geometry_Dash/"
+                                })}/>
                             </InfoBox>
 
                             <Button design="primary-filled" href={createVersionString("mac")}>
-                                <Icon icon="mac" />Download for macOS
+                                <Icon icon="mac" /><Localized id="download-for-macos"/>
                             </Button>
                         {/if}
                         {#if curPlatform === "android"}
                             <Button design="primary-filled" href={createVersionString("android")}>
-                                <Icon icon="android" />Download for Android
+                                <Icon icon="android" /><Localized id="download-for-android"/>
                             </Button>
                         {/if}
                         {#if curPlatform === "ios"}
                             <Button
                                 design="primary-filled"
                                 href="https://github.com/geode-sdk/ios-launcher/blob/main/INSTALL.md">
-                                <Icon icon="ios" />Download for iOS (experimental)
+                                <Icon icon="ios" /><Localized id="download-for-ios-experimental"/>
                             </Button>
                         {/if}
                     {/if}
-                    <Rollover title="Show All Platforms" bind:open={showAllPlatforms}>
+                    <Rollover title={localize("download-show-all")} bind:open={showAllPlatforms}>
                         <Column align="stretch">
                             <Button design="primary-filled" href={createVersionString("windows")}>
-                                <Icon icon="windows" />Download for Windows
+                                <Icon icon="windows" /><Localized id="download-for-windows"/>
                             </Button>
                             <Button design="primary-filled" href={createVersionString("mac")}>
-                                <Icon icon="mac" />Download for macOS (Steam)
+                                <Icon icon="mac" /><Localized id="download-for-macos-steam"/>
                             </Button>
                             <Button design="primary-filled" href={createVersionString("android")}>
-                                <Icon icon="android" />Download for Android
+                                <Icon icon="android" /><Localized id="download-for-android"/>
                             </Button>
                             <Button
                                 design="primary-filled"
                                 href="https://github.com/geode-sdk/ios-launcher/blob/main/INSTALL.md">
-                                <Icon icon="ios" />Download for iOS (experimental)
+                                <Icon icon="ios" /><Localized id="download-for-ios-experimental"/>
                             </Button>
                         </Column>
                     </Rollover>
@@ -235,23 +227,17 @@
 
     <Gap size="large" />
 
-    <h2>How to install mods?</h2>
+    <h2><Localized id="download-how-to-use-mods-section-title"/></h2>
 
     <FlyIntoView>
         <div class="img-with-width">
-            <Image name="main-menu" alt="The main menu, showing the Geode button" style="shadow" />
+            <Image name="main-menu" alt={localize("download-how-to-use-main-menu.image-alt")} style="shadow" />
         </div>
         <Column align="start">
-            <p>
-                Once you have <em>installed Geode</em>
-                , you should see a new button in the bottom row of the main menu.
-                <br />
-                <br />
-                Clicking this button brings you to the Geode Menu.
-            </p>
+            <Markdown md={localize("download-how-to-use-main-menu")}/>
             <Row wrap="wrap">
-                <Button design="hollow" href="/faq#i-cant-see-the-geode-button">
-                    <Icon icon="help" /> I can't see the Geode button!
+                <Button design="hollow" href="/faq#i-cant-see-geode-button">
+                    <Icon icon="help" /><Localized id="download-how-to-use-main-menu.button-missing-faq"/>
                 </Button>
             </Row>
         </Column>
@@ -259,26 +245,19 @@
 
     <FlyIntoView>
         <div class="img-with-width">
-            <Image name="main-page" alt="The Geode menu" style="shadow" />
+            <Image name="main-page" alt={localize("download-how-to-use-mods-list.image-alt")} style="shadow" />
         </div>
         <Column align="start">
-            <p>
-                The first page you see is the <em>list of mods you currently have installed</em>
-                . Use the toggles to quickly
-                <em>enable/disable</em>
-                any mods, or click
-                <em>View</em>
-                for further options like editing mod settings and uninstalling.
-            </p>
-            <Row wrap="wrap">
+            <Markdown md={localize("download-how-to-use-mods-list")}/>
+            <Row wrap="wrap" justify="start">
                 <Button design="hollow" href="/faq#how-do-i-change-mod-settings">
-                    <Icon icon="help" /> How do I change mod settings?
+                    <Icon icon="help" /><Localized id="download-how-to-use-mods-list.mod-settings-faq"/>
                 </Button>
                 <Button design="hollow" href="/faq#how-do-i-update-mods">
-                    <Icon icon="help" /> How do I update mods?
+                    <Icon icon="help" /><Localized id="download-how-to-use-mods-list.mod-update-faq"/>
                 </Button>
-                <Button design="hollow" href="/faq#how-do-i-undownload-mods">
-                    <Icon icon="help" /> How do I uninstall mods?
+                <Button design="hollow" href="/faq#how-do-i-uninstall-mods">
+                    <Icon icon="help" /><Localized id="download-how-to-use-mods-list.mod-uninstall-faq"/>
                 </Button>
             </Row>
         </Column>
@@ -286,27 +265,13 @@
 
     <FlyIntoView>
         <div class="img-with-width">
-            <Image name="download-page" alt="The download tab of the Geode menu" style="shadow" />
+            <Image name="download-page" alt={localize("download-how-to-use-download-mods.image-alt")} style="shadow" />
         </div>
         <Column align="start">
-            <p>
-                The other pages - <em>Recommended</em>
-                ,
-                <em>Download</em>
-                , and
-                <em>Trending</em>
-                are dedicated to finding new mods.
-                <br />
-                <br />
-                You can use the
-                <em>search button</em>
-                on the left to search for specific mods by name or by
-                <em>tags</em>
-                .
-            </p>
+            <Markdown md={localize("download-how-to-use-download-mods")}/>
             <Row wrap="wrap">
                 <Button design="hollow" href="/faq#why-cant-i-find-certain-mods">
-                    <Icon icon="help" /> Why can't I find a certain Mod?
+                    <Icon icon="help" /><Localized id="download-how-to-use-download-mods.cant-find-mod-faq"/>
                 </Button>
             </Row>
         </Column>

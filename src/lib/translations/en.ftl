@@ -126,6 +126,10 @@ download-meta-desc =
 
 download-title = Download Geode
 
+download-language-warning = 
+    Geode itself, including the Android and iOS launchers, are currently *only 
+    available in English*.
+
 download-instructions = Installation instructions
     .step-1 = Download the *installer* for the platform you want.
     .step-2 = Run the installer.
@@ -146,6 +150,8 @@ download-fetch-failed =
     {"["}the iOS installation guide](https://github.com/geode-sdk/ios-launcher/blob/main/INSTALL.md)
 
 download-latest-version = Latest version: {$version}
+download-latest-android-version = Latest Android Launcher version: {$version}
+download-latest-ios-version = Latest iOS Launcher version: {$version}
 
 download-auto-detect-failed = 
     Couldn't auto-detect your platform. You can download Geode for your device 
@@ -156,13 +162,53 @@ download-linux-info =
     {$linux_install_command}
     Or by using the Windows installer *(requires Wine)*.
 
+download-macos-info = 
+    The *Geode macOS installer* is only supported on the 
+    {"["}Steam]({$steam_link}) release of Geometry Dash.
+
+download-ios-info = 
+    Installing Geode on iOS is a bit more complicated than other platforms, 
+    and requires the use of a *computer*.
+
+download-linux-faq-link = 
+    Click here for an FAQ about installing Geode on Linux.
+
+download-show-all = Show all platforms
 download-for-windows = Download for Windows
 download-for-macos = Download for macOS
 download-for-macos-steam = Download for macOS (Steam)
 download-for-android = Download for Android
-download-for-ios-expimental = Download for iOS
+download-for-ios = Download for iOS
 download-for-ios-experimental = Download for iOS (experimental)
 download-for-linux = Download for Linux
+
+download-how-to-use-mods-section-title = 
+    How to install mods?
+
+download-how-to-use-main-menu = 
+    Once you have installed Geode, you should see a *new button* in the bottom row of the main menu.
+
+    Clicking this button brings you to the Geode Menu.
+    .button-missing-faq = I can't see the Geode button!
+    .image-alt = The main menu, showing the Geode button
+
+download-how-to-use-mods-list = 
+    The first page you see is the *list of mods you currently have installed*. 
+    Use the toggles to quickly *enable/disable* any mods, or click *View* for 
+    further options like editing mod settings and uninstalling.
+    .mod-settings-faq = How do I change mod settings?
+    .mod-update-faq = How do I update mods?
+    .mod-uninstall-faq = How do I uninstall mods?
+    .image-alt = The Geode menu, showing the list of installed mods
+
+download-how-to-use-download-mods = 
+    The other pages - *Featured*, *Download*, and *Recent* are dedicated to 
+    finding new mods. 
+
+    You can use the *search input* to search for specific mods by name, or 
+    click the *filters* to find mods based on tags.
+    .cant-find-mod-faq = Why can't I find a certain mod?
+    .image-alt = The download mods page in Geode
 
 ## FAQ page
 
