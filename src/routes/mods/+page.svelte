@@ -19,6 +19,7 @@
     import LoadingOverlay from "$lib/components/LoadingOverlay.svelte";
     import type { ServerDeveloper } from "$lib/api/models/base";
     import NewGDUpdateAlert from "$lib/components/NewGDUpdateAlert.svelte";
+    import { Localized, useLocalize } from "@nubolab-ffwd/svelte-fluent";
 
     interface Props {
         data: PageData;
@@ -26,6 +27,8 @@
 
     let { data }: Props = $props();
     const profile: ServerDeveloper | null = $derived(data.loggedInUser ?? null);
+
+    const localize = useLocalize();
 
     let url_params = $derived(page.url.searchParams);
     let current_page = $derived(data.params.page ?? 1);
@@ -169,14 +172,14 @@
 </script>
 
 <svelte:head>
-    <title>{"TODO_TRANSLATE"}</title>
-    <meta name="description" content={"TODO_TRANSLATE"} />
+    <title>{localize("browser-meta-title")}</title>
+    <meta name="description" content={localize("browser-meta-desc")}/>
 </svelte:head>
 
 <Waves type="top" />
 <Gap size="large" />
 
-<h1>{"TODO_TRANSLATE"}</h1>
+<h1><Localized id="browser-title"/></h1>
 
 <NewGDUpdateAlert/>
 
@@ -196,14 +199,14 @@
     <Column align="stretch" gap="small">
         <nav class="search">
             <Search
-                placeholder={"TODO_TRANSLATE"}
+                placeholder={localize("browser-search.placeholder")}
                 bind:query
                 search={updateQuery}
                 bind:ref={searchBar}
             />
             <div class="search-filters">
                 <Select
-                    title={"TODO_TRANSLATE"}
+                    title={localize("browser-sort")}
                     titleIcon="sort"
                     select={(value) => {
                         if (sort !== value) {
@@ -213,34 +216,34 @@
                     }}>
                     <SelectOption
                         icon="download"
-                        title={"TODO_TRANSLATE"}
+                        title={localize("browser-sort.most-downloaded")}
                         value="downloads"
                         isDefault={sort === "downloads" || !valid_sort} />
                     <SelectOption
                         icon="time"
-                        title={"TODO_TRANSLATE"}
+                        title={localize("browser-sort.recently-published")}
                         value="recently_published"
                         isDefault={sort === "recently_published"} />
                     <SelectOption
                         icon="time"
-                        title={"TODO_TRANSLATE"}
+                        title={localize("browser-sort.recently-updated")}
                         value="recently_updated"
                         isDefault={sort === "recently_updated"} />
                     <SelectOption
                         icon="time"
-                        title={"TODO_TRANSLATE"}
+                        title={localize("browser-sort.oldest")}
                         value="oldest"
                         isDefault={sort === "oldest"}
                     />
                     <SelectOption
                         icon="sort-abc"
-                        title={"TODO_TRANSLATE"}
+                        title={localize("browser-sort.name-a-z")}
                         value="name"
                         isDefault={sort === "name"}
                     />
                     <SelectOption
                         icon="sort-cba"
-                        title={"TODO_TRANSLATE"}
+                        title={localize("browser-sort.name-z-a")}
                         value="name_reverse"
                         isDefault={sort === "name_reverse"} />
                 </Select>
@@ -272,8 +275,8 @@
                 pageCount={data.mods?.data.length ?? 0}
                 page={current_page}
                 disabled={!data.mods}
-                formatText={() => "TODO_TRANSLATE"}
-                formatTextWithTotal={() => "TODO_TRANSLATE"}
+                formatText={args => localize("pagination-showing-mods", args)}
+                formatTextWithTotal={args => localize("pagination-showing-mods-of-total", args)}
                 select={(page) => gotoPage(page)}>
                 <Row gap="small" justify="end">
                     <SelectButton
@@ -324,7 +327,7 @@
                 {:else}
                     <div class="no-mod-listing">
                         <div class="humorous-meme"><Image name="no-mods" alt="" /></div>
-                        <p><em>No matching mods found :(</em></p>
+                        <p><em><Localized id="browser-no-results-found"/></em></p>
                         <p>
                             It could be that the mod you're looking for
                             {#if platforms.size}

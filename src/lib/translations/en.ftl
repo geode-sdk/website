@@ -210,6 +210,29 @@ download-how-to-use-download-mods =
     .cant-find-mod-faq = Why can't I find a certain mod?
     .image-alt = The download mods page in Geode
 
+## Mods browser
+
+browser-meta-title = Geode - Mods
+browser-meta-desc = 
+    Browse mods for the Geode mod loader for Geometry Dash
+
+browser-title = Browse Mods
+
+browser-search = 
+    .placeholder = Search mods...
+
+browser-sort = Sort by
+    .most-downloaded = Most downloaded
+    .recently-published = Recent
+    .recently-updated = Recently updated
+    .oldest = Oldest
+    .name-a-z = Name (A-Z)
+    .name-z-a = Name (Z-A)
+
+browser-no-results-found = No matching mods found :(
+browser-no-results-hint-platforms = 
+    It could be that the mod you're looking for is not available on {$platforms}
+
 ## FAQ page
 
 faq-meta-title = Geode - FAQ
@@ -439,22 +462,3 @@ faq-q-how-do-i-manually-install-mods =
         Locate your Geometry Dash folder, inside of which is a `geode` folder. 
         There you can find a `mods` folder that contains all your Geode mods. 
         To manually install a mod, add the mods' `.geode` files here.
-
-## Mods browse
-
-browse-meta-title = Geode - Mods
-browse-meta-desc = 
-    Browse mods for the Geode mod loader for Geometry Dash
-
-browse-title = Browse Mods
-
-browse-search = 
-    .placeholder = Search mods...
-
-browse-sort = Sort by
-    .most-downloaded = Most downloaded
-    .recently-published = Recent
-    .recently-updated = Recently updated
-    .oldest = Oldest
-    .name-a-z = Name (A-Z)
-    .name-z-a = Name (Z-A)
