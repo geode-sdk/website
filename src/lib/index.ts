@@ -154,3 +154,15 @@ export function getNewGDUpdateWasReleased(): NewGDUpdateInfo | undefined {
     //     geodeStatus: "fully-broken",
     // }
 }
+
+export function platformIDToLegible(id: string): string {
+    switch (id) {
+        case "windows": return "Windows";
+        case "mac-intel": return "macOS (x64)";
+        case "mac-arm": return "macOS (ARM)";
+        case "android64": return "Android (64-bit)";
+        case "android32": return "Android (32-bit)";
+        case "ios": return "iOS";
+        default: return "<unknown-platform>";
+    }
+}

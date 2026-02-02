@@ -5,12 +5,15 @@
     import InfoBox from "$lib/components/InfoBox.svelte";
     import LoadingCircle from "$lib/components/LoadingCircle.svelte";
 
-    import { iconForTag } from "$lib/index.js";
+    import { iconForTag, platformIDToLegible } from "$lib/index.js";
     import type { ServerTag } from "$lib/api/models/base";
+    import { Localized, useLocalize } from "@nubolab-ffwd/svelte-fluent";
 
     function toggleSet<T>(set: Set<T>, value: T) {
         set.has(value) ? set.delete(value) : set.add(value);
     }
+
+    const localize = useLocalize();
 
     interface Props {
         platforms: Set<string>;
@@ -40,10 +43,12 @@
 </script>
 
 <div class="menu">
-    <header><Icon icon="filter" --icon-size="1.2em" />Search Filters</header>
+    <header><Icon icon="filter" --icon-size="1.2em" />
+        <Localized id="browser-filters-title"/>
+    </header>
     <nav>
         {#if loggedIn}
-            <Rollover title="Your mods">
+            <Rollover title={localize("browser-filters-category-developer")}>
                 <SelectButton
                     icon="account"
                     selected={userMods}
@@ -51,68 +56,25 @@
                         userMods = !userMods;
                         updateSearch();
                     }}>
-                    Your mods
+                    <Localized id="browser-filters-developer-own-only"/>
                 </SelectButton>
             </Rollover>
         {/if}
-        <Rollover title="Platform">
-            <SelectButton
-                icon="windows"
-                selected={platforms.has("windows")}
-                select={() => {
-                    toggleSet(platforms, "windows");
-                    updateSearch();
-                }}>
-                Windows
-            </SelectButton>
-            <SelectButton
-                icon="mac"
-                selected={platforms.has("mac-arm")}
-                select={() => {
-                    toggleSet(platforms, "mac-arm");
-                    updateSearch();
-                }}>
-                macOS (ARM)
-            </SelectButton>
-            <SelectButton
-                icon="mac"
-                selected={platforms.has("mac-intel")}
-                select={() => {
-                    toggleSet(platforms, "mac-intel");
-                    updateSearch();
-                }}>
-                macOS (x64)
-            </SelectButton>
-            <SelectButton
-                icon="android"
-                selected={platforms.has("android64")}
-                select={() => {
-                    toggleSet(platforms, "android64");
-                    updateSearch();
-                }}>
-                Android (64-bit)
-            </SelectButton>
-            <SelectButton
-                icon="android"
-                selected={platforms.has("android32")}
-                select={() => {
-                    toggleSet(platforms, "android32");
-                    updateSearch();
-                }}>
-                Android (32-bit)
-            </SelectButton>
-            <SelectButton
-                icon="ios"
-                selected={platforms.has("ios")}
-                select={() => {
-                    toggleSet(platforms, "ios");
-                    updateSearch();
-                }}>
-                iOS
-            </SelectButton>
+        <Rollover title={localize("browser-filters-category-platform")}>
+            {#each ["windows", "mac-arm", "mac-intel", "android64", "android32", "ios"] as platform}
+                <SelectButton
+                    icon="windows"
+                    selected={platforms.has(platform)}
+                    select={() => {
+                        toggleSet(platforms, platform);
+                        updateSearch();
+                    }}>
+                    {platformIDToLegible(platform)}
+                </SelectButton>
+            {/each}
         </Rollover>
 
-        <Rollover title="Tags">
+        <Rollover title={localize("browser-filters-category-tags")}>
             {#await tagsListing}
                 <LoadingCircle size="small" />
             {:then server_tags}
@@ -129,16 +91,24 @@
                         </SelectButton>
                     {/each}
                 {:else}
-                    <InfoBox type="error">Failed to list tags!</InfoBox>
+                    <InfoBox type="error">
+                        <Localized id="browser-filters-category-tags.list-error"/>
+                    </InfoBox>
                 {/if}
             {:catch error}
-                <InfoBox type="error">Unable to connect to servers!</InfoBox>
+                <InfoBox type="error">
+                    <Localized id="browser-filters-category-tags.server-error"/>
+                </InfoBox>
             {/await}
         </Rollover>
 
-        <Rollover title="Other">
-            <SelectButton icon="featured" bind:selected={featured} select={updateSearch}>Featured only</SelectButton>
-            <SelectButton icon="unverified" bind:selected={pending} select={updateSearch}>Unverified only</SelectButton>
+        <Rollover title={localize("browser-filters-category-other")}>
+            <SelectButton icon="featured" bind:selected={featured} select={updateSearch}>
+                <Localized id="browser-filters-featured-only"/>
+            </SelectButton>
+            <SelectButton icon="unverified" bind:selected={pending} select={updateSearch}>
+                <Localized id="browser-filters-unverified-only"/>
+            </SelectButton>
         </Rollover>
     </nav>
 </div>

@@ -20,6 +20,8 @@
     import type { ServerDeveloper } from "$lib/api/models/base";
     import NewGDUpdateAlert from "$lib/components/NewGDUpdateAlert.svelte";
     import { Localized, useLocalize } from "@nubolab-ffwd/svelte-fluent";
+    import Markdown from "svelte-exmarkdown";
+    import { platformIDToLegible } from "$lib";
 
     interface Props {
         data: PageData;
@@ -327,17 +329,12 @@
                 {:else}
                     <div class="no-mod-listing">
                         <div class="humorous-meme"><Image name="no-mods" alt="" /></div>
-                        <p><em><Localized id="browser-no-results-found"/></em></p>
-                        <p>
-                            It could be that the mod you're looking for
-                            {#if platforms.size}
-                                is not available on {Array.from(platforms)
-                                    .map((a) => a.charAt(0).toUpperCase() + a.slice(1))
-                                    .join(" / ")}!
-                            {:else}
-                                is not available on Geode, or was made for an older version!
-                            {/if}
-                        </p>
+                        <Markdown md={localize("browser-no-results-found", {
+                            platforms: platforms.size ? 
+                                new Intl.ListFormat(data.locales, { type: "disjunction" })
+                                    .format(Array.from(platforms).map(p => platformIDToLegible(p))) : 
+                                "geode"
+                        })}/>
                     </div>
                 {/if}
             </LoadingOverlay>
@@ -350,11 +347,11 @@
                         pageCount={data.mods?.data.length ?? 0}
                         page={current_page}
                         disabled={!data.mods}
-                        formatText={() => "TODO_TRANSLATE"}
-                        formatTextWithTotal={() => "TODO_TRANSLATE"}
+                        formatText={args => localize("pagination-showing-mods", args)}
+                        formatTextWithTotal={args => localize("pagination-showing-mods-of-total", args)}
                         select={(page) => gotoPage(page)}>
                         <Select
-                            title="Per page"
+                            title={localize("pagination-select-items-per-page")}
                             titleIcon="eye"
                             select={(value) => {
                                 const newValue = parseInt(value);
@@ -477,9 +474,6 @@
 
         & > .humorous-meme {
             max-width: min(20rem, 50vw);
-        }
-        & > p {
-            margin: 0;
         }
     }
     .mod-listing-size-enforcer {

@@ -229,9 +229,34 @@ browser-sort = Sort by
     .name-a-z = Name (A-Z)
     .name-z-a = Name (Z-A)
 
-browser-no-results-found = No matching mods found :(
-browser-no-results-hint-platforms = 
-    It could be that the mod you're looking for is not available on {$platforms}
+# TRANSLATORS: $platforms here is either the exact word "geode" if the user has 
+# no platform search options enabled, or a list formatted in the selected 
+# language of the platforms. To be more specific, the list is a disjunction, as 
+# in a "A, B or C" list. If this does not work for your language, please contact 
+# HJfod and we will figure it out! 
+browser-no-results-found =
+    # No matching mods found :(
+
+    It could be that the mod you're looking for is not available on 
+    {$platforms -> 
+        [geode] Geode, or was made for an older version
+       *[a] {$platforms}, or was made for an older version of Geode
+    }!
+
+browser-filters-title = Search Filters
+
+browser-filters-category-developer = Developer
+browser-filters-developer-own-only = Your mods only
+
+browser-filters-category-platform = Platform
+
+browser-filters-category-tags = Tags
+    .list-error = Failed to list tags!
+    .server-error = Unable to connect to servers!
+
+browser-filters-category-other = Other
+browser-filters-featured-only = Featured only
+browser-filters-unverified-only = Unverified only
 
 ## FAQ page
 
