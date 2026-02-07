@@ -40,7 +40,7 @@
         <Waves type="bottom" --text-color="var(--text-950)">
             <Column>
                 <Row wrap="wrap" align="center">
-                    <Link href="https://discord.gg/9e43WMKzhp" icon="discord">Discord</Link>
+                    <Link href="https://docs.google.com/forms/d/11QmFYU-6lu8wElctZizu1Nx6MebH02jUOktogytFHxU/edit#response=ACYDBNiRhUTPD7_BIoeWQzS8VmaNbDRBGkIFU3KIVpy_93roadckNmvHqliI8vrJeA" icon="discord">Discord</Link>
                     <Dot />
                     <Link href="https://twitter.com/GeodeSDK" icon="twitter">Twitter</Link>
                     <Dot />
