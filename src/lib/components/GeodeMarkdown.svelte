@@ -23,7 +23,7 @@
             return;
         }
 
-        return `#${parsedColor.toString(16)}`;
+        return `#${parsedColor.toString(16).padStart(color.length, '0')}`;
     };
 
     // this is basically a direct port of the geode function lol
