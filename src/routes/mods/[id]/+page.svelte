@@ -371,16 +371,13 @@
                                 </code>
                             </p>
 
-                            {#if data.version.early_load || data.version.api || data.version.gd.ios}
+                            {#if data.version.early_load || data.version.api}
                                 <Row align="center" justify="top" gap="small">
                                     {#if data.version.early_load}
                                         <Label icon="time" design="accent-alt">Early Load</Label>
                                     {/if}
                                     {#if data.version.api}
                                         <Label icon="tag-enhancement" design="accent">API</Label>
-                                    {/if}
-                                    {#if data.version.gd.ios}
-                                        <Label icon="ios" design="gray">{data.version.gd.ios}</Label>
                                     {/if}
                                 </Row>
                             {/if}
