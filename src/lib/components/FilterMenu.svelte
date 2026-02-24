@@ -81,7 +81,7 @@
                     toggleSet(platforms, "mac-intel");
                     updateSearch();
                 }}>
-                macOS (x64)
+                macOS (Intel)
             </SelectButton>
             <SelectButton
                 icon="android"

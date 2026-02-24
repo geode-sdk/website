@@ -34,7 +34,7 @@
             <Label icon="mac" design="gray">{gd["mac-arm"]} (ARM)</Label>
         {/if}
         {#if gd["mac-intel"]}
-            <Label icon="mac" design="gray">{gd["mac-intel"]} (x64)</Label>
+            <Label icon="mac" design="gray">{gd["mac-intel"]} (Intel)</Label>
         {/if}
     {/if}
 
