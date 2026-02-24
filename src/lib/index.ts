@@ -1,6 +1,9 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
+import type { ServerDependency } from "./api/models/mod-version";
+import semver from "semver";
+
 dayjs.extend(relativeTime);
 
 export const icons = {
@@ -151,4 +154,123 @@ export function getNewGDUpdateWasReleased(): NewGDUpdateInfo | undefined {
         newGDVersion: "2.2081",
         geodeStatus: "fully-broken",
     }
+}
+
+
+export type SemverUpperBound = 
+    | {
+        kind: "finite";
+        version: string;
+        inclusive: boolean;
+    }
+    | { kind: "infinite"; infinity: true };
+
+/**
+ * Compare two finite or infinite upper bounds.
+ * Returns negative if a < b, positive if a > b, zero if equal.
+ * 
+ * @param {SemverUpperBound} a
+ * @param {SemverUpperBound} b
+ * @returns {number}
+ */
+function compareBounds(a: SemverUpperBound, b: SemverUpperBound): number {
+    if (a.kind == "infinite" && b.kind == "infinite") return 0;
+    if (a.kind == "infinite") return 1;
+    if (b.kind == "infinite") return -1;
+
+    const cmp = semver.compare(a.version, b.version);
+    if (cmp !== 0) return cmp;
+
+    // versions are equal, inclusive > exclusive
+    if (a.inclusive === b.inclusive) return 0;
+    return a.inclusive ? 1 : -1;
+}
+
+/**
+ * Compares two dependencies by their importance
+ * 
+ * @param {ServerDependency} a
+ * @param {ServerDependency} b
+ * @returns {number}
+ */
+const compareImportance = (a: ServerDependency, b: ServerDependency): number => {
+    const importanceRank: Record<string, number> = {
+        "suggested": 0,
+        "required": 1
+    };
+
+    const rankA = importanceRank[a.importance]!;
+    const rankB = importanceRank[b.importance]!;
+
+    if (rankA < rankB) return -1;
+    if (rankA > rankB) return 1;
+    return 0;
+};
+
+/**
+ * Given a semver range string, return the upper bound version and whether it's inclusive.
+ * 
+ * @param {string} rangeStr A semver range string
+ * @returns 
+ */
+export function getUpperBound(rangeStr: string): SemverUpperBound {
+    try {
+        const range = new semver.Range(rangeStr);
+        const comparators = range.set[0];
+        let upperBound: SemverUpperBound | null = null;
+        
+        for (const comp of comparators) {
+            const op = comp.operator;
+            const version = comp.semver.version;
+
+            // other operators like '>', '>=', etc. do not affect the upper bound
+            if (op === '<' || op === '<=' || op === '=' || !op) {
+                const inclusive = (op === '<=' || op === '=' || !op);
+                const candidate: SemverUpperBound = { kind: "finite", version, inclusive };
+
+                if (upperBound === null) {
+                    upperBound = candidate;
+                } else {
+                    // keep the smaller upper bound (intersection)
+                    if (compareBounds(candidate, upperBound) < 0) {
+                        upperBound = candidate;
+                    }
+                }
+            }
+        }
+
+        return upperBound ?? { kind: "infinite", infinity: true };
+    } catch (e) {
+        console.warn(`Invalid range "${rangeStr}", treating as unbounded`);
+        return { kind: "infinite", infinity: true };
+    }
+}
+
+/**
+ * Deduplicate dependencies by mod_id, keeping the entry with the highest upper bound.
+ * 
+ * @param {ServerDependency[]} deps Array of dependencies
+ * @returns {ServerDependency[]}
+ */
+export function deduplicateDependencies(deps: ServerDependency[]): ServerDependency[] {
+    const map = new Map();
+
+    for (const dep of deps) {
+        const { mod_id, version } = dep;
+        if (!map.has(mod_id)) {
+            map.set(mod_id, dep);
+            continue;
+        }
+
+        const current = map.get(mod_id);
+        const currentBound = getUpperBound(current.version);
+        const newBound = getUpperBound(version);
+
+        // keep the bound with the larger upper bound, or the one with higher importance
+        if (compareBounds(newBound, currentBound) < 0 || compareImportance(dep, current) > 0) {
+            map.set(mod_id, dep);
+        }
+    }
+
+    return Array.from(map.values());
 }
