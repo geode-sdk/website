@@ -13,7 +13,10 @@
     import Link from "$lib/components/Link.svelte";
     import Icon from "$lib/components/Icon.svelte";
     import Gap from "$lib/components/Gap.svelte";
-    import { serverTimestampToAgoString, serverTimestampToDateString, formatNumber, iconForTag } from "$lib";
+    import {
+        serverTimestampToAgoString, serverTimestampToDateString,
+        formatNumber, iconForTag, deduplicateDependencies
+    } from "$lib";
     import Waves from "$lib/components/Waves.svelte";
     import Label from "$lib/components/Label.svelte";
     import InfoBox from "$lib/components/InfoBox.svelte";
@@ -98,6 +101,9 @@
             ? !!data.mod.links?.homepage || !!data.mod.links?.community
             : !!data.mod.links?.homepage && !!data.mod.links?.community,
     );
+
+    let dedupedDependencies = $derived(deduplicateDependencies(data.version?.dependencies || []));
+    
 </script>
 
 <svelte:head>
@@ -378,9 +384,9 @@
                         </Column>
 
                         <h2>Dependencies</h2>
-                        {#if data.version.dependencies?.length}
+                        {#if dedupedDependencies.length}
                             <ul class="color-link">
-                                {#each data.version.dependencies as dependency}
+                                {#each dedupedDependencies as dependency}
                                     <li>
                                         {dependency.importance} -
                                         <Link href={`/mods/${dependency.mod_id}`}>
@@ -494,10 +500,10 @@
                 </Column>
             </section>
             <section>
-                {#if data.version.dependencies?.length}
+                {#if dedupedDependencies.length}
                     <p>Dependencies:</p>
                     <ul>
-                        {#each data.version.dependencies as dependency}
+                        {#each dedupedDependencies as dependency}
                             <div class="color-link">
                                 <li>
                                     <Link href={`/mods/${dependency.mod_id}`}>
