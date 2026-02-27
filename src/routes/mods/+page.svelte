@@ -79,6 +79,14 @@
         });
     };
 
+    const scrollToSearchBar = () => {
+        console.log(searchBar);
+        searchBar?.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+        });
+    };
+
     const updateSearch = async (scroll = false) => {
         searching = true;
         const params = new URLSearchParams();
@@ -123,7 +131,7 @@
             replaceState: true,
         });
         searching = false;
-        if (scroll) scrollToTop();
+        if (scroll) scrollToSearchBar();
     };
 
     const onFilterUpdate = () => {
@@ -147,7 +155,7 @@
             replaceState: true,
         });
         searching = false;
-        scrollToTop();
+        scrollToSearchBar();
     };
 
     const onKeydown = (e: KeyboardEvent) => {
@@ -343,7 +351,9 @@
                                 if (per_page !== newValue) {
                                     const scroll = newValue < per_page;
                                     per_page = newValue;
-                                    updateSearch(scroll);
+                                    updateSearch();
+                                    if (scroll)
+                                        scrollToTop();
                                 }
                             }}>
                             {#each perPageOptions as option}
