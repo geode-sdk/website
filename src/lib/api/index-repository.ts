@@ -1,7 +1,7 @@
 import * as publicEnv from "$env/static/public";
 
 import type { ServerDeveloper, ServerTag } from "./models/base";
-import type { ServerMod, ServerSimpleMod } from "./models/mod.js";
+import type { ServerMod, ServerModDeprecation, ServerSimpleMod } from "./models/mod.js";
 import type { ModStatus, ServerModVersion } from "./models/mod-version.js";
 import type { ServerStats } from "./models/stats";
 import type { Cookies } from "@sveltejs/kit";
@@ -378,6 +378,16 @@ export class IndexClient {
         });
         const data: BaseRequest<ServerMod> = await r.json();
 
+        return this.validate(data);
+    }
+
+    async getModDeprecation(id: string): Promise<ServerModDeprecation[]> {
+        const r = await this.withRetry(async () => {
+            return await this.fetch(`${BASE_URL}/v1/mods/${id}/deprecations`, {
+                headers: this.token ? { Authorization: `Bearer ${this.token}` } : {},
+            });
+        });
+        const data: BaseRequest<ServerModDeprecation[]> = await r.json();
         return this.validate(data);
     }
 

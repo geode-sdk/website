@@ -11,7 +11,7 @@ import type { ServerTag } from "$lib/api/models/base.js";
 import type { ModStatus, ServerModVersion } from "$lib/api/models/mod-version.js";
 import type { Actions, PageServerLoad } from "./$types.js";
 import { error, fail } from "@sveltejs/kit";
-import type { ServerMod } from "$lib/api/models/mod";
+import type { ServerMod, ServerModDeprecation } from "$lib/api/models/mod";
 import { tryCreateAuthenticatedClient } from "$lib/server";
 
 export const actions: Actions = {
@@ -181,6 +181,13 @@ export const load: PageServerLoad = async ({ fetch, url, params, cookies }) => {
         });
     }
 
+    let deprecation: ServerModDeprecation[] | undefined = undefined;
+    try {
+        deprecation = await client.getModDeprecation(id);
+    } catch (e) {
+        // probably don't make the whole thing fail if it's only about an error getting deprecations
+    }
+
     let version = undefined;
     try {
         version = await client.getModVersion(id, version_string);
@@ -220,5 +227,5 @@ export const load: PageServerLoad = async ({ fetch, url, params, cookies }) => {
         tags = await getCachedTags(client);
     } catch (e) {}
 
-    return { mod, version, versions, tags, version_params };
+    return { mod, deprecation, version, versions, tags, version_params };
 };
