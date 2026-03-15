@@ -29,3 +29,10 @@ export interface ServerMod {
     updated_at: string;
     links?: ServerModLinks;
 }
+
+export interface ServerModDeprecation {
+    by: string[];
+    id: number;
+    mod_id: string;
+    reason: string;
+}

@@ -48,6 +48,10 @@
     const is_admin = $derived(user?.admin === true);
     const owns_mod = $derived(can_update_mod && data.mod.developers.some((d) => d.is_owner && d.id == user?.id));
 
+    const is_deprecated = $derived((data.deprecation?.length ?? 0) > 0);
+    const deprecation_reason = $derived(data.deprecation?.[0]?.reason ?? null);
+    const deprecation_alternatives = $derived(data.deprecation?.[0]?.by ?? []);
+
     const paid = $derived(data.mod.tags.includes("paid"));
 
     const updateSearch = async () => {
@@ -137,6 +141,29 @@
             <Tabs>
                 <TabPage name="Description" id="description" icon="description">
                     <div class="markdown">
+                        {#if is_deprecated}
+                            <Column align="center">
+                                <InfoBox type="warning">
+                                    This mod was marked as <em>deprecated</em> by
+                                    their developer(s)
+                                    {#if deprecation_reason}
+                                        (<em>"{deprecation_reason}"</em>)
+                                    {/if}; 
+                                    this means that it may <em>no longer receive updates</em>.
+                                    {#if deprecation_alternatives.length > 0}
+                                        <br />
+                                        Instead, you may use these alternatives:
+                                        <ul>
+                                            {#each deprecation_alternatives as mod_id}
+                                                <li>
+                                                    <Link href={`/mods/${mod_id}`}>{mod_id}</Link>
+                                                </li>
+                                            {/each}
+                                        </ul>
+                                    {/if}
+                                </InfoBox>
+                            </Column>
+                        {/if}
                         {#if paid}
                             <Column align="center">
                                 <InfoBox type="info">
