@@ -382,7 +382,7 @@ export async function renderModBadgeSvg(input: ModBadgeSvgInput) {
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="${CARD_WIDTH}" height="${height}" viewBox="0 0 ${CARD_WIDTH} ${height}" role="img" aria-labelledby="title">
-    <title id="title">Geode mod badge</desc>
+    <title id="title">Geode mod badge</title>
     <style>${await loadEmbeddedFontsCss()}</style>
     <rect width="${CARD_WIDTH}" height="${height}" rx="12" fill="${COLORS.background}" />
     <rect x="0.5" y="0.5" width="${CARD_WIDTH - 1}" height="${height - 1}" rx="11.5" fill="none" stroke="${COLORS.outline}" />
