@@ -33,55 +33,28 @@ export const MOD_BADGE_STAT_KEYS = [
 
 export type ModBadgeStatKey = (typeof MOD_BADGE_STAT_KEYS)[number];
 
-type LabelDescriptor = {
-    text: string;
-    icon?: KnownIcon;
-    fill: string;
-    textColor: string;
+type BadgeDescriptor = {
+    label: string;
+    value: string;
+    icon: KnownIcon;
 };
 
-type LabelColors = Pick<LabelDescriptor, "fill" | "textColor">;
-
-type RenderedRow = {
-    svg: string;
-    height: number;
-};
-
-type RenderedLabel = RenderedRow & {
-    width: number;
-};
-
-const CARD_WIDTH = 320;
-const CARD_PADDING = 12;
-const INNER_WIDTH = CARD_WIDTH - CARD_PADDING * 2;
-const INFO_ROW_GAP = 8;
-const BASE_ROW_HEIGHT = 18;
-const ROW_ICON_SIZE = 18;
 const FONT_FAMILY = "Poppins Embedded";
-
-const LABEL_STYLE = {
-    height: 24,
-    gapX: 6,
-    gapY: 6,
-    iconSize: 14,
-    textSize: 12.5,
-    textWeight: 600,
-    paddingX: 8,
-    radius: 6,
-} as const;
+const BADGE_HEIGHT = 20;
+const BADGE_RADIUS = 3;
+const BADGE_ICON_SIZE = 12;
+const BADGE_TEXT_SIZE = 11;
+const BADGE_TEXT_WEIGHT = 600;
+const BADGE_LEFT_PADDING = 6;
+const BADGE_RIGHT_PADDING = 6;
+const BADGE_ICON_GAP = 4;
 
 const COLORS = {
     background: "#0c0811",
     outline: "rgba(205, 152, 189, 0.18)",
     text: "#f2f2f2",
     muted: "#cd98bd",
-    grayLabel: "rgba(124, 82, 173, 0.5)",
-    grayLabelText: "#f2f2f2",
-};
-
-const GD_LABEL_COLORS: LabelColors = {
-    fill: COLORS.grayLabel,
-    textColor: COLORS.grayLabelText,
+    grayLabel: "#5f3d84",
 };
 
 const mdiIconSet = mdiIcons as { icons: Record<string, SvgIconData> };
@@ -133,14 +106,6 @@ const measureTextWidth = (text: string, fontSize: number, weight = 400) => {
     return Math.ceil(text.length * fontSize * (weight >= 600 ? 0.61 : 0.56));
 };
 
-const measureLabelWidth = (text: string, icon?: KnownIcon) => {
-    return (
-        LABEL_STYLE.paddingX * 2 +
-        (icon ? LABEL_STYLE.iconSize + 4 : 0) +
-        measureTextWidth(text, LABEL_STYLE.textSize, LABEL_STYLE.textWeight)
-    );
-};
-
 const getIconData = (icon: KnownIcon) => {
     const customIcon = customIcons[icon];
     if (customIcon) {
@@ -162,116 +127,17 @@ const renderIcon = (icon: KnownIcon, x: number, y: number, size: number, color: 
     return `<g transform="translate(${x} ${y}) scale(${size / width} ${size / height})" style="color: ${color};">${data.body}</g>`;
 };
 
-const renderText = (
+const renderBadgeText = (
     text: string,
     x: number,
     y: number,
-    {
-        size = 16,
-        fill = COLORS.text,
-        weight = 400,
-    }: {
-        size?: number;
-        fill?: string;
-        weight?: number;
-    } = {},
+    { anchor = "start" as const, fill = COLORS.text }: { anchor?: "start" | "middle"; fill?: string } = {},
 ) => {
-    return `<text x="${x}" y="${y}" fill="${fill}" font-family="${FONT_FAMILY}, Arial, sans-serif" font-size="${size}" font-weight="${weight}" dominant-baseline="middle">${escapeXml(text)}</text>`;
-};
-
-const renderLabel = (label: LabelDescriptor, x: number, y: number): RenderedLabel => {
-    const width = measureLabelWidth(label.text, label.icon);
-    const parts = [
-        `<rect x="${x}" y="${y}" width="${width}" height="${LABEL_STYLE.height}" rx="${LABEL_STYLE.radius}" fill="${label.fill}" />`,
-    ];
-
-    let contentX = x + LABEL_STYLE.paddingX;
-    if (label.icon) {
-        parts.push(
-            renderIcon(
-                label.icon,
-                contentX,
-                y + (LABEL_STYLE.height - LABEL_STYLE.iconSize) / 2,
-                LABEL_STYLE.iconSize,
-                label.textColor,
-            ),
-        );
-        contentX += LABEL_STYLE.iconSize + 4;
-    }
-
-    parts.push(
-        renderText(label.text, contentX, y + LABEL_STYLE.height / 2 + 0.5, {
-            size: LABEL_STYLE.textSize,
-            fill: label.textColor,
-            weight: LABEL_STYLE.textWeight,
-        }),
-    );
-
-    return {
-        svg: parts.join(""),
-        width,
-        height: LABEL_STYLE.height,
-    };
-};
-
-const layoutLabels = (labels: LabelDescriptor[], startX: number, startY: number, maxWidth: number) => {
-    let x = startX;
-    let y = startY;
-    const parts: string[] = [];
-
-    for (const label of labels) {
-        const width = measureLabelWidth(label.text, label.icon);
-
-        if (x !== startX && x + width > startX + maxWidth) {
-            x = startX;
-            y += LABEL_STYLE.height + LABEL_STYLE.gapY;
-        }
-
-        const rendered = renderLabel(label, x, y);
-        parts.push(rendered.svg);
-        x += rendered.width + LABEL_STYLE.gapX;
-    }
-
-    return {
-        svg: parts.join(""),
-        height: y - startY + LABEL_STYLE.height,
-    };
-};
-
-const renderIconRow = (icon: KnownIcon, text: string, y: number): RenderedRow => {
-    return {
-        svg: `${renderIcon(icon, CARD_PADDING, y + (BASE_ROW_HEIGHT - ROW_ICON_SIZE) / 2, ROW_ICON_SIZE, COLORS.muted)}${renderText(text, CARD_PADDING + ROW_ICON_SIZE + 8, y + BASE_ROW_HEIGHT / 2 + 0.5)}`,
-        height: BASE_ROW_HEIGHT,
-    };
-};
-
-const buildLabel = (text: string, icon: KnownIcon, colors: LabelColors = GD_LABEL_COLORS): LabelDescriptor => {
-    return { text, icon, ...colors };
-};
-
-const addVersionLabel = (labels: LabelDescriptor[], icon: KnownIcon, version: string | null, suffix = "") => {
-    if (!version) {
-        return;
-    }
-
-    labels.push(buildLabel(suffix ? `${version} ${suffix}` : version, icon));
-};
-
-const addMergedVersionLabels = (
-    labels: LabelDescriptor[],
-    icon: KnownIcon,
-    firstVersion: string | null,
-    secondVersion: string | null,
-    firstSuffix: string,
-    secondSuffix: string,
-) => {
-    if (firstVersion && firstVersion === secondVersion) {
-        labels.push(buildLabel(firstVersion, icon));
-        return;
-    }
-
-    addVersionLabel(labels, icon, firstVersion, firstSuffix);
-    addVersionLabel(labels, icon, secondVersion, secondSuffix);
+    const safeText = escapeXml(text);
+    return [
+        `<text x="${x}" y="${y + 1}" fill="#010101" fill-opacity="0.3" font-family="${FONT_FAMILY}, Arial, sans-serif" font-size="${BADGE_TEXT_SIZE}" font-weight="${BADGE_TEXT_WEIGHT}" dominant-baseline="middle" text-anchor="${anchor}">${safeText}</text>`,
+        `<text x="${x}" y="${y}" fill="${fill}" font-family="${FONT_FAMILY}, Arial, sans-serif" font-size="${BADGE_TEXT_SIZE}" font-weight="${BADGE_TEXT_WEIGHT}" dominant-baseline="middle" text-anchor="${anchor}">${safeText}</text>`,
+    ].join("");
 };
 
 const getSharedGDVersion = (gdVersion: ServerGDVersion) => {
@@ -289,103 +155,95 @@ const getSharedGDVersion = (gdVersion: ServerGDVersion) => {
         : null;
 };
 
-const renderGDRow = (gdVersion: ServerGDVersion, y: number): RenderedRow => {
+const formatGDVersionValue = (gdVersion: ServerGDVersion) => {
     const sharedVersion = getSharedGDVersion(gdVersion);
     if (sharedVersion) {
-        return renderIconRow("gd", sharedVersion, y);
+        return sharedVersion;
     }
 
-    const labels: LabelDescriptor[] = [];
-    addVersionLabel(labels, "windows", gdVersion.win);
-    addMergedVersionLabels(labels, "mac", gdVersion["mac-arm"], gdVersion["mac-intel"], "(ARM)", "(x64)");
-    addVersionLabel(labels, "ios", gdVersion.ios);
-    addMergedVersionLabels(labels, "android", gdVersion.android64, gdVersion.android32, "(64-bit)", "(32-bit)");
+    const distinctVersions = [
+        gdVersion.win,
+        gdVersion["mac-arm"],
+        gdVersion["mac-intel"],
+        gdVersion.ios,
+        gdVersion.android64,
+        gdVersion.android32,
+    ].filter((version, index, versions): version is string => Boolean(version) && versions.indexOf(version) === index);
 
-    const contentX = CARD_PADDING + ROW_ICON_SIZE + 8;
-    const labelsY = y - 3;
-    const laidOut = layoutLabels(labels, contentX, labelsY, INNER_WIDTH - (contentX - CARD_PADDING));
+    return distinctVersions.join(" / ");
+};
 
-    return {
-        svg: `${renderIcon("gd", CARD_PADDING, labelsY + (LABEL_STYLE.height - ROW_ICON_SIZE) / 2, ROW_ICON_SIZE, COLORS.muted)}${laidOut.svg}`,
-        height: Math.max(BASE_ROW_HEIGHT, laidOut.height),
-    };
+const getBadgeDescriptor = (input: ModBadgeSvgInput, stat: ModBadgeStatKey): BadgeDescriptor | undefined => {
+    switch (stat) {
+        case "version":
+            return input.modVersion ? { label: "Version", value: input.modVersion, icon: "version" } : undefined;
+        case "geode_version":
+            return input.geodeVersion ? { label: "Geode", value: input.geodeVersion, icon: "geode" } : undefined;
+        case "gd_version":
+            return input.gdVersion ? { label: "GD", value: formatGDVersionValue(input.gdVersion), icon: "gd" } : undefined;
+        case "created_at":
+            return input.createdAt
+                ? {
+                      label: "Created",
+                      value: serverTimestampToAgoString(input.createdAt) ?? input.createdAt,
+                      icon: "time",
+                  }
+                : undefined;
+        case "updated_at":
+            return input.updatedAt
+                ? {
+                      label: "Updated",
+                      value: serverTimestampToAgoString(input.updatedAt) ?? input.updatedAt,
+                      icon: "update",
+                  }
+                : undefined;
+        case "downloads":
+            return input.downloads !== undefined
+                ? { label: "Downloads", value: formatNumber(input.downloads), icon: "download" }
+                : undefined;
+    }
 };
 
 export async function renderModBadgeSvg(input: ModBadgeSvgInput) {
-    const parts: string[] = [];
-    let y = CARD_PADDING;
-    const enabledStats = new Set<ModBadgeStatKey>(input.stats ?? MOD_BADGE_STAT_KEYS);
-    const rows: Array<{ stat: ModBadgeStatKey; render: (y: number) => RenderedRow | undefined }> = [
-        {
-            stat: "version",
-            render: (currentY) =>
-                input.modVersion ? renderIconRow("version", escapeXml(input.modVersion), currentY) : undefined,
-        },
-        {
-            stat: "downloads",
-            render: (currentY) =>
-                input.downloads !== undefined
-                    ? renderIconRow("download", formatNumber(input.downloads), currentY)
-                    : undefined,
-        },
-        {
-            stat: "created_at",
-            render: (currentY) =>
-                input.createdAt
-                    ? renderIconRow("time", serverTimestampToAgoString(input.createdAt) ?? input.createdAt, currentY)
-                    : undefined,
-        },
-        {
-            stat: "updated_at",
-            render: (currentY) =>
-                input.updatedAt
-                    ? renderIconRow("update", serverTimestampToAgoString(input.updatedAt) ?? input.updatedAt, currentY)
-                    : undefined,
-        },
-        {
-            stat: "geode_version",
-            render: (currentY) =>
-                input.geodeVersion ? renderIconRow("geode", input.geodeVersion, currentY) : undefined,
-        },
-        {
-            stat: "gd_version",
-            render: (currentY) => (input.gdVersion ? renderGDRow(input.gdVersion, currentY) : undefined),
-        },
-    ];
+    const requestedStats = input.stats?.length ? input.stats : MOD_BADGE_STAT_KEYS;
+    const badge =
+        requestedStats.map((stat) => getBadgeDescriptor(input, stat)).find((stat) => stat !== undefined) ?? {
+            label: "Mod",
+            value: input.modId,
+            icon: "geode" as const,
+        };
 
-    for (const { stat, render } of rows) {
-        if (!enabledStats.has(stat)) {
-            continue;
-        }
-
-        const row = render(y);
-        if (!row) {
-            continue;
-        }
-
-        parts.push(row.svg);
-        y += row.height + INFO_ROW_GAP;
-    }
-
-    if (parts.length > 0) {
-        y -= INFO_ROW_GAP;
-    }
-
-    const height = y + CARD_PADDING;
-    const description = [
-        input.modVersion && `Version ${input.modVersion}`,
-        input.downloads !== undefined && `${formatNumber(input.downloads)} downloads`,
-        input.geodeVersion && `Geode ${input.geodeVersion}`,
-    ]
-        .filter(Boolean)
-        .join(", ");
+    const leftTextWidth = measureTextWidth(badge.label, BADGE_TEXT_SIZE, BADGE_TEXT_WEIGHT);
+    const rightTextWidth = measureTextWidth(badge.value, BADGE_TEXT_SIZE, BADGE_TEXT_WEIGHT);
+    const leftWidth =
+        BADGE_LEFT_PADDING * 2 + BADGE_ICON_SIZE + BADGE_ICON_GAP + leftTextWidth;
+    const rightWidth = Math.max(30, BADGE_RIGHT_PADDING * 2 + rightTextWidth);
+    const totalWidth = leftWidth + rightWidth;
+    const textY = BADGE_HEIGHT / 2;
+    const valueCenterX = leftWidth + rightWidth / 2;
+    const title = `${badge.label}: ${badge.value}`;
 
     return `<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="${CARD_WIDTH}" height="${height}" viewBox="0 0 ${CARD_WIDTH} ${height}" role="img" aria-labelledby="title">
-    <title id="title">Geode mod badge</title>
+<svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="${BADGE_HEIGHT}" viewBox="0 0 ${totalWidth} ${BADGE_HEIGHT}" role="img" aria-labelledby="title">
+    <title id="title">${escapeXml(title)}</title>
+    <defs>
+        <linearGradient id="shine" x2="0" y2="100%">
+            <stop offset="0" stop-color="#fff" stop-opacity="0.1" />
+            <stop offset="1" stop-color="#fff" stop-opacity="0" />
+        </linearGradient>
+        <mask id="clip">
+            <rect width="${totalWidth}" height="${BADGE_HEIGHT}" rx="${BADGE_RADIUS}" fill="#fff" />
+        </mask>
+    </defs>
     <style>${await loadEmbeddedFontsCss()}</style>
-    <rect width="${CARD_WIDTH}" height="${height}" rx="12" fill="${COLORS.background}" />
-    <rect x="0.5" y="0.5" width="${CARD_WIDTH - 1}" height="${height - 1}" rx="11.5" fill="none" stroke="${COLORS.outline}" />
-    ${parts.join("")}
+    <g mask="url(#clip)">
+        <path fill="${COLORS.background}" d="M0 0h${leftWidth}v${BADGE_HEIGHT}H0z" />
+        <path fill="${COLORS.grayLabel}" d="M${leftWidth} 0h${rightWidth}v${BADGE_HEIGHT}H${leftWidth}z" />
+        <path fill="url(#shine)" d="M0 0h${totalWidth}v${BADGE_HEIGHT}H0z" />
+    </g>
+    <rect x="0.5" y="0.5" width="${totalWidth - 1}" height="${BADGE_HEIGHT - 1}" rx="${BADGE_RADIUS - 0.5}" fill="none" stroke="${COLORS.outline}" />
+    ${renderIcon(badge.icon, BADGE_LEFT_PADDING, (BADGE_HEIGHT - BADGE_ICON_SIZE) / 2, BADGE_ICON_SIZE, COLORS.muted)}
+    ${renderBadgeText(badge.label, BADGE_LEFT_PADDING + BADGE_ICON_SIZE + BADGE_ICON_GAP, textY)}
+    ${renderBadgeText(badge.value, valueCenterX, textY, { anchor: "middle" })}
 </svg>`;
 }

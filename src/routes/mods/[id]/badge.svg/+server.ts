@@ -37,9 +37,7 @@ function parseStatsParam(value: string | null): ModBadgeStatKey[] {
 }
 
 function getBadgeCacheKey(modId: string, stats: ModBadgeStatKey[]) {
-    const enabledStats = new Set(stats);
-    const canonicalStats = MOD_BADGE_STAT_KEYS.filter((stat) => enabledStats.has(stat));
-    return `${modId}:${canonicalStats.join(",")}`;
+    return `${modId}:${stats.join(",")}`;
 }
 
 function getBadgeCachePath(cacheKey: string) {
