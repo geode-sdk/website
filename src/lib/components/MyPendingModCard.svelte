@@ -44,5 +44,6 @@
         border-top: 1px solid var(--background-300);
         padding-top: 0.5rem;
         margin-top: 0.5rem;
+        white-space-collapse: preserve-breaks;
     }
 </style>
