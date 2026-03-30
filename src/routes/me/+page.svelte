@@ -96,6 +96,9 @@
                     <label for="download_link">Download URL:</label>
                     <input type="text" id="download_link" name="download_link" required />
                 </div>
+                <p>
+                    Please check the <a href="https://docs.geode-sdk.org/mods/guidelines">Mod Guidelines</a> before submitting.
+                </p>
                 <button type="submit" disabled={submittingMod}>
                     <Button disabled={submittingMod}>Upload</Button>
                 </button>
