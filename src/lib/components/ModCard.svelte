@@ -25,6 +25,13 @@
         version.status != "accepted" ? `/mods/${mod.id}?version=${version.version}` : `/mods/${mod.id}`,
     );
 
+    const max_name_length = 32;
+    const name = $derived(
+        version.name.length > max_name_length
+            ? version.name.slice(0, max_name_length) + "…"
+            : version.name
+    );
+
     let paid = $derived(mod.tags.includes("paid"));
 </script>
 
@@ -44,7 +51,7 @@
                     <Link href={mod_url}>
                         <div class="title-container">
                             <h1 class:small={version.name.length > 16}>
-                                {version.name}
+                                {name}
                             </h1>
                             {#if mod.featured}
                                 <Label icon="featured" design="accent-transparent" />
@@ -94,7 +101,7 @@
                             <Label icon="tag-paid" design="accent-alt-transparent" />
                         {/if}
                         <h1 class:small={version.name.length > 16}>
-                            {version.name}
+                            {name}
                         </h1>
                     </span>
                 </Link>
