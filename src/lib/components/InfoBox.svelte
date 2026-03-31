@@ -3,17 +3,19 @@
     import Icon from "./Icon.svelte";
 
     interface Props {
-        type: "info" | "warning" | "error";
+        type: "info" | "warning" | "error" | "blue";
         solid?: boolean,
         children?: Snippet;
     }
 
     let { type, solid = false, children }: Props = $props();
+
+    const icon = $derived(type == "blue" ? "help" : type);
 </script>
 
 <section class={[type, { solid }]}>
     <span class="icon-container">
-        <Icon icon={type} />
+        <Icon icon={icon} />
     </span>
     <span class="content-container">{@render children?.()}</span>
 </section>
@@ -57,6 +59,23 @@
                 }
                 & :global(em) {
                     color: var(--accent-alt-200);
+                }
+            }
+        }
+        &.blue {
+            --mix-color: var(--background-500);
+            --mix-percentage: 35%;
+            .icon-container {
+                color: var(--background-300);
+            }
+            &.solid {
+                --mix-color: var(--background-500);
+                color: var(--text-100);
+                .icon-container {
+                    color: var(--text-100);
+                }
+                & :global(em) {
+                    color: var(--accent-200);
                 }
             }
         }

@@ -138,7 +138,7 @@ export type NewGDUpdateInfo = {
      * been released, but most mods are still broken (which the user should 
      * probably know)
      */
-    geodeStatus: "fully-broken" | "just-updated"
+    geodeStatus: "fully-broken" | "just-updated" | "ipo"
 }
 /**
  * Whenever a new GD update is released, everything breaks. The website is 
@@ -149,6 +149,6 @@ export function getNewGDUpdateWasReleased(): NewGDUpdateInfo | undefined {
     // If no new update, change to `undefined`, if Geode fixed, change `geodeStatus`
     return {
         newGDVersion: "2.2081",
-        geodeStatus: "just-updated",
+        geodeStatus: "ipo",
     }
 }

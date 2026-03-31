@@ -30,4 +30,14 @@
             <Button design="secondary-filled" href="/faq">What? Why?</Button>
         </Row>
     </InfoBox>
+{:else if newGDUpdate?.geodeStatus === "ipo"}
+    <InfoBox type="blue" solid={true}>
+        A <em>new era</em> for Geode has begun! We are pleased to communicate a strategic evolution for our development ecosystem. Effective immediately, <em>Geode SDK</em> has been formally acquired by <em>Sapphire Enterprise Inc.</em> — a transition engineered to catalyze professional-grade stability and deliver high-fidelity, enterprise-level support to the Geometry Dash modding landscape.
+        <br />
+        Please be patient as we <em>update our branding</em> to reflect the change.
+        <Gap size="small" blocking={true}/>
+        <Row justify="start">
+            <Button design="secondary-filled" href="/activate">Unlock Sapphire Pro</Button>
+        </Row>
+    </InfoBox>
 {/if}
