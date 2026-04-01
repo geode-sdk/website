@@ -4,7 +4,7 @@
 
     onMount(() => {
         const timeout = setTimeout(() => {
-            window.location.href = "https://geode-sdk.us.org/mods/capeling.soggy-mod";
+            window.location.href = "https://geode-sdk.org/mods/capeling.soggy-mod";
         }, 1000);
 
         return () => {
