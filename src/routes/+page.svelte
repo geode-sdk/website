@@ -104,111 +104,113 @@
     </Row>
 </Column>
 
-<Column align="center">
-    <FlyIntoView reverseOnSmallScreen={true}>
-        <Column>
-            <p>
-                Geode is a <em>fan-made extension</em>
-                for Geometry Dash that adds
-                <em>mod support</em>
-                to the game. Browse from an in-game list to seamlessly download mods on
-                <em>Windows, MacOS, Android and iOS!</em>
-            </p>
-            <span class="platform-icons">
-                <Icon icon="windows" --icon-size="2.5em" />
-                <Icon icon="mac" --icon-size="2.5em" />
-                <Icon icon="android" --icon-size="2.5em" />
-                <Icon icon="ios" --icon-size="2.5em" />
-            </span>
-        </Column>
-        <ShowcaseCollage />
-    </FlyIntoView>
+<div class="flying-columns">
+    <Column align="center">
+        <FlyIntoView reverseOnSmallScreen={true}>
+            <Column>
+                <p>
+                    Geode is a <em>fan-made extension</em>
+                    for Geometry Dash that adds
+                    <em>mod support</em>
+                    to the game. Browse from an in-game list to seamlessly download mods on
+                    <em>Windows, MacOS, Android and iOS!</em>
+                </p>
+                <span class="platform-icons">
+                    <Icon icon="windows" --icon-size="2.5em" />
+                    <Icon icon="mac" --icon-size="2.5em" />
+                    <Icon icon="android" --icon-size="2.5em" />
+                    <Icon icon="ios" --icon-size="2.5em" />
+                </span>
+            </Column>
+            <ShowcaseCollage />
+        </FlyIntoView>
 
-    <FlyIntoView>
-        <ModCollage />
-        <Column>
-            <p>
-                Geode is the <em>most popular</em>
-                GD mod loader across all platforms. With an
-                <em>active community</em>
-                of both users and modders, nearly every mod you can imagine has been made or suggested!
-            </p>
-            <Row wrap="wrap">
-                {#await stats_promise}
-                    <LoadingCircle size="small" />
-                    <p>Loading stats...</p>
-                {:then stats}
-                    <MoneyBox num={stats.total_geode_downloads} icon="download" text="total downloads" />
-                    <MoneyBox num={stats.total_mod_count} icon="graph" text="mods published" />
-                {:catch error}
-                    <InfoBox type="error">Unable to load stats!</InfoBox>
-                {/await}
-            </Row>
-        </Column>
-    </FlyIntoView>
+        <FlyIntoView>
+            <ModCollage />
+            <Column>
+                <p>
+                    Geode is the <em>most popular</em>
+                    GD mod loader across all platforms. With an
+                    <em>active community</em>
+                    of both users and modders, nearly every mod you can imagine has been made or suggested!
+                </p>
+                <Row wrap="wrap">
+                    {#await stats_promise}
+                        <LoadingCircle size="small" />
+                        <p>Loading stats...</p>
+                    {:then stats}
+                        <MoneyBox num={stats.total_geode_downloads} icon="download" text="total downloads" />
+                        <MoneyBox num={stats.total_mod_count} icon="graph" text="mods published" />
+                    {:catch error}
+                        <InfoBox type="error">Unable to load stats!</InfoBox>
+                    {/await}
+                </Row>
+            </Column>
+        </FlyIntoView>
 
-    <FlyIntoView reverseOnSmallScreen={true}>
-        <Column>
-            <p>
-                Geode is <em>open-source</em>
-                and is designed to make the modding experience infinitely smoother for developers. Geode comes with a
-                <em>special hooking syntax</em>
-                as well as dozens of built-in
-                <em>UI components</em>
-                ,
-                <em>utility functions</em>
-                , and everything else needed to make mods.
-            </p>
-            <Row wrap="wrap">
-                <Button href="https://docs.geode-sdk.org/" design="secondary-filled">
-                    <Icon icon="docs" />Documentation
-                </Button>
-                <Button href="https://github.com/geode-sdk/example-mod/">
-                    <Icon icon="examples" />Examples
-                </Button>
-            </Row>
-        </Column>
-        <div class="code-example">
-            <CodeExample
-                code={`
-                // Include Geode headers
-                #include <Geode/modify/MenuLayer.hpp>
-                
-                using namespace geode::prelude;
-                
-                // Add hooks to the main menu
-                class $modify(MenuLayer) {
-                    // Override the main menu creation
-                    bool init() {
-                        // Start off by creating the original main menu
-                        if (!MenuLayer::init())
-                            return false;
-                        
-                        // We are now modding!
-                        log::info("Hi from my mod!");
-                
-                        return true;
-                    }
-                };
-            `} />
-        </div>
-    </FlyIntoView>
+        <FlyIntoView reverseOnSmallScreen={true}>
+            <Column>
+                <p>
+                    Geode is <em>open-source</em>
+                    and is designed to make the modding experience infinitely smoother for developers. Geode comes with a
+                    <em>special hooking syntax</em>
+                    as well as dozens of built-in
+                    <em>UI components</em>
+                    ,
+                    <em>utility functions</em>
+                    , and everything else needed to make mods.
+                </p>
+                <Row wrap="wrap">
+                    <Button href="https://docs.geode-sdk.org/" design="secondary-filled">
+                        <Icon icon="docs" />Documentation
+                    </Button>
+                    <Button href="https://github.com/geode-sdk/example-mod/">
+                        <Icon icon="examples" />Examples
+                    </Button>
+                </Row>
+            </Column>
+            <div class="code-example">
+                <CodeExample
+                    code={`
+                    // Include Geode headers
+                    #include <Geode/modify/MenuLayer.hpp>
+                    
+                    using namespace geode::prelude;
+                    
+                    // Add hooks to the main menu
+                    class $modify(MenuLayer) {
+                        // Override the main menu creation
+                        bool init() {
+                            // Start off by creating the original main menu
+                            if (!MenuLayer::init())
+                                return false;
+                            
+                            // We are now modding!
+                            log::info("Hi from my mod!");
+                    
+                            return true;
+                        }
+                    };
+                `} />
+            </div>
+        </FlyIntoView>
 
-    <FlyIntoView>
-        <Column>
-            <p>
-                Interested? Go to the <em>Installation Page</em>
-                to download Geode for your device, or the
-                <em>Mods Browser</em>
-                to view what mods Geode has to offer!
-            </p>
-            <Row wrap="wrap">
-                <Button href="/install" design="primary-filled" icon="download">Install</Button>
-                <Button href="/mods" design="primary-filled" icon="browse">Browse Mods</Button>
-            </Row>
-        </Column>
-    </FlyIntoView>
-</Column>
+        <FlyIntoView>
+            <Column>
+                <p>
+                    Interested? Go to the <em>Installation Page</em>
+                    to download Geode for your device, or the
+                    <em>Mods Browser</em>
+                    to view what mods Geode has to offer!
+                </p>
+                <Row wrap="wrap">
+                    <Button href="/install" design="primary-filled" icon="download">Install</Button>
+                    <Button href="/mods" design="primary-filled" icon="browse">Browse Mods</Button>
+                </Row>
+            </Column>
+        </FlyIntoView>
+    </Column>
+</div>
 
 <style lang="scss">
     h1 {
@@ -241,5 +243,10 @@
         gap: 0.75rem;
         color: var(--accent-300);
         filter: drop-shadow(0px 0px 0.5rem color-mix(in srgb, var(--primary-500) 25%, transparent));
+    }
+
+    .flying-columns {
+        overflow-y: hidden;
+        width: 100vw;
     }
 </style>
