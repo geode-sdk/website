@@ -32,6 +32,8 @@
     },
     "type": "module",
     "dependencies": {
+        "@fontsource/poppins": "^5.2.7",
+        "@iconify-json/mdi": "^1.2.3",
         "dayjs": "^1.11.11",
         "redis": "^5.9.0",
         "svelte-exmarkdown": "^5.0.2"

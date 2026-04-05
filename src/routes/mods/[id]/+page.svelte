@@ -11,13 +11,10 @@
     import Tabs from "$lib/components/Tabs.svelte";
     import TabPage from "$lib/components/TabPage.svelte";
     import Link from "$lib/components/Link.svelte";
-    import Icon from "$lib/components/Icon.svelte";
     import Gap from "$lib/components/Gap.svelte";
-    import { serverTimestampToAgoString, serverTimestampToDateString, formatNumber, iconForTag } from "$lib";
     import Waves from "$lib/components/Waves.svelte";
     import Label from "$lib/components/Label.svelte";
     import InfoBox from "$lib/components/InfoBox.svelte";
-    import VersionCards from "$lib/components/VersionCards.svelte";
     import Pagination from "$lib/components/Pagination.svelte";
     import LoadingOverlay from "$lib/components/LoadingOverlay.svelte";
     import VersionCard from "$lib/components/VersionCard.svelte";
@@ -27,6 +24,7 @@
     import GeodeMarkdown from "$lib/components/GeodeMarkdown.svelte";
     import ModLogo from "$lib/components/ModLogo.svelte";
     import ModDevelopersList from "$lib/components/ModDevelopersList.svelte";
+    import ModDetails from "$lib/components/ModDetails.svelte";
 
     interface Props {
         data: PageData;
@@ -78,11 +76,6 @@
 
         await goto(`/mods/${data.mod.id}?${params}`, { noScroll: true });
         searching = false;
-    };
-
-    const getTagDisplay = (tag: string) => {
-        const foundTag = data.tags.find((x) => x.name == tag);
-        return foundTag ? foundTag.display_name : tag.charAt(0).toUpperCase() + tag.slice(1);
     };
 
     let url_params = $derived(page.url.searchParams);
@@ -393,7 +386,7 @@
                             </p>
 
                             {#if data.version.early_load || data.version.api}
-                                <Row align="center" justify="top" gap="small">
+                                <Row align="center" justify="start" gap="small">
                                     {#if data.version.early_load}
                                         <Label icon="time" design="accent-alt">Early Load</Label>
                                     {/if}
@@ -442,42 +435,14 @@
             </Tabs>
         </section>
         <aside>
-            <section>
-                <Column align="start" gap="small">
-                    <span class="card-info">
-                        <Icon icon="version" />{data.version.version}
-                    </span>
-                    <span class="card-info">
-                        <Icon icon="download" />{formatNumber(data.mod.download_count)}
-                    </span>
-                    <span class="card-info" title={serverTimestampToDateString(data.mod.created_at)}>
-                        <Icon icon="time" />{serverTimestampToAgoString(data.mod.created_at)}
-                    </span>
-                    <span class="card-info" title={serverTimestampToDateString(data.mod.updated_at)}>
-                        <Icon icon="update" />{serverTimestampToAgoString(data.mod.updated_at)}
-                    </span>
-                    <span class="card-info">
-                        <Icon icon="geode" />{data.version.geode}
-                    </span>
-                    {#if data.version}
-                        <span class="card-info">
-                            <VersionCards gd={data.version.gd} />
-                        </span>
-                    {/if}
-
-                    {#if data.mod.tags.length > 0}
-                        <div class="mod-tags">
-                            <Row wrap="wrap" gap="tiny" align="center" justify="top">
-                                {#each data.mod.tags as tag}
-                                    <Label icon={iconForTag(tag)} design="secondary">
-                                        {getTagDisplay(tag)}
-                                    </Label>
-                                {/each}
-                            </Row>
-                        </div>
-                    {/if}
-                </Column>
-            </section>
+            <ModDetails
+                modVersion={data.version.version}
+                geodeVersion={data.version.geode}
+                gdVersion={data.version?.gd}
+                createdAt={data.mod.created_at}
+                updatedAt={data.mod.updated_at}
+                downloads={data.mod.download_count}
+                tags={data.mod.tags} />
             <section>
                 <Column align="stretch" gap="small">
                     <Button href={data.version.download_link} icon="download" design="primary-filled">Download</Button>
@@ -544,6 +509,9 @@
 </div>
 
 <style lang="scss">
+    @use "$lib/styles/link.scss" as *;
+    @use "$lib/styles/mod-details.scss" as *;
+
     h2 {
         margin: 0;
     }
@@ -569,38 +537,10 @@
             margin: 0;
         }
     }
-    section {
-        background-color: var(--background-950);
-        padding: 0.75rem;
-        // gap: .5rem;
-        border-radius: 0.5rem;
-    }
     aside {
         display: flex;
         flex-direction: column;
         gap: var(--gap-small);
-    }
-    .card-info {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: 0.5em;
-
-        & > :global(.icon) {
-            --icon-size: 1.2em;
-            color: var(--secondary-300);
-            transition-duration: var(--transition-duration);
-        }
-    }
-
-    .mod-tags {
-        /* width chosen by fair dice roll */
-        max-width: 18rem;
-        padding-top: 0.25rem;
-    }
-
-    .color-link {
-        --link-color: var(--accent-300);
     }
 
     .link-row {
