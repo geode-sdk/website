@@ -33,14 +33,20 @@
                 <Icon icon="download" />
                 {abbreviateNumber(version.download_count)} downloads
             </span>
-            <span class="card-info">
+            <span class="card-info wide">
                 <Icon icon="geode" />
                 Minimum Geode version: <Label icon="geode" design="gray">
                     {version.geode}
                 </Label>
             </span>
-            <span class="card-info">
+            <span class="card-info short">
+                <Icon icon="geode" /> {version.geode}
+            </span>
+            <span class="card-info wide">
                 <VersionCards gd={version.gd} longForm={true} />
+            </span>
+            <span class="card-info short">
+                <VersionCards gd={version.gd} longForm={false} />
             </span>
         </Column>
         <Column gap="small" align="stretch">
@@ -79,5 +85,24 @@
             color: var(--secondary-300);
             transition-duration: var(--transition-duration);
         }
+
+        &.wide {
+            display: none;
+        }
+
+        &.short {
+            display: inherit;
+        }
+
+        @media screen and (min-width: 600px) {
+            &.wide {
+                display: inherit;
+            }
+
+            &.short {
+                display: none;
+            }
+        }
     }
+
 </style>
