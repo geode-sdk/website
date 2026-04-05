@@ -8,7 +8,7 @@ import {
 import { getCachedTags } from "$lib/server/cache.js";
 import { toIntSafe } from "$lib/api/helpers.js";
 import type { ServerTag } from "$lib/api/models/base.js";
-import type { ModStatus, ServerModVersion } from "$lib/api/models/mod-version.js";
+import type { ModStatus, ServerDependency, ServerModVersion } from "$lib/api/models/mod-version.js";
 import type { Actions, PageServerLoad } from "./$types.js";
 import { error, fail } from "@sveltejs/kit";
 import type { ServerMod, ServerModDeprecation } from "$lib/api/models/mod";
@@ -151,6 +151,85 @@ export const actions: Actions = {
     },
 };
 
+interface ResolvedDependency {
+    mod: ServerMod;
+    version: ServerModVersion;
+};
+
+interface DependenciesInfo {
+    requires: ResolvedDependency[];
+    recommends: ResolvedDependency[];
+};
+
+async function resolve_mod_dependencies(client: IndexClient, dependencies: ServerDependency[]): Promise<DependenciesInfo> {
+    const to_resolve = new Set<string>();
+    const requires = [];
+    const recommends = [];
+
+    // resolve requires and then do a separate pass for suggestions
+    for (const dependency of dependencies) {
+        if (to_resolve.has(dependency.mod_id)) {
+            continue;
+        }
+
+        if (dependency.importance != "required") {
+            continue;
+        }
+
+        requires.push(dependency);
+        to_resolve.add(dependency.mod_id);
+    }
+
+    for (const dependency of dependencies) {
+        if (to_resolve.has(dependency.mod_id)) {
+            continue;
+        }
+
+        if (dependency.importance != "recommended") {
+            continue;
+        }
+
+        recommends.push(dependency);
+        to_resolve.add(dependency.mod_id);
+    }
+
+    const resolved_versions = await Promise.allSettled(
+        [...to_resolve].map(async (id): Promise<[ServerMod, ServerModVersion]> => {
+            return [await client.getMod(id), await client.getModVersion(id, "latest")];
+        })
+    );
+
+    const mods: Record<string, [ServerMod, ServerModVersion]> = {};
+    for (const resolved of resolved_versions) {
+        if (resolved.status == "rejected") {
+            continue;
+        }
+
+        mods[resolved.value[0].id] = resolved.value;
+    }
+
+    const resolved_requires = requires.map((d) => {
+        const meta = mods[d.mod_id];
+        return {
+            mod: meta[0],
+            version: meta[1],
+        };
+    });
+
+    const resolved_recommends = recommends.map((d) => {
+        const meta = mods[d.mod_id];
+        return {
+            mod: meta[0],
+            version: meta[1],
+        };
+    });
+
+    return {
+        requires: resolved_requires,
+        recommends: resolved_recommends
+    };
+}
+
 export const load: PageServerLoad = async ({ fetch, url, params, cookies }) => {
     const version_params: GetModVersionsParams = {
         page: toIntSafe(url.searchParams.get("page")),
@@ -211,6 +290,10 @@ export const load: PageServerLoad = async ({ fetch, url, params, cookies }) => {
         });
     }
 
+    const dependencies_info = version.dependencies
+        ? await resolve_mod_dependencies(client, version.dependencies)
+        : null;
+
     // override pending-only mods to be pending by default to show at least a version
     const mod_pending = mod.versions.length == 1 && version.status != "accepted";
     if (mod_pending && !url.searchParams.has("status")) {
@@ -227,5 +310,13 @@ export const load: PageServerLoad = async ({ fetch, url, params, cookies }) => {
         tags = await getCachedTags(client);
     } catch (e) {}
 
-    return { mod, deprecation, version, versions, tags, version_params };
+    return {
+        mod,
+        deprecation,
+        version,
+        versions,
+        tags,
+        version_params,
+        dependencies_info,
+    };
 };

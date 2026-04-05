@@ -27,6 +27,7 @@
     import GeodeMarkdown from "$lib/components/GeodeMarkdown.svelte";
     import ModLogo from "$lib/components/ModLogo.svelte";
     import ModDevelopersList from "$lib/components/ModDevelopersList.svelte";
+    import ModCard from "$lib/components/ModCard.svelte";
 
     interface Props {
         data: PageData;
@@ -521,24 +522,33 @@
                 </Column>
             </section>
             <section>
-                {#if data.version.dependencies?.length}
-                    <p>Dependencies:</p>
-                    <ul>
-                        {#each data.version.dependencies as dependency}
-                            <div class="color-link">
-                                <li>
-                                    <Link href={`/mods/${dependency.mod_id}`}>
-                                        {dependency.mod_id}
-                                    </Link>
-                                    ({dependency.version}) ({dependency.importance})
-                                </li>
-                            </div>
-                        {/each}
-                    </ul>
+                {#if data.dependencies_info?.requires?.length}
+                    {@const requires = data.dependencies_info?.requires}
+                    <p>Requires:</p>
+                    <Column gap="tiny">
+                    {#each requires as required}
+                    <div style="width: 100%;">
+                        <ModCard mod={required.mod} version={required.version} style="mini" />
+                    </div>
+                    {/each}
+                    </Column>
                 {:else}
                     <div>Mod has no dependencies.</div>
                 {/if}
             </section>
+            {#if data.dependencies_info?.recommends?.length}
+                {@const recommends = data.dependencies_info?.recommends}
+                <section>
+                    <p>Recommends:</p>
+                    <Column gap="tiny">
+                        {#each recommends as recommended}
+                            <div style="width: 100%;">
+                            <ModCard mod={recommended.mod} version={recommended.version} style="mini" />
+                            </div>
+                        {/each}
+                    </Column>
+                </section>
+            {/if}
         </aside>
     </Row>
 </div>

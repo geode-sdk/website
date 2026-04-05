@@ -15,7 +15,7 @@
     interface Props {
         mod: ServerMod;
         version: ServerModVersion;
-        style?: "list" | "grid";
+        style?: "list" | "grid" | "mini";
     }
 
     let { mod, version, style = "grid" }: Props = $props();
@@ -36,22 +36,25 @@
 </script>
 
 <div class="mod-background {style}" class:paid={paid && !mod.featured} class:featured={mod.featured}>
-    {#if style === "list"}
+    {#if style === "list" || style === "mini"}
         <div class="left">
             <span class="click-to-go-to-page">
                 <Link href={mod_url} centered={true}>
                     <div class="mod-icon-container">
-                        <ModLogo {mod} {version} />
+                        <ModLogo {mod} {version} size={style == "mini" ? "tiny" : "small"} />
                     </div>
                 </Link>
             </span>
             <Gap size="normal" />
-            <Column align="start" gap="tiny">
+            <Column align="start" gap="tiny" justify={style == "mini" ? "center" : "start"}>
                 <div class="click-to-go-to-page">
                     <Link href={mod_url}>
                         <div class="title-container">
-                            <h1 class:small={version.name.length > 16}>
+                            <h1 class:small={style == "mini" || version.name.length > 16}>
                                 {name}
+                                {#if style == "mini"}
+                                    v{version.version}
+                                {/if}
                             </h1>
                             {#if mod.featured}
                                 <Label icon="featured" design="accent-transparent" />
@@ -63,6 +66,7 @@
                     </Link>
                 </div>
                 <ModDevelopersList developers={mod.developers} full={false} />
+                {#if style != "mini"}
                 <p class="description" title={version.description || ""}>
                     {#if version.description}
                         {#if version.description?.length < 110}
@@ -74,8 +78,10 @@
                         <i>{"Description not provided"}</i>
                     {/if}
                 </p>
+                {/if}
             </Column>
         </div>
+        {#if style != "mini"}
         <span class="do-not-shrink right">
             <Column align="end" gap="tiny">
                 <span class="card-info">
@@ -89,6 +95,7 @@
                 </span>
             </Column>
         </span>
+        {/if}
     {:else}
         <span class="click-to-go-to-page">
             <Column gap="small">
@@ -218,6 +225,19 @@
                 .right {
                     display: flex;
                 }
+            }
+
+            .title-container h1 {
+                text-align: left;
+            }
+        }
+
+        &.mini {
+            flex-direction: row;
+            justify-content: space-between;
+
+            .left {
+                display: flex;
             }
 
             .title-container h1 {

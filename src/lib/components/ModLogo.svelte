@@ -9,12 +9,21 @@
     interface Props {
         mod: ServerMod;
         version: ServerModVersion;
-        size: "large" | "medium" | "small";
+        size: "large" | "medium" | "small" | "tiny";
     }
 
     const { mod, version, size = "small" } = $props();
 
-    const iconSize = $derived(size == "large" ? "8rem" : size == "medium" ? "6rem" : "5rem");
+    // good
+    const iconSize = $derived(
+        size == "large"
+            ? "8rem"
+            : size == "medium"
+                ? "6rem"
+                : size == "small"
+                    ? "5rem"
+                    : "3.5rem"
+    );
 
     const accepted = $derived(version.status == "accepted");
 
