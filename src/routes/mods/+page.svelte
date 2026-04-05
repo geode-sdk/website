@@ -447,7 +447,7 @@
             justify-content: center;
         }
 
-        @media screen and (min-width: 400px) {
+        @media screen and (min-width: 450px) {
             &.dual-list {
                 grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
             }
