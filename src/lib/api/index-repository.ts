@@ -2,7 +2,12 @@ import * as publicEnv from "$env/static/public";
 
 import type { ServerDeveloper, ServerTag } from "./models/base";
 import type { ServerMod, ServerModDeprecation, ServerSimpleMod } from "./models/mod.js";
-import type { ModStatus, ServerModVersion } from "./models/mod-version.js";
+import type {
+    ModStatus,
+    ServerModVersion,
+    ServerModVersionThread,
+    ServerModVersionThreadComment,
+} from "./models/mod-version.js";
 import type { ServerStats } from "./models/stats";
 import type { Cookies } from "@sveltejs/kit";
 import { setCookieTokens } from "$lib/api/tokens";
@@ -539,6 +544,56 @@ export class IndexClient {
             const data: BaseRequest<void> = await r.json();
             throw new IndexError(data.error);
         }
+    }
+
+    async getModVersionThread(id: string, version: string): Promise<ServerModVersionThread | null> {
+        const r = await this.fetch(`${BASE_URL}/v1/mods/${id}/versions/${version}/submission`, {
+            headers: new Headers({
+                "Content-Type": "application/json",
+            }),
+        });
+
+        if (!this.isSuccess(r.status)) {
+            if (r.status === 404) {
+                return null;
+            }
+
+            const data: BaseRequest<void> = await r.json();
+            throw new IndexError(data.error);
+        }
+
+        const data = await r.json();
+        return this.validate<ServerModVersionThread>(data);
+    }
+
+    async getModVersionThreadComments(
+        id: string,
+        version: string,
+        page: number = 1,
+        perPage: number = 10,
+    ): Promise<ServerModVersionThreadComment[] | null> {
+        const url = new URL(`${BASE_URL}/v1/mods/${id}/versions/${version}/submission/comments`);
+
+        url.searchParams.append('page', page.toString());
+        url.searchParams.append('per_page', perPage.toString());
+
+        const r = await this.fetch(url.toString(), {
+            headers: new Headers({
+                "Content-Type": "application/json",
+            })
+        });
+
+        if (!this.isSuccess(r.status)) {
+            if (r.status === 404) {
+                return null;
+            }
+
+            const data: BaseRequest<void> = await r.json();
+            throw new IndexError(data.error);
+        }
+
+        const data = await r.json();
+        return this.validate<ServerModVersionThreadComment[]>(data);
     }
 
     async addDeveloper(id: string, body: AddDeveloperBody) {
