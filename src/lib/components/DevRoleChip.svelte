@@ -16,7 +16,7 @@
     {/if}
 </span>
 
-<style lang="scss">
+<style lang="css">
     .dev-tag {
         display: flex;
         align-items: center;

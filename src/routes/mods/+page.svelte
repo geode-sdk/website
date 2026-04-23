@@ -373,9 +373,7 @@
 
 <svelte:window onkeydown={onKeydown} />
 
-<style lang="scss">
-    @use "$lib/styles/media-queries.scss" as *;
-
+<style lang="css">
     h1 {
         margin: 0;
         font-family: var(--font-heading);

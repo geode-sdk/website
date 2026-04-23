@@ -50,7 +50,7 @@
     <span class:centered>{@render children?.()}</span>
 </a>
 
-<style lang="scss">
+<style lang="css">
     :global(:root) {
         --link-hover: var(--text-50);
         --link-color: var(--text-color);

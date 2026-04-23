@@ -55,7 +55,7 @@
     </div>
 </div>
 
-<style lang="scss">
+<style lang="css">
     .select-popup {
         border-radius: 0.5rem;
         padding: 0.5rem;

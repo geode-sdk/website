@@ -23,7 +23,7 @@
     {#if icon}<Icon {icon} />{/if}{@render children?.()}
 </span>
 
-<style lang="scss">
+<style lang="css">
     span {
         display: flex;
         flex-direction: row;

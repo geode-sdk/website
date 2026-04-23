@@ -212,7 +212,7 @@
     </Column>
 </div>
 
-<style lang="scss">
+<style lang="css">
     h1 {
         margin: 0;
         font-family: var(--font-heading);

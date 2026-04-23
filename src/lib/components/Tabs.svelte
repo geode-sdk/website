@@ -37,7 +37,7 @@
     <div class="pages">{@render children?.()}</div>
 </div>
 
-<style lang="scss">
+<style lang="css">
     .tabs-container {
         display: flex;
         flex-direction: column;
@@ -49,9 +49,9 @@
         flex-direction: row;
         flex-wrap: wrap;
         gap: 0.25rem;
-        // padding: .35rem;
-        // border-radius: .85rem;
-        // background-color: color-mix(in srgb, var(--background-500) 25%, transparent);
+        /* padding: .35rem;
+        border-radius: .85rem;
+        background-color: color-mix(in srgb, var(--background-500) 25%, transparent); */
 
         button {
             display: flex;
@@ -70,9 +70,9 @@
             font-family: var(--font-body);
             font-size: 0.9em;
 
-            // background-color: color-mix(in srgb, var(--background-500) 25%, transparent);
+            /* background-color: color-mix(in srgb, var(--background-500) 25%, transparent); */
             border: 0.15rem solid color-mix(in srgb, var(--background-300) 50%, transparent);
-            // border: none;
+            /* border: none; */
             border-radius: 0.5rem;
 
             transition-duration: var(--transition-duration);

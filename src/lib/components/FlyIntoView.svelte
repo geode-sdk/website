@@ -34,9 +34,7 @@
     {@render children?.()}
 </section>
 
-<style lang="scss">
-    @use "$lib/styles/media-queries.scss" as *;
-
+<style lang="css">
     section {
         display: flex;
         flex-direction: row;
@@ -47,7 +45,10 @@
         font-size: 1.1em;
         max-width: 70vw;
 
-        @include lt-lg {
+    }
+
+    @media screen and (max-width: 1279px) {
+        section {
             flex-direction: column;
             gap: 1rem;
 
@@ -56,6 +57,7 @@
             }
         }
     }
+
     section {
         opacity: 0%;
         transform: translateX(-8rem);

@@ -68,7 +68,7 @@
 
 <Gap size="normal" />
 
-<style lang="scss">
+<style lang="css">
     h1 {
         margin: 10rem 0 0;
         font-family: var(--font-heading);

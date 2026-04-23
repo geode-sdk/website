@@ -348,14 +348,13 @@
 
 <Gap size="normal" />
 
-<style lang="scss">
-    @use "$lib/styles/media-queries.scss" as *;
-
+<style lang="css">
     .img-with-width {
         max-width: 35vw;
         flex-shrink: 0;
-
-        @include lt-lg {
+    }
+    @media screen and (max-width: 1279px) {
+        .img-with-width {
             max-width: 65vw;
         }
     }

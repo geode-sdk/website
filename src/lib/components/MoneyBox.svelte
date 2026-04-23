@@ -41,7 +41,7 @@
     {text}
 </div>
 
-<style lang="scss">
+<style lang="css">
     div {
         border: 0.15rem color-mix(in srgb, var(--background-300) 50%, transparent) solid;
         border-radius: 0.5rem;

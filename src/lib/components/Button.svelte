@@ -38,7 +38,7 @@
     {/if}
 </a>
 
-<style lang="scss">
+<style lang="css">
     a {
         font-family: var(--font-body);
         text-decoration: none;
@@ -59,9 +59,9 @@
         cursor: pointer;
         user-select: none;
 
-        // &:hover {
-        //     transform: scale(105%) translateY(-.2em);
-        // }
+        &:hover {
+            transform: scale(105%) translateY(-.2em);
+        }
 
         &:focus-visible {
             outline: revert;

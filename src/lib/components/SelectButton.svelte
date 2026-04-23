@@ -32,7 +32,7 @@
     <Icon {icon} --icon-size="1.3em" />{@render children?.()}
 </button>
 
-<style lang="scss">
+<style lang="css">
     button {
         display: flex;
         flex-direction: row;

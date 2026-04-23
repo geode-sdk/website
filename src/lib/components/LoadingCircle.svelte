@@ -8,7 +8,7 @@
 
 <span class={size}></span>
 
-<style lang="scss">
+<style lang="css">
     span {
         border: 0px solid var(--text-50);
         border-bottom-color: transparent;
