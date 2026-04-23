@@ -8,7 +8,7 @@ import {
 import { getCachedTags } from "$lib/server/cache.js";
 import { toIntSafe } from "$lib/api/helpers.js";
 import type { ServerTag } from "$lib/api/models/base.js";
-import type { ModStatus, ServerModVersion } from "$lib/api/models/mod-version.js";
+import type { ModStatus, ServerModVersion, ServerModVersionThreadComment } from "$lib/api/models/mod-version.js";
 import type { Actions, PageServerLoad } from "./$types.js";
 import { error, fail } from "@sveltejs/kit";
 import type { ServerMod, ServerModDeprecation } from "$lib/api/models/mod";
@@ -217,6 +217,12 @@ export const load: PageServerLoad = async ({ fetch, url, params, cookies }) => {
         version_params.status = "pending";
     }
 
+    const thread = await client.getModVersionThread(id, version.version);
+    let comments: ServerModVersionThreadComment[] | null = null;
+    if (thread) {
+        comments = await client.getModVersionThreadComments(id, version.version);
+    }
+
     let versions: Paginated<ServerModVersion> = { count: 0, data: [] };
     try {
         versions = await client.getModVersions(id, version_params);
@@ -227,5 +233,5 @@ export const load: PageServerLoad = async ({ fetch, url, params, cookies }) => {
         tags = await getCachedTags(client);
     } catch (e) {}
 
-    return { mod, deprecation, version, versions, tags, version_params };
+    return { mod, deprecation, version, versions, tags, version_params, thread, comments };
 };
