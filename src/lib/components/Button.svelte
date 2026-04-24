@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { KnownIcon } from "$lib";
     import type { Snippet } from "svelte";
-
+    import cx from "$lib/cx";
     import Icon from "./Icon.svelte";
 
     type Style = "primary-filled-dark" | "primary-filled" | "secondary-filled" | "hollow" | "dark-small";
@@ -11,6 +11,7 @@
         icon?: KnownIcon | undefined;
         iconOnRight?: boolean;
         disabled?: boolean;
+        type: "button" | "submit" | "reset";
         onclick?: () => void;
         children?: Snippet;
     }
@@ -21,12 +22,36 @@
         icon = undefined,
         iconOnRight = false,
         disabled = false,
+        type = "button",
         onclick,
         children,
     }: Props = $props();
+
+    const isLink = $derived(href !== undefined);
 </script>
 
-<a {href} class={design} class:disabled {onclick}>
+<svelte:element
+    this={isLink ? "a" : "button"}
+    role={isLink ? "link" : "button"}
+    type={!isLink ? type : undefined}
+    {href}
+    {disabled}
+    class={cx(
+        "flex items-center justify-center gap-3 rounded-md border-2 border-solid p-3 shadow-md transition-colors select-none hover:cursor-pointer",
+        design === "primary-filled-dark" &&
+            "border-primary-950 bg-primary-950 text-primary-300 hover:border-primary-50 hover:bg-primary-50 hover:text-secondary-950",
+        design === "primary-filled" &&
+            "border-primary-300 bg-primary-300 text-primary-950 hover:border-primary-50 hover:bg-primary-50 hover:text-secondary-950",
+        design === "secondary-filled" &&
+            "border-secondary-300 bg-secondary-300 text-secondary-950 hover:border-secondary-50 hover:bg-secondary-50 hover:text-secondary-950",
+        design === "hollow" &&
+            "border-secondary-300 bg-transparent text-secondary-300 hover:border-secondary-50 hover:bg-secondary-50 hover:text-secondary-950",
+        design === "dark-small" &&
+            "gap-1 border-background-300 bg-transparent p-1 text-background-300 hover:border-secondary-50 hover:bg-secondary-50 hover:text-secondary-950",
+        disabled &&
+            "pointer-events-none border-background-800 bg-background-800 text-background-50 opacity-35",
+    )}
+    {onclick}>
     {#if iconOnRight}
         {@render children?.()}
     {/if}
@@ -36,103 +61,4 @@
     {#if !iconOnRight}
         {@render children?.()}
     {/if}
-</a>
-
-<style lang="css">
-    a {
-        font-family: var(--font-body);
-        text-decoration: none;
-
-        border-style: solid;
-        border-width: 0.15rem;
-        border-radius: 0.15rem;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0.6rem;
-        gap: 0.6rem;
-
-        transition: color, background-color, border-color, transform;
-        transition-duration: var(--transition-duration);
-
-        cursor: pointer;
-        user-select: none;
-
-        &:hover {
-            transform: scale(105%) translateY(-.2em);
-        }
-
-        &:focus-visible {
-            outline: revert;
-        }
-
-        &.primary-filled-dark {
-            color: var(--primary-300);
-            background-color: var(--primary-950);
-            border-color: var(--primary-950);
-            box-shadow: 0px 0.1rem 0.5rem color-mix(in srgb, var(--primary-950) 50%, transparent);
-            &:hover {
-                color: var(--secondary-950);
-                background-color: var(--primary-50);
-                border-color: var(--primary-50);
-            }
-        }
-        &.primary-filled {
-            color: var(--primary-950);
-            background-color: var(--primary-300);
-            border-color: var(--primary-300);
-            box-shadow: 0px 0.1rem 0.5rem color-mix(in srgb, var(--primary-950) 50%, transparent);
-            &:hover {
-                color: var(--secondary-950);
-                background-color: var(--primary-50);
-                border-color: var(--primary-50);
-            }
-        }
-        &.secondary-filled {
-            color: var(--secondary-950);
-            background-color: var(--secondary-300);
-            border-color: var(--secondary-300);
-            box-shadow: 0px 0.1rem 0.5rem color-mix(in srgb, var(--secondary-950) 50%, transparent);
-            &:hover {
-                color: var(--secondary-950);
-                background-color: var(--secondary-50);
-                border-color: var(--secondary-50);
-            }
-        }
-        &.hollow {
-            color: var(--secondary-300);
-            background-color: transparent;
-            border-color: var(--secondary-300);
-            box-shadow: 0px 0.1rem 0.5rem color-mix(in srgb, var(--secondary-950) 50%, transparent);
-            &:hover {
-                color: var(--secondary-950);
-                background-color: var(--secondary-50);
-                border-color: var(--secondary-50);
-            }
-        }
-        &.dark-small {
-            padding: 0.3rem;
-            padding-top: 0.15rem;
-            padding-bottom: 0.15rem;
-            gap: 0.15rem;
-
-            color: var(--background-300);
-            background-color: transparent;
-            border-color: var(--background-300);
-            box-shadow: 0px 0.1rem 0.5rem color-mix(in srgb, var(--primary-950) 50%, transparent);
-            &:hover {
-                color: var(--secondary-950);
-                background-color: var(--primary-50);
-                border-color: var(--primary-50);
-            }
-        }
-        &.disabled {
-            pointer-events: none;
-            color: var(--background-50);
-            background-color: var(--background-800);
-            border-color: var(--background-800);
-            opacity: 35%;
-        }
-    }
-</style>
+</svelte:element>
