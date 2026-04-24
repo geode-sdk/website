@@ -11,7 +11,7 @@
         icon?: KnownIcon | undefined;
         iconOnRight?: boolean;
         disabled?: boolean;
-        type: "button" | "submit" | "reset";
+        type?: "button" | "submit" | "reset";
         onclick?: () => void;
         children?: Snippet;
     }

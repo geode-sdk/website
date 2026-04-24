@@ -102,6 +102,8 @@
 }
 
 @theme {
+    --font-heading: "Quicksand", sans-serif;
+
     --color-text-50: var(--text-50);
     --color-text-100: var(--text-100);
     --color-text-200: var(--text-200);
@@ -179,6 +181,9 @@
     h1 { @apply text-4xl font-bold tracking-tight mb-1; }
     h2 { @apply text-3xl font-semibold mb-1; }
     h3 { @apply text-2xl font-semibold mb-1; }
+
+    .hljs { @apply text-sm; }
+    code { @apply text-sm; }
 }
 
 *,
@@ -297,9 +302,6 @@ code:not(pre > code) {
     font-family: var(--font-monospace);
 }
 
-.hidden {
-    display: none;
-}
 .hidden-blocking {
     visibility: hidden;
 }
