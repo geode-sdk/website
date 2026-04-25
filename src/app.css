@@ -184,6 +184,22 @@
 
     .hljs { @apply text-sm; }
     code { @apply text-sm; }
+
+    .markdown {
+        & blockquote {
+            @apply my-2 px-8 border-l-4 border-l-primary-200;
+        }
+        & li {
+            @apply list-disc ml-5;
+        }
+        & :is(h1, h2, h3, h4, h5, h6) {
+            @apply mb-4;
+
+            &:not(:first-child) {
+                @apply mt-4;
+            }
+        }
+    }
 }
 
 *,
@@ -261,9 +277,6 @@ p.subtitle {
     --link-color: var(--secondary-300);
     max-width: min(70ch, 90vw);
 
-    & h1:first-child {
-        margin-top: 0;
-    }
     & p:not(:first-child) {
         margin-top: 0.75em;
         max-width: initial;
