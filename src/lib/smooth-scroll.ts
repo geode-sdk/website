@@ -3,4 +3,4 @@ export const smoothScrollToElement = (target: HTMLElement): void => {
 
     target.classList.add("highlight-scrolled");
     target.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
-}
+};
