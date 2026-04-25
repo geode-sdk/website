@@ -3,14 +3,18 @@
     import type { Snippet } from "svelte";
     import cx from "$lib/cx";
     import Icon from "./Icon.svelte";
+    import type { ClassValue } from "clsx";
 
     type Style = "primary-filled-dark" | "primary-filled" | "secondary-filled" | "hollow" | "dark-small";
+    type Size = "large" | "normal" | "small";
     interface Props {
         design?: Style;
         href?: string | undefined;
         icon?: KnownIcon | undefined;
         iconOnRight?: boolean;
         disabled?: boolean;
+        class?: ClassValue;
+        size?: Size;
         type?: "button" | "submit" | "reset";
         onclick?: () => void;
         children?: Snippet;
@@ -23,6 +27,8 @@
         iconOnRight = false,
         disabled = false,
         type = "button",
+        class: className = undefined,
+        size = "normal",
         onclick,
         children,
     }: Props = $props();
@@ -45,11 +51,12 @@
         design === "secondary-filled" &&
             "border-secondary-300 bg-secondary-300 text-secondary-950 hover:border-secondary-50 hover:bg-secondary-50 hover:text-secondary-950",
         design === "hollow" &&
-            "border-secondary-300 bg-transparent text-secondary-300 hover:border-secondary-50 hover:bg-secondary-50 hover:text-secondary-950",
+            "border-secondary-300 text-secondary-300 hover:border-secondary-50 hover:bg-secondary-50 hover:text-secondary-950 bg-transparent",
         design === "dark-small" &&
-            "gap-1 border-background-300 bg-transparent p-1 text-background-300 hover:border-secondary-50 hover:bg-secondary-50 hover:text-secondary-950",
-        disabled &&
-            "pointer-events-none border-background-800 bg-background-800 text-background-50 opacity-35",
+            "border-background-300 text-background-300 hover:border-secondary-50 hover:bg-secondary-50 hover:text-secondary-950 gap-1 bg-transparent p-1",
+        disabled && "border-background-800 bg-background-800 text-background-50 pointer-events-none opacity-35",
+        size === "small" && "gap-2 p-1.5 text-sm",
+        className,
     )}
     {onclick}>
     {#if iconOnRight}
