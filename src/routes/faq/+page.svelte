@@ -31,7 +31,7 @@
 <h1 class="font-heading mt-30 text-5xl font-bold">Frequently Asked Questions</h1>
 
 <div class="flex items-start justify-center gap-2">
-    <div class="sticky top-20 max-h-screen scroll-auto">
+    <div class="sticky top-20 max-h-[65vw] overflow-y-scroll">
         <QuestionNav {faqs} />
     </div>
     <div class="w-full">
