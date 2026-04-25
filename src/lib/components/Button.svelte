@@ -4,10 +4,11 @@
     import cx from "$lib/cx";
     import Icon from "./Icon.svelte";
     import type { ClassValue } from "clsx";
+    import { type HTMLButtonAttributes, type HTMLAnchorAttributes } from "svelte/elements";
 
     type Style = "primary-filled-dark" | "primary-filled" | "secondary-filled" | "hollow" | "dark-small";
     type Size = "large" | "normal" | "small";
-    interface Props {
+    type Props = {
         design?: Style;
         href?: string | undefined;
         icon?: KnownIcon | undefined;
@@ -18,7 +19,7 @@
         type?: "button" | "submit" | "reset";
         onclick?: () => void;
         children?: Snippet;
-    }
+    } & (HTMLButtonAttributes | HTMLAnchorAttributes);
 
     let {
         design = "hollow",
@@ -31,6 +32,7 @@
         size = "normal",
         onclick,
         children,
+        ...restProps
     }: Props = $props();
 
     const isLink = $derived(href !== undefined);
@@ -40,6 +42,7 @@
     this={isLink ? "a" : "button"}
     role={isLink ? "link" : "button"}
     type={!isLink ? type : undefined}
+    {...restProps}
     {href}
     {disabled}
     class={cx(
