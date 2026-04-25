@@ -18,7 +18,7 @@
     <span class="content-container">{@render children?.()}</span>
 </section>
 
-<style lang="scss">
+<style lang="css">
     section {
         display: flex;
         flex-direction: row;

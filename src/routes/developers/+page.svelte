@@ -100,7 +100,7 @@
     </section>
 </article>
 
-<style lang="scss">
+<style lang="css">
     article {
         padding: min(3rem, 3vw);
         width: 100%;

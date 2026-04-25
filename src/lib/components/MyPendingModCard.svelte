@@ -21,7 +21,7 @@
     {/if}
 </div>
 
-<style lang="scss">
+<style lang="css">
     .bigger {
         font-size: 1.1rem;
         color: var(--text-50);

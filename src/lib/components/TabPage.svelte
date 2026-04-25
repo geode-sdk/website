@@ -27,15 +27,15 @@
 
 <article {id} class:selected={$selectedTab === id}>{@render children?.()}</article>
 
-<style lang="scss">
+<style lang="css">
     article {
         transition-duration: var(--transition-duration);
     }
     article:not(.selected) {
         display: none;
-        // visibility: hidden;
-        // height: 0;
-        // overflow: hidden;
-        // opacity: 0%;
+        /* visibility: hidden;
+        height: 0;
+        overflow: hidden;
+        opacity: 0%; */
     }
 </style>

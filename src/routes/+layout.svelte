@@ -1,5 +1,5 @@
 <script lang="ts">
-    import "../app.scss";
+    import "../app.css";
     import type { Snippet } from "svelte";
     import Button from "$lib/components/Button.svelte";
     import Column from "$lib/components/Column.svelte";
@@ -70,9 +70,7 @@
     </div>
 </main>
 
-<style lang="scss">
-    @use "$lib/styles/media-queries.scss" as *;
-
+<style lang="css">
     .bg {
         background-image: url("$lib/assets/bgart-blur.png");
         background-size: contain;
@@ -99,9 +97,6 @@
         opacity: 50%;
 
         display: none;
-        @include gt-md {
-            display: block;
-        }
 
         &.left {
             left: 0;
@@ -109,6 +104,11 @@
         }
         &.right {
             right: 0;
+        }
+    }
+    @media screen and (min-width: 1280px) {
+        .side-art {
+            display: block;
         }
     }
     main {

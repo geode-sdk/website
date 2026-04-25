@@ -43,7 +43,7 @@
     </div>
 {/if}
 
-<style lang="scss">
+<style lang="css">
     .image-alt {
         display: inline-flex;
         place-items: center;

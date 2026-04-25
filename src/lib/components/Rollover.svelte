@@ -21,7 +21,7 @@
     <article><Column align="start" gap="tiny">{@render children?.()}</Column></article>
 </details>
 
-<style lang="scss">
+<style lang="css">
     details {
         padding: 0.5rem;
         border-radius: 0.5rem;

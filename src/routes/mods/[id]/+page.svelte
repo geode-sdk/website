@@ -554,7 +554,7 @@
     </Row>
 </div>
 
-<style lang="scss">
+<style lang="css">
     h2 {
         margin: 0;
     }
@@ -583,7 +583,7 @@
     section {
         background-color: var(--background-950);
         padding: 0.75rem;
-        // gap: .5rem;
+        /* gap: .5rem; */
         border-radius: 0.5rem;
     }
     aside {

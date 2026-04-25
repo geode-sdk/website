@@ -9,7 +9,7 @@
 
 <span style="--size: var(--gap-{size})" class={{ flex: size === "flex", blocking }}></span>
 
-<style lang="scss">
+<style lang="css">
     span {
         display: inline-block;
         width: var(--size);

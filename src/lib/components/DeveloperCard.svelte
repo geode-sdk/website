@@ -38,7 +38,7 @@
     </div>
 </div>
 
-<style lang="scss">
+<style lang="css">
     .aside {
         --card-base-color: var(--background-500);
         --card-icon-base-color: var(--secondary-300);

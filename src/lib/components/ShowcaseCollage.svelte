@@ -7,7 +7,7 @@
     <Image name="globed-page" alt="" style="glow"></Image>
 </div>
 
-<style lang="scss">
+<style lang="css">
     div {
         padding: 0.65rem;
         height: 20rem;

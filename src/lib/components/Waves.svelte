@@ -28,7 +28,7 @@
     <div>{@render children?.()}</div>
 </span>
 
-<style lang="scss">
+<style lang="css">
     span {
         display: flex;
         width: 100%;

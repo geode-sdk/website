@@ -137,7 +137,7 @@
     {/if}
 </div>
 
-<style lang="scss">
+<style lang="css">
     .title-container {
         display: flex;
         align-items: center;
