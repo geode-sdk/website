@@ -21,7 +21,7 @@
             <div>
                 <textarea name="comment" id="mod-thread-comment" placeholder="Enter your new comment here"></textarea>
             </div>
-            <Button>Post</Button>
+            <Button type="button">Post</Button>
         </form>
     </div>
     <ModThreadList {comments} />
