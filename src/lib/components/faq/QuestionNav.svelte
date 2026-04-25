@@ -11,7 +11,7 @@
 </script>
 
 <Card semitransparent>
-    <nav class="hidden flex-col md:flex gap-2">
+    <nav class="flex flex-col gap-2">
         {#each faqs as faq (faq.id)}
             <QuestionNavItem {faq} />
         {/each}

@@ -73,7 +73,7 @@
             {
                 "id": "who-made-geode",
                 "question": "Who created Geode?",
-                "answer": "Geode is developed by a team of people, including [HJfod](https://github.com/HJfod/), [Alk](https://github.com/altalk23/), [Mat](https://github.com/matcool/), [Camila314](https://github.com/camila314/), [Cvolton](https://github.com/Cvolton), and others."
+                "answer": "Geode is developed by a team of people, including [HJfod](https://github.com/HJfod/), [Alk](https://github.com/altalk23/), [Mat](https://github.com/matcool/), [Camila314](https://github.com/camila314/), [Cvolton](https://github.com/Cvolton), and [others](https://github.com/orgs/geode-sdk/people)."
             },
             {
                 "id": "is-geode-free",
