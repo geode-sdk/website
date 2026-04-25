@@ -18,7 +18,7 @@
     <input {autofocus} {placeholder} bind:value={query} oninput={() => search(query)} bind:this={ref} />
 </div>
 
-<style lang="scss">
+<style lang="css">
     div.search {
         display: flex;
         flex-direction: row;

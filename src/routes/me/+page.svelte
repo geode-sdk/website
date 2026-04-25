@@ -123,7 +123,7 @@
     </div>
 </main>
 
-<style lang="scss">
+<style lang="css">
     h1 {
         margin-bottom: 1rem;
         text-align: center;

@@ -143,7 +143,7 @@
     </nav>
 </div>
 
-<style lang="scss">
+<style lang="css">
     .menu {
         background-color: var(--background-950);
         padding: 0.5rem;

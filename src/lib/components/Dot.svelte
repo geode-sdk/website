@@ -1,6 +1,6 @@
 <div></div>
 
-<style lang="scss">
+<style lang="css">
     :global(:root) {
         --dot-color: var(--background-900);
     }

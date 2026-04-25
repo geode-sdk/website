@@ -18,7 +18,7 @@
     {@render children?.()}
 </span>
 
-<style lang="scss">
+<style lang="css">
     .overlay-container {
         position: relative;
     }

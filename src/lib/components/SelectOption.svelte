@@ -30,7 +30,7 @@
     </Row>
 </button>
 
-<style lang="scss">
+<style lang="css">
     button {
         display: flex;
         flex-direction: row;

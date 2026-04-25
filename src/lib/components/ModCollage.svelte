@@ -10,11 +10,11 @@
     <Image name="globed-logo" alt="" size="10em"></Image>
 </div>
 
-<style lang="scss">
+<style lang="css">
     div {
         padding: 0.65rem;
         width: 20rem;
-        // width: clamp(10rem, 50vw, 20rem);
+        /* width: clamp(10rem, 50vw, 20rem); */
         display: flex;
         flex-direction: row;
         align-items: center;

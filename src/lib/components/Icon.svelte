@@ -20,7 +20,7 @@
     {/if}
 </span>
 
-<style lang="scss">
+<style lang="css">
     :global(:root) {
         --icon-size: 1.563em;
     }

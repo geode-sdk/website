@@ -16,7 +16,7 @@
     {@render children?.()}
 </div>
 
-<style lang="scss">
+<style lang="css">
     div {
         display: flex;
         flex-direction: row;

@@ -28,7 +28,7 @@
     {/if}
 </div>
 
-<style lang="scss">
+<style lang="css">
     div {
         max-width: var(--img-size);
         & > :global(picture > img) {

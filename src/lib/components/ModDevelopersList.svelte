@@ -36,7 +36,7 @@
     </span>
 {/if}
 
-<style lang="scss">
+<style lang="css">
     .more {
         font-size: 0.9em;
         color: var(--text-300);

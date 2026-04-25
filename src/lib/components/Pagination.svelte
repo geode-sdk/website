@@ -60,9 +60,7 @@
     </div>
 </nav>
 
-<style lang="scss">
-    @use "$lib/styles/media-queries.scss" as *;
-
+<style lang="css">
     nav {
         display: flex;
         flex-wrap: wrap;
@@ -70,7 +68,10 @@
         align-items: center;
         gap: 1rem;
 
-        @include gt-md {
+    }
+
+    @media screen and (min-width: 1280px) {
+        nav {
             display: grid;
             grid-template-columns: 1fr max-content 1fr;
         }

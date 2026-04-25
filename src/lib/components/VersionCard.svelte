@@ -56,7 +56,7 @@
     </Row>
 </article>
 
-<style lang="scss">
+<style lang="css">
     article.version {
         display: flex;
         flex-direction: column;
