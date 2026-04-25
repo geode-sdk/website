@@ -49,7 +49,6 @@
     const can_update_mod = $derived((user && developer_ids.includes(user.id)) || false);
     const is_admin = $derived(user?.admin === true);
     const owns_mod = $derived(can_update_mod && data.mod.developers.some((d) => d.is_owner && d.id == user?.id));
-    const pending = $derived(data.mod.versions.at(0)?.status === "pending");
 
     const is_deprecated = $derived((data.deprecation?.length ?? 0) > 0);
     const deprecation_reason = $derived(data.deprecation?.[0]?.reason ?? null);
