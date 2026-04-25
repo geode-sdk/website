@@ -22,6 +22,7 @@
     import type { PageData } from "./$types";
     import { getNewGDUpdateWasReleased } from "$lib";
     import NewGDUpdateAlert from "$lib/components/NewGDUpdateAlert.svelte";
+    import Card from "$lib/components/Card.svelte";
 
     interface Props {
         data: PageData;
@@ -75,7 +76,7 @@
         </span>
         <Gap size="0" />
         {#if recentGDUpdate}
-            <NewGDUpdateAlert/>
+            <NewGDUpdateAlert />
         {/if}
         <Row wrap="wrap">
             <Button href="/install" design="primary-filled-dark" icon="download">Download</Button>
@@ -89,20 +90,22 @@
 </div>
 <Image name="main-page" alt="The main page" style="shadow"></Image>
 
-<Column>
-    <Row wrap="wrap" --link-color="var(--secondary-300)">
-        <Link href="https://discord.gg/9e43WMKzhp" icon="discord">Discord</Link>
-        <Dot --dot-color="var(--background-400)" />
-        <Link href="https://twitter.com/GeodeSDK" icon="twitter">Twitter</Link>
-        <Dot --dot-color="var(--background-400)" />
-        <Link href="https://bsky.app/profile/geode-sdk.org" icon="bluesky">Bluesky</Link>
-    </Row>
-    <Row wrap="wrap" --link-color="var(--secondary-300)">
-        <Link href="https://docs.geode-sdk.org/" icon="docs">Documentation</Link>
-        <Dot --dot-color="var(--background-400)" />
-        <Link href="https://github.com/geode-sdk" icon="github">Source Code</Link>
-    </Row>
-</Column>
+<Card semitransparent>
+    <Column>
+        <Row wrap="wrap" --link-color="var(--secondary-300)">
+            <Link href="https://discord.gg/9e43WMKzhp" icon="discord">Discord</Link>
+            <Dot --dot-color="var(--background-400)" />
+            <Link href="https://twitter.com/GeodeSDK" icon="twitter">Twitter</Link>
+            <Dot --dot-color="var(--background-400)" />
+            <Link href="https://bsky.app/profile/geode-sdk.org" icon="bluesky">Bluesky</Link>
+        </Row>
+        <Row wrap="wrap" --link-color="var(--secondary-300)">
+            <Link href="https://docs.geode-sdk.org/" icon="docs">Documentation</Link>
+            <Dot --dot-color="var(--background-400)" />
+            <Link href="https://github.com/geode-sdk" icon="github">Source Code</Link>
+        </Row>
+    </Column>
+</Card>
 
 <div class="flying-columns">
     <Column align="center">
