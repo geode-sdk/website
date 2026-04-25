@@ -19,41 +19,40 @@
 </script>
 
 <article class="version">
-    <Row wrap="wrap">
-        <Column gap="small" align="start">
-            <Link href={`/mods/${mod.id}?version=${version.version}`}>
-                <h2>{version.version}</h2>
-            </Link>
-            {#if version.created_at}
-                <span class="card-info" title={serverTimestampToDateString(version.created_at)}>
-                    <Icon icon="time" />{"Released " + serverTimestampToAgoString(version.created_at)}
-                </span>
-            {/if}
-            <span class="card-info" title="{formatNumber(version.download_count)} downloads">
-                <Icon icon="download" />
-                {abbreviateNumber(version.download_count)} downloads
+    <div class="flex flex-col gap-2">
+        <Link href={`/mods/${mod.id}?version=${version.version}`}>
+            <h2>{version.version}</h2>
+        </Link>
+        {#if version.created_at}
+            <span class="card-info" title={serverTimestampToDateString(version.created_at)}>
+                <Icon icon="time" />{"Released " + serverTimestampToAgoString(version.created_at)}
             </span>
-            <span class="card-info wide">
-                <Icon icon="geode" />
-                Minimum Geode version: <Label icon="geode" design="gray">
-                    {version.geode}
-                </Label>
-            </span>
-            <span class="card-info short">
-                <Icon icon="geode" /> {version.geode}
-            </span>
-            <span class="card-info wide">
-                <VersionCards gd={version.gd} longForm={true} />
-            </span>
-            <span class="card-info short">
-                <VersionCards gd={version.gd} longForm={false} />
-            </span>
-        </Column>
-        <Column gap="small" align="stretch">
-            <Button href={version.download_link} icon="download" design="primary-filled">Download .geode file</Button>
-            <Button href="/faq#how-do-i-manually-install-mods" icon="help">How to install</Button>
-        </Column>
-    </Row>
+        {/if}
+        <span class="card-info" title="{formatNumber(version.download_count)} downloads">
+            <Icon icon="download" />
+            {abbreviateNumber(version.download_count)} downloads
+        </span>
+        <span class="card-info wide">
+            <Icon icon="geode" />
+            Minimum Geode version: <Label icon="geode" design="gray">
+                {version.geode}
+            </Label>
+        </span>
+        <span class="card-info short">
+            <Icon icon="geode" />
+            {version.geode}
+        </span>
+        <span class="card-info wide">
+            <VersionCards gd={version.gd} longForm={true} />
+        </span>
+        <span class="card-info short">
+            <VersionCards gd={version.gd} longForm={false} />
+        </span>
+    </div>
+    <div class="flex flex-col gap-2">
+        <Button href={version.download_link} icon="download" design="primary-filled">Download .geode file</Button>
+        <Button href="/faq#how-do-i-manually-install-mods" icon="help">How to install</Button>
+    </div>
 </article>
 
 <style lang="css">
@@ -104,5 +103,4 @@
             }
         }
     }
-
 </style>

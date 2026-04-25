@@ -571,7 +571,7 @@ export class IndexClient {
         version: string,
         page: number = 1,
         perPage: number = 10,
-    ): Promise<ServerModVersionThreadComment[] | null> {
+    ): Promise<Paginated<ServerModVersionThreadComment> | null> {
         const url = new URL(`${BASE_URL}/v1/mods/${id}/versions/${version}/submission/comments`);
 
         url.searchParams.append('page', page.toString());
@@ -593,7 +593,7 @@ export class IndexClient {
         }
 
         const data = await r.json();
-        return this.validate<ServerModVersionThreadComment[]>(data);
+        return this.validate<Paginated<ServerModVersionThreadComment>>(data);
     }
 
     async addDeveloper(id: string, body: AddDeveloperBody) {

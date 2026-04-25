@@ -218,7 +218,7 @@ export const load: PageServerLoad = async ({ fetch, url, params, cookies }) => {
     }
 
     const thread = await client.getModVersionThread(id, version.version);
-    let comments: ServerModVersionThreadComment[] | null = null;
+    let comments: Paginated<ServerModVersionThreadComment> | null = null;
     if (thread) {
         comments = await client.getModVersionThreadComments(id, version.version);
     }

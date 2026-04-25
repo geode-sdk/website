@@ -3,6 +3,7 @@
     import Button from "../Button.svelte";
     import Column from "../Column.svelte";
     import ModThreadList from "./ModThreadList.svelte";
+    import ModThreadCommentForm from "./ModThreadCommentForm.svelte";
 
     interface Props {
         mod_version: ServerModVersion;
@@ -12,17 +13,10 @@
     let { mod_version, initial_comments }: Props = $props();
 
     // svelte-ignore state_referenced_locally
-    const comments = $state(initial_comments);
+    let comments = $state(initial_comments);
 </script>
 
-<Column align="start">
-    <div>
-        <form id="mod-thread-new-comment-form" action="">
-            <div>
-                <textarea name="comment" id="mod-thread-comment" placeholder="Enter your new comment here"></textarea>
-            </div>
-            <Button type="button">Post</Button>
-        </form>
-    </div>
+<div class="flex flex-col gap-2">
+    <ModThreadCommentForm />
     <ModThreadList {comments} />
-</Column>
+</div>

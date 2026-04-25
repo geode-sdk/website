@@ -28,6 +28,7 @@
         display: flex;
         flex-direction: row;
         align-items: center;
+        justify-content: center;
         gap: 0.25rem;
         font-size: 0.9em;
 
