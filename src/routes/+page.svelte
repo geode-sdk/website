@@ -53,7 +53,7 @@
             <GeodeLogo type="plain-mono" />
             <h1>Geode</h1>
         </Row>
-        <span class="shadow">
+        <span class="text-shadow-md">
             <Row
                 wrap="wrap"
                 --em-color="var(--accent-alt-300)"
@@ -234,12 +234,6 @@
         }
     }
 
-    .shadow {
-        text-shadow: 0 0 0.75rem var(--primary-800);
-        & :global(.icon) {
-            filter: drop-shadow(0px 0px 0.25rem var(--primary-800));
-        }
-    }
     span.platform-icons {
         display: flex;
         flex-direction: row;

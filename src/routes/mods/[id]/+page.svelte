@@ -29,6 +29,7 @@
     import ModDevelopersList from "$lib/components/ModDevelopersList.svelte";
     import ModThread from "$lib/components/Threads/ModThread.svelte";
     import Card from "$lib/components/Card.svelte";
+    import Textarea from "$lib/components/ui/Textarea.svelte";
 
     interface Props {
         data: PageData;
@@ -160,8 +161,7 @@
                                                     <em>"{deprecation_reason}"</em>
                                                     )
                                                 {/if}; this means that it may
-                                                <em>no longer receive updates</em>
-                                                .
+                                                <em>no longer receive updates.</em>
                                                 {#if deprecation_alternatives.length > 0}
                                                     <br />
                                                     Instead, you may use these alternatives:
@@ -380,19 +380,16 @@
                                                         </option>
                                                     </select>
                                                 </div>
-
                                                 <div>
                                                     <label for="update-version-info">Reason:</label>
                                                     <br />
-                                                    <!-- prettier-ignore -->
-                                                    <textarea
-                                            name="info"
-                                            id="update-version-info"
-                                            rows="6"
-                                            cols="40"
-                                            value={data.version.info ?? ""}></textarea>
+                                                    <Textarea
+                                                        name="info"
+                                                        id="update-version-info"
+                                                        rows={6}
+                                                        cols={40}
+                                                        value={data.version.info ?? ""} />
                                                 </div>
-
                                                 <input type="hidden" name="mod_version" value={data.version.version} />
 
                                                 <input type="submit" value="Update" />
