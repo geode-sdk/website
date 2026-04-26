@@ -51,6 +51,7 @@
         font-size: 1.1em;
 
         padding: 0.65rem;
+        font-family: var(--font-mono);
 
         display: flex;
         flex-direction: row;
