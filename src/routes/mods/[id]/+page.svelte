@@ -140,7 +140,7 @@
                             <Label design="accent-transparent" icon="featured" />
                         </div>
                     {/if}
-                    <h1>
+                    <h1 class="font-heading">
                         {data.version.name}
                     </h1>
                 </div>
@@ -482,7 +482,7 @@
                 </section>
             {/if}
         </div>
-        <aside class="w-full md:w-fit">
+        <aside class="flex w-full flex-col gap-2 md:w-fit">
             <Card>
                 <div class="flex flex-col gap-2">
                     <span class="card-info">
@@ -583,11 +583,6 @@
 </article>
 
 <style lang="css">
-    aside {
-        display: flex;
-        flex-direction: column;
-        gap: var(--gap-small);
-    }
     .card-info {
         display: flex;
         flex-direction: row;
