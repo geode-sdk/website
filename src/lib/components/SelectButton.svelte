@@ -38,6 +38,7 @@
         flex-direction: row;
         align-items: center;
         gap: 0.25rem;
+        font-size: 0.8rem;
 
         background-color: transparent;
         color: var(--text-50);
