@@ -12,7 +12,7 @@
                 name="comment"
                 id="mod-thread-comment"
                 placeholder="Enter your new comment here"
-                class="h-full max-h-60 min-h-30" />
+                class="h-full max-h-60 min-h-30 rounded-b-none" />
         </div>
         <div class="bg-background-800 flex justify-between gap-2 rounded rounded-t-none p-2">
             <small>Press Enter to post. Press Shift + Enter to go on a new row.</small>

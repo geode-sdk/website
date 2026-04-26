@@ -14,7 +14,7 @@
 <textarea
     class={cx(
         classValue,
-        "border-background-800 field-sizing-content w-full overflow-auto rounded rounded-b-none border-2 p-2 outline-0",
+        "border-background-800 field-sizing-content w-full overflow-auto rounded border-2 p-2 outline-0",
     )}
     {value}
     {...restProps}></textarea>
