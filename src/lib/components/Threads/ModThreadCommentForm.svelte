@@ -1,17 +1,27 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
+    import { getContext } from "svelte";
     import Button from "../Button.svelte";
     import Icon from "../Icon.svelte";
     import Textarea from "../ui/Textarea.svelte";
+    import { type ActionData } from "../../../routes/mods/[id]/$types";
+    import InfoBox from "../InfoBox.svelte";
 
     const textareaOnKeyDown = (e: KeyboardEvent) => {
-        if (e.key !== 'Enter' || e.shiftKey) {
+        if (e.key !== "Enter" || e.shiftKey) {
             return;
         }
 
-        const submitButton = document.querySelector("#mod-thread-new-comment-form button[type='submit']") as HTMLButtonElement | undefined;
+        const submitButton = document.querySelector("#mod-thread-new-comment-form button[type='submit']") as
+            | HTMLButtonElement
+            | undefined;
         submitButton?.click();
-    }
+    };
+
+    const actionData = getContext<() => ActionData | null>("ActionData");
+    $effect(() => {
+        console.log(actionData());
+    });
 </script>
 
 <div class="w-full">
@@ -32,4 +42,9 @@
             </Button>
         </div>
     </form>
+    {#if actionData()?.action === "comment" && actionData()?.error}
+        <div class="mt-2">
+            <InfoBox type="error">{actionData()?.error}</InfoBox>
+        </div>
+    {/if}
 </div>

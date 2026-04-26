@@ -32,6 +32,7 @@
     import Textarea from "$lib/components/ui/Textarea.svelte";
     import { getUserContext } from "$lib/context/user.js";
     import { setModContext } from "$lib/context/mod.js";
+    import { setContext } from "svelte";
 
     interface Props {
         data: PageData;
@@ -41,6 +42,7 @@
     let { data, form }: Props = $props();
 
     setModContext(data.mod);
+    setContext("ActionData", () => form);
 
     const verifyStatus = (status: string): status is ModStatus => {
         return status == "accepted" || status == "rejected" || status == "pending";

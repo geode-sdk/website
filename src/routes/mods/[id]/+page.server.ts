@@ -153,6 +153,11 @@ export const actions: Actions = {
         const id = params.id;
 
         const client = await tryCreateAuthenticatedClient(cookies, fetch);
+        const authStatus = client.lastAuthStatus();
+
+        if (!authStatus || authStatus === SetTokensResult.UNSET) {
+            return fail(401, { action: "comment", error: "You need to be authenticated to comment" });
+        }
 
         const data = await request.formData();
 
