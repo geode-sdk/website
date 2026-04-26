@@ -7,6 +7,16 @@ export interface ServerDeveloper {
     github_id: number;
 }
 
+export interface ServerDeveloperProfile {
+    id: number;
+    username: string;
+    display_name: string;
+    verified: boolean;
+    admin: boolean;
+    github_id: number;
+    has_accepted_mod: boolean;
+}
+
 export interface ServerTag {
     id: number;
     name: string;

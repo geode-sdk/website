@@ -1,6 +1,6 @@
 import * as publicEnv from "$env/static/public";
 
-import type { ServerDeveloper, ServerTag } from "./models/base";
+import type { ServerDeveloper, ServerDeveloperProfile, ServerTag } from "./models/base";
 import type { ServerMod, ServerModDeprecation, ServerSimpleMod } from "./models/mod.js";
 import type {
     ModStatus,
@@ -691,7 +691,7 @@ export class IndexClient {
         }
     }
 
-    async getSelf(): Promise<ServerDeveloper> {
+    async getSelf(): Promise<ServerDeveloperProfile> {
         await this.checkAndTryRefreshAuth();
 
         const r = await this.withRetry(async () => {
@@ -705,7 +705,7 @@ export class IndexClient {
         this.throwOnUnauth(r);
         const data = await r.json();
 
-        return this.validate<ServerDeveloper>(data);
+        return this.validate<ServerDeveloperProfile>(data);
     }
 
     async getSelfMods(params?: GetSelfModsParams) {

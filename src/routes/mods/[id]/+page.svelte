@@ -45,11 +45,15 @@
     let searching = $state(false);
 
     const user = $derived(data.loggedInUser);
+    const is_logged_in = $derived(user !== null);
 
     const developer_ids = $derived(data.mod.developers.map((d) => d.id));
     const can_update_mod = $derived((user && developer_ids.includes(user.id)) || false);
     const is_admin = $derived(user?.admin === true);
     const owns_mod = $derived(can_update_mod && data.mod.developers.some((d) => d.is_owner && d.id == user?.id));
+    const has_accepted_mod = $derived(user?.has_accepted_mod === true);
+
+    const thread_lock = $derived(data.thread?.lock ?? "locked");
 
     const is_deprecated = $derived((data.deprecation?.length ?? 0) > 0);
     const deprecation_reason = $derived(data.deprecation?.[0]?.reason ?? null);
@@ -478,7 +482,14 @@
                                     <small>{data.comments.count}</small>
                                 </span>
                             </h2>
-                            <ModThread mod_version={data.mod.versions[0]} initial_comments={data.comments.data} />
+                            <ModThread
+                                modVersion={data.mod.versions[0]}
+                                initialComments={data.comments.data}
+                                lock={thread_lock}
+                                isLoggedIn={is_logged_in}
+                                isAdmin={is_admin}
+                                isModDeveloper={can_update_mod}
+                                hasAcceptedMod={has_accepted_mod} />
                         </Card>
                     </section>
                 {/if}
