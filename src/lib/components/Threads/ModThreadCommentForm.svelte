@@ -3,12 +3,22 @@
     import Button from "../Button.svelte";
     import Icon from "../Icon.svelte";
     import Textarea from "../ui/Textarea.svelte";
+
+    const textareaOnKeyDown = (e: KeyboardEvent) => {
+        if (e.key !== 'Enter' || e.shiftKey) {
+            return;
+        }
+
+        const submitButton = document.querySelector("#mod-thread-new-comment-form button[type='submit']") as HTMLButtonElement | undefined;
+        submitButton?.click();
+    }
 </script>
 
 <div class="w-full">
     <form id="mod-thread-new-comment-form" method="POST" action="?/comment" class="flex flex-col" use:enhance>
         <div class="max-h-60">
             <Textarea
+                onkeydown={textareaOnKeyDown}
                 name="comment"
                 id="mod-thread-comment"
                 placeholder="Enter your new comment here"
