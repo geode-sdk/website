@@ -27,6 +27,7 @@
     import GeodeMarkdown from "$lib/components/GeodeMarkdown.svelte";
     import ModLogo from "$lib/components/ModLogo.svelte";
     import ModDevelopersList from "$lib/components/ModDevelopersList.svelte";
+    import Textarea from "$lib/components/ui/Textarea.svelte";
 
     interface Props {
         data: PageData;
@@ -144,12 +145,14 @@
                         {#if is_deprecated}
                             <Column align="center">
                                 <InfoBox type="warning">
-                                    This mod was marked as <em>deprecated</em> by
-                                    their developer(s)
+                                    This mod was marked as <em>deprecated</em>
+                                    by their developer(s)
                                     {#if deprecation_reason}
-                                        (<em>"{deprecation_reason}"</em>)
-                                    {/if}; 
-                                    this means that it may <em>no longer receive updates</em>.
+                                        (
+                                        <em>"{deprecation_reason}"</em>
+                                        )
+                                    {/if}; this means that it may
+                                    <em>no longer receive updates.</em>
                                     {#if deprecation_alternatives.length > 0}
                                         <br />
                                         Instead, you may use these alternatives:
@@ -354,13 +357,12 @@
                                     <div>
                                         <label for="update-version-info">Reason:</label>
                                         <br />
-                                        <!-- prettier-ignore -->
-                                        <textarea
+                                        <Textarea
                                             name="info"
                                             id="update-version-info"
-                                            rows="6"
-                                            cols="40"
-                                            value={data.version.info ?? ""}></textarea>
+                                            rows={6}
+                                            cols={40}
+                                            value={data.version.info ?? ""} />
                                     </div>
 
                                     <input type="hidden" name="mod_version" value={data.version.version} />
