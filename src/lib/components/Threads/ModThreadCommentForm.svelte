@@ -19,9 +19,6 @@
     };
 
     const actionData = getContext<() => ActionData | null>("ActionData");
-    $effect(() => {
-        console.log(actionData());
-    });
 </script>
 
 <div class="w-full">
