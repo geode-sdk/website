@@ -30,6 +30,8 @@
     import ModThread from "$lib/components/Threads/ModThread.svelte";
     import Card from "$lib/components/Card.svelte";
     import Textarea from "$lib/components/ui/Textarea.svelte";
+    import { getUserContext } from "$lib/context/user.js";
+    import { setModContext } from "$lib/context/mod.js";
 
     interface Props {
         data: PageData;
@@ -38,20 +40,20 @@
 
     let { data, form }: Props = $props();
 
+    setModContext(data.mod);
+
     const verifyStatus = (status: string): status is ModStatus => {
         return status == "accepted" || status == "rejected" || status == "pending";
     };
 
     let searching = $state(false);
 
-    const user = $derived(data.loggedInUser);
-    const is_logged_in = $derived(user !== null);
+    const user = getUserContext();
 
     const developer_ids = $derived(data.mod.developers.map((d) => d.id));
     const can_update_mod = $derived((user && developer_ids.includes(user.id)) || false);
     const is_admin = $derived(user?.admin === true);
     const owns_mod = $derived(can_update_mod && data.mod.developers.some((d) => d.is_owner && d.id == user?.id));
-    const has_accepted_mod = $derived(user?.has_accepted_mod === true);
 
     const thread_lock = $derived(data.thread?.lock ?? "locked");
 
@@ -482,14 +484,7 @@
                                     <small>{data.comments.count}</small>
                                 </span>
                             </h2>
-                            <ModThread
-                                modVersion={data.mod.versions[0]}
-                                initialComments={data.comments.data}
-                                lock={thread_lock}
-                                isLoggedIn={is_logged_in}
-                                isAdmin={is_admin}
-                                isModDeveloper={can_update_mod}
-                                hasAcceptedMod={has_accepted_mod} />
+                            <ModThread comments={data.comments.data} lock={thread_lock} currentUser={user} />
                         </Card>
                     </section>
                 {/if}

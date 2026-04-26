@@ -149,6 +149,15 @@ export const actions: Actions = {
 
         return { success: true };
     },
+    comment: async ({ cookies, request, params, fetch }) => {
+        const id = params.id;
+
+        const client = await tryCreateAuthenticatedClient(cookies, fetch);
+
+        const data = await request.formData();
+
+        return { success: true };
+    },
 };
 
 export const load: PageServerLoad = async ({ fetch, url, params, cookies }) => {

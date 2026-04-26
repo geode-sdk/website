@@ -1,27 +1,30 @@
 <script lang="ts">
     import type {
-        ServerModVersion,
         ServerModVersionThreadComment,
         ServerModVersionThreadLock,
     } from "$lib/api/models/mod-version";
     import ModThreadList from "./ModThreadList.svelte";
     import ModThreadCommentForm from "./ModThreadCommentForm.svelte";
     import InfoBox from "../InfoBox.svelte";
+    import type { ServerDeveloperProfile } from "$lib/api/models/base";
+    import { getUserContext } from "$lib/context/user";
+    import { getModContext } from "$lib/context/mod";
 
     interface Props {
-        modVersion: ServerModVersion;
-        initialComments: ServerModVersionThreadComment[];
+        comments: ServerModVersionThreadComment[];
         lock: ServerModVersionThreadLock;
-        isLoggedIn: boolean;
-        isAdmin: boolean;
-        isModDeveloper: boolean;
-        hasAcceptedMod: boolean;
+        currentUser: ServerDeveloperProfile | null;
     }
 
-    let { modVersion, initialComments, isLoggedIn, isAdmin, isModDeveloper, hasAcceptedMod, lock }: Props = $props();
+    let { comments, lock }: Props = $props();
 
-    // svelte-ignore state_referenced_locally
-    let comments = $state(initialComments);
+    const currentUser = getUserContext();
+    const mod = getModContext();
+
+    const isModDeveloper = $derived(mod.developers.find((i) => i.id === currentUser?.id));
+    const isLoggedIn = $derived(currentUser !== null);
+    const isAdmin = $derived(currentUser?.admin === true);
+    const hasAcceptedMod = $derived(currentUser?.has_accepted_mod === true);
 </script>
 
 <div class="flex flex-col gap-6">

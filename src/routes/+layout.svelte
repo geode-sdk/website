@@ -9,6 +9,7 @@
     import Waves from "$lib/components/Waves.svelte";
     import Icon from "$lib/components/Icon.svelte";
     import type { LayoutData } from "./$types";
+    import { setUserContext } from "$lib/context/user";
 
     interface Props {
         data: LayoutData;
@@ -17,6 +18,9 @@
     }
 
     let { data, children, nav }: Props = $props();
+
+    // svelte-ignore state_referenced_locally
+    setUserContext(data.loggedInUser);
 </script>
 
 <main>

@@ -1,6 +1,7 @@
 <script lang="ts">
     import { serverTimestampToAgoString } from "$lib";
     import { type ServerModVersionThreadComment } from "$lib/api/models/mod-version";
+    import { getUserContext } from "$lib/context/user";
     import DevRoleChip from "../DevRoleChip.svelte";
     import Link from "../Link.svelte";
 
@@ -9,6 +10,9 @@
     }
 
     let { comment }: Props = $props();
+
+    const currentUser = getUserContext();
+    const isAdmin = $derived(currentUser?.admin === true);
 </script>
 
 <div>
@@ -33,9 +37,17 @@
             </div>
             <div class="flex flex-col gap-1">
                 <div class="max-w-96 text-wrap break-all">{comment.comment}</div>
-                <small class="text-text-400">
-                    {serverTimestampToAgoString(comment.created_at)}
-                </small>
+                <div class="flex gap-4">
+                    <small class="text-text-400">
+                        {serverTimestampToAgoString(comment.created_at)}
+                    </small>
+                    {#if comment.author.id === currentUser?.id}
+                        <small class="text-text-400">Edit</small>
+                    {/if}
+                    {#if isAdmin}
+                        <small class="text-red-300">Delete</small>
+                    {/if}
+                </div>
             </div>
         </div>
     </div>
