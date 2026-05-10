@@ -81,7 +81,7 @@
 
 <svelte:head>
     <title>Install Geode</title>
-    <meta name="description" content="Install Geode on Windows, MacOS, Android and iOS" />
+    <meta name="description" content="Install Geode on Windows, macOS, Android, and iOS" />
 </svelte:head>
 
 <h1>Install Geode</h1>
