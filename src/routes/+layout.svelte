@@ -17,6 +17,23 @@
     }
 
     let { data, children, nav }: Props = $props();
+
+    import * as publicEnv from "$env/static/public";
+    const GID = "PUBLIC_GTAG_ID" in publicEnv && typeof publicEnv.PUBLIC_GTAG_ID == "string"
+        ? publicEnv.PUBLIC_GTAG_ID
+        : "";
+
+    onMount(() => {
+        // <!-- Google tag (gtag.js) -->
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = `https://www.googletagmanager.com/gtag/js?id=${GID}`;
+        document.head.appendChild(script);
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', GID);
+    })
 </script>
 
 <main>
