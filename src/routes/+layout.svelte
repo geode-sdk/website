@@ -24,17 +24,19 @@
         ? publicEnv.PUBLIC_GTAG_ID
         : "";
 
-    onMount(() => {
-        // <!-- Google tag (gtag.js) -->
-        const script = document.createElement('script');
-        script.async = true;
-        script.src = `https://www.googletagmanager.com/gtag/js?id=${GID}`;
-        document.head.appendChild(script);
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', GID);
-    })
+    if (GID !== "") {
+        onMount(() => {
+            // <!-- Google tag (gtag.js) -->
+            const script = document.createElement('script');
+            script.async = true;
+            script.src = `https://www.googletagmanager.com/gtag/js?id=${GID}`;
+            document.head.appendChild(script);
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', GID);
+        });
+    }
 </script>
 
 <main>
