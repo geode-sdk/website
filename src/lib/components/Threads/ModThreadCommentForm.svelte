@@ -7,6 +7,11 @@
     import { type ActionData } from "../../../routes/mods/[id]/$types";
     import InfoBox from "../InfoBox.svelte";
 
+    interface Props {
+        version: string;
+    }
+    let { version }: Props = $props();
+
     const textareaOnKeyDown = (e: KeyboardEvent) => {
         if (e.key !== "Enter" || e.shiftKey) {
             return;
@@ -22,7 +27,14 @@
 </script>
 
 <div class="w-full">
-    <form id="mod-thread-new-comment-form" method="POST" action="?/comment" class="flex flex-col" use:enhance>
+    <form
+        id="mod-thread-new-comment-form"
+        method="POST"
+        action="?/comment"
+        enctype="multipart/form-data"
+        class="flex flex-col"
+        use:enhance>
+        <input type="hidden" name="version" value={version} />
         <div class="max-h-60">
             <Textarea
                 onkeydown={textareaOnKeyDown}
@@ -33,15 +45,23 @@
         </div>
         <div class="bg-background-800 flex justify-between gap-2 rounded rounded-t-none p-2">
             <small>Press Enter to post. Press Shift + Enter to go on a new row.</small>
-            <Button type="submit" size="small" design="primary-filled">
-                <Icon icon="update" />
-                Post
-            </Button>
+            <div class="flex items-center gap-2">
+                <input type="file" name="files" accept="image/*" multiple />
+                <Button type="submit" size="small" design="primary-filled">
+                    <Icon icon="update" />
+                    Post
+                </Button>
+            </div>
         </div>
     </form>
     {#if actionData()?.action === "comment" && actionData()?.error}
         <div class="mt-2">
             <InfoBox type="error">{actionData()?.error}</InfoBox>
+        </div>
+    {/if}
+    {#if actionData()?.action === "comment" && actionData()?.attachmentError}
+        <div class="mt-2">
+            <InfoBox type="warning">{actionData()?.attachmentError}</InfoBox>
         </div>
     {/if}
 </div>

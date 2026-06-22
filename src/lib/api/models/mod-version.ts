@@ -66,12 +66,17 @@ export interface ServerModVersionThread {
     updated_at: string;
 }
 
+export interface ServerModVersionThreadCommentAttachment {
+    id: number;
+    url: string;
+}
+
 export interface ServerModVersionThreadComment {
     id: number;
     submission_id: number;
     comment: string;
     author: ServerDeveloper;
-    attachments: string[];
+    attachments: ServerModVersionThreadCommentAttachment[];
     created_at: string;
     updated_at: string | null;
 }

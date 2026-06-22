@@ -477,7 +477,7 @@
                                 <small>{data.comments.count}</small>
                             </span>
                         </h2>
-                        <ModThread comments={data.comments.data} lock={thread_lock} currentUser={user} />
+                        <ModThread comments={data.comments.data} lock={thread_lock} currentUser={user} version={data.version.version} />
                     </Card>
                 </section>
             {/if}

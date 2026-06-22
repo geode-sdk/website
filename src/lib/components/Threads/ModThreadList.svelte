@@ -4,15 +4,16 @@
 
     interface Props {
         comments: ServerModVersionThreadComment[];
+        version: string;
     }
 
-    let { comments }: Props = $props();
+    let { comments, version }: Props = $props();
 </script>
 
 <div class="flex flex-col gap-3">
     {#each comments as comment (comment.id)}
         <div class="border-background-800 border-b-2 border-solid pb-3">
-            <ModThreadComment {comment} />
+            <ModThreadComment {comment} {version} />
         </div>
     {/each}
 </div>

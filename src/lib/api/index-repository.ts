@@ -693,31 +693,6 @@ export class IndexClient {
         }
     }
 
-    async getCommentAttachments(
-        id: string,
-        version: string,
-        commentId: number,
-    ): Promise<ServerModVersionThreadAttachment[]> {
-        const r = await this.withRetry(async () => {
-            return await this.fetch(
-                `${BASE_URL}/v1/mods/${id}/versions/${version}/submission/comments/${commentId}/attachments`,
-                {
-                    headers: this.token
-                        ? new Headers({ Authorization: `Bearer ${this.token}` })
-                        : new Headers({}),
-                },
-            );
-        });
-
-        if (!this.isSuccess(r.status)) {
-            const data: BaseRequest<void> = await r.json();
-            throw new IndexError(data.error);
-        }
-
-        const data = await r.json();
-        return this.validate<ServerModVersionThreadAttachment[]>(data);
-    }
-
     async uploadCommentAttachments(
         id: string,
         version: string,
