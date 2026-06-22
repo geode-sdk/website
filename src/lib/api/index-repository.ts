@@ -6,7 +6,9 @@ import type {
     ModStatus,
     ServerModVersion,
     ServerModVersionThread,
+    ServerModVersionThreadAttachment,
     ServerModVersionThreadComment,
+    ServerModVersionThreadLock,
 } from "./models/mod-version.js";
 import type { ServerStats } from "./models/stats";
 import type { Cookies } from "@sveltejs/kit";
@@ -594,6 +596,189 @@ export class IndexClient {
 
         const data = await r.json();
         return this.validate<Paginated<ServerModVersionThreadComment>>(data);
+    }
+
+    async createComment(
+        id: string,
+        version: string,
+        body: { comment: string },
+    ): Promise<ServerModVersionThreadComment> {
+        await this.checkAndTryRefreshAuth();
+
+        const r = await this.withRetry(async () => {
+            return await this.fetch(`${BASE_URL}/v1/mods/${id}/versions/${version}/submission/comments`, {
+                headers: new Headers({
+                    Authorization: `Bearer ${this.token}`,
+                    "Content-Type": "application/json",
+                }),
+                method: "POST",
+                body: JSON.stringify(body),
+            });
+        });
+
+        if (!this.isSuccess(r.status)) {
+            const data: BaseRequest<void> = await r.json();
+            throw new IndexError(data.error);
+        }
+
+        const data = await r.json();
+        return this.validate<ServerModVersionThreadComment>(data);
+    }
+
+    async updateComment(id: string, version: string, commentId: number, body: { comment: string }): Promise<void> {
+        await this.checkAndTryRefreshAuth();
+
+        const r = await this.withRetry(async () => {
+            return await this.fetch(
+                `${BASE_URL}/v1/mods/${id}/versions/${version}/submission/comments/${commentId}`,
+                {
+                    headers: new Headers({
+                        Authorization: `Bearer ${this.token}`,
+                        "Content-Type": "application/json",
+                    }),
+                    method: "PUT",
+                    body: JSON.stringify(body),
+                },
+            );
+        });
+
+        if (!this.isSuccess(r.status)) {
+            const data: BaseRequest<void> = await r.json();
+            throw new IndexError(data.error);
+        }
+    }
+
+    async deleteComment(id: string, version: string, commentId: number): Promise<void> {
+        await this.checkAndTryRefreshAuth();
+
+        const r = await this.withRetry(async () => {
+            return await this.fetch(
+                `${BASE_URL}/v1/mods/${id}/versions/${version}/submission/comments/${commentId}`,
+                {
+                    headers: new Headers({
+                        Authorization: `Bearer ${this.token}`,
+                    }),
+                    method: "DELETE",
+                },
+            );
+        });
+
+        if (!this.isSuccess(r.status)) {
+            const data: BaseRequest<void> = await r.json();
+            throw new IndexError(data.error);
+        }
+    }
+
+    async updateSubmission(
+        id: string,
+        version: string,
+        body: { lock: ServerModVersionThreadLock },
+    ): Promise<void> {
+        await this.checkAndTryRefreshAuth();
+
+        const r = await this.withRetry(async () => {
+            return await this.fetch(`${BASE_URL}/v1/mods/${id}/versions/${version}/submission`, {
+                headers: new Headers({
+                    Authorization: `Bearer ${this.token}`,
+                    "Content-Type": "application/json",
+                }),
+                method: "PUT",
+                body: JSON.stringify(body),
+            });
+        });
+
+        if (!this.isSuccess(r.status)) {
+            const data: BaseRequest<void> = await r.json();
+            throw new IndexError(data.error);
+        }
+    }
+
+    async getCommentAttachments(
+        id: string,
+        version: string,
+        commentId: number,
+    ): Promise<ServerModVersionThreadAttachment[]> {
+        const r = await this.withRetry(async () => {
+            return await this.fetch(
+                `${BASE_URL}/v1/mods/${id}/versions/${version}/submission/comments/${commentId}/attachments`,
+                {
+                    headers: this.token
+                        ? new Headers({ Authorization: `Bearer ${this.token}` })
+                        : new Headers({}),
+                },
+            );
+        });
+
+        if (!this.isSuccess(r.status)) {
+            const data: BaseRequest<void> = await r.json();
+            throw new IndexError(data.error);
+        }
+
+        const data = await r.json();
+        return this.validate<ServerModVersionThreadAttachment[]>(data);
+    }
+
+    async uploadCommentAttachments(
+        id: string,
+        version: string,
+        commentId: number,
+        files: File[],
+    ): Promise<ServerModVersionThreadAttachment[]> {
+        await this.checkAndTryRefreshAuth();
+
+        const formData = new FormData();
+        for (const file of files) {
+            // Backend expects the field name "image" even for multiple files.
+            formData.append("image", file);
+        }
+
+        const r = await this.withRetry(async () => {
+            return await this.fetch(
+                `${BASE_URL}/v1/mods/${id}/versions/${version}/submission/comments/${commentId}/attachments`,
+                {
+                    // NOTE: do NOT set Content-Type — the browser sets the multipart boundary.
+                    headers: new Headers({
+                        Authorization: `Bearer ${this.token}`,
+                    }),
+                    method: "POST",
+                    body: formData,
+                },
+            );
+        });
+
+        if (!this.isSuccess(r.status)) {
+            const data: BaseRequest<void> = await r.json();
+            throw new IndexError(data.error);
+        }
+
+        const data = await r.json();
+        return this.validate<ServerModVersionThreadAttachment[]>(data);
+    }
+
+    async deleteCommentAttachment(
+        id: string,
+        version: string,
+        commentId: number,
+        attachmentId: number,
+    ): Promise<void> {
+        await this.checkAndTryRefreshAuth();
+
+        const r = await this.withRetry(async () => {
+            return await this.fetch(
+                `${BASE_URL}/v1/mods/${id}/versions/${version}/submission/comments/${commentId}/attachments/${attachmentId}`,
+                {
+                    headers: new Headers({
+                        Authorization: `Bearer ${this.token}`,
+                    }),
+                    method: "DELETE",
+                },
+            );
+        });
+
+        if (!this.isSuccess(r.status)) {
+            const data: BaseRequest<void> = await r.json();
+            throw new IndexError(data.error);
+        }
     }
 
     async addDeveloper(id: string, body: AddDeveloperBody) {
