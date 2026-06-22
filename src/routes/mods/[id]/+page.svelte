@@ -32,7 +32,7 @@
     import Textarea from "$lib/components/ui/Textarea.svelte";
     import { getUserContext } from "$lib/context/user.js";
     import { setModContext } from "$lib/context/mod.js";
-    import { setContext } from "svelte";
+    import { setContext, untrack } from "svelte";
 
     interface Props {
         data: PageData;
@@ -41,7 +41,7 @@
 
     let { data, form }: Props = $props();
 
-    setModContext((() => data.mod)());
+    setModContext(untrack(() => data.mod));
     setContext("ActionData", () => form);
 
     const verifyStatus = (status: string): status is ModStatus => {
