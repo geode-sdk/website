@@ -43,15 +43,15 @@
                 placeholder="Enter your new comment here"
                 class="h-full max-h-60 min-h-30 rounded-b-none" />
         </div>
-        <div class="bg-background-800 flex justify-between gap-2 rounded rounded-t-none p-2">
-            <small>Press Enter to post. Press Shift + Enter to go on a new row.</small>
-            <div class="flex items-center gap-2">
-                <input type="file" name="files" accept="image/*" multiple />
-                <Button type="submit" size="small" design="primary-filled">
-                    <Icon icon="update" />
-                    Post
-                </Button>
+        <div class="bg-background-800 flex items-center justify-between flex-wrap gap-2 rounded rounded-t-none p-2">
+            <div class="flex flex-col gap-1">
+                <small>Press Enter to post. Press Shift + Enter to go on a new row.</small>
+                <input class="border rounded p-2 border-background-300 cursor-pointer" type="file" name="files" accept="image/*" multiple />
             </div>
+            <Button type="submit" size="small" design="primary-filled">
+                <Icon icon="update" />
+                Post
+            </Button>
         </div>
     </form>
     {#if actionData()?.action === "comment" && actionData()?.error}
