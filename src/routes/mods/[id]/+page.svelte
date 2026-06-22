@@ -41,7 +41,7 @@
 
     let { data, form }: Props = $props();
 
-    setModContext(data.mod);
+    setModContext((() => data.mod)());
     setContext("ActionData", () => form);
 
     const verifyStatus = (status: string): status is ModStatus => {
