@@ -161,7 +161,38 @@ export const actions: Actions = {
 
         const data = await request.formData();
 
-        return { success: true };
+        const version = data.get("version");
+        if (!version || typeof version != "string") {
+            return fail(400, { action: "comment", error: "missing version" });
+        }
+
+        const comment = data.get("comment");
+        if (!comment || typeof comment != "string" || comment.trim().length === 0) {
+            return fail(400, { action: "comment", error: "Comment cannot be empty" });
+        }
+
+        const files = data.getAll("files").filter((f): f is File => f instanceof File && f.size > 0);
+
+        let created;
+        try {
+            created = await client.createComment(id, version, { comment });
+        } catch (e) {
+            if (e instanceof IndexError) {
+                return fail(400, { action: "comment", error: e.message });
+            }
+            throw e;
+        }
+
+        if (files.length > 0) {
+            try {
+                await client.uploadCommentAttachments(id, version, created.id, files);
+            } catch (e) {
+                const msg = e instanceof IndexError ? e.message : "unknown error";
+                return { action: "comment", success: true, attachmentError: `Comment posted, but attachments failed: ${msg}` };
+            }
+        }
+
+        return { action: "comment", success: true };
     },
 };
 
