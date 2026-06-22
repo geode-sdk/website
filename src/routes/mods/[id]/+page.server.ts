@@ -155,7 +155,7 @@ export const actions: Actions = {
         const client = await tryCreateAuthenticatedClient(cookies, fetch);
         const authStatus = client.lastAuthStatus();
 
-        if (!authStatus || authStatus === SetTokensResult.UNSET) {
+        if (authStatus === SetTokensResult.UNSET) {
             return fail(401, { action: "comment", error: "You need to be authenticated to comment" });
         }
 
@@ -200,7 +200,7 @@ export const actions: Actions = {
         const client = await tryCreateAuthenticatedClient(cookies, fetch);
         const authStatus = client.lastAuthStatus();
 
-        if (!authStatus || authStatus === SetTokensResult.UNSET) {
+        if (authStatus === SetTokensResult.UNSET) {
             return fail(401, { action: "edit_comment", error: "You need to be authenticated" });
         }
 
@@ -237,7 +237,7 @@ export const actions: Actions = {
         const client = await tryCreateAuthenticatedClient(cookies, fetch);
         const authStatus = client.lastAuthStatus();
 
-        if (!authStatus || authStatus === SetTokensResult.UNSET) {
+        if (authStatus === SetTokensResult.UNSET) {
             return fail(401, { action: "delete_comment", error: "You need to be authenticated" });
         }
 
@@ -269,7 +269,7 @@ export const actions: Actions = {
         const client = await tryCreateAuthenticatedClient(cookies, fetch);
         const authStatus = client.lastAuthStatus();
 
-        if (!authStatus || authStatus === SetTokensResult.UNSET) {
+        if (authStatus === SetTokensResult.UNSET) {
             return fail(401, { action: "update_lock", error: "You need to be authenticated" });
         }
 
@@ -301,7 +301,7 @@ export const actions: Actions = {
         const client = await tryCreateAuthenticatedClient(cookies, fetch);
         const authStatus = client.lastAuthStatus();
 
-        if (!authStatus || authStatus === SetTokensResult.UNSET) {
+        if (authStatus === SetTokensResult.UNSET) {
             return fail(401, { action: "add_attachment", error: "You need to be authenticated" });
         }
 
@@ -337,7 +337,7 @@ export const actions: Actions = {
         const client = await tryCreateAuthenticatedClient(cookies, fetch);
         const authStatus = client.lastAuthStatus();
 
-        if (!authStatus || authStatus === SetTokensResult.UNSET) {
+        if (authStatus === SetTokensResult.UNSET) {
             return fail(401, { action: "delete_attachment", error: "You need to be authenticated" });
         }
 
