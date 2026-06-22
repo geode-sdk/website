@@ -75,3 +75,10 @@ export interface ServerModVersionThreadComment {
     created_at: string;
     updated_at: string | null;
 }
+
+export interface ServerModVersionThreadAttachment {
+    id: number;
+    comment_id: number;
+    url: string;
+    created_at: string;
+}
