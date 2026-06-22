@@ -7,9 +7,7 @@
     import { getUserContext } from "$lib/context/user";
     import { getModContext } from "$lib/context/mod";
     import { enhance } from "$app/forms";
-    import Select from "$lib/components/Select.svelte";
-    import SelectOption from "$lib/components/SelectOption.svelte";
-    import { untrack } from "svelte";
+    import Button from "../Button.svelte";
 
     interface Props {
         comments: ServerModVersionThreadComment[];
@@ -19,9 +17,6 @@
     }
 
     let { comments, lock, version }: Props = $props();
-
-    let lockForm: HTMLFormElement | undefined = $state();
-    let lockValue: ServerModVersionThreadLock = $state(untrack(() => lock));
 
     const currentUser = getUserContext();
     const mod = getModContext();
@@ -35,27 +30,21 @@
 <div class="flex flex-col gap-6">
     {#if isAdmin}
         <form
-            bind:this={lockForm}
             method="POST"
             action="?/update_lock"
-            use:enhance={() => {
-                return async ({ update }) => {
-                    await update();
-                };
-            }}>
+            use:enhance>
             <input type="hidden" name="version" value={version} />
-            <input type="hidden" name="lock" bind:value={lockValue} />
-            <Select
-                title="Thread"
-                titleIcon="status"
-                select={(value) => {
-                    lockValue = value as ServerModVersionThreadLock;
-                    lockForm?.requestSubmit();
-                }}>
-                <SelectOption icon="status" title="Open" value="none" isDefault={lock === "none"} />
-                <SelectOption icon="time" title="Internal" value="internal" isDefault={lock === "internal"} />
-                <SelectOption icon="rejected" title="Locked" value="locked" isDefault={lock === "locked"} />
-            </Select>
+            <div class="flex w-full justify-between flex-wrap">
+                <div class="flex gap-1 items-center rounded p-2 bg-background-800">
+                    <span>Status: </span>
+                    <select class="border border-background-400 rounded p-1 cursor-pointer" value={lock} name="lock">
+                        <option value={'none'}>Open</option>
+                        <option value={'internal'}>Internal</option>
+                        <option value={'locked'}>Locked</option>
+                    </select>
+                </div>
+                <Button type="submit">Update</Button>
+            </div>
         </form>
     {/if}
     {#if isLoggedIn}
