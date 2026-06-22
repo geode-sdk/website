@@ -4,7 +4,7 @@
     import cx from "$lib/cx";
     import Icon from "./Icon.svelte";
     import type { ClassValue } from "clsx";
-    import { type HTMLButtonAttributes, type HTMLAnchorAttributes } from "svelte/elements";
+    import type { HTMLButtonAttributes, HTMLAnchorAttributes } from "svelte/elements";
 
     type Style = "primary-filled-dark" | "primary-filled" | "secondary-filled" | "hollow" | "dark-small";
     type Size = "large" | "normal" | "small";
