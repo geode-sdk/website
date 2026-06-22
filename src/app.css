@@ -218,6 +218,8 @@ body {
     /* do not add overflow-x here! It breaks `position: sticky` on FAQ page  */
 
     background: linear-gradient(to bottom, var(--background-700), var(--background-900));
+    background-attachment: fixed;
+    background-size: 100% 100vh;
     font-family: var(--font-body);
     color: var(--text-color);
 
