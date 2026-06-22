@@ -18,6 +18,8 @@
 
     let { comment, version }: Props = $props();
 
+    const displayedComment = $derived(() => comment.comment.replaceAll('\n', '<br>'));
+
     const currentUser = getUserContext();
     const isAdmin = $derived(currentUser?.admin === true);
     const isAuthor = $derived(comment.author.id === currentUser?.id);
@@ -85,7 +87,9 @@
                         </div>
                     </form>
                 {:else}
-                    <div class="max-w-96 text-wrap break-all">{comment.comment}</div>
+                    <div class="max-w-96 text-wrap break-all">
+                        {@html displayedComment()}
+                    </div>
                 {/if}
 
                 {#if comment.attachments.length > 0}
@@ -154,7 +158,7 @@
                         use:enhance={submitHandler("Failed to upload attachment")}>
                         <input type="hidden" name="version" value={version} />
                         <input type="hidden" name="comment_id" value={comment.id} />
-                        <input type="file" name="files" accept="image/*" multiple />
+                        <input class="border rounded p-2 border-background-300 cursor-pointer" type="file" name="files" accept="image/*" multiple />
                         <Button type="submit" size="small" design="hollow">
                             <Icon icon="update" />
                             Attach
