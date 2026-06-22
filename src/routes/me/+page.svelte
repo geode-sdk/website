@@ -29,7 +29,7 @@
 <main>
     <h1>Your profile</h1>
 
-    <div class="container | with-sidebar">
+    <div class="| with-sidebar container">
         <aside class="card | sidebar">
             <img
                 src={`https://avatars.githubusercontent.com/u/${self.github_id}`}

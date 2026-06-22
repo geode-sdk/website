@@ -87,26 +87,25 @@
 <h1>Install Geode</h1>
 
 {#if recentGDUpdate?.geodeStatus === "fully-broken"}
-    <NewGDUpdateAlert/>
+    <NewGDUpdateAlert />
     <h2>What? Why?</h2>
     <p>
-        <em>Every new update to GD breaks Geode.</em> This is inevitable and due 
-        to low-level technical issues. Luckily, we have developed tools over the 
-        years that make updating Geode a lot faster and simpler, but it still 
-        does require <em>at least a few days</em> of manual labor.
+        <em>Every new update to GD breaks Geode.</em> This is inevitable and due to low-level technical issues. Luckily,
+        we have developed tools over the years that make updating Geode a lot faster and simpler, but it still does
+        require <em>at least a few days</em> of manual labor.
     </p>
     <p>
-        <em>We ask you to be patient</em> while we work on updating Geode. We are 
-        just college students developing it on our free time as a hobby. We
-        assure you we aren't being lazy; it's just really hard and time-consuming.
+        <em>We ask you to be patient</em> while we work on updating Geode. We are just college students developing it on our
+        free time as a hobby. We assure you we aren't being lazy; it's just really hard and time-consuming.
     </p>
     <p>
-        For the time being, if Geode is crashing for you, uninstall it. We will 
-        be letting everyone know when it's updated to the latest GD version.
+        For the time being, if Geode is crashing for you, uninstall it. We will be letting everyone know when it's
+        updated to the latest GD version.
     </p>
     <p>
-        If you want to install Geode for an older version of GD, you can still 
-        find older versions on our <a href="https://github.com/geode-sdk/geode/releases">GitHub releases page</a>. 
+        If you want to install Geode for an older version of GD, you can still find older versions on our <a
+            href="https://github.com/geode-sdk/geode/releases">GitHub releases page</a
+        >.
     </p>
 {:else}
     <div class="installation">
@@ -167,7 +166,9 @@
                         Latest version: <em>{latestVersion}</em>
                     </div>
                     {#if curPlatform === "unknown"}
-                        <p>Couldn't auto detect your platform. You can download Geode for your chosen platform below.</p>
+                        <p>
+                            Couldn't auto detect your platform. You can download Geode for your chosen platform below.
+                        </p>
                     {/if}
                     {#if curPlatform === "linux"}
                         <div class="alternative-install">
@@ -201,8 +202,8 @@
                     {/if}
                     {#if curPlatform === "ios"}
                         <p>
-                            Installing Geode on iOS is a bit more complicated than other platforms, and requires the use of
-                            a
+                            Installing Geode on iOS is a bit more complicated than other platforms, and requires the use
+                            of a
                             <em>computer.</em>
                         </p>
                         <div>

@@ -131,18 +131,18 @@ export function formatNumber(num: number): string {
 
 export type NewGDUpdateInfo = {
     /** The new version of GD, e.g. 2.2081 */
-    newGDVersion: string,
+    newGDVersion: string;
     /**
-     * The status of Geode for the new update. `fully-broken` means that Geode 
-     * has not yet been ported at all; `just-updated` is for when Geode has 
-     * been released, but most mods are still broken (which the user should 
+     * The status of Geode for the new update. `fully-broken` means that Geode
+     * has not yet been ported at all; `just-updated` is for when Geode has
+     * been released, but most mods are still broken (which the user should
      * probably know)
      */
-    geodeStatus: "fully-broken" | "just-updated"
-}
+    geodeStatus: "fully-broken" | "just-updated";
+};
 /**
- * Whenever a new GD update is released, everything breaks. The website is 
- * preconfigured to deal with this; you just have to manually change this 
+ * Whenever a new GD update is released, everything breaks. The website is
+ * preconfigured to deal with this; you just have to manually change this
  * function to return information about the new update
  */
 export function getNewGDUpdateWasReleased(): NewGDUpdateInfo | undefined {

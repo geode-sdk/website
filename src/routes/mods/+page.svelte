@@ -186,7 +186,7 @@
 
 <h1>Browse Mods</h1>
 
-<NewGDUpdateAlert/>
+<NewGDUpdateAlert />
 
 <div class="content-separator">
     <aside class="filter-column">
@@ -352,8 +352,7 @@
                                     const scroll = newValue < per_page;
                                     per_page = newValue;
                                     updateSearch();
-                                    if (scroll)
-                                        scrollToTop();
+                                    if (scroll) scrollToTop();
                                 }
                             }}>
                             {#each perPageOptions as option}

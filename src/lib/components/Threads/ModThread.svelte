@@ -1,8 +1,5 @@
 <script lang="ts">
-    import type {
-        ServerModVersionThreadComment,
-        ServerModVersionThreadLock,
-    } from "$lib/api/models/mod-version";
+    import type { ServerModVersionThreadComment, ServerModVersionThreadLock } from "$lib/api/models/mod-version";
     import ModThreadList from "./ModThreadList.svelte";
     import ModThreadCommentForm from "./ModThreadCommentForm.svelte";
     import InfoBox from "../InfoBox.svelte";

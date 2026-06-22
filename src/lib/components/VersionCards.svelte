@@ -17,7 +17,6 @@
     );
 </script>
 
-
 <Icon icon="gd" --icon-size="1.2em" --icon-color="var(--secondary-300)" />
 
 <Row wrap={"wrap"} gap="tiny" justify="start">
@@ -40,11 +39,11 @@
                 <Label icon="mac" design="gray">{gd["mac-intel"]} (x64)</Label>
             {/if}
         {/if}
-    
+
         {#if gd.ios}
             <Label icon="ios" design="gray">{gd.ios}</Label>
         {/if}
-    
+
         {#if gd.android64 && gd.android64 === gd.android32}
             <Label icon="android" design="gray">{gd.android64}</Label>
         {:else}

@@ -574,13 +574,13 @@ export class IndexClient {
     ): Promise<Paginated<ServerModVersionThreadComment> | null> {
         const url = new URL(`${BASE_URL}/v1/mods/${id}/versions/${version}/submission/comments`);
 
-        url.searchParams.append('page', page.toString());
-        url.searchParams.append('per_page', perPage.toString());
+        url.searchParams.append("page", page.toString());
+        url.searchParams.append("per_page", perPage.toString());
 
         const r = await this.fetch(url.toString(), {
             headers: new Headers({
                 "Content-Type": "application/json",
-            })
+            }),
         });
 
         if (!this.isSuccess(r.status)) {

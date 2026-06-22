@@ -27,9 +27,7 @@
 
     const max_name_length = 32;
     const name = $derived(
-        version.name.length > max_name_length
-            ? version.name.slice(0, max_name_length) + "…"
-            : version.name
+        version.name.length > max_name_length ? version.name.slice(0, max_name_length) + "…" : version.name,
     );
 
     let paid = $derived(mod.tags.includes("paid"));

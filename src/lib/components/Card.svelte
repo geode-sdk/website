@@ -15,7 +15,7 @@
     class={cx(
         "bg-background-950 rounded-md p-3 shadow-md",
         semitransparent && "bg-background-950/70 backdrop-blur-sm",
-        className
+        className,
     )}>
     {@render children?.()}
 </div>

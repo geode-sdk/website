@@ -67,7 +67,6 @@
         justify-content: center;
         align-items: center;
         gap: 1rem;
-
     }
 
     @media screen and (min-width: 1280px) {
