@@ -16,7 +16,7 @@
 
     let { icon, title, value, isDefault = false }: Props = $props();
 
-    $effect(() => {
+    onMount(() => {
         if (isDefault) {
             setValue(title, value);
         }
