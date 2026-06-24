@@ -47,7 +47,7 @@
             icon="left"
             design="dark-small"
             disabled={disabled || total === 0 || page === 1} />
-        <span>Page {page} of {max_page}</span>
+        <span>Page <input class="small-input" type="text" min="1" max={max_page} value={page} oninput={(e) => gotoPage(parseInt((e.target as HTMLInputElement).value))}> of {max_page}</span>
         <Button
             onclick={async () => gotoPage(Math.min(page + 1, max_page))}
             icon="right"
@@ -75,5 +75,37 @@
             display: grid;
             grid-template-columns: 1fr max-content 1fr;
         }
+    }
+
+    nav span {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: var(--font-body);
+        color: var(--text-50);
+        font-size: 1rem;
+        line-height: 1;
+    }
+
+    
+    nav span input.small-input {
+        background-color: transparent;
+        padding: 0.25rem 0.5rem;
+        width: 2.25rem;
+        border: none;
+        outline: none;
+        color: var(--text-50);
+        font-family: inherit;
+        font-size: inherit;
+        line-height: inherit;
+        border-radius: 0.25rem;
+        text-align: center;
+        vertical-align: middle;
+        box-sizing: border-box;
+    }
+
+    nav span input.small-input::placeholder {
+        color: var(--text-50);
+        opacity: 50%;
     }
 </style>
