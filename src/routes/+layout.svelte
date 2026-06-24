@@ -70,6 +70,8 @@
                     <Link href="https://docs.geode-sdk.org/" icon="docs">Documentation</Link>
                     <Dot />
                     <Link href="https://github.com/geode-sdk" icon="github">Source Code</Link>
+                    <Dot />
+                    <Link href="/privacy" icon="status">Privacy Policy</Link>
                     {#if data.loggedInUser === null}
                         <Dot />
                         <Link href="/login" icon="account">Login</Link>
