@@ -4,6 +4,8 @@
     import Search from "$lib/components/Search.svelte";
     import { clamp } from "$lib/api/helpers";
     import Pagination from "$lib/components/Pagination.svelte";
+    import Select from "$lib/components/Select.svelte";
+    import SelectOption from "$lib/components/SelectOption.svelte";
     import DeveloperCard from "$lib/components/DeveloperCard.svelte";
     import LoadingCircle from "$lib/components/LoadingCircle.svelte";
 
@@ -23,6 +25,8 @@
     let max_count = $derived(data.developers?.count ?? 0);
     let max_page = $derived(Math.floor(max_count / per_page) + 1);
     let searching = $state(false);
+    
+    const perPageOptions = [10, 15, 20];
 
     const updateParams = async () => {
         const params = new URLSearchParams();
@@ -81,7 +85,27 @@
             disabled={!data.developers}
             label="developers"
             labelOne="developer"
-            select={(page) => gotoPage(page)} />
+            select={(page) => gotoPage(page)}>
+            <Select
+                title="Per page"
+                titleIcon="eye"
+                select={(value) => {
+                    const newValue = parseInt(value);
+                    if (per_page !== newValue) {
+                        per_page = newValue;
+                        updateParams();
+                    }
+                }}>
+                {#each perPageOptions as option}
+                    <SelectOption
+                        icon="right"
+                        title={option.toString()}
+                        value={option.toString()}
+                        isDefault={option === per_page} />
+                {/each}
+            </Select>
+        </Pagination>
+            
         <ul class="developer-list">
             {#if searching}
                 <div class="loading">
