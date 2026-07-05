@@ -153,7 +153,6 @@ export class IndexClient {
 
         const firstResponse = await callback();
         if (firstResponse.status === 401) {
-            console.log("got 401");
             this.token = null;
 
             if (await this.tryRefreshTokens()) {
