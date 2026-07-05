@@ -13,7 +13,15 @@
 
 <div class="px-2">
     <h1 class="font-heading mt-30 mb-15 text-5xl font-bold text-center">Privacy Policy</h1>
-    <div class="markdown mx-auto">
+    <section class="markdown mx-auto">
         <GeodeMarkdown source={ppolicy} />
-    </div>
+    </section>
 </div>
+
+<style>
+    section {
+        background-color: var(--background-950);
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+    }
+</style>
