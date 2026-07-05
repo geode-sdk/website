@@ -69,9 +69,7 @@
                     <label for="modify-admin">Admin</label>
                 </div>
 
-                <button type="submit">
-                    <Button>Update</Button>
-                </button>
+                <Button type="submit">Update</Button>
             </form>
         </section>
     {/if}

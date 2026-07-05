@@ -277,9 +277,7 @@
                                     <input type="url" required id="create-mod-download" name="download_link" />
                                 </div>
 
-                                <button type="submit">
-                                    <Button design="secondary-filled">Submit</Button>
-                                </button>
+                                <Button design="secondary-filled" type="submit">Submit</Button>
                             </form>
                             {#if owns_mod}
                                 <form method="POST" class="flow" action="?/add_developer" use:enhance>
@@ -289,14 +287,10 @@
                                         <input type="text" required id="add-developer-name" name="developer" />
                                     </div>
 
-                                    <div>
-                                        <button type="submit">
-                                            <Button design="secondary-filled">Add</Button>
-                                        </button>
-                                        <button type="submit" formaction="?/remove_developer">
-                                            <Button design="primary-filled">Remove</Button>
-                                        </button>
-                                    </div>
+                                    <Row justify="start" gap="tiny">
+                                        <Button type="submit" design="secondary-filled">Add</Button>
+                                        <Button type="submit" formaction="?/remove_developer" design="primary-filled">Remove</Button>
+                                    </Row>
                                 </form>
                             {/if}
                         </Column>
@@ -618,13 +612,6 @@
         padding: 0.5rem;
         border: 1px solid var(--secondary-200);
         border-radius: 0.2rem;
-        font-size: 1rem;
-    }
-
-    button[type="submit"] {
-        padding: 0;
-        border: none;
-        background-color: transparent;
         font-size: 1rem;
     }
 

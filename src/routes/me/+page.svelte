@@ -4,6 +4,7 @@
     import Button from "$lib/components/Button.svelte";
     import MyPendingModCard from "$lib/components/MyPendingModCard.svelte";
     import InfoBox from "$lib/components/InfoBox.svelte";
+    import Row from "$lib/components/Row.svelte";
 
     let updatingSelf = $state(false);
 
@@ -58,9 +59,7 @@
                         id="display_name" />
                 </div>
                 <div class="form-button">
-                    <button type="submit" disabled={updatingSelf}>
-                        <Button disabled={updatingSelf}>Update</Button>
-                    </button>
+                    <Button type="submit" disabled={updatingSelf}>Update</Button>
                 </div>
             </form>
         </aside>
@@ -71,13 +70,11 @@
                 <InfoBox type="error">{form?.message}</InfoBox>
             {/if}
             <h2>Logout</h2>
-            <form method="POST" class="flow">
-                <button formaction="?/logout" type="submit">
-                    <Button design="primary-filled">Logout</Button>
-                </button>
-                <button formaction="?/logout_all" type="submit">
-                    <Button design="primary-filled">Logout all devices</Button>
-                </button>
+            <form method="POST">
+                <Row justify="start" gap="tiny">
+                    <Button formaction="?/logout" type="submit" design="primary-filled">Logout</Button>
+                    <Button formaction="?/logout_all" type="submit" design="primary-filled">Logout all devices</Button>
+                </Row>
             </form>
             <h2>Submit a new mod</h2>
             <form
@@ -102,9 +99,7 @@
                 <p>
                     If you are submitting a closed-source mod, please invite a member of the Geode Team to read the mod's source code and explain why the mod is closed source.
                 </p>
-                <button type="submit" disabled={submittingMod}>
-                    <Button disabled={submittingMod}>Upload</Button>
-                </button>
+                <Button type="submit" disabled={submittingMod}>Upload</Button>
             </form>
             <h2>Your pending mods</h2>
             <ul class="unstyle-list">
@@ -165,13 +160,6 @@
 
     img {
         border-radius: 0.5rem;
-    }
-
-    button[type="submit"] {
-        padding: 0;
-        border: none;
-        background-color: transparent;
-        font-size: 1rem;
     }
 
     .form-button {
