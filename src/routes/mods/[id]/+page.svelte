@@ -357,7 +357,10 @@
 
                                             <div>
                                                 <label for="update-version-status">Status:</label>
-                                                <select name="status" id="update-version-status">
+                                                <select
+                                                    class="bg-background-800 text-text-50 border border-background-400 rounded p-1 cursor-pointer [color-scheme:dark]"
+                                                    name="status"
+                                                    id="update-version-status">
                                                     <option
                                                         selected={data.version.status === "accepted"}
                                                         value="accepted">

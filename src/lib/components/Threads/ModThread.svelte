@@ -50,7 +50,10 @@
             <div class="flex w-full bg-background-800 p-2 rounded justify-between flex-wrap">
                 <div class="flex gap-1 items-center">
                     <span>Status: </span>
-                    <select class="border border-background-400 rounded p-1 cursor-pointer" value={lock} name="lock">
+                    <select
+                        class="bg-background-800 text-text-50 border border-background-400 rounded p-1 cursor-pointer [color-scheme:dark]"
+                        value={lock}
+                        name="lock">
                         <option value={'none'}>Open</option>
                         <option value={'internal'}>Internal</option>
                         <option value={'locked'}>Locked</option>
