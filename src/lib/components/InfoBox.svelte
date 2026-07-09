@@ -4,7 +4,7 @@
 
     interface Props {
         type: "info" | "warning" | "error";
-        solid?: boolean,
+        solid?: boolean;
         children?: Snippet;
     }
 
@@ -23,7 +23,7 @@
         display: flex;
         flex-direction: row;
         border-radius: 0.5rem;
-        max-width: min(60ch, 90vw);
+        max-width: 100%;
         --mix-percentage: 25%;
 
         background-color: color-mix(in srgb, var(--mix-color) var(--mix-percentage), transparent);
@@ -31,7 +31,7 @@
         &.solid {
             background-color: var(--mix-color);
             border-color: color-mix(in srgb, white 50%, var(--mix-color));
-            box-shadow: 0px .25rem 1rem rgba(0, 0, 0, .5);
+            box-shadow: 0px 0.25rem 1rem rgba(0, 0, 0, 0.5);
         }
 
         .icon-container {
@@ -41,7 +41,9 @@
             min-width: 3em;
         }
         .content-container {
+            display: block;
             padding: 0.5rem;
+            max-width: min(60ch, 90vw);
         }
         &.info {
             --mix-color: var(--accent-alt-500);

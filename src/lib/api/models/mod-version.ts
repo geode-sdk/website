@@ -1,3 +1,5 @@
+import type { ServerDeveloper } from "./base";
+
 export interface ServerDependency {
     mod_id: string;
     version: string;
@@ -52,4 +54,36 @@ export interface ServerModVersion {
     info?: string;
     created_at: string | null;
     updated_at: string | null;
+}
+
+export type ServerModVersionThreadLock = "none" | "internal" | "locked";
+
+export interface ServerModVersionThread {
+    mod_version_id: number;
+    lock: ServerModVersionThreadLock;
+    locked_by: ServerDeveloper | null;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface ServerModVersionThreadCommentAttachment {
+    id: number;
+    url: string;
+}
+
+export interface ServerModVersionThreadComment {
+    id: number;
+    submission_id: number;
+    comment: string;
+    author: ServerDeveloper;
+    attachments: ServerModVersionThreadCommentAttachment[];
+    created_at: string;
+    updated_at: string | null;
+}
+
+export interface ServerModVersionThreadAttachment {
+    id: number;
+    comment_id: number;
+    url: string;
+    created_at: string;
 }

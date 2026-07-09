@@ -44,7 +44,6 @@
         gap: 4rem;
         font-size: 1.1em;
         max-width: 70vw;
-
     }
 
     @media screen and (max-width: 1279px) {

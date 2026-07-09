@@ -8,7 +8,7 @@ import {
 import { getCachedTags } from "$lib/server/cache.js";
 import { toIntSafe } from "$lib/api/helpers.js";
 import type { ServerTag } from "$lib/api/models/base.js";
-import type { ModStatus, ServerModVersion } from "$lib/api/models/mod-version.js";
+import type { ModStatus, ServerModVersion, ServerModVersionThreadComment } from "$lib/api/models/mod-version.js";
 import type { Actions, PageServerLoad } from "./$types.js";
 import { error, fail } from "@sveltejs/kit";
 import type { ServerMod, ServerModDeprecation } from "$lib/api/models/mod";
@@ -149,6 +149,221 @@ export const actions: Actions = {
 
         return { success: true };
     },
+    comment: async ({ cookies, request, params, fetch }) => {
+        const id = params.id;
+
+        const client = await tryCreateAuthenticatedClient(cookies, fetch);
+        const authStatus = client.lastAuthStatus();
+
+        if (authStatus === SetTokensResult.UNSET) {
+            return fail(401, { action: "comment", error: "You need to be authenticated to comment" });
+        }
+
+        const data = await request.formData();
+
+        const version = data.get("version");
+        if (!version || typeof version != "string") {
+            return fail(400, { action: "comment", error: "missing version" });
+        }
+
+        const comment = data.get("comment");
+        if (!comment || typeof comment != "string" || comment.trim().length === 0) {
+            return fail(400, { action: "comment", error: "Comment cannot be empty" });
+        }
+
+        const files = data.getAll("files").filter((f): f is File => f instanceof File && f.size > 0);
+
+        let created;
+        try {
+            created = await client.createComment(id, version, { comment });
+        } catch (e) {
+            if (e instanceof IndexError) {
+                return fail(400, { action: "comment", error: e.message });
+            }
+            throw e;
+        }
+
+        if (files.length > 0) {
+            try {
+                await client.uploadCommentAttachments(id, version, created.id, files);
+            } catch (e) {
+                const msg = e instanceof IndexError ? e.message : "unknown error";
+                return { action: "comment", success: true, attachmentError: `Comment posted, but attachments failed: ${msg}` };
+            }
+        }
+
+        return { action: "comment", success: true };
+    },
+    edit_comment: async ({ cookies, request, params, fetch }) => {
+        const id = params.id;
+
+        const client = await tryCreateAuthenticatedClient(cookies, fetch);
+        const authStatus = client.lastAuthStatus();
+
+        if (authStatus === SetTokensResult.UNSET) {
+            return fail(401, { action: "edit_comment", error: "You need to be authenticated" });
+        }
+
+        const data = await request.formData();
+        const version = data.get("version");
+        const commentIdRaw = data.get("comment_id") as string | null;
+        const comment = data.get("comment");
+
+        if (!version || typeof version != "string") {
+            return fail(400, { action: "edit_comment", error: "missing version" });
+        }
+        const commentId = toIntSafe(commentIdRaw);
+        if (commentId == null) {
+            return fail(400, { action: "edit_comment", error: "invalid comment id" });
+        }
+        if (!comment || typeof comment != "string" || comment.trim().length === 0) {
+            return fail(400, { action: "edit_comment", error: "Comment cannot be empty", comment_id: commentId });
+        }
+
+        try {
+            await client.updateComment(id, version, commentId, { comment });
+        } catch (e) {
+            if (e instanceof IndexError) {
+                return fail(400, { action: "edit_comment", error: e.message, comment_id: commentId });
+            }
+            throw e;
+        }
+
+        return { action: "edit_comment", success: true, comment_id: commentId };
+    },
+    delete_comment: async ({ cookies, request, params, fetch }) => {
+        const id = params.id;
+
+        const client = await tryCreateAuthenticatedClient(cookies, fetch);
+        const authStatus = client.lastAuthStatus();
+
+        if (authStatus === SetTokensResult.UNSET) {
+            return fail(401, { action: "delete_comment", error: "You need to be authenticated" });
+        }
+
+        const data = await request.formData();
+        const version = data.get("version");
+        const commentId = toIntSafe(data.get("comment_id") as string | null);
+
+        if (!version || typeof version != "string") {
+            return fail(400, { action: "delete_comment", error: "missing version" });
+        }
+        if (commentId == null) {
+            return fail(400, { action: "delete_comment", error: "invalid comment id" });
+        }
+
+        try {
+            await client.deleteComment(id, version, commentId);
+        } catch (e) {
+            if (e instanceof IndexError) {
+                return fail(400, { action: "delete_comment", error: e.message, comment_id: commentId });
+            }
+            throw e;
+        }
+
+        return { action: "delete_comment", success: true, comment_id: commentId };
+    },
+    update_lock: async ({ cookies, request, params, fetch }) => {
+        const id = params.id;
+
+        const client = await tryCreateAuthenticatedClient(cookies, fetch);
+        const authStatus = client.lastAuthStatus();
+
+        if (authStatus === SetTokensResult.UNSET) {
+            return fail(401, { action: "update_lock", error: "You need to be authenticated" });
+        }
+
+        const data = await request.formData();
+        const version = data.get("version");
+        const lock = data.get("lock");
+
+        if (!version || typeof version != "string") {
+            return fail(400, { action: "update_lock", error: "missing version" });
+        }
+        if (lock !== "none" && lock !== "internal" && lock !== "locked") {
+            return fail(400, { action: "update_lock", error: "invalid lock value" });
+        }
+
+        try {
+            await client.updateSubmission(id, version, { lock });
+        } catch (e) {
+            if (e instanceof IndexError) {
+                return fail(400, { action: "update_lock", error: e.message });
+            }
+            throw e;
+        }
+
+        return { action: "update_lock", success: true };
+    },
+    add_attachment: async ({ cookies, request, params, fetch }) => {
+        const id = params.id;
+
+        const client = await tryCreateAuthenticatedClient(cookies, fetch);
+        const authStatus = client.lastAuthStatus();
+
+        if (authStatus === SetTokensResult.UNSET) {
+            return fail(401, { action: "add_attachment", error: "You need to be authenticated" });
+        }
+
+        const data = await request.formData();
+        const version = data.get("version");
+        const commentId = toIntSafe(data.get("comment_id") as string | null);
+        const files = data.getAll("files").filter((f): f is File => f instanceof File && f.size > 0);
+
+        if (!version || typeof version != "string") {
+            return fail(400, { action: "add_attachment", error: "missing version" });
+        }
+        if (commentId == null) {
+            return fail(400, { action: "add_attachment", error: "invalid comment id" });
+        }
+        if (files.length === 0) {
+            return fail(400, { action: "add_attachment", error: "No files selected", comment_id: commentId });
+        }
+
+        try {
+            await client.uploadCommentAttachments(id, version, commentId, files);
+        } catch (e) {
+            if (e instanceof IndexError) {
+                return fail(400, { action: "add_attachment", error: e.message, comment_id: commentId });
+            }
+            throw e;
+        }
+
+        return { action: "add_attachment", success: true, comment_id: commentId };
+    },
+    delete_attachment: async ({ cookies, request, params, fetch }) => {
+        const id = params.id;
+
+        const client = await tryCreateAuthenticatedClient(cookies, fetch);
+        const authStatus = client.lastAuthStatus();
+
+        if (authStatus === SetTokensResult.UNSET) {
+            return fail(401, { action: "delete_attachment", error: "You need to be authenticated" });
+        }
+
+        const data = await request.formData();
+        const version = data.get("version");
+        const commentId = toIntSafe(data.get("comment_id") as string | null);
+        const attachmentId = toIntSafe(data.get("attachment_id") as string | null);
+
+        if (!version || typeof version != "string") {
+            return fail(400, { action: "delete_attachment", error: "missing version" });
+        }
+        if (commentId == null || attachmentId == null) {
+            return fail(400, { action: "delete_attachment", error: "invalid id" });
+        }
+
+        try {
+            await client.deleteCommentAttachment(id, version, commentId, attachmentId);
+        } catch (e) {
+            if (e instanceof IndexError) {
+                return fail(400, { action: "delete_attachment", error: e.message, comment_id: commentId });
+            }
+            throw e;
+        }
+
+        return { action: "delete_attachment", success: true, comment_id: commentId };
+    },
 };
 
 export const load: PageServerLoad = async ({ fetch, url, params, cookies }) => {
@@ -217,6 +432,12 @@ export const load: PageServerLoad = async ({ fetch, url, params, cookies }) => {
         version_params.status = "pending";
     }
 
+    const thread = await client.getModVersionThread(id, version.version);
+    let comments: Paginated<ServerModVersionThreadComment> | null = null;
+    if (thread) {
+        comments = await client.getModVersionThreadComments(id, version.version);
+    }
+
     let versions: Paginated<ServerModVersion> = { count: 0, data: [] };
     try {
         versions = await client.getModVersions(id, version_params);
@@ -227,5 +448,5 @@ export const load: PageServerLoad = async ({ fetch, url, params, cookies }) => {
         tags = await getCachedTags(client);
     } catch (e) {}
 
-    return { mod, deprecation, version, versions, tags, version_params };
+    return { mod, deprecation, version, versions, tags, version_params, thread, comments };
 };

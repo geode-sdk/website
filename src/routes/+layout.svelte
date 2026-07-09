@@ -10,6 +10,7 @@
     import Icon from "$lib/components/Icon.svelte";
     import { onMount } from "svelte";
     import type { LayoutData } from "./$types";
+    import { setUserContext } from "$lib/context/user";
 
     interface Props {
         data: LayoutData;
@@ -19,6 +20,8 @@
 
     let { data, children, nav }: Props = $props();
 
+    // svelte-ignore state_referenced_locally
+    setUserContext(data.loggedInUser);
     import * as publicEnv from "$env/static/public";
     const GID = "PUBLIC_GTAG_ID" in publicEnv && typeof publicEnv.PUBLIC_GTAG_ID == "string"
         ? publicEnv.PUBLIC_GTAG_ID

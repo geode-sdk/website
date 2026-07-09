@@ -145,13 +145,6 @@
         border-radius: 0.5rem;
     }
 
-    button[type="submit"] {
-        padding: 0;
-        border: none;
-        background-color: transparent;
-        font-size: 1rem;
-    }
-
     .form-control {
         --flow-size: 0.15em;
     }

@@ -28,7 +28,7 @@
     onDestroy(() => unsuscribe());
 </script>
 
-<div class="flex flex-col items-start gap-3">
+<div class="flex flex-col gap-3">
     <div class="flex flex-wrap gap-2">
         {#each $tabs as tab}
             <Button

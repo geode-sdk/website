@@ -178,19 +178,29 @@
 }
 
 @layer base {
-    h1 { @apply text-4xl font-bold mb-1; }
-    h2 { @apply text-3xl font-semibold mb-1; }
-    h3 { @apply text-2xl font-semibold mb-1; }
+    h1 {
+        @apply mb-1 text-4xl font-bold;
+    }
+    h2 {
+        @apply mb-1 text-3xl font-semibold;
+    }
+    h3 {
+        @apply mb-1 text-2xl font-semibold;
+    }
 
-    .hljs { @apply text-sm; }
-    code { @apply text-sm; }
+    .hljs {
+        @apply text-sm;
+    }
+    code {
+        @apply text-sm;
+    }
 
     .markdown {
         & blockquote {
-            @apply my-2 px-8 border-l-4 border-l-primary-200;
+            @apply border-l-primary-200 my-2 border-l-4 px-8;
         }
         & li {
-            @apply list-disc ml-5;
+            @apply ml-5 list-disc;
         }
         & :is(h1, h2, h3, h4, h5, h6) {
             @apply mb-4;

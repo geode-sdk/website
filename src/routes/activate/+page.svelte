@@ -25,9 +25,7 @@
             <img src={Sogged} alt="you just got sogged!" class="overlay" />
             <img src={Soggy} alt="(soggy cat)" />
         </div>
-        <p>
-            Happy April Fools :)
-        </p>
+        <p>Happy April Fools :)</p>
     </div>
 </main>
 
@@ -37,7 +35,13 @@
     }
 
     .sapphire-text {
-        background: linear-gradient(270deg,rgba(76, 199, 199, 1) 0%, rgba(83, 203, 224, 1) 33%, rgb(101, 168, 232) 66%, rgb(152, 154, 241) 100%);
+        background: linear-gradient(
+            270deg,
+            rgba(76, 199, 199, 1) 0%,
+            rgba(83, 203, 224, 1) 33%,
+            rgb(101, 168, 232) 66%,
+            rgb(152, 154, 241) 100%
+        );
         background-clip: text;
         color: transparent;
     }
