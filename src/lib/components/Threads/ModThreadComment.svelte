@@ -2,35 +2,42 @@
     import { enhance } from "$app/forms";
     import type { SubmitFunction } from "@sveltejs/kit";
     import { serverTimestampToAgoString } from "$lib";
-    import { type ServerModVersionThreadComment } from "$lib/api/models/mod-version";
+    import { type ServerModVersionThreadComment, type ServerModVersionThreadLock } from "$lib/api/models/mod-version";
     import { getUserContext } from "$lib/context/user";
     import DevRoleChip from "../DevRoleChip.svelte";
     import Link from "../Link.svelte";
     import Button from "../Button.svelte";
     import Icon from "../Icon.svelte";
     import Textarea from "../ui/Textarea.svelte";
+    import FileInput from "../ui/FileInput.svelte";
     import InfoBox from "../InfoBox.svelte";
 
     interface Props {
         comment: ServerModVersionThreadComment;
         version: string;
+        lock: ServerModVersionThreadLock;
     }
 
-    let { comment, version }: Props = $props();
+    let { comment, version, lock }: Props = $props();
 
     const displayedComment = $derived(() => comment.comment.replaceAll('\n', '<br>'));
 
     const currentUser = getUserContext();
     const isAdmin = $derived(currentUser?.admin === true);
     const isAuthor = $derived(comment.author.id === currentUser?.id);
+    const canModify = $derived(isAdmin || (isAuthor && lock !== "locked"));
 
     let editing = $state(false);
     let confirmingDelete = $state(false);
+    let confirmingDeleteAttachmentId: number | null = $state(null);
     let error: string | null = $state(null);
+    let submitting = $state(false);
 
     function submitHandler(failMessage: string, opts?: { onSuccess?: () => void; onFailure?: () => void }): SubmitFunction {
-        return () =>
-            async ({ result, update }) => {
+        return () => {
+            submitting = true;
+            return async ({ result, update }) => {
+                submitting = false;
                 if (result.type === "failure") {
                     error = (result.data?.error as string) ?? failMessage;
                     opts?.onFailure?.();
@@ -40,6 +47,7 @@
                     await update();
                 }
             };
+        };
     }
 </script>
 
@@ -62,6 +70,9 @@
                 {#if comment.author.verified}
                     <DevRoleChip type="verified" iconOnly />
                 {/if}
+                <small class="text-text-400 cursor-default" title={new Date(comment.created_at).toLocaleString()}>
+                    &bull; {serverTimestampToAgoString(comment.created_at)}
+                </small>
             </div>
 
             <div class="flex flex-col gap-1">
@@ -75,15 +86,28 @@
                         <input type="hidden" name="comment_id" value={comment.id} />
                         <Textarea name="comment" class="min-h-20" value={comment.comment} />
                         <div class="flex gap-2">
-                            <Button type="submit" size="small" design="primary-filled">Save</Button>
+                            <Button
+                                type="submit"
+                                size="small"
+                                design="primary-filled"
+                                disabled={submitting}
+                                title="Save changes to this comment">
+                                <Icon icon="confirm" />
+                                Save
+                            </Button>
                             <Button
                                 type="button"
                                 size="small"
                                 design="hollow"
+                                disabled={submitting}
+                                title="Discard changes"
                                 onclick={() => {
                                     editing = false;
                                     error = null;
-                                }}>Cancel</Button>
+                                }}>
+                                <Icon icon="cancel" />
+                                Cancel
+                            </Button>
                         </div>
                     </form>
                 {:else}
@@ -99,71 +123,120 @@
                                 <a href={att.url} target="_blank" rel="noopener noreferrer">
                                     <img src={att.url} alt="attachment" class="max-h-32 rounded" />
                                 </a>
-                                {#if isAuthor || isAdmin}
-                                    <form
-                                        method="POST"
-                                        action="?/delete_attachment"
-                                        class="absolute top-1 right-1"
-                                        use:enhance={submitHandler("Failed to remove attachment")}>
-                                        <input type="hidden" name="version" value={version} />
-                                        <input type="hidden" name="comment_id" value={comment.id} />
-                                        <input type="hidden" name="attachment_id" value={att.id} />
-                                        <button type="submit" class="bg-background-950 rounded px-1 text-red-300" aria-label="remove attachment">✕</button>
-                                    </form>
+                                {#if canModify}
+                                    {#if confirmingDeleteAttachmentId === att.id}
+                                        <form
+                                            method="POST"
+                                            action="?/delete_attachment"
+                                            class="bg-background-950 absolute top-1 right-1 flex items-center gap-1 rounded px-1"
+                                            use:enhance={submitHandler("Failed to remove attachment", {
+                                                onFailure: () => (confirmingDeleteAttachmentId = null),
+                                            })}>
+                                            <input type="hidden" name="version" value={version} />
+                                            <input type="hidden" name="comment_id" value={comment.id} />
+                                            <input type="hidden" name="attachment_id" value={att.id} />
+                                            <button
+                                                type="submit"
+                                                class="text-sm text-red-300 cursor-pointer"
+                                                disabled={submitting}
+                                                title="Confirm delete">Yes</button>
+                                            <button
+                                                type="button"
+                                                class="text-text-400 text-sm cursor-pointer"
+                                                title="Cancel delete"
+                                                onclick={() => (confirmingDeleteAttachmentId = null)}>No</button>
+                                        </form>
+                                    {:else}
+                                        <button
+                                            type="button"
+                                            class="bg-background-950 cursor-pointer absolute top-1 right-1 rounded px-2 text-red-300"
+                                            aria-label="remove attachment"
+                                            title="Remove attachment"
+                                            onclick={() => (confirmingDeleteAttachmentId = att.id)}>✕</button>
+                                    {/if}
                                 {/if}
                             </div>
                         {/each}
                     </div>
                 {/if}
 
-                <div class="flex items-center gap-4">
-                    <small class="text-text-400">
-                        {serverTimestampToAgoString(comment.created_at)}
-                    </small>
-                    {#if isAuthor && !editing}
-                        <button class="text-text-400 text-sm cursor-pointer" type="button" onclick={() => (editing = true)}
-                            >Edit</button>
-                    {/if}
-                    {#if isAuthor || isAdmin}
+                {#if canModify && !editing}
+                    <div class="flex items-center gap-2 pt-2">
+                        <form
+                            method="POST"
+                            action="?/add_attachment"
+                            enctype="multipart/form-data"
+                            class="flex items-center gap-2"
+                            use:enhance={submitHandler("Failed to upload attachment")}>
+                            <input type="hidden" name="version" value={version} />
+                            <input type="hidden" name="comment_id" value={comment.id} />
+                            <FileInput id={`mod-thread-comment-attachment-${comment.id}`} name="files" accept="image/*" multiple size="small" />
+                            <Button
+                                type="submit"
+                                size="small"
+                                design="hollow"
+                                disabled={submitting}
+                                title="Upload selected files as attachments">
+                                <Icon icon="update" />
+                                Attach
+                            </Button>
+                        </form>
+                        <div class="bg-background-300 h-6 w-px"></div>
+                        {#if isAuthor}
+                            <Button
+                                type="button"
+                                size="small"
+                                design="hollow"
+                                title="Edit comment"
+                                aria-label="Edit comment"
+                                onclick={() => (editing = true)}>
+                                <Icon icon="modify" />
+                            </Button>
+                        {/if}
                         {#if confirmingDelete}
                             <form
                                 method="POST"
                                 action="?/delete_comment"
-                                class="inline-flex items-center gap-2"
+                                class="inline-flex items-center"
                                 use:enhance={submitHandler("Failed to delete comment", {
                                     onFailure: () => (confirmingDelete = false),
                                 })}>
                                 <input type="hidden" name="version" value={version} />
                                 <input type="hidden" name="comment_id" value={comment.id} />
-                                <small class="text-red-300">Are you sure?</small>
-                                <button class="text-sm text-red-300 cursor-pointer" type="submit">Yes</button>
-                                <button
-                                    class="text-text-400 text-sm cursor-pointer"
+                                <Button
+                                    type="submit"
+                                    size="small"
+                                    design="hollow"
+                                    class="rounded-r-none border-red-300 text-red-300 hover:border-red-50 hover:bg-red-50 hover:text-red-950"
+                                    disabled={submitting}
+                                    title="Confirm delete"
+                                    aria-label="Confirm delete">
+                                    <Icon icon="confirm" />
+                                </Button>
+                                <Button
                                     type="button"
-                                    onclick={() => (confirmingDelete = false)}>No</button>
+                                    size="small"
+                                    design="hollow"
+                                    class="rounded-l-none border-l-0"
+                                    title="Cancel delete"
+                                    aria-label="Cancel delete"
+                                    onclick={() => (confirmingDelete = false)}>
+                                    <Icon icon="cancel" />
+                                </Button>
                             </form>
                         {:else}
-                            <button class="text-sm text-red-300 cursor-pointer" type="button" onclick={() => (confirmingDelete = true)}
-                                >Delete</button>
+                            <Button
+                                type="button"
+                                size="small"
+                                design="hollow"
+                                class="border-red-300 text-red-300 hover:border-red-50 hover:bg-red-50 hover:text-red-950"
+                                title="Delete comment"
+                                aria-label="Delete comment"
+                                onclick={() => (confirmingDelete = true)}>
+                                <Icon icon="delete" />
+                            </Button>
                         {/if}
-                    {/if}
-                </div>
-
-                {#if isAuthor || isAdmin}
-                    <form
-                        method="POST"
-                        action="?/add_attachment"
-                        enctype="multipart/form-data"
-                        class="flex items-center gap-2 pt-1"
-                        use:enhance={submitHandler("Failed to upload attachment")}>
-                        <input type="hidden" name="version" value={version} />
-                        <input type="hidden" name="comment_id" value={comment.id} />
-                        <input class="border rounded p-2 border-background-300 cursor-pointer" type="file" name="files" accept="image/*" multiple />
-                        <Button type="submit" size="small" design="hollow">
-                            <Icon icon="update" />
-                            Attach
-                        </Button>
-                    </form>
+                    </div>
                 {/if}
 
                 {#if error}

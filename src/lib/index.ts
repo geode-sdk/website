@@ -68,6 +68,10 @@ export const icons = {
     account: "mdi:account-circle",
     admin: "mdi:security",
     clipboard: "mdi:content-copy",
+    attachment: "mdi:paperclip",
+    delete: "mdi:trash-can-outline",
+    confirm: "mdi:check",
+    cancel: "mdi:close",
 
     "tag-universal": "mdi:globe",
     "tag-gameplay": "mdi:gamepad-variant",

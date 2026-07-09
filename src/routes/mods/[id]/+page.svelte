@@ -472,7 +472,7 @@
                 <section>
                     <Card>
                         <h2 class="mb-4 flex items-center gap-2">
-                            Comments <span
+                            Thread <span
                                 class="bg-background-800 flex items-center justify-center rounded-[10000px] px-3 py-1 text-xl">
                                 <small>{data.comments.count}</small>
                             </span>

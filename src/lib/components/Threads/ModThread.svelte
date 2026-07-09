@@ -8,6 +8,7 @@
     import { getModContext } from "$lib/context/mod";
     import { enhance } from "$app/forms";
     import Button from "../Button.svelte";
+    import Icon from "../Icon.svelte";
 
     interface Props {
         comments: ServerModVersionThreadComment[];
@@ -25,6 +26,8 @@
     const isLoggedIn = $derived(currentUser !== null);
     const isAdmin = $derived(currentUser?.admin === true);
     const hasAcceptedMod = $derived(currentUser?.has_accepted_mod === true);
+
+    let updatingLock = $state(false);
 </script>
 
 <div class="flex flex-col gap-6">
@@ -32,10 +35,16 @@
         <form
             method="POST"
             action="?/update_lock"
-            use:enhance>
+            use:enhance={() => {
+                updatingLock = true;
+                return async ({ update }) => {
+                    updatingLock = false;
+                    await update();
+                };
+            }}>
             <input type="hidden" name="version" value={version} />
-            <div class="flex w-full justify-between flex-wrap">
-                <div class="flex gap-1 items-center rounded p-2 bg-background-800">
+            <div class="flex w-full bg-background-800 p-2 rounded justify-between flex-wrap">
+                <div class="flex gap-1 items-center">
                     <span>Status: </span>
                     <select class="border border-background-400 rounded p-1 cursor-pointer" value={lock} name="lock">
                         <option value={'none'}>Open</option>
@@ -43,7 +52,10 @@
                         <option value={'locked'}>Locked</option>
                     </select>
                 </div>
-                <Button type="submit">Update</Button>
+                <Button type="submit" size="small" design="primary-filled" disabled={updatingLock} title="Update thread status">
+                    <Icon icon="confirm" />
+                    Update
+                </Button>
             </div>
         </form>
     {/if}
@@ -71,5 +83,5 @@
     {:else}
         <InfoBox type="warning">You must be <strong>logged in</strong> to comment</InfoBox>
     {/if}
-    <ModThreadList {comments} {version} />
+    <ModThreadList {comments} {version} {lock} />
 </div>

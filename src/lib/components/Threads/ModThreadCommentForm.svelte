@@ -4,6 +4,7 @@
     import Button from "../Button.svelte";
     import Icon from "../Icon.svelte";
     import Textarea from "../ui/Textarea.svelte";
+    import FileInput from "../ui/FileInput.svelte";
     import { type ActionData } from "../../../routes/mods/[id]/$types";
     import InfoBox from "../InfoBox.svelte";
 
@@ -24,6 +25,8 @@
     };
 
     const actionData = getContext<() => ActionData | null>("ActionData");
+
+    let submitting = $state(false);
 </script>
 
 <div class="w-full">
@@ -33,7 +36,13 @@
         action="?/comment"
         enctype="multipart/form-data"
         class="flex flex-col"
-        use:enhance>
+        use:enhance={() => {
+            submitting = true;
+            return async ({ update }) => {
+                submitting = false;
+                await update();
+            };
+        }}>
         <input type="hidden" name="version" value={version} />
         <div class="max-h-60">
             <Textarea
@@ -41,17 +50,17 @@
                 name="comment"
                 id="mod-thread-comment"
                 placeholder="Enter your new comment here"
-                class="h-full max-h-60 min-h-30 rounded-b-none" />
+                class="h-full max-h-60 min-h-30 border-b-0 rounded-b-none" />
         </div>
-        <div class="bg-background-800 flex items-center justify-between flex-wrap gap-2 rounded rounded-t-none p-2">
-            <div class="flex flex-col gap-1">
-                <small>Press Enter to post. Press Shift + Enter to go on a new row.</small>
-                <input class="border rounded p-2 border-background-300 cursor-pointer" type="file" name="files" accept="image/*" multiple />
+        <div class="flex border-background-800 border-2 border-t-0 items-center justify-between flex-wrap gap-2 rounded rounded-t-none p-2">
+            <small>Press Enter to post. Press Shift + Enter to go on a new line.</small>
+            <div class="flex gap-2">
+                <FileInput id="mod-thread-comment-files" name="files" accept="image/*" multiple size="small" />
+                <Button type="submit" size="small" design="primary-filled" disabled={submitting}>
+                    <Icon icon="update" />
+                    Post
+                </Button>
             </div>
-            <Button type="submit" size="small" design="primary-filled">
-                <Icon icon="update" />
-                Post
-            </Button>
         </div>
     </form>
     {#if actionData()?.action === "comment" && actionData()?.error}
