@@ -1,4 +1,10 @@
 import type { ServerDeveloperProfile } from "$lib/api/models/base";
 import { createContext } from "svelte";
 
-export const [getUserContext, setUserContext] = createContext<ServerDeveloperProfile | null>();
+const [getUserContextValue, setUserContext] = createContext<() => ServerDeveloperProfile | null>();
+
+export { setUserContext };
+
+export function getUserContext(): ServerDeveloperProfile | null {
+    return getUserContextValue()();
+}

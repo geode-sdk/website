@@ -50,7 +50,7 @@
 
     let searching = $state(false);
 
-    const user = getUserContext();
+    const user = $derived(getUserContext());
 
     const developer_ids = $derived(data.mod.developers.map((d) => d.id));
     const can_update_mod = $derived((user && developer_ids.includes(user.id)) || false);

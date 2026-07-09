@@ -20,8 +20,7 @@
 
     let { data, children, nav }: Props = $props();
 
-    // svelte-ignore state_referenced_locally
-    setUserContext(data.loggedInUser);
+    setUserContext(() => data.loggedInUser);
     import * as publicEnv from "$env/static/public";
     const GID = "PUBLIC_GTAG_ID" in publicEnv && typeof publicEnv.PUBLIC_GTAG_ID == "string"
         ? publicEnv.PUBLIC_GTAG_ID

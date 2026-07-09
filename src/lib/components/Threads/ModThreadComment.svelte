@@ -22,7 +22,7 @@
 
     const displayedComment = $derived(() => comment.comment.replaceAll('\n', '<br>'));
 
-    const currentUser = getUserContext();
+    const currentUser = $derived(getUserContext());
     const isAdmin = $derived(currentUser?.admin === true);
     const isAuthor = $derived(comment.author.id === currentUser?.id);
     const canModify = $derived(isAdmin || (isAuthor && lock !== "locked"));

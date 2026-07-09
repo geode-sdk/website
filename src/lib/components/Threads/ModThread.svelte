@@ -23,7 +23,7 @@
 
     let { comments, lock, version, page, perPage, onChangePage }: Props = $props();
 
-    const currentUser = getUserContext();
+    const currentUser = $derived(getUserContext());
     const mod = getModContext();
 
     const isModDeveloper = $derived(mod.developers.find((i) => i.id === currentUser?.id));
