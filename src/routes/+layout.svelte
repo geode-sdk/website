@@ -8,6 +8,7 @@
     import Dot from "$lib/components/Dot.svelte";
     import Waves from "$lib/components/Waves.svelte";
     import Icon from "$lib/components/Icon.svelte";
+    import { onMount } from "svelte";
     import type { LayoutData } from "./$types";
     import { setUserContext } from "$lib/context/user";
 
@@ -21,6 +22,24 @@
 
     // svelte-ignore state_referenced_locally
     setUserContext(data.loggedInUser);
+    import * as publicEnv from "$env/static/public";
+    const GID = "PUBLIC_GTAG_ID" in publicEnv && typeof publicEnv.PUBLIC_GTAG_ID == "string"
+        ? publicEnv.PUBLIC_GTAG_ID
+        : "";
+
+    if (GID !== "") {
+        onMount(() => {
+            // <!-- Google tag (gtag.js) -->
+            const script = document.createElement('script');
+            script.async = true;
+            script.src = `https://www.googletagmanager.com/gtag/js?id=${GID}`;
+            document.head.appendChild(script);
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', GID);
+        });
+    }
 </script>
 
 <main>
@@ -54,6 +73,8 @@
                     <Link href="https://docs.geode-sdk.org/" icon="docs">Documentation</Link>
                     <Dot />
                     <Link href="https://github.com/geode-sdk" icon="github">Source Code</Link>
+                    <Dot />
+                    <Link href="/privacy" icon="status">Privacy Policy</Link>
                     {#if data.loggedInUser === null}
                         <Dot />
                         <Link href="/login" icon="account">Login</Link>

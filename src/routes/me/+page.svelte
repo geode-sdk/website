@@ -4,6 +4,7 @@
     import Button from "$lib/components/Button.svelte";
     import MyPendingModCard from "$lib/components/MyPendingModCard.svelte";
     import InfoBox from "$lib/components/InfoBox.svelte";
+    import Row from "$lib/components/Row.svelte";
 
     let updatingSelf = $state(false);
 
@@ -69,9 +70,11 @@
                 <InfoBox type="error">{form?.message}</InfoBox>
             {/if}
             <h2>Logout</h2>
-            <form method="POST" class="flow">
-                <Button formaction="?/logout" type="submit" design="primary-filled">Logout</Button>
-                <Button formaction="?/logout_all" type="submit" design="primary-filled">Logout all devices</Button>
+            <form method="POST">
+                <Row justify="start" gap="tiny">
+                    <Button formaction="?/logout" type="submit" design="primary-filled">Logout</Button>
+                    <Button formaction="?/logout_all" type="submit" design="primary-filled">Logout all devices</Button>
+                </Row>
             </form>
             <h2>Submit a new mod</h2>
             <form
@@ -91,7 +94,10 @@
                     <input type="text" id="download_link" name="download_link" required />
                 </div>
                 <p>
-                    Please check the <a href="https://docs.geode-sdk.org/mods/guidelines">Mod Guidelines</a> before submitting.
+                    Please check the <a href="https://docs.geode-sdk.org/mods/guidelines">Mod Guidelines</a> before submitting. Vibecoded mods are generally against the Mod Guidelines.
+                </p>
+                <p>
+                    If you are submitting a closed-source mod, please invite a member of the Geode Team to read the mod's source code and explain why the mod is closed source.
                 </p>
                 <Button type="submit" disabled={submittingMod}>Upload</Button>
             </form>

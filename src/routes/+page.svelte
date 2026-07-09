@@ -116,7 +116,7 @@
                     for Geometry Dash that adds
                     <em>mod support</em>
                     to the game. Browse from an in-game list to seamlessly download mods on
-                    <em>Windows, MacOS, Android and iOS!</em>
+                    <em>Windows, macOS, Android, and iOS!</em>
                 </p>
                 <span class="platform-icons">
                     <Icon icon="windows" --icon-size="2.5em" />

@@ -295,33 +295,33 @@
                                             <input type="url" required id="create-mod-download" name="download_link" />
                                         </div>
 
-                                        <Button type="submit" design="secondary-filled">Submit</Button>
-                                    </form>
-                                    {#if owns_mod}
-                                        <form method="POST" class="flow" action="?/add_developer" use:enhance>
-                                            <h2>Manage developers</h2>
-                                            <div class="form-control">
-                                                <label for="add-developer-name">Username:</label>
-                                                <input type="text" required id="add-developer-name" name="developer" />
-                                            </div>
+                                <Button design="secondary-filled" type="submit">Submit</Button>
+                            </form>
+                            {#if owns_mod}
+                                <form method="POST" class="flow" action="?/add_developer" use:enhance>
+                                    <h2>Manage developers</h2>
+                                    <div class="form-control">
+                                        <label for="add-developer-name">Username:</label>
+                                        <input type="text" required id="add-developer-name" name="developer" />
+                                    </div>
 
-                                            <div>
-                                                <Button type="submit" design="secondary-filled">Add</Button>
-                                                <Button type="submit" formaction="?/remove_developer" design="primary-filled">Remove</Button>
-                                            </div>
-                                        </form>
-                                    {/if}
-                                </Column>
-                            </TabPage>
-                        {/if}
-                        {#if is_admin}
-                            <TabPage name="Admin" id="admin" icon="admin">
-                                <Column align="start">
-                                    {#if form?.message}
-                                        <InfoBox type="error">
-                                            Failed to perform action: {form.message}
-                                        </InfoBox>
-                                    {/if}
+                                    <Row justify="start" gap="tiny">
+                                        <Button type="submit" design="secondary-filled">Add</Button>
+                                        <Button type="submit" formaction="?/remove_developer" design="primary-filled">Remove</Button>
+                                    </Row>
+                                </form>
+                            {/if}
+                        </Column>
+                    </TabPage>
+                {/if}
+                {#if is_admin}
+                    <TabPage name="Admin" id="admin" icon="admin">
+                        <Column align="start">
+                            {#if form?.message}
+                                <InfoBox type="error">
+                                    Failed to perform action: {form.message}
+                                </InfoBox>
+                            {/if}
 
                                     {#if form?.success}
                                         <InfoBox type="info">Action performed!</InfoBox>

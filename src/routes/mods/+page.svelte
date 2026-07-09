@@ -80,7 +80,6 @@
     };
 
     const scrollToSearchBar = () => {
-        console.log(searchBar);
         searchBar?.scrollIntoView({
             behavior: "smooth",
             block: "start",

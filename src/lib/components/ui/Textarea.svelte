@@ -1,7 +1,7 @@
 <script lang="ts">
     import cx from "$lib/cx";
     import type { ClassValue } from "clsx";
-    import { type HTMLTextareaAttributes } from "svelte/elements";
+    import type { HTMLTextareaAttributes } from "svelte/elements";
 
     type Props = {
         class?: ClassValue;

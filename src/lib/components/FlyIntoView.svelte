@@ -21,7 +21,7 @@
                     });
                 },
                 {
-                    threshold: 0.65,
+                    threshold: 0.50,
                 },
             );
             observer.observe(node);
