@@ -121,7 +121,7 @@
                         {serverTimestampToAgoString(comment.created_at)}
                     </small>
                     {#if isAuthor && !editing}
-                        <button class="text-text-400 text-sm" type="button" onclick={() => (editing = true)}
+                        <button class="text-text-400 text-sm cursor-pointer" type="button" onclick={() => (editing = true)}
                             >Edit</button>
                     {/if}
                     {#if isAuthor || isAdmin}
@@ -135,15 +135,15 @@
                                 })}>
                                 <input type="hidden" name="version" value={version} />
                                 <input type="hidden" name="comment_id" value={comment.id} />
-                                <small class="text-red-300">Confirm?</small>
-                                <button class="text-sm text-red-300" type="submit">Yes</button>
+                                <small class="text-red-300">Are you sure?</small>
+                                <button class="text-sm text-red-300 cursor-pointer" type="submit">Yes</button>
                                 <button
-                                    class="text-text-400 text-sm"
+                                    class="text-text-400 text-sm cursor-pointer"
                                     type="button"
                                     onclick={() => (confirmingDelete = false)}>No</button>
                             </form>
                         {:else}
-                            <button class="text-sm text-red-300" type="button" onclick={() => (confirmingDelete = true)}
+                            <button class="text-sm text-red-300 cursor-pointer" type="button" onclick={() => (confirmingDelete = true)}
                                 >Delete</button>
                         {/if}
                     {/if}
