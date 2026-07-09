@@ -69,9 +69,7 @@
                     <label for="modify-admin">Admin</label>
                 </div>
 
-                <button type="submit">
-                    <Button>Update</Button>
-                </button>
+                <Button type="submit">Update</Button>
             </form>
         </section>
     {/if}
@@ -145,13 +143,6 @@
 
     img {
         border-radius: 0.5rem;
-    }
-
-    button[type="submit"] {
-        padding: 0;
-        border: none;
-        background-color: transparent;
-        font-size: 1rem;
     }
 
     .form-control {

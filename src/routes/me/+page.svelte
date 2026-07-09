@@ -58,9 +58,7 @@
                         id="display_name" />
                 </div>
                 <div class="form-button">
-                    <button type="submit" disabled={updatingSelf}>
-                        <Button disabled={updatingSelf}>Update</Button>
-                    </button>
+                    <Button type="submit" disabled={updatingSelf}>Update</Button>
                 </div>
             </form>
         </aside>
@@ -72,12 +70,8 @@
             {/if}
             <h2>Logout</h2>
             <form method="POST" class="flow">
-                <button formaction="?/logout" type="submit">
-                    <Button design="primary-filled">Logout</Button>
-                </button>
-                <button formaction="?/logout_all" type="submit">
-                    <Button design="primary-filled">Logout all devices</Button>
-                </button>
+                <Button formaction="?/logout" type="submit" design="primary-filled">Logout</Button>
+                <Button formaction="?/logout_all" type="submit" design="primary-filled">Logout all devices</Button>
             </form>
             <h2>Submit a new mod</h2>
             <form
@@ -99,9 +93,7 @@
                 <p>
                     Please check the <a href="https://docs.geode-sdk.org/mods/guidelines">Mod Guidelines</a> before submitting.
                 </p>
-                <button type="submit" disabled={submittingMod}>
-                    <Button disabled={submittingMod}>Upload</Button>
-                </button>
+                <Button type="submit" disabled={submittingMod}>Upload</Button>
             </form>
             <h2>Your pending mods</h2>
             <ul class="unstyle-list">
@@ -162,13 +154,6 @@
 
     img {
         border-radius: 0.5rem;
-    }
-
-    button[type="submit"] {
-        padding: 0;
-        border: none;
-        background-color: transparent;
-        font-size: 1rem;
     }
 
     .form-button {
