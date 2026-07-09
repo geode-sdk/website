@@ -91,6 +91,13 @@
         searching = false;
     };
 
+    const onChangeCommentPage = async (next_page: number) => {
+        const params = new URLSearchParams(url_params);
+        params.set("comment_page", next_page.toString());
+
+        await goto(`/mods/${data.mod.id}?${params}`, { noScroll: true });
+    };
+
     const getTagDisplay = (tag: string) => {
         const foundTag = data.tags.find((x) => x.name == tag);
         return foundTag ? foundTag.display_name : tag.charAt(0).toUpperCase() + tag.slice(1);
@@ -471,7 +478,14 @@
                                 <small>{data.comments.count}</small>
                             </span>
                         </h2>
-                        <ModThread comments={data.comments.data} lock={thread_lock} currentUser={user} version={data.version.version} />
+                        <ModThread
+                            comments={data.comments}
+                            lock={thread_lock}
+                            currentUser={user}
+                            version={data.version.version}
+                            page={data.comment_page}
+                            perPage={data.comment_per_page}
+                            onChangePage={onChangeCommentPage} />
                     </Card>
                 </section>
             {/if}

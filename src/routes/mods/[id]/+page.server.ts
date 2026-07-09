@@ -432,10 +432,13 @@ export const load: PageServerLoad = async ({ fetch, url, params, cookies }) => {
         version_params.status = "pending";
     }
 
+    const comment_page = toIntSafe(url.searchParams.get("comment_page")) ?? 1;
+    const comment_per_page = 10;
+
     const thread = await client.getModVersionThread(id, version.version);
     let comments: Paginated<ServerModVersionThreadComment> | null = null;
     if (thread) {
-        comments = await client.getModVersionThreadComments(id, version.version);
+        comments = await client.getModVersionThreadComments(id, version.version, comment_page, comment_per_page);
     }
 
     let versions: Paginated<ServerModVersion> = { count: 0, data: [] };
@@ -448,5 +451,5 @@ export const load: PageServerLoad = async ({ fetch, url, params, cookies }) => {
         tags = await getCachedTags(client);
     } catch (e) {}
 
-    return { mod, deprecation, version, versions, tags, version_params, thread, comments };
+    return { mod, deprecation, version, versions, tags, version_params, thread, comments, comment_page, comment_per_page };
 };

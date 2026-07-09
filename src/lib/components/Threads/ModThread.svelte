@@ -1,5 +1,6 @@
 <script lang="ts">
     import type { ServerModVersionThreadComment, ServerModVersionThreadLock } from "$lib/api/models/mod-version";
+    import type { Paginated } from "$lib/api/index-repository";
     import ModThreadList from "./ModThreadList.svelte";
     import ModThreadCommentForm from "./ModThreadCommentForm.svelte";
     import InfoBox from "../InfoBox.svelte";
@@ -11,13 +12,16 @@
     import Icon from "../Icon.svelte";
 
     interface Props {
-        comments: ServerModVersionThreadComment[];
+        comments: Paginated<ServerModVersionThreadComment>;
         lock: ServerModVersionThreadLock;
         currentUser: ServerDeveloperProfile | null;
         version: string;
+        page: number;
+        perPage: number;
+        onChangePage: (page: number) => void;
     }
 
-    let { comments, lock, version }: Props = $props();
+    let { comments, lock, version, page, perPage, onChangePage }: Props = $props();
 
     const currentUser = getUserContext();
     const mod = getModContext();
@@ -83,5 +87,5 @@
     {:else}
         <InfoBox type="warning">You must be <strong>logged in</strong> to comment</InfoBox>
     {/if}
-    <ModThreadList {comments} {version} {lock} />
+    <ModThreadList {comments} {version} {lock} {page} {perPage} {onChangePage} />
 </div>
