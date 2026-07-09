@@ -135,7 +135,7 @@
 <Waves type="top" />
 <Gap size="large" />
 
-<article class="w-full max-w-dvw px-2 md:px-16 lg:px-54 xl:px-76">
+<article class="w-full max-w-dvw mx-auto px-2 md:px-16 lg:px-54 xl:px-76 2xl:max-w-450">
     <header class="mb-16">
         <div class="flex max-w-full flex-row items-center justify-center gap-2 text-xl">
             <ModLogo mod={data.mod} version={data.version} size="large" />
