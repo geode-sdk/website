@@ -162,27 +162,32 @@
 
                 {#if canModify && !editing}
                     <div class="flex items-center gap-2 pt-2">
-                        <form
-                            method="POST"
-                            action="?/add_attachment"
-                            enctype="multipart/form-data"
-                            class="flex items-center gap-2"
-                            use:enhance={submitHandler("Failed to upload attachment")}>
-                            <input type="hidden" name="version" value={version} />
-                            <input type="hidden" name="comment_id" value={comment.id} />
-                            <FileInput id={`mod-thread-comment-attachment-${comment.id}`} name="files" accept="image/*" multiple size="small" />
-                            <Button
-                                type="submit"
-                                size="small"
-                                design="hollow"
-                                disabled={submitting}
-                                title="Upload selected files as attachments">
-                                <Icon icon="update" />
-                                Attach
-                            </Button>
-                        </form>
-                        <div class="bg-background-300 h-6 w-px"></div>
                         {#if isAuthor}
+                            <form
+                                method="POST"
+                                action="?/add_attachment"
+                                enctype="multipart/form-data"
+                                class="flex items-center gap-2"
+                                use:enhance={submitHandler("Failed to upload attachment")}>
+                                <input type="hidden" name="version" value={version} />
+                                <input type="hidden" name="comment_id" value={comment.id} />
+                                <FileInput
+                                    id={`mod-thread-comment-attachment-${comment.id}`}
+                                    name="files"
+                                    accept="image/*"
+                                    multiple
+                                    size="small" />
+                                <Button
+                                    type="submit"
+                                    size="small"
+                                    design="hollow"
+                                    disabled={submitting}
+                                    title="Upload selected files as attachments">
+                                    <Icon icon="update" />
+                                    Attach
+                                </Button>
+                            </form>
+                            <div class="bg-background-300 h-6 w-px"></div>
                             <Button
                                 type="button"
                                 size="small"
