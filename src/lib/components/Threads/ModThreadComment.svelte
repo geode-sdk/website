@@ -111,7 +111,7 @@
                         </div>
                     </form>
                 {:else}
-                    <div class="max-w-96 text-wrap break-all">
+                    <div class="max-w-96 text-wrap wrap-break-word hyphens-auto">
                         {@html displayedComment()}
                     </div>
                 {/if}
