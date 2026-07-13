@@ -144,8 +144,8 @@
     {#snippet img(props)}
         <MarkdownImage href={props.src} alt={props.alt} title={props.title} />
     {/snippet}
-    {#snippet link(props)}
-        <MarkdownLink href={props.href}>{props.children}</MarkdownLink>
+    {#snippet a(props)}
+        <MarkdownLink href={props.href}>{@render props.children?.()}</MarkdownLink>
     {/snippet}
 </Markdown>
 
