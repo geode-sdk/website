@@ -94,7 +94,7 @@
                     <input type="text" id="download_link" name="download_link" required />
                 </div>
                 <p>
-                    Please check the <a href="https://docs.geode-sdk.org/mods/guidelines">Mod Guidelines</a> before submitting. Vibecoded mods are generally against the Mod Guidelines.
+                    Please check the <Link href="https://docs.geode-sdk.org/mods/guidelines">Mod Guidelines</Link> before submitting. Vibecoded mods are generally against the Mod Guidelines.
                 </p>
                 <p>
                     If you are submitting a closed-source mod, please invite a member of the Geode Team to read the mod's source code and explain why the mod is closed source.
