@@ -5,6 +5,7 @@
     import MyPendingModCard from "$lib/components/MyPendingModCard.svelte";
     import InfoBox from "$lib/components/InfoBox.svelte";
     import Row from "$lib/components/Row.svelte";
+    import Link from "$lib/components/Link.svelte";
 
     let updatingSelf = $state(false);
 
