@@ -77,6 +77,20 @@
             showAllPlatforms = true;
         }
     });
+
+    onMount(() => {
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = `https://hb.vntsm.com/v4/live/vms/sites/geode-sdk.org/index.js`;
+        document.head.appendChild(script);
+        self.__VM = self.__VM || [];
+        self.__VM.push(function (admanager, scope) {
+            scope.Config.get("skyscraper").displayMany(["side-slot-1", "side-slot-2"]);
+            scope.Config.buildPlacement((configBuilder) => {
+                configBuilder.addDefaultOrUnique("mpu").setBreakPoint("mobile");
+            }).display("mobile-slot-1");
+        });
+    });
 </script>
 
 <Waves type="top" />
@@ -86,6 +100,10 @@
     <title>Install Geode</title>
     <meta name="description" content="Install Geode on Windows, macOS, Android, and iOS" />
 </svelte:head>
+
+<div class="page-container">
+<div class="ad-slot" id="side-slot-1"></div>
+<div class="main-content">
 
 <h1>Install Geode</h1>
 
@@ -270,6 +288,8 @@
         </Column>
     </div>
 
+    <div id="mobile-slot-1"></div>
+
     <Gap size="large" />
 
     <h2>How to install mods?</h2>
@@ -352,6 +372,10 @@
 
 <Gap size="normal" />
 
+</div>
+<div class="ad-slot" id="side-slot-2"></div>
+</div>
+
 <style lang="css">
     .img-with-width {
         max-width: 35vw;
@@ -397,5 +421,36 @@
         display: flex;
         align-items: center;
         gap: 0.5rem;
+    }
+
+    .page-container {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        width: 100%;
+        margin: 0 auto;
+        gap: 2rem;
+    }
+
+    .main-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--gap-large);
+    }
+
+    .ad-slot {
+        width: 160px;
+        flex-shrink: 0;
+        position: sticky;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    @media screen and (max-width: 1024px) {
+        .ad-slot {
+            display: none;
+        }
     }
 </style>
