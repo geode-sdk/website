@@ -78,16 +78,21 @@
         }
     });
 
+    let mobileSlot: HTMLDivElement | undefined = $state();
+
     onMount(() => {
-        const script = document.createElement('script');
-        script.async = true;
-        script.src = `https://hb.vntsm.com/v4/live/vms/sites/geode-sdk.org/index.js`;
-        document.head.appendChild(script);
         self.__VM = self.__VM || [];
+        let mpu: any;
         self.__VM.push(function (admanager, scope) {
-            scope.Config.get("vertical_sticky").displayMany(["side-slot-1", "side-slot-2"]);
-            scope.Config.get("mobile_mpu").display("mobile-slot-1");
+            scope.Config.verticalSticky().display();
+            mpu = scope.Config.get("mobile_mpu").display(mobileSlot);
         });
+        return () => {
+            self.__VM.push(function (admanager, scope) {
+                scope.Config.verticalSticky().destroy();
+                mpu?.remove();
+            });
+        };
     });
 </script>
 
@@ -100,7 +105,6 @@
 </svelte:head>
 
 <div class="page-container">
-<div class="ad-slot" id="side-slot-1"></div>
 <div class="main-content">
 
 <h1>Install Geode</h1>
@@ -286,7 +290,7 @@
         </Column>
     </div>
 
-    <div id="mobile-slot-1"></div>
+    <div id="mobile-slot-1" bind:this={mobileSlot}></div>
 
     <Gap size="large" />
 
@@ -371,7 +375,6 @@
 <Gap size="normal" />
 
 </div>
-<div class="ad-slot" id="side-slot-2"></div>
 </div>
 
 <style lang="css">
@@ -436,19 +439,5 @@
         align-items: center;
         justify-content: space-between;
         gap: var(--gap-large);
-    }
-
-    .ad-slot {
-        width: 160px;
-        flex-shrink: 0;
-        position: sticky;
-        top: 50%;
-        transform: translateY(-50%);
-    }
-
-    @media screen and (max-width: 1024px) {
-        .ad-slot {
-            display: none;
-        }
     }
 </style>
