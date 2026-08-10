@@ -85,10 +85,8 @@
         document.head.appendChild(script);
         self.__VM = self.__VM || [];
         self.__VM.push(function (admanager, scope) {
-            scope.Config.get("skyscraper").displayMany(["side-slot-1", "side-slot-2"]);
-            scope.Config.buildPlacement((configBuilder) => {
-                configBuilder.addDefaultOrUnique("mpu").setBreakPoint("mobile");
-            }).display("mobile-slot-1");
+            scope.Config.get("vertical_sticky").displayMany(["side-slot-1", "side-slot-2"]);
+            scope.Config.get("mobile_mpu").display("mobile-slot-1");
         });
     });
 </script>
