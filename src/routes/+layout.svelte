@@ -8,6 +8,7 @@
     import Dot from "$lib/components/Dot.svelte";
     import Waves from "$lib/components/Waves.svelte";
     import Icon from "$lib/components/Icon.svelte";
+    import ProsperNewSession from "$lib/components/ProsperNewSession.svelte";
     import { onMount } from "svelte";
     import type { LayoutData } from "./$types";
     import { setUserContext } from "$lib/context/user";
@@ -40,6 +41,7 @@
 </script>
 
 <main>
+    <ProsperNewSession />
     <div class="bg"></div>
     <div class="side-art left"></div>
     <div class="side-art right"></div>

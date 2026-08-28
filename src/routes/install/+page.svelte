@@ -16,6 +16,7 @@
     import { bash } from "svelte-highlight/languages";
     import { getNewGDUpdateWasReleased } from "$lib";
     import NewGDUpdateAlert from "$lib/components/NewGDUpdateAlert.svelte";
+    import Ad from "$lib/components/Ad.svelte";
 
     interface Props {
         data: PageData;
@@ -76,23 +77,6 @@
             curPlatform = "unknown";
             showAllPlatforms = true;
         }
-    });
-
-    let mobileSlot: HTMLDivElement | undefined = $state();
-
-    onMount(() => {
-        self.__VM = self.__VM || [];
-        let mpu: any;
-        self.__VM.push(function (admanager, scope) {
-            scope.Config.verticalSticky().display();
-            mpu = scope.Config.get("mobile_mpu").display(mobileSlot);
-        });
-        return () => {
-            self.__VM.push(function (admanager, scope) {
-                scope.Config.verticalSticky().destroy();
-                mpu?.remove();
-            });
-        };
     });
 </script>
 
@@ -290,7 +274,8 @@
         </Column>
     </div>
 
-    <div id="mobile-slot-1" bind:this={mobileSlot}></div>
+    <Ad placementName="vertical_sticky" />
+    <Ad placementName="mobile_mpu" />
 
     <Gap size="large" />
 
