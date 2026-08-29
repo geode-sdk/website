@@ -37,6 +37,8 @@
     };
 
     const createVersionString = (platform: "windows" | "mac" | "android" | "linux"): string => {
+        if (!latestVersion) return "";
+
         let filename = "";
         switch (platform) {
             case "linux":
@@ -54,7 +56,8 @@
             const nonV = latestLauncher.substring(1);
             return `https://github.com/geode-sdk/android-launcher/releases/download/${nonV}/${filename}`;
         } else {
-            return `https://github.com/geode-sdk/geode/releases/download/${latestVersion}/${filename}`;
+            const nonV = latestVersion.substring(1);
+            return `https://cdn.geode-sdk.org/geode/${nonV}/${filename}`;
         }
     };
 
