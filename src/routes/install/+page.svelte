@@ -89,6 +89,7 @@
 </svelte:head>
 
 <div class="page-container">
+<div class="ad-slot"></div>
 <div class="main-content">
 
 <h1>Install Geode</h1>
@@ -360,6 +361,7 @@
 <Gap size="normal" />
 
 </div>
+<div class="ad-slot"></div>
 </div>
 
 <style lang="css">
@@ -424,5 +426,16 @@
         align-items: center;
         justify-content: space-between;
         gap: var(--gap-large);
+    }
+
+    .ad-slot {
+        width: 160px;
+        flex-shrink: 0;
+    }
+
+    @media screen and (max-width: 1024px) {
+        .ad-slot {
+            display: none;
+        }
     }
 </style>
