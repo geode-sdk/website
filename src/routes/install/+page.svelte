@@ -90,7 +90,7 @@
 
 <div class="page-container">
 <div class="ad-slot"></div>
-<div class="main-content">
+<div class="main-content" id="content-container">
 
 <h1>Install Geode</h1>
 
