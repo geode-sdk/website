@@ -1,5 +1,6 @@
 <script lang="ts">
     import { onMount } from "svelte";
+    import { adsOptedOut } from "$lib/privacy";
 
     interface Props {
         placementName: string;
@@ -11,6 +12,10 @@
     let el: HTMLDivElement | undefined = $state();
 
     onMount(() => {
+        if (adsOptedOut()) {
+            return;
+        }
+
         let placement: any;
 
         const handleAdd = function (admanager: any, scope: any) {
