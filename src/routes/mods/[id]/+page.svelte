@@ -653,6 +653,7 @@
 
     .dependency-type-subtitle {
         color: var(--primary-300);
+        font-size: var(--font-size-small);
         font-weight: 600;
         letter-spacing: 0.04em;
         padding-bottom: 0.4rem;
