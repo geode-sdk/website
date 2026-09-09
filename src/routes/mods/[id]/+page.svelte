@@ -54,7 +54,7 @@
 
     const developer_ids = $derived(data.mod.developers.map((d) => d.id));
     const can_update_mod = $derived((user && developer_ids.includes(user.id)) || false);
-    const is_admin = $derived(true); // REPLACE LATER: $derived(user?.admin === true);
+    const is_admin = $derived(user?.admin === true);
     const owns_mod = $derived(can_update_mod && data.mod.developers.some((d) => d.is_owner && d.id == user?.id));
 
     const thread_lock = $derived(data.thread?.lock ?? "locked");
