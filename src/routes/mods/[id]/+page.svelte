@@ -59,6 +59,13 @@
 
     const thread_lock = $derived(data.thread?.lock ?? "locked");
 
+    const required_dependencies = $derived(
+        data.version.dependencies?.filter((dependency) => dependency.importance === "required") ?? [],
+    );
+    const recommended_dependencies = $derived(
+        data.version.dependencies?.filter((dependency) => dependency.importance === "recommended") ?? [],
+    );
+
     const is_deprecated = $derived((data.deprecation?.length ?? 0) > 0);
     const deprecation_reason = $derived(data.deprecation?.[0]?.reason ?? null);
     const deprecation_alternatives = $derived(data.deprecation?.[0]?.by ?? []);
@@ -436,17 +443,32 @@
 
                                 <h2>Dependencies</h2>
                                 {#if data.version.dependencies?.length}
-                                    <ul class="color-link">
-                                        {#each data.version.dependencies as dependency}
-                                            <li>
-                                                {dependency.importance} -
-                                                <Link href={`/mods/${dependency.mod_id}`}>
-                                                    {dependency.mod_id}
-                                                </Link>
-                                                ({dependency.version})
-                                            </li>
-                                        {/each}
-                                    </ul>
+                                    {#if required_dependencies.length}
+                                        <p class="dependency-type-subtitle">REQUIRED</p>
+                                        <ul class="color-link">
+                                            {#each required_dependencies as dependency}
+                                                <li>
+                                                    <Link href={`/mods/${dependency.mod_id}`}>
+                                                        {dependency.mod_id}
+                                                    </Link>
+                                                    ({dependency.version})
+                                                </li>
+                                            {/each}
+                                        </ul>
+                                    {/if}
+                                    {#if recommended_dependencies.length}
+                                        <p class="dependency-type-subtitle">RECOMMENDED</p>
+                                        <ul class="color-link">
+                                            {#each recommended_dependencies as dependency}
+                                                <li>
+                                                    <Link href={`/mods/${dependency.mod_id}`}>
+                                                        {dependency.mod_id}
+                                                    </Link>
+                                                    ({dependency.version})
+                                                </li>
+                                            {/each}
+                                        </ul>
+                                    {/if}
                                 {:else}
                                     <div>Mod has no dependencies.</div>
                                 {/if}
@@ -573,18 +595,36 @@
             <Card>
                 {#if data.version.dependencies?.length}
                     <p>Dependencies:</p>
-                    <ul>
-                        {#each data.version.dependencies as dependency}
-                            <div class="color-link">
-                                <li>
-                                    <Link href={`/mods/${dependency.mod_id}`}>
-                                        {dependency.mod_id}
-                                    </Link>
-                                    ({dependency.version}) ({dependency.importance})
-                                </li>
-                            </div>
-                        {/each}
-                    </ul>
+                    {#if required_dependencies.length}
+                        <p class="dependency-type-subtitle">REQUIRED</p>
+                        <ul>
+                            {#each required_dependencies as dependency}
+                                <div class="color-link">
+                                    <li>
+                                        <Link href={`/mods/${dependency.mod_id}`}>
+                                            {dependency.mod_id}
+                                        </Link>
+                                        ({dependency.version})
+                                    </li>
+                                </div>
+                            {/each}
+                        </ul>
+                    {/if}
+                    {#if recommended_dependencies.length}
+                        <p class="dependency-type-subtitle">RECOMMENDED</p>
+                        <ul>
+                            {#each recommended_dependencies as dependency}
+                                <div class="color-link">
+                                    <li>
+                                        <Link href={`/mods/${dependency.mod_id}`}>
+                                            {dependency.mod_id}
+                                        </Link>
+                                        ({dependency.version})
+                                    </li>
+                                </div>
+                            {/each}
+                        </ul>
+                    {/if}
                 {:else}
                     <div>Mod has no dependencies.</div>
                 {/if}
@@ -609,6 +649,19 @@
 
     .color-link {
         --link-color: var(--accent-300);
+    }
+
+    .dependency-type-subtitle {
+        color: var(--primary-300);
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        padding-bottom: 0.4rem;
+        margin-bottom: 0.4rem;
+        border-bottom: 1px solid var(--primary-300);
+
+        &:not(:first-child) {
+            margin-top: 0.5rem;
+        }
     }
 
     .link-row {
