@@ -444,27 +444,27 @@
                                 <h2>Dependencies</h2>
                                 {#if data.version.dependencies?.length}
                                     {#if required_dependencies.length}
-                                        <p class="dependency-type-subtitle">REQUIRED</p>
+                                        <p class="dependency-type-subtitle">Required</p>
                                         <ul class="color-link">
                                             {#each required_dependencies as dependency}
                                                 <li>
                                                     <Link href={`/mods/${dependency.mod_id}`}>
                                                         {dependency.mod_id}
                                                     </Link>
-                                                    ({dependency.version})
+                                                    <span class="dependency-version-text">{dependency.version.replace('=', 'v')}</span>
                                                 </li>
                                             {/each}
                                         </ul>
                                     {/if}
                                     {#if recommended_dependencies.length}
-                                        <p class="dependency-type-subtitle">RECOMMENDED</p>
+                                        <p class="dependency-type-subtitle">Recommended</p>
                                         <ul class="color-link">
                                             {#each recommended_dependencies as dependency}
                                                 <li>
                                                     <Link href={`/mods/${dependency.mod_id}`}>
                                                         {dependency.mod_id}
                                                     </Link>
-                                                    ({dependency.version})
+                                                    <span class="dependency-version-text">{dependency.version.replace('=', 'v')}</span>
                                                 </li>
                                             {/each}
                                         </ul>
@@ -594,9 +594,9 @@
             </Card>
             <Card>
                 {#if data.version.dependencies?.length}
-                    <p>Dependencies:</p>
+                    <p class="dependencies-text">Dependencies:</p>
                     {#if required_dependencies.length}
-                        <p class="dependency-type-subtitle">REQUIRED</p>
+                        <p class="dependency-type-subtitle">Required</p>
                         <ul>
                             {#each required_dependencies as dependency}
                                 <div class="color-link">
@@ -604,14 +604,14 @@
                                         <Link href={`/mods/${dependency.mod_id}`}>
                                             {dependency.mod_id}
                                         </Link>
-                                        ({dependency.version})
+                                        <span class="dependency-version-text">{dependency.version.replace('=', 'v')}</span>
                                     </li>
                                 </div>
                             {/each}
                         </ul>
                     {/if}
                     {#if recommended_dependencies.length}
-                        <p class="dependency-type-subtitle">RECOMMENDED</p>
+                        <p class="dependency-type-subtitle">Recommended</p>
                         <ul>
                             {#each recommended_dependencies as dependency}
                                 <div class="color-link">
@@ -619,7 +619,7 @@
                                         <Link href={`/mods/${dependency.mod_id}`}>
                                             {dependency.mod_id}
                                         </Link>
-                                        ({dependency.version})
+                                        <span class="dependency-version-text">{dependency.version.replace('=', 'v')}</span>
                                     </li>
                                 </div>
                             {/each}
@@ -651,17 +651,26 @@
         --link-color: var(--accent-300);
     }
 
+    .dependencies-text {
+        color: var(--text-300);
+    }
+
     .dependency-type-subtitle {
-        color: var(--primary-300);
         font-weight: 600;
         letter-spacing: 0.04em;
         padding-bottom: 0.3rem;
         margin-bottom: 0.4rem;
-        border-bottom: 1px solid var(--primary-300);
+        border-bottom: 1px solid;
 
         &:not(:first-child) {
             margin-top: 0.5rem;
         }
+    }
+
+    .dependency-version-text {
+        color: var(--text-400);
+        font-size: 0.9rem;
+        letter-spacing: 0.04em;
     }
 
     .link-row {
