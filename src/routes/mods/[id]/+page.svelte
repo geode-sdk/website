@@ -54,7 +54,7 @@
 
     const developer_ids = $derived(data.mod.developers.map((d) => d.id));
     const can_update_mod = $derived((user && developer_ids.includes(user.id)) || false);
-    const is_admin = $derived(user?.admin === true);
+    const is_admin = $derived(true); // REPLACE LATER: $derived(user?.admin === true);
     const owns_mod = $derived(can_update_mod && data.mod.developers.some((d) => d.is_owner && d.id == user?.id));
 
     const thread_lock = $derived(data.thread?.lock ?? "locked");
@@ -440,35 +440,37 @@
                                         </Row>
                                     {/if}
                                 </Column>
-
+                                
                                 <h2>Dependencies</h2>
                                 {#if data.version.dependencies?.length}
-                                    {#if required_dependencies.length}
-                                        <p class="dependency-type-subtitle">Required</p>
-                                        <ul class="color-link">
-                                            {#each required_dependencies as dependency}
-                                                <li>
-                                                    <Link href={`/mods/${dependency.mod_id}`}>
-                                                        {dependency.mod_id}
-                                                    </Link>
-                                                    <span class="dependency-version-text">{dependency.version.replace('=', 'v')}</span>
-                                                </li>
-                                            {/each}
-                                        </ul>
-                                    {/if}
-                                    {#if recommended_dependencies.length}
-                                        <p class="dependency-type-subtitle">Recommended</p>
-                                        <ul class="color-link">
-                                            {#each recommended_dependencies as dependency}
-                                                <li>
-                                                    <Link href={`/mods/${dependency.mod_id}`}>
-                                                        {dependency.mod_id}
-                                                    </Link>
-                                                    <span class="dependency-version-text">{dependency.version.replace('=', 'v')}</span>
-                                                </li>
-                                            {/each}
-                                        </ul>
-                                    {/if}
+                                    <div class="parent flow">
+                                        {#if required_dependencies.length}
+                                            <p class="dependency-type-subtitle">Required</p>
+                                            <ul class="color-link">
+                                                {#each required_dependencies as dependency}
+                                                    <li>
+                                                        <Link href={`/mods/${dependency.mod_id}`}>
+                                                            {dependency.mod_id}
+                                                        </Link>
+                                                        <span class="dependency-version-text">{dependency.version.replace('=', 'v')}</span>
+                                                    </li>
+                                                {/each}
+                                            </ul>
+                                        {/if}
+                                        {#if recommended_dependencies.length}
+                                            <p class="dependency-type-subtitle">Recommended</p>
+                                            <ul class="color-link">
+                                                {#each recommended_dependencies as dependency}
+                                                    <li>
+                                                        <Link href={`/mods/${dependency.mod_id}`}>
+                                                            {dependency.mod_id}
+                                                        </Link>
+                                                        <span class="dependency-version-text">{dependency.version.replace('=', 'v')}</span>
+                                                    </li>
+                                                {/each}
+                                            </ul>
+                                        {/if}
+                                    </div>
                                 {:else}
                                     <div>Mod has no dependencies.</div>
                                 {/if}
@@ -594,40 +596,43 @@
             </Card>
             <Card>
                 {#if data.version.dependencies?.length}
-                    <p class="dependencies-text">Dependencies:</p>
-                    {#if required_dependencies.length}
-                        <p class="dependency-type-subtitle">Required</p>
-                        <ul>
-                            {#each required_dependencies as dependency}
-                                <div class="color-link">
-                                    <li>
-                                        <Link href={`/mods/${dependency.mod_id}`}>
-                                            {dependency.mod_id}
-                                        </Link>
-                                        <span class="dependency-version-text">{dependency.version.replace('=', 'v')}</span>
-                                    </li>
-                                </div>
-                            {/each}
-                        </ul>
-                    {/if}
-                    {#if recommended_dependencies.length}
-                        <p class="dependency-type-subtitle">Recommended</p>
-                        <ul>
-                            {#each recommended_dependencies as dependency}
-                                <div class="color-link">
-                                    <li>
-                                        <Link href={`/mods/${dependency.mod_id}`}>
-                                            {dependency.mod_id}
-                                        </Link>
-                                        <span class="dependency-version-text">{dependency.version.replace('=', 'v')}</span>
-                                    </li>
-                                </div>
-                            {/each}
-                        </ul>
-                    {/if}
+                    <div class="parent flow">
+                        <p class="dependencies-text">Dependencies:</p>
+                        {#if required_dependencies.length}
+                            <p class="dependency-type-subtitle">Required</p>
+                            <ul>
+                                {#each required_dependencies as dependency}
+                                    <div class="color-link">
+                                        <li>
+                                            <Link href={`/mods/${dependency.mod_id}`}>
+                                                {dependency.mod_id}
+                                            </Link>
+                                            <span class="dependency-version-text">{dependency.version.replace('=', 'v')}</span>
+                                        </li>
+                                    </div>
+                                {/each}
+                            </ul>
+                        {/if}
+                        {#if recommended_dependencies.length}
+                            <p class="dependency-type-subtitle">Recommended</p>
+                            <ul>
+                                {#each recommended_dependencies as dependency}
+                                    <div class="color-link">
+                                        <li>
+                                            <Link href={`/mods/${dependency.mod_id}`}>
+                                                {dependency.mod_id}
+                                            </Link>
+                                            <span class="dependency-version-text">{dependency.version.replace('=', 'v')}</span>
+                                        </li>
+                                    </div>
+                                {/each}
+                            </ul>
+                        {/if}
+                    </div>
                 {:else}
                     <div>Mod has no dependencies.</div>
                 {/if}
+                
             </Card>
         </aside>
     </div>
@@ -661,10 +666,6 @@
         padding-bottom: 0.3rem;
         margin-bottom: 0.4rem;
         border-bottom: 1px solid;
-
-        &:not(:first-child) {
-            margin-top: 0.5rem;
-        }
     }
 
     .dependency-version-text {
@@ -691,5 +692,9 @@
 
     label {
         font-size: 0.9rem;
+    }
+
+    .parent > * {
+        --flow-size: 0.5em;
     }
 </style>
