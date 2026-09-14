@@ -1,4 +1,4 @@
-import { env  as publicEnv } from "$env/dynamic/public";
+import { env as publicEnv } from "$env/dynamic/public";
 
 import type { ServerDeveloper, ServerDeveloperProfile, ServerTag } from "./models/base";
 import type { ServerMod, ServerModDeprecation, ServerSimpleMod } from "./models/mod.js";

@@ -5,10 +5,11 @@ build
 .gitignore
 .env
 .env.*
-!.env.example
 .vscode
 .idea
 Dockerfile
 .dockerignore
+.prettierrc
+.prettierignore
 pnpm-lock.yaml
 pnpm-workspace.yaml
