@@ -31,7 +31,7 @@
     onMount(() => {
         privacyOff = privacyOptedOut();
 
-        if (adsOptedOut()) {
+        if (adsOptedOut() || data.loggedInUser) {
             return;
         }
 
@@ -96,13 +96,13 @@
                     <Link href="https://github.com/geode-sdk" icon="github">Source Code</Link>
                     <Dot />
                     <Link href="/privacy" icon="status">Privacy Policy</Link>
-                    {#if privacyOff === false}
+                    <!-- {#if privacyOff === false}
                         <Dot />
                         <button class="privacy-toggle" onclick={togglePrivacy} type="button">
                             <Icon icon="status" --icon-size="1.15em" />
                             Disable ads & tracking
                         </button>
-                    {/if}
+                    {/if} -->
                     {#if data.loggedInUser === null}
                         <Dot />
                         <Link href="/login" icon="account">Login</Link>

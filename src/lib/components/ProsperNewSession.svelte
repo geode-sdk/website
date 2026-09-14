@@ -1,9 +1,12 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { adsOptedOut } from "$lib/privacy";
+    import { getUserContext } from "$lib/context/user";
+
+    const user = $derived(getUserContext());
 
     onMount(() => {
-        if (adsOptedOut()) {
+        if (adsOptedOut() || user) {
             return;
         }
 

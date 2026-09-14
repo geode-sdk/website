@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { adsOptedOut } from "$lib/privacy";
+    import { getUserContext } from "$lib/context/user";
 
     interface Props {
         placementName: string;
@@ -10,9 +11,10 @@
     let { placementName, alias }: Props = $props();
 
     let el: HTMLDivElement | undefined = $state();
+    const user = $derived(getUserContext());
 
     onMount(() => {
-        if (adsOptedOut()) {
+        if (adsOptedOut() || user) {
             return;
         }
 
