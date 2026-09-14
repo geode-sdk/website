@@ -1,4 +1,4 @@
-import * as publicEnv from "$env/static/public";
+import { env as publicEnv } from "$env/dynamic/public";
 
 import type { ServerDeveloper, ServerDeveloperProfile, ServerTag } from "./models/base";
 import type { ServerMod, ServerModDeprecation, ServerSimpleMod } from "./models/mod.js";
@@ -14,10 +14,7 @@ import type { ServerStats } from "./models/stats";
 import type { Cookies } from "@sveltejs/kit";
 import { setCookieTokens } from "$lib/api/tokens";
 
-const BASE_URL =
-    "PUBLIC_API_ENDPOINT" in publicEnv && typeof publicEnv.PUBLIC_API_ENDPOINT == "string"
-        ? publicEnv.PUBLIC_API_ENDPOINT
-        : "https://api.geode-sdk.org";
+const BASE_URL = publicEnv.PUBLIC_API_ENDPOINT || "https://api.geode-sdk.org";
 
 export interface Paginated<T> {
     data: T[];

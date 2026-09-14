@@ -1,0 +1,15 @@
+node_modules
+.svelte-kit
+build
+.git
+.gitignore
+.env
+.env.*
+.vscode
+.idea
+Dockerfile
+.dockerignore
+.prettierrc
+.prettierignore
+pnpm-lock.yaml
+pnpm-workspace.yaml
