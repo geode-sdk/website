@@ -25,7 +25,7 @@ You can preview the production build with `npm run preview`.
 
 ## Configuration
 
-The site uses the following (optional) static environment variables:
+The site uses the following (optional) dynamic environment variables:
 
 - `PUBLIC_API_ENDPOINT`: Base API endpoint for all requests. Current default is "https://api.geode-sdk.org".
 
