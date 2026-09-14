@@ -11,6 +11,7 @@
     import { onMount } from "svelte";
     import type { LayoutData } from "./$types";
     import { setUserContext } from "$lib/context/user";
+    import { env as publicEnv } from "$env/dynamic/public";
 
     interface Props {
         data: LayoutData;
@@ -21,10 +22,7 @@
     let { data, children, nav }: Props = $props();
 
     setUserContext(() => data.loggedInUser);
-    import * as publicEnv from "$env/static/public";
-    const GID = "PUBLIC_GTAG_ID" in publicEnv && typeof publicEnv.PUBLIC_GTAG_ID == "string"
-        ? publicEnv.PUBLIC_GTAG_ID
-        : "";
+    const GID = publicEnv.PUBLIC_GTAG_ID ?? "";
 
     if (GID !== "") {
         onMount(() => {

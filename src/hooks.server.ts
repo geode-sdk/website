@@ -1,6 +1,6 @@
 import type { HandleFetch } from "@sveltejs/kit";
-import * as publicEnv from "$env/static/public";
-import * as privateEnv from "$env/static/private";
+import { env as publicEnv } from "$env/dynamic/public";
+import { env as privateEnv } from "$env/dynamic/private";
 
 interface PrivateSchema {
     PRIVATE_ENDPOINT_ENABLED: string;
@@ -39,10 +39,10 @@ function checkPublic(obj: unknown): obj is PublicSchema {
     return true;
 }
 
-const validPrivate = checkPrivate(privateEnv) ? privateEnv : null;
-const validPublic = checkPublic(publicEnv) ? publicEnv : null;
-
 export const handleFetch: HandleFetch = async ({ request, fetch }) => {
+    const validPrivate = checkPrivate(privateEnv) ? privateEnv : null;
+    const validPublic = checkPublic(publicEnv) ? publicEnv : null;
+
     if (!validPrivate || !validPublic) {
         return fetch(request);
     }
