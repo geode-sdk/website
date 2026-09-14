@@ -4,7 +4,7 @@ WORKDIR /app
 COPY package.json package-lock.json .npmrc ./
 RUN npm ci
 COPY . .
-RUN npm run build && npm prune --production
+RUN npm run build
 
 # build only deps needed for runtime, that will be copied to final stage
 FROM node:26-slim AS prod-deps
