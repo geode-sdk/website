@@ -51,11 +51,12 @@
         const handleRemove = function (admanager: any, scope: any) {
             if (placementName === "vertical_sticky") {
                 scope.Config.verticalSticky().destroy();
-            } else {
+            } else if (placement) {
                 admanager.removePlacement(placement.instance());
             }
         };
 
+        self.__VM = self.__VM || [];
         self.__VM.push(handleAdd);
 
         return () => {
