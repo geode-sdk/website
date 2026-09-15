@@ -8,6 +8,8 @@
     import Dot from "$lib/components/Dot.svelte";
     import Waves from "$lib/components/Waves.svelte";
     import Icon from "$lib/components/Icon.svelte";
+    import ProsperNewSession from "$lib/components/ProsperNewSession.svelte";
+    import { adsOptedOut, privacyOptedOut, setPrivacyOptOut, trackingOptedOut } from "$lib/privacy";
     import { onMount } from "svelte";
     import type { LayoutData } from "./$types";
     import { setUserContext } from "$lib/context/user";
@@ -24,7 +26,28 @@
     setUserContext(() => data.loggedInUser);
     const GID = publicEnv.PUBLIC_GTAG_ID ?? "";
 
-    if (GID !== "") {
+    let privacyOff: boolean | undefined = $state();
+
+    onMount(() => {
+        privacyOff = privacyOptedOut();
+
+        if (adsOptedOut() || data.loggedInUser) {
+            return;
+        }
+
+        // load Venatus ad manager dynamically, only if the user didn't explicitly disable ads & tracking
+        const script = document.createElement("script");
+        script.async = true;
+        script.src = "https://hb.vntsm.com/v4/live/vms/sites/geode-sdk.org/index.js";
+        document.head.appendChild(script);
+    });
+
+    function togglePrivacy() {
+        setPrivacyOptOut(!privacyOff);
+        window.location.reload();
+    }
+
+    if (GID !== "" && !trackingOptedOut()) {
         onMount(() => {
             // <!-- Google tag (gtag.js) -->
             const script = document.createElement('script');
@@ -40,6 +63,7 @@
 </script>
 
 <main>
+    <ProsperNewSession />
     <div class="bg"></div>
     <div class="side-art left"></div>
     <div class="side-art right"></div>
@@ -72,6 +96,13 @@
                     <Link href="https://github.com/geode-sdk" icon="github">Source Code</Link>
                     <Dot />
                     <Link href="/privacy" icon="status">Privacy Policy</Link>
+                    <!-- {#if privacyOff === false}
+                        <Dot />
+                        <button class="privacy-toggle" onclick={togglePrivacy} type="button">
+                            <Icon icon="status" --icon-size="1.15em" />
+                            Disable ads & tracking
+                        </button>
+                    {/if} -->
                     {#if data.loggedInUser === null}
                         <Dot />
                         <Link href="/login" icon="account">Login</Link>
@@ -171,5 +202,24 @@
 
     .waves-bottom {
         min-width: 100%;
+    }
+
+    .privacy-toggle {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        font-weight: var(--link-weight, 700);
+        font-size: var(--font-size);
+        color: var(--link-color, var(--text-color));
+        display: inline-flex;
+        flex-direction: row;
+        align-items: center;
+        gap: var(--gap-small);
+
+        &:hover {
+            text-decoration: underline;
+            color: var(--link-hover, var(--text-50));
+        }
     }
 </style>

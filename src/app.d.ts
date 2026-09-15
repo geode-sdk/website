@@ -9,6 +9,10 @@ declare global {
         // interface Platform {}
     }
 
+    interface Window {
+        __VM: Array<(admanager: any, scope: any) => void>;
+    }
+
     type Gap = "0" | "tiny" | "small" | "normal" | "large" | "immense";
     type Align = "start" | "center" | "end" | "stretch";
 }

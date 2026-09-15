@@ -16,6 +16,7 @@
     import { bash } from "svelte-highlight/languages";
     import { getNewGDUpdateWasReleased } from "$lib";
     import NewGDUpdateAlert from "$lib/components/NewGDUpdateAlert.svelte";
+    import Ad from "$lib/components/Ad.svelte";
 
     interface Props {
         data: PageData;
@@ -86,6 +87,10 @@
     <title>Install Geode</title>
     <meta name="description" content="Install Geode on Windows, macOS, Android, and iOS" />
 </svelte:head>
+
+<div class="page-container">
+<div class="ad-slot"></div>
+<div class="main-content" id="content-container">
 
 <h1>Install Geode</h1>
 
@@ -270,6 +275,9 @@
         </Column>
     </div>
 
+    <Ad placementName="vertical_sticky" />
+    <Ad placementName="mobile_mpu" />
+
     <Gap size="large" />
 
     <h2>How to install mods?</h2>
@@ -352,6 +360,10 @@
 
 <Gap size="normal" />
 
+</div>
+<div class="ad-slot"></div>
+</div>
+
 <style lang="css">
     .img-with-width {
         max-width: 35vw;
@@ -397,5 +409,33 @@
         display: flex;
         align-items: center;
         gap: 0.5rem;
+    }
+
+    .page-container {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        width: 100%;
+        margin: 0 auto;
+        gap: 2rem;
+    }
+
+    .main-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--gap-large);
+    }
+
+    .ad-slot {
+        width: 160px;
+        flex-shrink: 0;
+    }
+
+    @media screen and (max-width: 1024px) {
+        .ad-slot {
+            display: none;
+        }
     }
 </style>
