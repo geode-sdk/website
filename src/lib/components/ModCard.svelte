@@ -43,7 +43,7 @@
             <div class="mod-card-vertical-stack">
                 <div>
                     <div class="click-to-go-to-page">
-                        <Link href={mod_url}>
+                        <Link class="mod-name-link" href={mod_url}>
                             <div class="mod-card-horizontal-stack">
                                 <h2 class="mod-name cutoff-name">{name}</h2>
                                 {#if mod.featured}
@@ -89,7 +89,7 @@
             </div>
             <div style="max-width: 100%" title={name}>
                 <span class="click-to-go-to-page">
-                    <Link href={mod_url}>
+                    <Link class="mod-name-link" href={mod_url}>
                         <div class="mod-card-horizontal-stack" style="--mod-card-horizontal-stack-justify: center">
                             {#if mod.featured}
                                 <Label icon="featured" design="accent-transparent" />
@@ -154,6 +154,10 @@
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
+    }
+
+    :global(a.mod-name-link) {
+        display: flex;
     }
 
     .mod-name {

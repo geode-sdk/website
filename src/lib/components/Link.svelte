@@ -10,10 +10,19 @@
         bold?: boolean;
         centered?: boolean;
         newTab?: boolean;
+        class?: string;
         children?: Snippet;
     }
 
-    let { icon = undefined, href, bold = false, centered = false, newTab = false, children }: Props = $props();
+    let {
+        icon = undefined,
+        href,
+        bold = false,
+        centered = false,
+        newTab = false,
+        children,
+        class: classList,
+    }: Props = $props();
 
     function scrollToElement(id: string) {
         // Remove any existing scroll highlights
@@ -40,6 +49,7 @@
 
 <a
     {href}
+    class={classList ?? ""}
     style={bold ? "--link-weight: 600" : undefined}
     onclick={href.startsWith("#") ? smoothScrollToAnchor : undefined}
     target={newTab ? "_blank" : undefined}
@@ -59,7 +69,7 @@
     a {
         text-decoration: none;
 
-        display: flex;
+        display: inline-flex;
         flex-direction: row;
         align-items: center;
         gap: var(--gap-small);
