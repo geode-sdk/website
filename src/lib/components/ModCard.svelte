@@ -103,6 +103,9 @@
                 </span>
             </div>
             <ModDevelopersList developers={mod.developers} full={false} />
+            <p class="description" title={version.description || ""}>
+                {version.description ?? "Description not provided"}
+            </p>
             <div class="card-data-icons | mod-card-horizontal-stack">
                 <div class="card-info | mod-card-horizontal-stack">
                     <Icon icon="version" />
@@ -113,9 +116,6 @@
                     <span>{abbreviateNumber(mod.download_count)}</span>
                 </div>
             </div>
-            <p class="description" title={version.description || ""}>
-                {version.description ?? "Description not provided"}
-            </p>
         </div>
     {/if}
 </div>
@@ -198,7 +198,7 @@
         }
 
         & .description {
-            margin-block-start: auto;
+            margin-block: auto;
         }
     }
 
