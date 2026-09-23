@@ -113,7 +113,7 @@
     let url_params = $derived(page.url.searchParams);
     let status = $derived(data.version_params.status ?? "accepted");
     let invalid_status = $derived(!verifyStatus(status));
-    let per_page = $derived(data.version_params.per_page ?? 10);
+    let per_page = $derived(data.version_params.per_page ?? 20);
     let current_page = $derived(data.version_params.page ?? 1);
     let logoUrl = $derived(
         IndexClient.getModLogo(data.mod.id, {

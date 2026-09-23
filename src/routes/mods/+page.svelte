@@ -40,7 +40,7 @@
     let userMods = $state(false);
     let geode = $derived(data.params.geode ?? "");
     let gd = $derived(data.params.gd ?? "");
-    let per_page = $derived(data.params.per_page ?? 10);
+    let per_page = $derived(data.params.per_page ?? 20);
     let searching = $state(false);
     let view: "list" | "dual-list" | "grid" = $state("dual-list");
     let searchBar: HTMLInputElement | undefined = $state();
@@ -59,7 +59,7 @@
     let max_count = $derived(data.mods?.count ?? 0);
     let max_page = $derived(Math.floor((max_count - 1) / per_page) + 1);
 
-    const perPageOptions = [10, 15, 20];
+    const perPageOptions = [20, 30, 50];
 
     const updateQuery = async () => {
         // debouce search bar so we're not making a ton of useless requests
