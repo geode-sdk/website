@@ -50,7 +50,7 @@
     <span class:centered>{@render children?.()}</span>
 </a>
 
-<style lang="css">
+<style>
     :global(:root) {
         --link-hover: var(--text-50);
         --link-color: var(--text-color);
@@ -59,7 +59,7 @@
     a {
         text-decoration: none;
 
-        display: inline-flex;
+        display: flex;
         flex-direction: row;
         align-items: center;
         gap: var(--gap-small);
@@ -70,6 +70,10 @@
         transition-duration: var(--transition-duration);
 
         color: var(--link-color);
+
+        & > * {
+            min-width: 0;
+        }
 
         &:hover {
             text-decoration: underline;
