@@ -328,6 +328,8 @@ export class IndexClient {
         if (searchParams?.per_page != null) {
             const limit = searchParams.per_page;
             url.searchParams.set("per_page", limit.toString());
+        } else {
+            url.searchParams.set("per_page", "20");
         }
 
         if (searchParams?.developer) {
@@ -459,6 +461,8 @@ export class IndexClient {
         if (params?.per_page != null) {
             const limit = params.per_page;
             url.searchParams.set("per_page", limit.toString());
+        } else {
+            url.searchParams.set("per_page", "20");
         }
 
         if (params?.gd) {
@@ -808,6 +812,8 @@ export class IndexClient {
         if (params?.per_page != null) {
             const limit = params.per_page;
             url.searchParams.set("per_page", limit.toString());
+        } else {
+            url.searchParams.set("per_page", "20");
         }
 
         if (params?.query != null) {

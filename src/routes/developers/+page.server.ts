@@ -6,7 +6,7 @@ export const load: PageServerLoad = async ({ url, fetch }) => {
     const params: DeveloperSearchParams = {
         query: url.searchParams.get("query") ?? undefined,
         page: toIntSafe(url.searchParams.get("page")),
-        per_page: toIntSafe(url.searchParams.get("per_page")) ?? 10,
+        per_page: toIntSafe(url.searchParams.get("per_page")) ?? 20,
     };
 
     const client = new IndexClient({ fetch });

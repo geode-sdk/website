@@ -369,7 +369,7 @@ export const actions: Actions = {
 export const load: PageServerLoad = async ({ fetch, url, params, cookies }) => {
     const version_params: GetModVersionsParams = {
         page: toIntSafe(url.searchParams.get("page")),
-        per_page: toIntSafe(url.searchParams.get("per_page")) ?? 10,
+        per_page: toIntSafe(url.searchParams.get("per_page")) ?? 20,
         status: (url.searchParams.get("status") as ModStatus) ?? "accepted",
     };
 

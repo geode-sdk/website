@@ -18,7 +18,7 @@ export const load: PageServerLoad = async ({ url, fetch, cookies }) => {
         gd: url.searchParams.get("gd") ?? undefined,
         geode: url.searchParams.get("geode") ?? undefined,
         developer: url.searchParams.get("developer") ?? undefined,
-        per_page: toIntSafe(url.searchParams.get("per_page")) ?? 10,
+        per_page: toIntSafe(url.searchParams.get("per_page")) ?? 20,
     };
 
     const client = await tryCreateAuthenticatedClient(cookies, fetch);
