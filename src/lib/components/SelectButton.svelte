@@ -9,31 +9,62 @@
         outsideState?: boolean;
         icon: KnownIcon;
         design?: "primary" | "secondary";
-        select: (selected: boolean) => void;
+        select?: (selected: boolean) => void;
+        search?: (query: string) => void;
+        query?: string;
+        placeholder?: string;
         children?: Snippet;
     }
 
-    let { selected = $bindable(), outsideState = false, icon, design = "primary", select, children }: Props = $props();
+    let { selected = $bindable(), outsideState = false, icon, design = "primary", select, children, query = $bindable(""), placeholder, search }: Props = $props();
+    let searchTimeout: ReturnType<typeof setTimeout> | undefined;
 
     if (selected == undefined) {
         selected = false;
     }
+
+    const updateQuery = async () => {
+        // good 4 the servers i <3 the servers
+        if (searchTimeout) {
+            clearTimeout(searchTimeout);
+        }
+
+        searchTimeout = setTimeout(() => {
+            search?.(query);
+        }, 300);
+    };
+
+    const doSearch = () => {
+        if (searchTimeout) {
+            clearTimeout(searchTimeout);
+            searchTimeout = undefined;
+        }
+        search?.(query);
+    };
 </script>
 
-<button
-    class="select-button {design}"
-    class:selected
-    onclick={() => {
-        if (!outsideState) {
-            selected = !selected;
-        }
-        select(selected ?? false);
-    }}>
-    <Icon {icon} --icon-size="1.3em" />{@render children?.()}
-</button>
+{#if search}
+    <div class="select-button dev-search {design}">
+        <Icon {icon} --icon-size="1.3em" />
+        <input {placeholder} bind:value={query} oninput={updateQuery} onblur={doSearch} />
+    </div>
+{:else}
+    <button
+        class="select-button {design}"
+        class:selected
+        onclick={() => {
+            if (!outsideState) {
+                selected = !selected;
+            }
+            select?.(selected ?? false);
+        }}>
+        <Icon {icon} --icon-size="1.3em" />{@render children?.()}
+    </button>
+{/if}
 
 <style lang="css">
-    button {
+    button,
+    .dev-search {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -51,7 +82,9 @@
 
         transition-property: color, background-color;
         transition-duration: 25ms;
+    }
 
+    button {
         &:hover {
             background-color: color-mix(in srgb, var(--secondary-300) 25%, transparent);
             cursor: pointer;
@@ -74,6 +107,19 @@
                 background-color: color-mix(in srgb, var(--primary-100) 50%, transparent);
                 border-color: color-mix(in srgb, var(--primary-100) 50%, transparent);
             }
+        }
+    }
+
+    .dev-search {
+        &:focus-within,
+        &:hover {
+            background-color: color-mix(in srgb, var(--secondary-300) 25%, transparent);
+        }
+
+        & > input {
+            min-width: 0;
+            width: 100%;
+            outline: none;
         }
     }
 </style>

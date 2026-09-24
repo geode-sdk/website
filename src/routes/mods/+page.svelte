@@ -35,7 +35,7 @@
     let sort = $derived(data.params.sort ?? "downloads");
     let tags = $derived(new Set(data.params.tags ?? []));
     let featured = $derived(data.params.featured ?? false);
-    let developer = $derived(data.params.developer ?? "");
+    let developer = $state("");
     let pending = $derived(data.params.status != "accepted");
     let userMods = $state(false);
     let geode = $derived(data.params.geode ?? "");
@@ -171,6 +171,7 @@
     afterNavigate((navigation) => {
         if (navigation.type != "goto") {
             query = data.params.query ?? "";
+            developer = data.params.developer ?? "";
         }
     });
 </script>
@@ -190,6 +191,7 @@
 <div class="content-separator">
     <aside class="filter-column">
         <FilterMenu
+            bind:developer
             bind:platforms
             bind:tags
             tagsListing={data.tags}
@@ -250,6 +252,7 @@
                 bind:platforms
                 bind:tags
                 tagsListing={data.tags}
+                bind:developer
                 loggedIn={profile !== null}
                 bind:featured
                 bind:pending
