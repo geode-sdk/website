@@ -189,6 +189,9 @@
                             </div>
                         </div>
                         <p>
+                            Required dependencies: <em>unzip, jq or python</em>
+                        </p>
+                        <p>
                             Or by using the Windows installer
                             <strong>(requires Wine)</strong>
                         </p>
