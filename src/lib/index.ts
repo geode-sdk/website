@@ -153,8 +153,8 @@ export type NewGDUpdateInfo = {
 export function getNewGDUpdateWasReleased(): NewGDUpdateInfo | undefined {
     // If no new update, change to `undefined`, if Geode fixed, change `geodeStatus`
     return {
-        newGDVersion: "2.209",
-        geodeStatus: "just-updated",
+        newGDVersion: "2.2091",
+        geodeStatus: "fully-broken",
     };
     // return undefined;
 }
