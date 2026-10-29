@@ -111,252 +111,257 @@
         updated to the latest GD version.
     </p>
     <p>
-        If you want to install Geode for an older version of GD, you can still find older versions on our <a
-            href="https://github.com/geode-sdk/geode/releases">GitHub releases page</a
-        >.
+        If you want to install Geode for <em>{recentGDUpdate!.oldGDVersion}</em>, you can still find the old versions below.
     </p>
-{:else}
-    <div class="installation">
-        <Column>
-            <section>
-                <Column>
-                    <p><strong>Installation instructions</strong></p>
-                    <span style="color: var(--background-300)">
-                        <Column align="start">
-                            <Row>
-                                <Icon icon="one" />
-                                <p>
-                                    Download the <em>installer</em>
-                                    for the platform you want.
-                                </p>
-                            </Row>
-                            <Row>
-                                <Icon icon="two" />
-                                <p>Run the installer.</p>
-                            </Row>
-                        </Column>
-                    </span>
-                    <p>
-                        Geode is available for
-                        <em>Windows, macOS, Android, iOS (experimental) and Linux (through Wine).</em>
+{/if}
+
+<div class="installation">
+    <Column>
+        <section>
+            <Column>
+                <p><strong>Installation instructions</strong></p>
+                <span style="color: var(--background-300)">
+                    <Column align="start">
+                        <Row>
+                            <Icon icon="one" />
+                            <p>
+                                Download the <em>installer</em>
+                                for the platform you want.
+                            </p>
+                        </Row>
+                        <Row>
+                            <Icon icon="two" />
+                            <p>Run the installer.</p>
+                        </Row>
+                    </Column>
+                </span>
+                <p>
+                    Geode is available for
+                    <em>Windows, macOS, Android, iOS (experimental) and Linux (through Wine).</em>
+                </p>
+            </Column>
+        </section>
+        <section class:hidden={!data.error}>
+            <InfoBox type="error">
+                Could not determine the latest Geode release.
+
+                <br />
+                <br />
+
+                You can download Geode <Link
+                    --link-color="var(--accent-300)"
+                    href="https://github.com/geode-sdk/geode/releases/latest">
+                    here
+                </Link>.
+                <br />
+                Android users should install <Link
+                    --link-color="var(--accent-300)"
+                    href="https://github.com/geode-sdk/android-launcher/releases/latest">
+                    the Android launcher
+                </Link> instead.
+                <br />
+                iOS users should check out <Link
+                    --link-color="var(--accent-300)"
+                    href="https://github.com/geode-sdk/ios-launcher/blob/main/INSTALL.md">
+                    the iOS installation guide
+                </Link>
+            </InfoBox>
+        </section>
+        <section class:hidden={data.error}>
+            <Column>
+                <div>
+                    Latest version: <em>{latestVersion}</em>
+                </div>
+                {#if recentGDUpdate?.geodeStatus === "fully-broken"}
+                    <p class="alternative-install">
+                        This version of Geode <em>does not work</em> on the latest version of Geometry Dash.
+                        It will only work on <em>{recentGDUpdate!.oldGDVersion}</em>.
                     </p>
-                </Column>
-            </section>
-            <section class:hidden={!data.error}>
-                <InfoBox type="error">
-                    Could not determine the latest Geode release.
-
-                    <br />
-                    <br />
-
-                    You can download Geode <Link
-                        --link-color="var(--accent-300)"
-                        href="https://github.com/geode-sdk/geode/releases/latest">
-                        here
-                    </Link>.
-                    <br />
-                    Android users should install <Link
-                        --link-color="var(--accent-300)"
-                        href="https://github.com/geode-sdk/android-launcher/releases/latest">
-                        the Android launcher
-                    </Link> instead.
-                    <br />
-                    iOS users should check out <Link
-                        --link-color="var(--accent-300)"
-                        href="https://github.com/geode-sdk/ios-launcher/blob/main/INSTALL.md">
-                        the iOS installation guide
-                    </Link>
-                </InfoBox>
-            </section>
-            <section class:hidden={data.error}>
-                <Column>
-                    <div>
-                        Latest version: <em>{latestVersion}</em>
+                {/if}
+                {#if curPlatform === "unknown"}
+                    <p>
+                        Couldn't auto detect your platform. You can download Geode for your chosen platform below.
+                    </p>
+                {/if}
+                {#if curPlatform === "linux"}
+                    <div class="alternative-install">
+                        You can install Geode using the command below:
+                        <div class="linux-install-container">
+                            <CodeExample
+                                code={`curl -o- 'https://geode-sdk.org/install/linux.sh' | bash`}
+                                language={bash} />
+                            <Button icon={"clipboard"} onclick={copyLinuxScript} />
+                        </div>
                     </div>
-                    {#if curPlatform === "unknown"}
-                        <p>
-                            Couldn't auto detect your platform. You can download Geode for your chosen platform below.
-                        </p>
+                    <p>
+                        Or by using the Windows installer
+                        <strong>(requires Wine)</strong>
+                    </p>
+                    <div>
+                        <Button design="primary-filled" href={createVersionString("windows")}>
+                            <Icon icon="linux" />Download for Linux
+                        </Button>
+                    </div>
+                    <p>
+                        <Link bold href="faq#i-am-installing-geode-on-linux-what-do-i-have-to-do">
+                            <em>Click here for an FAQ about installing Geode on Linux.</em>
+                        </Link>
+                    </p>
+                {/if}
+                {#if curPlatform === "android"}
+                    <div>
+                        Latest Android Launcher version: <em>{latestLauncher}</em>
+                    </div>
+                {/if}
+                {#if curPlatform === "ios"}
+                    <p>
+                        Installing Geode on iOS is a bit more complicated than other platforms, and requires the use
+                        of a
+                        <em>computer.</em>
+                    </p>
+                    <div>
+                        Latest iOS launcher version: <em>{latestIOSLauncher}</em>
+                    </div>
+                {/if}
+                {#if !showAllPlatforms}
+                    {#if curPlatform === "windows"}
+                        <Button design="primary-filled" href={createVersionString("windows")}>
+                            <Icon icon="windows" />Download for Windows
+                        </Button>
                     {/if}
-                    {#if curPlatform === "linux"}
-                        <div class="alternative-install">
-                            You can install Geode using the command below:
-                            <div class="linux-install-container">
-                                <CodeExample
-                                    code={`curl -o- 'https://geode-sdk.org/install/linux.sh' | bash`}
-                                    language={bash} />
-                                <Button icon={"clipboard"} onclick={copyLinuxScript} />
-                            </div>
-                        </div>
-                        <p>
-                            Or by using the Windows installer
-                            <strong>(requires Wine)</strong>
-                        </p>
-                        <div>
-                            <Button design="primary-filled" href={createVersionString("windows")}>
-                                <Icon icon="linux" />Download for Linux
-                            </Button>
-                        </div>
-                        <p>
-                            <Link bold href="faq#i-am-installing-geode-on-linux-what-do-i-have-to-do">
-                                <em>Click here for an FAQ about installing Geode on Linux.</em>
-                            </Link>
-                        </p>
+                    {#if curPlatform === "mac"}
+                        <InfoBox type="warning">
+                            The <em>Geode macOS installer</em>
+                            is only supported on the <Link
+                                href="https://store.steampowered.com/app/322170/Geometry_Dash/"
+                                bold
+                                newTab>
+                                Steam
+                            </Link> release of Geometry Dash.
+                        </InfoBox>
+
+                        <Button design="primary-filled" href={createVersionString("mac")}>
+                            <Icon icon="mac" />Download for macOS
+                        </Button>
                     {/if}
                     {#if curPlatform === "android"}
-                        <div>
-                            Latest Android Launcher version: <em>{latestLauncher}</em>
-                        </div>
+                        <Button design="primary-filled" href={createVersionString("android")}>
+                            <Icon icon="android" />Download for Android
+                        </Button>
                     {/if}
                     {#if curPlatform === "ios"}
-                        <p>
-                            Installing Geode on iOS is a bit more complicated than other platforms, and requires the use
-                            of a
-                            <em>computer.</em>
-                        </p>
-                        <div>
-                            Latest iOS launcher version: <em>{latestIOSLauncher}</em>
-                        </div>
+                        <Button
+                            design="primary-filled"
+                            href="https://github.com/geode-sdk/ios-launcher/blob/main/INSTALL.md">
+                            <Icon icon="ios" />Download for iOS (experimental)
+                        </Button>
                     {/if}
-                    {#if !showAllPlatforms}
-                        {#if curPlatform === "windows"}
-                            <Button design="primary-filled" href={createVersionString("windows")}>
-                                <Icon icon="windows" />Download for Windows
-                            </Button>
-                        {/if}
-                        {#if curPlatform === "mac"}
-                            <InfoBox type="warning">
-                                The <em>Geode macOS installer</em>
-                                is only supported on the <Link
-                                    href="https://store.steampowered.com/app/322170/Geometry_Dash/"
-                                    bold
-                                    newTab>
-                                    Steam
-                                </Link> release of Geometry Dash.
-                            </InfoBox>
+                {/if}
+                <Rollover title="Show All Platforms" bind:open={showAllPlatforms}>
+                    <Column align="stretch">
+                        <Button design="primary-filled" href={createVersionString("windows")}>
+                            <Icon icon="windows" />Download for Windows
+                        </Button>
+                        <Button design="primary-filled" href={createVersionString("mac")}>
+                            <Icon icon="mac" />Download for macOS (Steam)
+                        </Button>
+                        <Button design="primary-filled" href={createVersionString("android")}>
+                            <Icon icon="android" />Download for Android
+                        </Button>
+                        <Button
+                            design="primary-filled"
+                            href="https://github.com/geode-sdk/ios-launcher/blob/main/INSTALL.md">
+                            <Icon icon="ios" />Download for iOS (experimental)
+                        </Button>
+                    </Column>
+                </Rollover>
+            </Column>
+        </section>
+    </Column>
+</div>
 
-                            <Button design="primary-filled" href={createVersionString("mac")}>
-                                <Icon icon="mac" />Download for macOS
-                            </Button>
-                        {/if}
-                        {#if curPlatform === "android"}
-                            <Button design="primary-filled" href={createVersionString("android")}>
-                                <Icon icon="android" />Download for Android
-                            </Button>
-                        {/if}
-                        {#if curPlatform === "ios"}
-                            <Button
-                                design="primary-filled"
-                                href="https://github.com/geode-sdk/ios-launcher/blob/main/INSTALL.md">
-                                <Icon icon="ios" />Download for iOS (experimental)
-                            </Button>
-                        {/if}
-                    {/if}
-                    <Rollover title="Show All Platforms" bind:open={showAllPlatforms}>
-                        <Column align="stretch">
-                            <Button design="primary-filled" href={createVersionString("windows")}>
-                                <Icon icon="windows" />Download for Windows
-                            </Button>
-                            <Button design="primary-filled" href={createVersionString("mac")}>
-                                <Icon icon="mac" />Download for macOS (Steam)
-                            </Button>
-                            <Button design="primary-filled" href={createVersionString("android")}>
-                                <Icon icon="android" />Download for Android
-                            </Button>
-                            <Button
-                                design="primary-filled"
-                                href="https://github.com/geode-sdk/ios-launcher/blob/main/INSTALL.md">
-                                <Icon icon="ios" />Download for iOS (experimental)
-                            </Button>
-                        </Column>
-                    </Rollover>
-                </Column>
-            </section>
-        </Column>
+<Ad placementName="vertical_sticky" />
+<Ad placementName="mobile_mpu" />
+
+<Gap size="large" />
+
+<h2>How to install mods?</h2>
+
+<FlyIntoView>
+    <div class="img-with-width">
+        <Image name="main-menu" alt="The main menu, showing the Geode button" style="shadow" />
     </div>
+    <Column align="start">
+        <p>
+            Once you have <em>installed Geode</em>
+            , you should see a new button in the bottom row of the main menu.
+            <br />
+            <br />
+            Clicking this button brings you to the Geode Menu.
+        </p>
+        <Row wrap="wrap">
+            <Button design="hollow" href="/faq#i-cant-see-the-geode-button">
+                <Icon icon="help" /> I can't see the Geode button!
+            </Button>
+        </Row>
+    </Column>
+</FlyIntoView>
 
-    <Ad placementName="vertical_sticky" />
-    <Ad placementName="mobile_mpu" />
+<FlyIntoView>
+    <div class="img-with-width">
+        <Image name="main-page" alt="The Geode menu" style="shadow" />
+    </div>
+    <Column align="start">
+        <p>
+            The first page you see is the <em>list of mods you currently have installed</em>
+            . Use the toggles to quickly
+            <em>enable/disable</em>
+            any mods, or click
+            <em>View</em>
+            for further options like editing mod settings and uninstalling.
+        </p>
+        <Row wrap="wrap">
+            <Button design="hollow" href="/faq#how-do-i-change-mod-settings">
+                <Icon icon="help" /> How do I change mod settings?
+            </Button>
+            <Button design="hollow" href="/faq#how-do-i-update-mods">
+                <Icon icon="help" /> How do I update mods?
+            </Button>
+            <Button design="hollow" href="/faq#how-do-i-uninstall-mods">
+                <Icon icon="help" /> How do I uninstall mods?
+            </Button>
+        </Row>
+    </Column>
+</FlyIntoView>
 
-    <Gap size="large" />
+<FlyIntoView>
+    <div class="img-with-width">
+        <Image name="download-page" alt="The download tab of the Geode menu" style="shadow" />
+    </div>
+    <Column align="start">
+        <p>
+            The other pages - <em>Recommended</em>
+            ,
+            <em>Download</em>
+            , and
+            <em>Trending</em>
+            are dedicated to finding new mods.
+            <br />
+            <br />
+            You can use the
+            <em>search button</em>
+            on the left to search for specific mods by name or by
+            <em>tags</em>
+            .
+        </p>
+        <Row wrap="wrap">
+            <Button design="hollow" href="/faq#why-cant-i-find-certain-mods">
+                <Icon icon="help" /> Why can't I find a certain Mod?
+            </Button>
+        </Row>
+    </Column>
+</FlyIntoView>
 
-    <h2>How to install mods?</h2>
-
-    <FlyIntoView>
-        <div class="img-with-width">
-            <Image name="main-menu" alt="The main menu, showing the Geode button" style="shadow" />
-        </div>
-        <Column align="start">
-            <p>
-                Once you have <em>installed Geode</em>
-                , you should see a new button in the bottom row of the main menu.
-                <br />
-                <br />
-                Clicking this button brings you to the Geode Menu.
-            </p>
-            <Row wrap="wrap">
-                <Button design="hollow" href="/faq#i-cant-see-the-geode-button">
-                    <Icon icon="help" /> I can't see the Geode button!
-                </Button>
-            </Row>
-        </Column>
-    </FlyIntoView>
-
-    <FlyIntoView>
-        <div class="img-with-width">
-            <Image name="main-page" alt="The Geode menu" style="shadow" />
-        </div>
-        <Column align="start">
-            <p>
-                The first page you see is the <em>list of mods you currently have installed</em>
-                . Use the toggles to quickly
-                <em>enable/disable</em>
-                any mods, or click
-                <em>View</em>
-                for further options like editing mod settings and uninstalling.
-            </p>
-            <Row wrap="wrap">
-                <Button design="hollow" href="/faq#how-do-i-change-mod-settings">
-                    <Icon icon="help" /> How do I change mod settings?
-                </Button>
-                <Button design="hollow" href="/faq#how-do-i-update-mods">
-                    <Icon icon="help" /> How do I update mods?
-                </Button>
-                <Button design="hollow" href="/faq#how-do-i-uninstall-mods">
-                    <Icon icon="help" /> How do I uninstall mods?
-                </Button>
-            </Row>
-        </Column>
-    </FlyIntoView>
-
-    <FlyIntoView>
-        <div class="img-with-width">
-            <Image name="download-page" alt="The download tab of the Geode menu" style="shadow" />
-        </div>
-        <Column align="start">
-            <p>
-                The other pages - <em>Recommended</em>
-                ,
-                <em>Download</em>
-                , and
-                <em>Trending</em>
-                are dedicated to finding new mods.
-                <br />
-                <br />
-                You can use the
-                <em>search button</em>
-                on the left to search for specific mods by name or by
-                <em>tags</em>
-                .
-            </p>
-            <Row wrap="wrap">
-                <Button design="hollow" href="/faq#why-cant-i-find-certain-mods">
-                    <Icon icon="help" /> Why can't I find a certain Mod?
-                </Button>
-            </Row>
-        </Column>
-    </FlyIntoView>
-{/if}
 
 <Gap size="normal" />
 

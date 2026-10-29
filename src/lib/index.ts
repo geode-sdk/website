@@ -135,8 +135,10 @@ export function formatNumber(num: number): string {
 }
 
 export type NewGDUpdateInfo = {
-    /** The new version of GD, e.g. 2.2081 */
+    /** The new version of GD, e.g. 2.2091 */
     newGDVersion: string;
+    // previous version of GD where geode works, e.g. 2.2081
+    oldGDVersion: string;
     /**
      * The status of Geode for the new update. `fully-broken` means that Geode
      * has not yet been ported at all; `just-updated` is for when Geode has
@@ -154,6 +156,7 @@ export function getNewGDUpdateWasReleased(): NewGDUpdateInfo | undefined {
     // If no new update, change to `undefined`, if Geode fixed, change `geodeStatus`
     return {
         newGDVersion: "2.2091",
+        oldGDVersion: "2.2081",
         geodeStatus: "fully-broken",
     };
     // return undefined;
