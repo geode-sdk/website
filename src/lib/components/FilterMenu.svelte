@@ -16,6 +16,7 @@
         platforms: Set<string>;
         tags: Set<string>;
         tagsListing: Promise<ServerTag[]> | undefined;
+        developer: string;
         loggedIn: boolean;
         featured: boolean;
         pending: boolean;
@@ -27,6 +28,7 @@
         platforms = $bindable(),
         tags = $bindable(),
         tagsListing,
+        developer = $bindable(),
         loggedIn,
         featured = $bindable(),
         pending = $bindable(),
@@ -55,6 +57,13 @@
                 </SelectButton>
             </Rollover>
         {/if}
+        <Rollover title="Developer">
+            <SelectButton
+                icon="account"
+                placeholder="Filter developers..."
+                bind:query={developer}
+                search={updateSearch} />
+        </Rollover>
         <Rollover title="Platform">
             <SelectButton
                 icon="windows"
