@@ -157,7 +157,7 @@ export function getNewGDUpdateWasReleased(): NewGDUpdateInfo | undefined {
     return {
         newGDVersion: "2.2091",
         oldGDVersion: "2.2081",
-        geodeStatus: "fully-broken",
+        geodeStatus: "just-updated",
     };
     // return undefined;
 }
