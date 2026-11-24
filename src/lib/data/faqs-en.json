@@ -16,7 +16,7 @@
             {
                 "id": "why-does-this-happen",
                 "question": "Why does this happen every time GD is updated?",
-                "answer": "This is due to technical limitations. Unless RobTop specifically decides to support modding officially, Geode will unfortunately break with every new GD update."
+                "answer": "This is due to technical limitations. Unless RobTop specifically decides to support modding officially, Geode will unfortunately break with every new GD update. HJFod has made an [excellent video](https://www.youtube.com/watch?v=BT91PCUdyOU) detailing why Geode breaks from a more technical point of view."
             },
             {
                 "id": "why-is-it-taking-so-long",
