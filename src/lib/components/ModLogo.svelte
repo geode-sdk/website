@@ -1,10 +1,10 @@
 <script lang="ts">
     import { IndexClient } from "$lib/api/index-repository.js";
-    import type { ServerMod } from "$lib/api/models/mod.js";
     import type { ServerModVersion } from "$lib/api/models/mod-version.js";
+    import type { ServerMod } from "$lib/api/models/mod.js";
 
-    import iconPlaceholder from "$lib/assets/icon-placeholder.png";
     import iconPending from "$lib/assets/icon-pending.png";
+    import iconPlaceholder from "$lib/assets/icon-placeholder.png";
 
     interface Props {
         mod: ServerMod;
@@ -28,31 +28,25 @@
     );
 
     const placeholderIcon = $derived(accepted ? iconPlaceholder : iconPending);
-
-    const checkPlaceholder = (node: HTMLImageElement) => {
-        if (node.complete) {
-            imageLoaded = true;
-            if (node.naturalWidth == 0 && node.naturalHeight == 0) {
-                logoUrl = placeholderIcon;
-            }
-        }
-    };
-
     let imageLoaded = $state(false);
 </script>
 
 <!-- on:error doesn't run early enough, but the language server complains, lol -->
-<img
-    onerror={function () {
-        this.src = placeholderIcon;
-    }}
-    onload={(e) => (e.target as HTMLImageElement | null)?.style.removeProperty("visibility")}
-    src={logoUrl}
-    use:checkPlaceholder
-    alt={`Logo for the mod ${version.name}`}
-    style:--icon-size={iconSize}
-    style:visibility={imageLoaded ? "initial" : "hidden"}
-    class="mod-image" />
+<div class={imageLoaded ? "" : "animate-pulse rounded-2xl bg-white/10"}>
+    <img
+        onerror={function () {
+            this.src = placeholderIcon;
+        }}
+        onload={(e) => {
+            (e.target as HTMLImageElement | null)?.style.removeProperty("visibility");
+            imageLoaded = true;
+        }}
+        src={logoUrl}
+        alt={`Logo for the mod ${version.name}`}
+        style:--icon-size={iconSize}
+        style:visibility={imageLoaded ? "initial" : "hidden"}
+        class="mod-image" />
+</div>
 
 <style>
     .mod-image {
