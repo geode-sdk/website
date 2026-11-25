@@ -2,10 +2,10 @@
     import Waves from "$lib/components/Waves.svelte";
 
     // TODO: FAQs in other languages
-    import allFaqs from "$lib/data/faqs-en.json";
     import { getNewGDUpdateWasReleased } from "$lib";
-    import QuestionNav from "$lib/components/faq/QuestionNav.svelte";
     import QuestionList from "$lib/components/faq/QuestionList.svelte";
+    import QuestionNav from "$lib/components/faq/QuestionNav.svelte";
+    import allFaqs from "$lib/data/faqs-en.json";
 
     const newGDUpdate = getNewGDUpdateWasReleased();
     // The update categories are only shown if we're in emergency mode
@@ -32,7 +32,7 @@
     <h1 class="font-heading mt-30 mb-15 text-center text-5xl font-bold">Frequently Asked Questions</h1>
 
     <div class="flex items-start justify-center gap-2">
-        <div class="sticky top-20 hidden max-h-[65vw] overflow-y-auto md:block">
+        <div class="nav-panel hidden md:block">
             <QuestionNav {faqs} />
         </div>
         <div class="w-full">
@@ -40,3 +40,19 @@
         </div>
     </div>
 </div>
+
+<style>
+    .nav-panel {
+        /* Calculate top and max height to be able to scroll all the way
+        to the bottom of the page to reach the bottom of the panel */
+        --nav-offset: calc(var(--spacing) * 20); /* 5rem = 80px */
+        top: var(--nav-offset);
+        max-height: calc(98dvh - var(--nav-offset));
+        border-radius: 6px;
+
+        position: sticky;
+        overflow-y: auto;
+
+        scrollbar-color: gray transparent;
+    }
+</style>
